@@ -1,0 +1,12 @@
+.main-container {
+  height: 50vh;
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.searchbar-container {
+  margin-top: 2rem;
+  width: 33rem;
+}

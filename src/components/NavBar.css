@@ -1,0 +1,27 @@
+.navbar {
+  display: flex;
+  background-color: rgb(219, 203, 148);
+}
+
+.navbar-link {
+  text-decoration: none;
+  font-weight: 700;
+  color: aliceblue;
+  margin-left: 1rem;
+}
+
+.navbar-link:hover {
+  color: rgb(153, 141, 104);
+}
+
+.signup-login-link {
+  margin-left: auto;
+  margin-right: 1rem;
+  text-decoration: none;
+  font-weight: 700;
+  color: aliceblue;
+}
+
+.signup-login-link:hover {
+  color: rgb(153, 141, 104);
+}
