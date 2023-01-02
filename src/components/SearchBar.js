@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addWords, resetWords } from "../features/suggestedWordsSlice";
 
 function SearchBar() {
-  const [definitions, setDefinitions] = useState([]);
+  // const [definitions, setDefinitions] = useState([]);
   const { suggestedWords } = useSelector((store) => {
     return store;
   });
@@ -21,7 +21,7 @@ function SearchBar() {
           console.log(response.data);
           alert("Merriam Webster API is down.");
         } else {
-          setDefinitions(response.data);
+          // setDefinitions(response.data);
           response.data.forEach((def) => {
             console.log(def);
             //! throw in the entire object
