@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import { Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { addWords, resetWords } from "../features/suggestedWordsSlice";
+import { addWords, resetWords } from "../actions/wordDefinition";
 
 function SearchBar() {
   // const [definitions, setDefinitions] = useState([]);
@@ -18,16 +18,18 @@ function SearchBar() {
       )
       .then((response) => {
         if (response.status !== 200) {
-          console.log(response.data);
           alert("Merriam Webster API is down.");
         } else {
           // setDefinitions(response.data);
-          response.data.forEach((def) => {
-            console.log(def);
-            //! throw in the entire object
-            //! add abbreviations after dropdown list word
-            dispatch(addWords(def.hwi.hw.toLowerCase().replaceAll("*", "")));
-          });
+          if (typeof (response.data === "array")) {
+            response.data.forEach((def) => {
+              console.log(def);
+              //! throw in the entire object
+              //! add abbreviations after dropdown list word
+              dispatch(addWords(def.hwi.hw.toLowerCase().replaceAll("*", "")));
+            });
+          }
+          dispatch(addWords(response.data.toLowerCase().replaceAll("*", "")));
         }
       })
       .catch((err) => {
