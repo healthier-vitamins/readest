@@ -20,6 +20,24 @@ function SearchBar() {
     // console.log(suggestedWord);
   }
 
+  function RenderAbbreviations(props) {
+    const { wordObject } = props;
+    if (
+      Array.isArray(wordObject) &&
+      wordObject.length === 1 &&
+      Object.keys(wordObject).includes("fl")
+    ) {
+      return <span>[{wordObject[0].fl}]</span>;
+    } else if (
+      typeof wordObject === "object" &&
+      Object.keys(wordObject).includes("fl")
+    ) {
+      return <span>[{wordObject.fl}]</span>;
+    } else {
+      return <span>[no abbreviation]</span>;
+    }
+  }
+
   function RenderSuggestedWord() {
     console.log("before all ", suggestedWord);
 
@@ -36,8 +54,11 @@ function SearchBar() {
                 return (
                   <React.Fragment key={index}>
                     <p>
-                      {responseObject.hwi.hw}&nbsp;&nbsp;
-                      <span>[{responseObject.fl}]</span>
+                      {/* extract word render into a function to remove redundant/irrelevant words */}
+                      {responseObject.meta.id}&nbsp;
+                      <RenderAbbreviations
+                        wordObject={responseObject}
+                      ></RenderAbbreviations>
                     </p>
                   </React.Fragment>
                 );
@@ -51,8 +72,10 @@ function SearchBar() {
         <>
           {suggestedWord ? (
             <p>
-              {suggestedWord[0].hwi.hw}&nbsp;&nbsp;
-              <span>[{suggestedWord[0].fl}]</span>
+              {suggestedWord[0].meta.id}&nbsp;
+              <RenderAbbreviations
+                wordObject={suggestedWord[0]}
+              ></RenderAbbreviations>
             </p>
           ) : null}
         </>
