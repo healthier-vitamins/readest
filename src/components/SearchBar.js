@@ -1,46 +1,64 @@
-import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { addWords, resetWords } from "../actions/wordDefinition";
+import {
+  // addSuggestedWord,
+  resetSuggestedWord,
+  getWordDefinition,
+} from "../store/actions/wordDefinition";
 
 function SearchBar() {
-  // const [definitions, setDefinitions] = useState([]);
-  const { suggestedWords } = useSelector((store) => {
-    return store;
+  const [touched, setTouched] = useState(false);
+  const { suggestedWord } = useSelector((store) => {
+    return store.wordDefinition;
   });
   const dispatch = useDispatch();
 
-  async function searchQuery(query) {
-    return await axios
-      .get(
-        `https://dictionaryapi.com/api/v3/references/sd4/json/${query}?key=${process.env.REACT_APP_DICTIONARY_KEY}`
-      )
-      .then((response) => {
-        if (response.status !== 200) {
-          alert("Merriam Webster API is down.");
-        } else {
-          // setDefinitions(response.data);
-          if (typeof (response.data === "array")) {
-            response.data.forEach((def) => {
-              console.log(def);
-              //! throw in the entire object
-              //! add abbreviations after dropdown list word
-              dispatch(addWords(def.hwi.hw.toLowerCase().replaceAll("*", "")));
-            });
-          }
-          dispatch(addWords(response.data.toLowerCase().replaceAll("*", "")));
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  function handleChange(value) {
+    dispatch(resetSuggestedWord);
+    dispatch(getWordDefinition(value));
+    // console.log(suggestedWord);
   }
 
-  function handleChange(value) {
-    dispatch(resetWords());
-    searchQuery(value);
-    // console.log(suggestedWords);
+  function RenderSuggestedWord() {
+    console.log("before all ", suggestedWord);
+
+    if (
+      suggestedWord.length > 1 &&
+      Object.keys(suggestedWord[0]).length > 4 &&
+      typeof suggestedWord[0] !== "string"
+    ) {
+      console.log("if", suggestedWord[0], Object.keys(suggestedWord[0]));
+      return (
+        <>
+          {suggestedWord
+            ? suggestedWord.map((responseObject, index) => {
+                return (
+                  <React.Fragment key={index}>
+                    <p>
+                      {responseObject.hwi.hw}&nbsp;&nbsp;
+                      <span>[{responseObject.fl}]</span>
+                    </p>
+                  </React.Fragment>
+                );
+              })
+            : null}
+        </>
+      );
+    } else if (suggestedWord.length === 1) {
+      console.log("else if", suggestedWord);
+      return (
+        <>
+          {suggestedWord ? (
+            <p>
+              {suggestedWord[0].hwi.hw}&nbsp;&nbsp;
+              <span>[{suggestedWord[0].fl}]</span>
+            </p>
+          ) : null}
+        </>
+      );
+    }
+    return touched ? <p>No matches found</p> : null;
   }
 
   return (
@@ -49,17 +67,14 @@ function SearchBar() {
         <Form.Control
           type="text"
           placeholder="Search word"
-          onChange={(e) => handleChange(e.target.value)}
+          onChange={(e) => {
+            handleChange(e.target.value);
+            setTouched(true);
+          }}
         ></Form.Control>
       </div>
       <div>
-        {suggestedWords.map((word, index) => {
-          return (
-            <React.Fragment key={index}>
-              <p>{word}</p>
-            </React.Fragment>
-          );
-        })}
+        <RenderSuggestedWord></RenderSuggestedWord>
       </div>
     </div>
   );

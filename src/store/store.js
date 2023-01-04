@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import wordsDefinitionReducer from "../features/suggestedWordsSlice";
+import wordDefinitionReducer from "./actions/wordDefinition";
 
 export const store = configureStore({
   reducer: {
-    wordsDefinition: wordsDefinitionReducer,
+    wordDefinition: wordDefinitionReducer,
   },
 });
