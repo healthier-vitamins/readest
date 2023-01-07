@@ -10,7 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   resetSuggestedWord,
   getWordDefinition,
-} from "../store/actions/wordDefinition";
+  addChosenWordDefinition,
+} from "../../store/actions/wordDefinition.action";
 import "./SearchBar.css";
 
 function SearchBar() {
@@ -42,9 +43,9 @@ function SearchBar() {
   function handleChange(value) {
     setQueriedWord(value);
     dispatch(resetSuggestedWord);
-    setTimeout(() => {
+    if (value.length > 0) {
       dispatch(getWordDefinition(value));
-    }, 300);
+    }
     // console.log(suggestedWord);
   }
 
@@ -67,37 +68,50 @@ function SearchBar() {
   }
 
   function RenderSuggestedWord() {
-    console.log("before all ", suggestedWord);
-    console.log("touched ", touched);
+    // console.log("before all ", suggestedWord);
+    // console.log("touched ", touched);
+    // console.log("queried word ", queriedWord.length);
 
+    //? loading
     if (
       isLoading &&
       touched &&
       suggestedWord.length < 1 &&
-      queriedWord.length > 1
+      queriedWord.length > 0
     ) {
       return (
         <>
           <p className="dropdown-list">Loading...</p>
         </>
       );
+
+      //? multiple words + senses
     } else if (
       suggestedWord.length > 1 &&
       // to handle when searchbar is empty and suggestedWord still passes this conditional
       Object.keys(suggestedWord[0]).length > 4 &&
       // when api is searching for an unknown word, it returns an array of "string" words instead of object.
       typeof suggestedWord[0] !== "string" &&
+      queriedWord.length > 0 &&
       touched
     ) {
-      console.log("if", suggestedWord[0], Object.keys(suggestedWord[0]));
+      // console.log("if", suggestedWord[0], Object.keys(suggestedWord[0]));
       return (
         <>
           {suggestedWord
             ? suggestedWord.map((responseObject, index) => {
                 return (
                   <React.Fragment key={index}>
-                    <p className="dropdown-list">
-                      {/* extract word render into a function to remove redundant/irrelevant words */}
+                    <p
+                      className="dropdown-list"
+                      onClick={() => {
+                        dispatch(addChosenWordDefinition(responseObject));
+                        setQueriedWord(responseObject.meta.id.toLowerCase());
+                        queriedWordRef.current.value =
+                          responseObject.meta.id.toLowerCase();
+                        setTouched(false);
+                      }}
+                    >
                       {responseObject.meta.id.toLowerCase()}&nbsp;
                       <RenderAbbreviations
                         wordObject={responseObject}
@@ -109,11 +123,13 @@ function SearchBar() {
             : null}
         </>
       );
+
+      //? multiple words only
     } else if (
       suggestedWord.length > 1 &&
       // when api is searching for an unknown word, it returns an array of "string" words instead of object.
       typeof suggestedWord[0] === "string" &&
-      suggestedWord !== "Word is required." &&
+      queriedWord.length > 0 &&
       touched
     ) {
       return (
@@ -132,8 +148,15 @@ function SearchBar() {
             : null}
         </>
       );
-    } else if (suggestedWord.length === 1 && touched) {
-      console.log("else if", suggestedWord);
+
+      //? single word + senses
+    } else if (
+      suggestedWord.length === 1 &&
+      typeof suggestedWord[0] !== "string" &&
+      queriedWord.length > 0 &&
+      touched
+    ) {
+      // console.log("else if", suggestedWord);
       return (
         <>
           {suggestedWord ? (
@@ -146,8 +169,27 @@ function SearchBar() {
           ) : null}
         </>
       );
+
+      //? single word only
+    } else if (
+      suggestedWord.length === 1 &&
+      typeof suggestedWord[0] === "string" &&
+      queriedWord.length > 0 &&
+      touched
+    ) {
+      return (
+        <>
+          {suggestedWord ? (
+            <p className="dropdown-list">
+              {suggestedWord[0].toLowerCase()}&nbsp;
+            </p>
+          ) : null}
+        </>
+      );
     }
-    return touched && suggestedWord.length < 1 && queriedWord.length > 1 ? (
+
+    //? no matches found
+    return touched && suggestedWord.length < 1 && queriedWord.length > 0 ? (
       <p className="dropdown-list">No matches found</p>
     ) : null;
   }
@@ -165,6 +207,7 @@ function SearchBar() {
           onFocus={() => {
             setTouched(true);
           }}
+          ref={queriedWordRef}
         ></Form.Control>
       </div>
       <div className="dropdown-box">

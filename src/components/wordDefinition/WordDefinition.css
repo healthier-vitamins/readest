@@ -1,0 +1,27 @@
+* {
+  padding: 0px;
+  margin: 0px;
+}
+
+.word-definition-box {
+  border-radius: 0.5rem;
+  margin-top: 3rem;
+  border: 0.1rem lightgrey solid;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
+}
+
+.abbreviation {
+  font-size: 1.05rem;
+  margin-bottom: 0;
+}
+
+.title {
+  margin-bottom: 0;
+}
+
+.shortdef {
+  margin-bottom: 0;
+}

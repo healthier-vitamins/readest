@@ -2,30 +2,33 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // api url with query passed through as parameter
-function apiUrl(queryPayload) {
-  return `https://dictionaryapi.com/api/v3/references/sd4/json/${queryPayload}?key=${process.env.REACT_APP_DICTIONARY_KEY}`;
+function apiUrl(queriedWord) {
+  return `https://dictionaryapi.com/api/v3/references/sd4/json/${queriedWord}?key=${process.env.REACT_APP_DICTIONARY_KEY}`;
+  // return `https://dictionaryapi.com/api/v3/references/ithesaurus/json/${queriedWord}?key=${process.env.REACT_APP_DICTIONARY_KEY}`;
 }
 
 // action initialstate
 const initialState = {
   suggestedWord: [],
-  chosenWordDefinition: "",
+  isWordChosen: false,
+  chosenWordDefinition: {
+    title: "",
+    senses: [],
+    abbreviation: "",
+    shortDef: "",
+  },
   isLoading: true,
 };
 
-// function to hold fetch
+// exported api call
 export const getWordDefinition = createAsyncThunk(
   "getWordDefinition",
-  async (queryPayload, thunkApi) => {
-    const resp = await axios.get(apiUrl(queryPayload));
-    console.log(resp);
+  async (queriedWord, thunkApi) => {
+    const resp = await axios.get(apiUrl(queriedWord));
+    console.log(resp.data);
     return resp.data;
   }
 );
-
-// function isRejectedAction(action) {
-//   return action.type.endsWith("rejected");
-// }
 
 // redux slice
 const wordDefinition = createSlice({
@@ -36,6 +39,17 @@ const wordDefinition = createSlice({
       while (state.suggestedWord.length > 1) {
         state.suggestedWord.pop();
       }
+    },
+    addChosenWordDefinition: (state, action) => {
+      state.isWordChosen = true;
+      console.log(action.payload);
+      console.log(action.payload.def[0].sseq[0][0][1].dt);
+      state.chosenWordDefinition.title = action.payload.meta.id;
+      state.chosenWordDefinition.abbreviation = action.payload.fl;
+      state.chosenWordDefinition.shortDef = action.payload.shortdef;
+      state.chosenWordDefinition.senses.push(
+        action.payload.def[0].sseq[0][0][1].dt
+      );
     },
   },
 
@@ -56,11 +70,7 @@ const wordDefinition = createSlice({
     builder
       .addCase(getWordDefinition.fulfilled, (state, action) => {
         state.isLoading = false;
-        if (action.payload.length > 0 && action.payload !== "Word is required.") {
-          state.suggestedWord = action.payload;
-        } else {
-          state.suggestedWord = [];
-        }
+        state.suggestedWord = action.payload;
       })
       .addCase(getWordDefinition.pending, (state) => {
         state.isLoading = true;
@@ -71,5 +81,6 @@ const wordDefinition = createSlice({
   },
 });
 
-export const { resetSuggestedWord } = wordDefinition.actions;
+export const { resetSuggestedWord, addChosenWordDefinition } =
+  wordDefinition.actions;
 export default wordDefinition.reducer;
