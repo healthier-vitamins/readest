@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  createRef,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,6 +16,7 @@ import "./SearchBar.css";
 function SearchBar() {
   const ref = useRef();
   const [queriedWord, setQueriedWord] = useState("");
+  const queriedWordRef = createRef();
   const [touched, setTouched] = useState(false);
   const { suggestedWord, isLoading } = useSelector((store) => {
     return store.wordDefinition;
