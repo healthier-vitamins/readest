@@ -32,7 +32,6 @@ const wordDefinition = createSlice({
   name: "wordDefinition",
   initialState,
   reducers: {
-    addSuggestedWord: (state, { payload }) => {},
     resetSuggestedWord: (state) => {
       while (state.suggestedWord.length > 1) {
         state.suggestedWord.pop();
@@ -54,11 +53,23 @@ const wordDefinition = createSlice({
   //   },
   // },
   extraReducers: (builder) => {
-    builder.addCase(getWordDefinition.fulfilled, (state, action) => {
-      state.suggestedWord = action.payload;
-    });
+    builder
+      .addCase(getWordDefinition.fulfilled, (state, action) => {
+        state.isLoading = false;
+        if (action.payload.length > 0 && action.payload !== "Word is required.") {
+          state.suggestedWord = action.payload;
+        } else {
+          state.suggestedWord = [];
+        }
+      })
+      .addCase(getWordDefinition.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getWordDefinition.rejected, (state) => {
+        state.isLoading = true;
+      });
   },
 });
 
-export const { addSuggestedWord, resetSuggestedWord } = wordDefinition.actions;
+export const { resetSuggestedWord } = wordDefinition.actions;
 export default wordDefinition.reducer;
