@@ -4,6 +4,7 @@
 }
 
 .word-definition-box {
+  width: 28rem;
   border-radius: 0.5rem;
   margin-top: 3rem;
   border: 0.1rem lightgrey solid;
@@ -24,4 +25,20 @@
 
 .shortdef {
   margin-bottom: 0;
+}
+
+.box-footer {
+  display: flex;
+  margin-top: 1.5rem;
+  padding-right: 0.1rem;
+}
+
+.save-btn {
+  font-size: 1.3rem;
+  margin-left: auto;
+}
+
+.save-btn:hover {
+  cursor: pointer;
+  color: rgb(153, 141, 104);
 }

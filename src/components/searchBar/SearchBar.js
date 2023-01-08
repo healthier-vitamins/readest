@@ -160,7 +160,16 @@ function SearchBar() {
       return (
         <>
           {suggestedWord ? (
-            <p className="dropdown-list">
+            <p
+              className="dropdown-list"
+              onClick={() => {
+                dispatch(addChosenWordDefinition(suggestedWord[0]));
+                setQueriedWord(suggestedWord[0].meta.id.toLowerCase());
+                queriedWordRef.current.value =
+                  suggestedWord[0].meta.id.toLowerCase();
+                setTouched(false);
+              }}
+            >
               {suggestedWord[0].meta.id.toLowerCase()}&nbsp;
               <RenderAbbreviations
                 wordObject={suggestedWord[0]}
