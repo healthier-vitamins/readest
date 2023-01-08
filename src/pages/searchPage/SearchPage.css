@@ -1,5 +1,8 @@
+@import "https://unpkg.com/open-props/gradients.min.css";
+
 .main-container {
-  height: 50vh;
+  /* background-image: var(--gradient-6); */
+  height: 70vh;
   width: 100%;
   display: flex;
   flex-flow: column;

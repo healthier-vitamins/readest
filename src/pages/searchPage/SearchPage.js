@@ -1,6 +1,5 @@
-import SearchBar from "../components/searchBar/SearchBar";
-import WordDefinition from "../components/wordDefinition/WordDefinition";
-
+import SearchBar from "../../components/searchBar/SearchBar";
+import WordDefinition from "../../components/wordDefinition/WordDefinition";
 import "./SearchPage.css";
 
 function SearchPage() {

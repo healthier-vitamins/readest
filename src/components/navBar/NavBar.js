@@ -4,10 +4,13 @@ import "./NavBar.css";
 function NavBar() {
   return (
     <div className="navbar">
-      <Link className="navbar-link" to={"/"}>
+      <Link className="left-navbar-link" to={"/"}>
         Home
       </Link>
-      <Link className="signup-login-link" to={"/"}>
+      <Link className="right-navbar-link" to={"/words"}>
+        Words
+      </Link>
+      <Link className="right-navbar-link" to={"/"}>
         Sign up/Login
       </Link>
     </div>
