@@ -6,7 +6,7 @@
 
 .left-navbar-link {
   flex: 1;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   text-decoration: none;
   font-weight: 700;
   color: aliceblue;
@@ -18,7 +18,7 @@
 
 .right-navbar-link {
   text-decoration: none;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   font-weight: 700;
   color: aliceblue;
   margin-right: 1rem;
