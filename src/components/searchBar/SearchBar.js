@@ -49,6 +49,24 @@ function SearchBar() {
     // console.log(suggestedWord);
   }
 
+  function handleWordWithoutDefObj(word) {
+    console.log("word", word);
+    dispatch(getWordDefinition(word));
+    if (Array.isArray(suggestedWord)) {
+      console.log(
+        "singular word without def returned an array lol ",
+        suggestedWord
+      );
+      dispatch(addChosenWordDefinition(suggestedWord[0]));
+    } else {
+      console.log("here---- ", suggestedWord);
+      dispatch(addChosenWordDefinition(suggestedWord));
+    }
+    setQueriedWord(word.toLowerCase());
+    queriedWordRef.current.value = word.toLowerCase();
+    setTouched(true);
+  }
+
   function RenderAbbreviations(props) {
     const { wordObject } = props;
     if (
@@ -138,8 +156,12 @@ function SearchBar() {
             ? suggestedWord.map((word, index) => {
                 return (
                   <React.Fragment key={index}>
-                    <p className="dropdown-list">
-                      {/* extract word render into a function to remove redundant/irrelevant words */}
+                    <p
+                      className="dropdown-list"
+                      onClick={() => {
+                        handleWordWithoutDefObj(word);
+                      }}
+                    >
                       {word.toLowerCase()}&nbsp;
                     </p>
                   </React.Fragment>
@@ -189,7 +211,12 @@ function SearchBar() {
       return (
         <>
           {suggestedWord ? (
-            <p className="dropdown-list">
+            <p
+              className="dropdown-list"
+              onClick={() => {
+                handleWordWithoutDefObj(suggestedWord[0]);
+              }}
+            >
               {suggestedWord[0].toLowerCase()}&nbsp;
             </p>
           ) : null}

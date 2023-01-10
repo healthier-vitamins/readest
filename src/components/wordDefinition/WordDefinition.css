@@ -20,7 +20,7 @@
 }
 
 .title {
-  margin-bottom: 0;
+  margin-bottom: 0.3rem;
 }
 
 .shortdef {
@@ -29,7 +29,7 @@
 
 .box-footer {
   display: flex;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   padding-right: 0.1rem;
 }
 
