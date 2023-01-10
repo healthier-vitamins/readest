@@ -25,7 +25,7 @@ export const getWordDefinition = createAsyncThunk(
   "getWordDefinition",
   async (queriedWord, thunkApi) => {
     const resp = await axios.get(apiUrl(queriedWord));
-    console.log(resp.data);
+    console.log("fetched data ", resp.data);
     return resp.data;
   }
 );

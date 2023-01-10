@@ -52,6 +52,13 @@ function SearchBar() {
   function handleWordWithoutDefObj(word) {
     console.log("word", word);
     dispatch(getWordDefinition(word));
+    //! state not updated fast enough.
+    console.log(
+      "the supposed updated data based on ",
+      word,
+      ": ",
+      suggestedWord
+    );
     if (Array.isArray(suggestedWord)) {
       console.log(
         "singular word without def returned an array lol ",
