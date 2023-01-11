@@ -35,7 +35,7 @@ function wordDefinition() {
     return (
       <div>
         <h5 className="title">
-          {chosenWordDefinition.title}{" "}
+          {chosenWordDefinition.title}&nbsp;&nbsp;
           <span className="abbreviation">
             {chosenWordDefinition.abbreviation}
           </span>

@@ -40,34 +40,17 @@ function SearchBar() {
     };
   }, [onClickOutside]);
 
-  function handleChange(value) {
+  function handleOnChangeQuery(value) {
     setQueriedWord(value);
     dispatch(resetSuggestedWord);
-    if (value.length > 0) {
+    if (typeof value === "string" && value.length > 0) {
       dispatch(getWordDefinition(value));
     }
-    // console.log(suggestedWord);
   }
-
+  
   function handleWordWithoutDefObj(word) {
-    console.log("word", word);
-    dispatch(getWordDefinition(word));
-    //! state not updated fast enough.
-    console.log(
-      "the supposed updated data based on ",
-      word,
-      ": ",
-      suggestedWord
-    );
-    if (Array.isArray(suggestedWord)) {
-      console.log(
-        "singular word without def returned an array lol ",
-        suggestedWord
-      );
-      dispatch(addChosenWordDefinition(suggestedWord[0]));
-    } else {
-      console.log("here---- ", suggestedWord);
-      dispatch(addChosenWordDefinition(suggestedWord));
+    if (typeof word === "string" && word.length > 0) {
+      dispatch(getWordDefinition(word));
     }
     setQueriedWord(word.toLowerCase());
     queriedWordRef.current.value = word.toLowerCase();
@@ -93,17 +76,8 @@ function SearchBar() {
   }
 
   function RenderSuggestedWord() {
-    // console.log("before all ", suggestedWord);
-    // console.log("touched ", touched);
-    // console.log("queried word ", queriedWord.length);
-
     //? loading
-    if (
-      isLoading &&
-      touched &&
-      suggestedWord.length < 1 &&
-      queriedWord.length > 0
-    ) {
+    if (isLoading && touched && queriedWord.length > 0) {
       return (
         <>
           <p className="dropdown-list">Loading...</p>
@@ -120,7 +94,6 @@ function SearchBar() {
       queriedWord.length > 0 &&
       touched
     ) {
-      // console.log("if", suggestedWord[0], Object.keys(suggestedWord[0]));
       return (
         <>
           {suggestedWord
@@ -185,7 +158,6 @@ function SearchBar() {
       queriedWord.length > 0 &&
       touched
     ) {
-      // console.log("else if", suggestedWord);
       return (
         <>
           {suggestedWord ? (
@@ -239,12 +211,12 @@ function SearchBar() {
 
   return (
     <div ref={ref}>
-      <div>
+      <div className="searchbar">
         <Form.Control
           type="text"
           placeholder="Search word"
           onChange={(e) => {
-            handleChange(e.target.value);
+            handleOnChangeQuery(e.target.value);
             setTouched(true);
           }}
           onFocus={() => {

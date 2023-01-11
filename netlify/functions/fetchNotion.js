@@ -1,6 +1,6 @@
 const { Client } = require("@notionhq/client");
 
-const { NOTION_KEY, NOTION_DB } = process.env;
+const { NOTION_KEY, NOTION_DB_BOOK_KEY } = process.env;
 
 const notion = new Client({
   auth: NOTION_KEY,
@@ -9,7 +9,7 @@ const notion = new Client({
 exports.handler = async function (event, context) {
   try {
     const response = await notion.databases.query({
-      database_id: NOTION_DB,
+      database_id: NOTION_DB_BOOK_KEY,
       filter: {
         property: "Status",
         select: {

@@ -1,6 +1,6 @@
 .navbar {
-  display: flex;
   background-color: rgb(219, 203, 148);
+  position: fixed;
 }
 
 .left-navbar-box {

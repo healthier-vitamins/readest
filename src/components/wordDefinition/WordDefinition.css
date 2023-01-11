@@ -42,3 +42,9 @@
   cursor: pointer;
   color: rgb(153, 141, 104);
 }
+
+@media screen and (min-width: 280px) and (max-width: 768px) {
+  .word-definition-box {
+    width: 15rem;
+  }
+}
