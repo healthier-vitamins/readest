@@ -7,22 +7,26 @@ const notion = new Client({
 
 exports.handler = async function (event, context) {
   try {
-    const response = await notion.databases.query({
-      database_id: NOTION_DB_BOOK_KEY,
-      filter: {
-        property: "Status",
-        select: {
-          equals: "Live",
+    const response = await notion.pages.create({
+      parent: {
+        database_id: NOTION_DB_BOOK_KEY,
+        type: "database_id",
+      },
+      properties: {
+        "Book Name": {
+          rich_text: [
+            {
+              text: {
+                content: "Created from here",
+              },
+            },
+          ],
         },
       },
     });
-
-    console.log(event);
-    console.log(context);
-    console.log(response.results[0].properties.Words);
     return {
       statusCode: 200,
-      body: JSON.stringify({ response }),
+      body: JSON.stringify(response),
     };
   } catch (err) {
     console.error(err);
