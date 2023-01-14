@@ -6,6 +6,8 @@ const notion = new Client({
 });
 
 exports.handler = async function (event, context) {
+  const { title, definition } = JSON.parse(event.body);
+  console.log("context ", context);
   try {
     const response = await notion.pages.create({
       parent: {
@@ -17,7 +19,16 @@ exports.handler = async function (event, context) {
           rich_text: [
             {
               text: {
-                content: "Created from here",
+                content: title,
+              },
+            },
+          ],
+        },
+        Name: {
+          title: [
+            {
+              text: {
+                content: title,
               },
             },
           ],
