@@ -5,6 +5,7 @@ import Layout from "./pages/Layout";
 import WordsPage from "./pages/WordsPage/WordsPage";
 
 function App() {
+
   return (
     <>
       <BrowserRouter>

@@ -28,3 +28,15 @@
 .right-link:hover {
   color: rgb(153, 141, 104);
 }
+
+.menu-btn {
+  color: aliceblue;
+  font-size: 20px;
+  margin-left: 0.6rem;
+  margin-bottom: 0.1rem;
+}
+
+.menu-btn:hover {
+  color: rgb(153, 141, 104);
+  cursor: pointer;
+}

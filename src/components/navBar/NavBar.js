@@ -1,13 +1,21 @@
 import { Link } from "react-router-dom";
 import "./NavBar.css";
+import { CgMenu } from "react-icons/cg";
+import { useDispatch } from "react-redux";
+import { toggleOffCanvas } from "../../store/actions/states.action";
 
 function NavBar() {
+  const dispatch = useDispatch();
+
   return (
     <div className="navbar">
       <div className="right-navbar-box">
-        <Link className="left-link" to={"/"}>
-          Home
-        </Link>
+        <CgMenu
+          className="menu-btn"
+          onClick={() => {
+            dispatch(toggleOffCanvas());
+          }}
+        ></CgMenu>
       </div>
       <div className="left-navbar-box">
         <Link className="right-link" to={"/words"}>

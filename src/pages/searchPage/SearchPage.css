@@ -2,16 +2,20 @@
 
 .main-container {
   /* background-image: var(--gradient-6); */
-  height: 70vh;
+  height: 95.5vh;
   width: 100%;
   display: flex;
-  flex-flow: column;
-  align-items: center;
+  flex-flow: row;
 }
 
 .searchbar-container {
-  margin-top: 2rem;
-  width: 33rem;
+  width: 100%;
+  padding: 4rem 4rem;
+}
+
+.sidebar-container {
+  border-right: 0.375px lightgray solid;
+  width: 3rem;
 }
 
 @media screen and (min-width: 280px) and (max-width: 768px) {

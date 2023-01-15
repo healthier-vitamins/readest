@@ -47,7 +47,7 @@ function SearchBar() {
       dispatch(getWordDefinition(value));
     }
   }
-  
+
   function handleWordWithoutDefObj(word) {
     if (typeof word === "string" && word.length > 0) {
       dispatch(getWordDefinition(word));
