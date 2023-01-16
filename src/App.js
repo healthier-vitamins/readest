@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import HomePage from "./pages/homePage/HomePage";
 import Layout from "./pages/Layout";
-import WordsPage from "./pages/WordsPage/WordsPage";
+import WordsPage from "./pages/wordsPage/WordsPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
