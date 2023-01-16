@@ -1,18 +1,18 @@
 const { createSlice } = require("@reduxjs/toolkit");
 
 const initialState = {
-  offCanvasState: false,
+  createBookModalState: false,
 };
 
 const states = createSlice({
   name: "states",
   initialState,
   reducers: {
-    toggleOffCanvas: (state) => {
-      state.offCanvasState = !state.offCanvasState;
+    toggleCreateBookModal: (state) => {
+      state.createBookModalState = !state.createBookModalState;
     },
   },
 });
 
-export const { toggleOffCanvas } = states.actions;
+export const { toggleCreateBookModal } = states.actions;
 export default states.reducer;

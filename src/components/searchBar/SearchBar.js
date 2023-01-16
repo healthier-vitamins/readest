@@ -210,21 +210,19 @@ function SearchBar() {
   }
 
   return (
-    <div ref={ref}>
-      <div className="searchbar">
-        <Form.Control
-          type="text"
-          placeholder="Search word"
-          onChange={(e) => {
-            handleOnChangeQuery(e.target.value);
-            setTouched(true);
-          }}
-          onFocus={() => {
-            setTouched(true);
-          }}
-          ref={queriedWordRef}
-        ></Form.Control>
-      </div>
+    <div className="searchbar-box" ref={ref}>
+      <Form.Control
+        type="text"
+        placeholder="Search word"
+        onChange={(e) => {
+          handleOnChangeQuery(e.target.value);
+          setTouched(true);
+        }}
+        onFocus={() => {
+          setTouched(true);
+        }}
+        ref={queriedWordRef}
+      ></Form.Control>
       <div className="dropdown-box">
         <RenderSuggestedWord></RenderSuggestedWord>
       </div>
