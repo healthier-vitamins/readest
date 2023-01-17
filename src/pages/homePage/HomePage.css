@@ -19,8 +19,7 @@
 }
 
 .sidebar-container {
-  border-right: 0.375px lightgray solid;
-  width: 6rem;
+  width: fit-content;
 }
 
 @media screen and (min-width: 280px) and (max-width: 768px) {

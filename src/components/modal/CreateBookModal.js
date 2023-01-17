@@ -2,14 +2,17 @@ import { createRef, useState } from "react";
 import { Modal, Form, Spinner, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import "./CreateBookModal.css";
-import { toggleCreateBookModal } from "../../store/actions/states.action";
-import axios from "axios";
+import { toggleCreateBookModal } from "../../store/slices/states.slice";
+import { postBook } from "../../store/slices/books.slice";
 
 function CreateBookModal() {
   const { createBookModalState } = useSelector((store) => {
     return store.states;
   });
-  const [loadSpinner, setLoadSpinner] = useState(false);
+  const [isClicked, setisClicked] = useState(false);
+  const { isLoading } = useSelector((state) => {
+    return state.books;
+  });
   const [isInvalid, setIsInvalid] = useState(false);
   const dispatch = useDispatch();
   const bookTitleRef = createRef();
@@ -22,14 +25,10 @@ function CreateBookModal() {
       setIsInvalid(true);
     } else {
       setIsInvalid(false);
-      setLoadSpinner(true);
-      const payload = {
+      const bookDeets = {
         title: bookTitleRef.current.value,
       };
-      await axios.post(`/api/createBook`, payload).finally(() => {
-        dispatch(toggleCreateBookModal());
-        setLoadSpinner(false);
-      });
+      dispatch(postBook(bookDeets));
     }
   }
 
@@ -41,6 +40,7 @@ function CreateBookModal() {
       onHide={() => {
         dispatch(toggleCreateBookModal());
         setIsInvalid(false);
+        setisClicked(false);
       }}
     >
       <Modal.Body className="modal-container">
@@ -54,7 +54,7 @@ function CreateBookModal() {
             isInvalid={isInvalid}
           ></Form.Control>
           <Form.Control.Feedback type="invalid">
-            <small>Please provide a book title.</small>
+            <small>Please provide a book a valid title.</small>
           </Form.Control.Feedback>
         </InputGroup>
 
@@ -62,10 +62,11 @@ function CreateBookModal() {
           <div
             className="cfm-btn"
             onClick={(event) => {
+              setisClicked(true);
               handleCreateBook(event);
             }}
           >
-            {loadSpinner ? (
+            {isLoading && isClicked && !isInvalid ? (
               <Spinner size="sm" className="spinner"></Spinner>
             ) : null}
             Confirm
@@ -75,6 +76,7 @@ function CreateBookModal() {
             onClick={() => {
               dispatch(toggleCreateBookModal());
               setIsInvalid(false);
+              setisClicked(false);
             }}
           >
             Cancel

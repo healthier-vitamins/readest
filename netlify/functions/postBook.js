@@ -6,8 +6,7 @@ const notion = new Client({
 });
 
 exports.handler = async function (event, context) {
-  const { title, definition } = JSON.parse(event.body);
-  console.log("context ", context);
+  const { title } = JSON.parse(event.body);
   try {
     const response = await notion.pages.create({
       parent: {
@@ -15,7 +14,7 @@ exports.handler = async function (event, context) {
         type: "database_id",
       },
       properties: {
-        "Book Name": {
+        "Book name": {
           rich_text: [
             {
               text: {
@@ -32,6 +31,11 @@ exports.handler = async function (event, context) {
               },
             },
           ],
+        },
+        Status: {
+          select: {
+            name: "Live",
+          },
         },
       },
     });

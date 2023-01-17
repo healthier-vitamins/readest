@@ -11,7 +11,7 @@ import {
   resetSuggestedWord,
   getWordDefinition,
   addChosenWordDefinition,
-} from "../../store/actions/wordDefinition.action";
+} from "../../store/slices/wordDefinition.slice";
 import "./SearchBar.css";
 
 function SearchBar() {

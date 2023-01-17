@@ -4,6 +4,7 @@ const initialState = {
   createBookModalState: false,
 };
 
+// redux slice
 const states = createSlice({
   name: "states",
   initialState,
