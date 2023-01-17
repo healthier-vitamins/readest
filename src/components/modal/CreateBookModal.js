@@ -52,6 +52,7 @@ function CreateBookModal() {
             required
             className="form-control"
             isInvalid={isInvalid}
+            autoFocus={true}
           ></Form.Control>
           <Form.Control.Feedback type="invalid">
             <small>Please provide a book a valid title.</small>
