@@ -1,17 +1,21 @@
 import { Link } from "react-router-dom";
 import "./NavBar.css";
+import SearchBar from "../searchBar/SearchBar";
 
 function NavBar() {
   return (
-    <div className="navbar">
-      <div className="right-navbar-box"></div>
-      <div className="left-navbar-box">
-        <Link className="right-link" to={"/words"}>
-          Words
+    <div>
+      <div className="top-navbar">
+        <Link className="center-link" to={"/"}>
+          <span className="title-span">readest</span>
         </Link>
-        <Link className="right-link" to={"/"}>
-          Sign up/Login
-        </Link>
+      </div>
+      <div className="bottom-navbar">
+        <p className="left-box"></p>
+        <SearchBar className="center-bar"></SearchBar>
+        <div className="right-box">
+          <Link className="right-link">Sign Up/Login</Link>
+        </div>
       </div>
     </div>
   );

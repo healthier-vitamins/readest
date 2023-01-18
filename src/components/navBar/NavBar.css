@@ -1,30 +1,54 @@
-.navbar {
+.top-navbar {
   background-color: rgb(219, 203, 148);
-  position: fixed;
+  display: flex;
+  justify-content: center;
+  padding: 0.2rem 0rem 0.2rem 0rem;
 }
 
-.left-navbar-box {
-  /* flex: 1; */
+.center-link {
   text-decoration: none;
-  font-weight: 700;
   color: aliceblue;
 }
 
-.left-link {
-  margin-left: 1rem;
-  text-decoration: none;
-  font-weight: 700;
+.title-span {
   color: aliceblue;
+  font-family: "roboto";
+  letter-spacing: 0.6rem;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.center-link:hover {
+  cursor: pointer;
+}
+
+.bottom-navbar {
+  display: flex;
+  justify-content: center;
+  background-color: rgb(255, 247, 232);
+}
+
+.right-box {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 0.7rem;
 }
 
 .right-link {
-  margin-right: 1rem;
-  text-decoration: none;
   font-weight: 700;
-  color: aliceblue;
+  text-decoration: none;
+  color: rgb(187, 180, 156);
+  font-size: 15px;
+  /* font-family: "roboto"; */
+  /* letter-spacing: 0.6px; */
 }
 
-.left-link:hover,
+.left-box {
+  flex: 1;
+}
+
 .right-link:hover {
-  color: rgb(153, 141, 104);
+  color: rgb(219, 212, 190);
 }

@@ -35,13 +35,14 @@ function SideBar() {
       <div className="add-book-btn" onClick={handleCreateBook}>
         <FiPlusSquare />
       </div>
-      <div className="book-tab">
+      <div className="book-tab-box">
         {Array.isArray(listOfBooks.results) && listOfBooks.results.length > 0
           ? listOfBooks.results.map((book, index) => {
               return RenderBookTab(book, index);
             })
           : null}
       </div>
+      
     </div>
   );
 }

@@ -1,6 +1,5 @@
 // import { Offcanvas } from "react-bootstrap";
 // import { useDispatch, useSelector } from "react-redux";
-import SearchBar from "../../components/searchBar/SearchBar";
 import WordDefinition from "../../components/wordDefinition/WordDefinition";
 import "./HomePage.css";
 import SideBar from "../../components/sideBar/SideBar";
@@ -14,12 +13,8 @@ function SearchPage() {
         <SideBar></SideBar>
       </div>
       <div className="right-container">
-        <div className="searchbar-container">
-          <SearchBar></SearchBar>
-        </div>
-        <div className="word-definition-container">
-          <WordDefinition></WordDefinition>
-        </div>
+        <WordDefinition></WordDefinition>
+        <div className="ultimate-bottom"></div>
       </div>
       <CreateBookModal></CreateBookModal>
     </div>

@@ -5,7 +5,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
   resetSuggestedWord,
@@ -211,7 +210,7 @@ function SearchBar() {
 
   return (
     <div className="searchbar-box" ref={ref}>
-      <Form.Control
+      <input
         type="text"
         placeholder="Search word"
         onChange={(e) => {
@@ -222,7 +221,7 @@ function SearchBar() {
           setTouched(true);
         }}
         ref={queriedWordRef}
-      ></Form.Control>
+      ></input>
       <div className="dropdown-box">
         <RenderSuggestedWord></RenderSuggestedWord>
       </div>
