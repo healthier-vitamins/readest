@@ -17,9 +17,9 @@ exports.handler = async function (event, context) {
       },
     });
 
-    console.log(event);
-    console.log(context);
-    console.log(response.results[0].properties.Words);
+    // console.log(event);
+    // console.log(context);
+    // console.log(response.results[0].properties.Words);
     return {
       statusCode: 200,
       body: JSON.stringify({ response }),

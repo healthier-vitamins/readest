@@ -42,8 +42,8 @@ const wordDefinition = createSlice({
     },
     addChosenWordDefinition: (state, action) => {
       state.isWordChosen = true;
-      console.log(action.payload);
-      console.log(action.payload.def[0].sseq[0][0][1].dt);
+      console.log("chosen word raw def ", action.payload);
+      // console.log(action.payload.def[0].sseq[0][0][1].dt);
       state.chosenWordDefinition.title = action.payload.meta.id;
       state.chosenWordDefinition.abbreviation = action.payload.fl;
       state.chosenWordDefinition.shortDef = action.payload.shortdef;

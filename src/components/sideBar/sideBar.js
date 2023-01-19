@@ -2,7 +2,7 @@ import "./SideBar.css";
 import { FiPlusSquare } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleCreateBookModal } from "../../store/slices/states.slice";
-import { getBooks } from "../../store/slices/books.slice";
+import { addBookSelection, getBooks } from "../../store/slices/books.slice";
 import React, { useEffect } from "react";
 
 function SideBar() {
@@ -20,10 +20,15 @@ function SideBar() {
   }, []);
 
   function RenderBookTab(book, index) {
-    console.log(book.properties);
+    // console.log(book.properties);
     return (
       <React.Fragment key={index}>
-        <div className="tab">
+        <div
+          className="tab"
+          onClick={() => {
+            dispatch(addBookSelection(book));
+          }}
+        >
           {book.properties["Book name"].rich_text[0].plain_text}
         </div>
       </React.Fragment>
@@ -42,7 +47,6 @@ function SideBar() {
             })
           : null}
       </div>
-      
     </div>
   );
 }

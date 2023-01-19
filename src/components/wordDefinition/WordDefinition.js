@@ -6,10 +6,10 @@ import React from "react";
 function wordDefinition() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { chosenWordDefinition, isWordChosen } = useSelector((state) => {
-    console.log(
-      "chosen word definition ",
-      state.wordDefinition.chosenWordDefinition
-    );
+    // console.log(
+    //   "chosen word definition ",
+    //   state.wordDefinition.chosenWordDefinition
+    // );
     return state.wordDefinition;
   });
 

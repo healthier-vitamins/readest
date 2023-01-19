@@ -5,6 +5,14 @@ import { toggleCreateBookModal } from "./states.slice";
 const initialState = {
   listOfBooks: {},
   isLoading: true,
+  selectedBook: {},
+  lastSavedBook: [],
+  bookSelection: [
+    {
+      bookObj: "Definition",
+      active: true,
+    },
+  ],
 };
 
 // create book
@@ -32,7 +40,41 @@ export const getBooks = createAsyncThunk(
 const books = createSlice({
   name: "books",
   initialState,
-  reducers: {},
+  reducers: {
+    addBookSelection: (state, action) => {
+      state.bookSelection.forEach((book) => {
+        book.active = false;
+      });
+
+      if (
+        state.bookSelection.some(
+          (book) =>
+            JSON.stringify(book.bookObj) === JSON.stringify(action.payload)
+        )
+      ) {
+        const index = state.bookSelection.findIndex(
+          (book) =>
+            JSON.stringify(book.bookObj) === JSON.stringify(action.payload)
+        );
+        state.bookSelection[index].active = true;
+        state.selectedBook = state.bookSelection[index];
+      } else {
+        const tempObj = {
+          bookObj: action.payload,
+          active: true,
+        };
+        state.bookSelection.push(tempObj);
+        state.selectedBook = tempObj;
+      }
+    },
+    changeActiveTab: (state, action) => {
+      state.bookSelection.forEach((book) => {
+        book.active = false;
+      });
+      state.bookSelection[action.payload].active = true;
+      state.selectedBook = state.bookSelection[action.payload];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(postBook.fulfilled, (state, action) => {
@@ -57,4 +99,5 @@ const books = createSlice({
   },
 });
 
+export const { addBookSelection, changeActiveTab } = books.actions;
 export default books.reducer;
