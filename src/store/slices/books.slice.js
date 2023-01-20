@@ -5,7 +5,10 @@ import { toggleCreateBookModal } from "./states.slice";
 const initialState = {
   listOfBooks: {},
   isLoading: true,
-  selectedBook: {},
+  selectedBook: {
+    bookObj: "Definition",
+    active: true,
+  },
   lastSavedBook: [],
   bookSelection: [
     {

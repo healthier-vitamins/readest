@@ -19,7 +19,6 @@ function SearchPage() {
     if (active) {
       return {
         backgroundColor: "gray",
-        maxWidth: "fit-content",
         borderRadius: "0.375rem 0.375rem 0 0",
         padding: "0",
       };
@@ -40,9 +39,7 @@ function SearchPage() {
             <div
               className="active-tab-option"
               style={activeTabsLogic(obj.active)}
-            >
-              <p className="hidden">{obj.bookObj}</p>
-            </div>
+            ></div>
           </div>
         </React.Fragment>
       );
@@ -61,11 +58,7 @@ function SearchPage() {
           <div
             className="active-tab-option"
             style={activeTabsLogic(obj.active)}
-          >
-            <p className="hidden">
-              {obj.bookObj.properties["Book name"].rich_text[0].plain_text}
-            </p>
-          </div>
+          ></div>
         </div>
       </React.Fragment>
     );

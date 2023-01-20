@@ -45,12 +45,11 @@
   /* background-color: rgb(253, 250, 243); */
   font-weight: 600;
   color: rgb(92, 92, 92);
-  width: fit-content;
   padding: 0.2rem 0.35rem 0.2rem 0.35rem;
   border-radius: 0.375rem;
   background-color: white;
   display: flex;
-  flex-flow: column-reverse;
+  flex-flow: column;
   align-items: center;
 }
 
@@ -63,15 +62,9 @@
   width: 80%;
   height: 0.25rem;
   margin-top: 0.25rem;
+  background-color: rgb(241, 239, 232);
 }
-
-.hidden {
-  line-height: 0;
-  text-decoration: none;
-  color: transparent;
-}
-
-.hidden:hover {
+.active-tab-option:hover {
   cursor: pointer;
 }
 
@@ -80,4 +73,5 @@
   flex-flow: column;
   align-items: center;
   margin-right: 0.3rem;
+  margin-top: 0.13rem;
 }

@@ -46,10 +46,16 @@ const wordDefinition = createSlice({
       // console.log(action.payload.def[0].sseq[0][0][1].dt);
       state.chosenWordDefinition.title = action.payload.meta.id;
       state.chosenWordDefinition.abbreviation = action.payload.fl;
-      state.chosenWordDefinition.shortDef = action.payload.shortdef;
-      state.chosenWordDefinition.senses.push(
-        action.payload.def[0].sseq[0][0][1].dt
-      );
+
+      if (Object.keys(action.payload).includes("cxs")) {
+        state.chosenWordDefinition.senses.push(action.payload.cxs);
+        state.chosenWordDefinition.shortDef = action.payload.cxs;
+      } else {
+        state.chosenWordDefinition.shortDef = action.payload.shortdef;
+        state.chosenWordDefinition.senses.push(
+          action.payload.def[0].sseq[0][0][1].dt
+        );
+      }
     },
   },
 
