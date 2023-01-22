@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
 .top-navbar {
   background-color: rgb(219, 203, 148);
   display: flex;
@@ -12,7 +14,7 @@
 
 .title-span {
   color: aliceblue;
-  font-family: "roboto";
+  font-family: "Roboto";
   letter-spacing: 0.6rem;
   font-size: 28px;
   font-weight: 900;

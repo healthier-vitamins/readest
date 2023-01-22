@@ -7,9 +7,10 @@ import CreateBookModal from "../../components/modal/CreateBookModal";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import { changeActiveTab } from "../../store/slices/books.slice";
+import SaveWordModal from "../../components/modal/SaveWordModal";
 // import { toggleOffCanvas } from "../../store/actions/states.action";
 
-function SearchPage() {
+function HomePage() {
   const { bookSelection, selectedBook } = useSelector((state) => {
     return state.books;
   });
@@ -80,9 +81,8 @@ function SearchPage() {
         )}
         <div className="ultimate-bottom"></div>
       </div>
-      <CreateBookModal></CreateBookModal>
     </div>
   );
 }
 
-export default SearchPage;
+export default HomePage;

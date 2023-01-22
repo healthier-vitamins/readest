@@ -1,16 +1,18 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./WordDefinition.css";
 import { AiOutlineSave } from "react-icons/ai";
 import React from "react";
+import { toggleSaveWordModal } from "../../store/slices/states.slice";
 
-function wordDefinition() {
+function WordDefinition() {
+  const dispatch = useDispatch();
+
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { chosenWordDefinition, isWordChosen } = useSelector((state) => {
     console.log(
       "chosen word definition ",
       state.wordDefinition.chosenWordDefinition
     );
-
     return state.wordDefinition;
   });
 
@@ -42,7 +44,12 @@ function wordDefinition() {
           </span>
         </h5>
         <RenderShortDefLogic></RenderShortDefLogic>
-        <div className="box-footer">
+        <div
+          className="box-footer"
+          onClick={() => {
+            dispatch(toggleSaveWordModal());
+          }}
+        >
           <AiOutlineSave className="save-btn" />
           {/* <AiTwotoneSave /> */}
         </div>
@@ -61,4 +68,4 @@ function wordDefinition() {
   );
 }
 
-export default wordDefinition;
+export default WordDefinition;
