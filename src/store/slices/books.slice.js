@@ -3,7 +3,8 @@ import axios from "axios";
 import { toggleCreateBookModal } from "./states.slice";
 
 const initialState = {
-  listOfBooks: {},
+  booksRes: {},
+  booksResCheckbox: [],
   isLoading: true,
   selectedBook: {
     bookObj: "Definition",
@@ -77,6 +78,16 @@ const books = createSlice({
       state.bookSelection[action.payload].active = true;
       state.selectedBook = state.bookSelection[action.payload];
     },
+    handleBooksResCheckBoxChange: (state, action) => {
+      state.booksResCheckbox.forEach((item, index) => {
+        if (index === action.payload) {
+          item.checked = !item.checked;
+        }
+      });
+    },
+    resetBooksResCheckBox: (state) => {
+      state.booksResCheckbox.forEach((item) => (item.checked = false));
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -91,7 +102,19 @@ const books = createSlice({
       })
       .addCase(getBooks.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.listOfBooks = action.payload;
+        state.booksRes = action.payload;
+        let tempObj;
+        let tempArr = [];
+
+        action.payload.results.forEach((result) => {
+          tempObj = {
+            result: result,
+            checked: false,
+          };
+          tempArr.push(tempObj);
+        });
+        console.log("temp arr, ", tempArr);
+        state.booksResCheckbox = tempArr;
       })
       .addCase(getBooks.pending, (state) => {
         state.isLoading = true;
@@ -102,5 +125,10 @@ const books = createSlice({
   },
 });
 
-export const { addBookSelection, changeActiveTab } = books.actions;
+export const {
+  addBookSelection,
+  changeActiveTab,
+  handleBooksResCheckBoxChange,
+  resetBooksResCheckBox
+} = books.actions;
 export default books.reducer;

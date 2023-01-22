@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import {
+  handleBooksResCheckBoxChange,
+  resetBooksResCheckBox,
+} from "../../store/slices/books.slice";
+
 import { toggleSaveWordModal } from "../../store/slices/states.slice";
 import "./SaveWordModal.css";
 
 function SaveWordModal() {
   const { saveWordModalState } = useSelector((state) => state.states);
   const { chosenWordDefinition } = useSelector((state) => state.wordDefinition);
-  const { listOfBooks } = useSelector((state) => state.books);
+  const { booksRes, booksResCheckbox } = useSelector((state) => state.books);
   const dispatch = useDispatch();
-  const [checkState, setcheckState] = useState(
-    new Array(listOfBooks.results.length).fill(false)
-  );
 
   function RenderShortDefLogic() {
     const { shortDef } = chosenWordDefinition;
@@ -31,32 +34,24 @@ function SaveWordModal() {
     }
   }
 
-  function handleChange(position) {
-    console.log("before ", checkState);
-    // const updatedCheckState = checkState.map((ele, index) =>
-    //   position === index ? !ele : ele
-    // );
-
-    setcheckState([
-      ...checkState,
-      (checkState[position] = !checkState[position]),
-    ]);
-    console.log("after  ", checkState);
-  }
-
   function RenderBook(props) {
     const { book, index } = props;
+    console.log(booksResCheckbox);
     return (
       <React.Fragment key={String(index)}>
-        <div className="book-tab">
+        <div
+          className="book-tab"
+          onClick={() => dispatch(handleBooksResCheckBoxChange(index))}
+        >
           <label className="book-label">
             {book.properties["Book name"].rich_text[0].plain_text}
           </label>
           <input
             type={"checkbox"}
-            checked={checkState[index]}
+            checked={booksResCheckbox[index].checked}
             className="book-checkbox"
-            onChange={() => handleChange(index)}
+            // onChange={() => dispatch(handleBooksResCheckBoxChange(index))}
+            readOnly
           />
         </div>
       </React.Fragment>
@@ -70,6 +65,7 @@ function SaveWordModal() {
       show={saveWordModalState}
       onHide={() => {
         dispatch(toggleSaveWordModal());
+        dispatch(resetBooksResCheckBox());
       }}
     >
       <Modal.Body>
@@ -84,9 +80,8 @@ function SaveWordModal() {
       <Modal.Footer>
         <div className="list-book-container">
           <div className="list-books-selection">
-            {Array.isArray(listOfBooks.results) &&
-            listOfBooks.results.length > 0
-              ? listOfBooks.results.map((book, index) => {
+            {Array.isArray(booksRes.results) && booksRes.results.length > 0
+              ? booksRes.results.map((book, index) => {
                   return (
                     <RenderBook
                       book={book}
@@ -96,6 +91,9 @@ function SaveWordModal() {
                   );
                 })
               : null}
+          </div>
+          <div className="save-btn">
+            <Link to={"/api/postWord"}>Save</Link>
           </div>
         </div>
       </Modal.Footer>

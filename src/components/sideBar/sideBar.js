@@ -10,7 +10,7 @@ function SideBar() {
   function handleCreateBook() {
     dispatch(toggleCreateBookModal());
   }
-  const { listOfBooks } = useSelector((state) => {
+  const { booksRes } = useSelector((state) => {
     return state.books;
   });
 
@@ -41,8 +41,8 @@ function SideBar() {
         <FiPlusSquare />
       </div>
       <div className="book-tab-box">
-        {Array.isArray(listOfBooks.results) && listOfBooks.results.length > 0
-          ? listOfBooks.results.map((book, index) => {
+        {Array.isArray(booksRes.results) && booksRes.results.length > 0
+          ? booksRes.results.map((book, index) => {
               return RenderBookTab(book, index);
             })
           : null}

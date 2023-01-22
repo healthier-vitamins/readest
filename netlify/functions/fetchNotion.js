@@ -7,16 +7,10 @@ const notion = new Client({
 
 exports.handler = async function (event, context) {
   try {
-    const response = await notion.databases.query({
-      database_id: NOTION_DB_BOOK_KEY,
-      filter: {
-        property: "Status",
-        select: {
-          equals: "Live",
-        },
-      },
+    const response = await notion.pages.retrieve({
+      page_id: "490181b3-45f5-477f-a631-8a73cd41cb71",
     });
-
+    
     // console.log(event);
     // console.log(context);
     // console.log(response.results[0].properties.Words);

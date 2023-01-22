@@ -3,11 +3,11 @@
 import WordDefinition from "../../components/wordDefinition/WordDefinition";
 import "./HomePage.css";
 import SideBar from "../../components/sideBar/SideBar";
-import CreateBookModal from "../../components/modal/CreateBookModal";
+
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import { changeActiveTab } from "../../store/slices/books.slice";
-import SaveWordModal from "../../components/modal/SaveWordModal";
+
 // import { toggleOffCanvas } from "../../store/actions/states.action";
 
 function HomePage() {
