@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import wordDefinitionReducer from "./slices/wordDefinition.slice";
-import statesReducer from "./slices/states.slice";
-import booksReducer from "./slices/books.slice";
+import word from "./slices/word.slice";
+import state from "./slices/state.slice";
+import book from "./slices/book.slice";
 
 export const store = configureStore({
   reducer: {
-    wordDefinition: wordDefinitionReducer,
-    states: statesReducer,
-    books: booksReducer,
+    word: word,
+    state: state,
+    book: book,
   },
 });

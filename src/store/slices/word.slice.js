@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { resetbookResArrCheckbox } from "./book.slice";
+import { toggleSaveWordModal } from "./state.slice";
 
 // api url with query passed through as parameter
 function apiUrl(queriedWord) {
@@ -13,11 +15,12 @@ const initialState = {
   isWordChosen: false,
   chosenWordDefinition: {
     title: "",
-    senses: [],
+    senseArr: [],
     abbreviation: "",
     shortDef: "",
   },
   isLoading: true,
+  isSavingLoading: true,
 };
 
 // exported api call
@@ -30,9 +33,21 @@ export const getWordDefinition = createAsyncThunk(
   }
 );
 
+export const postWordToBook = createAsyncThunk(
+  "postWordToBook",
+  async (payload, thunkApi) => {
+    const resp = await await axios.post("/api/postWord", payload);
+    if (resp.status === 200) {
+      thunkApi.dispatch(toggleSaveWordModal());
+      thunkApi.dispatch(resetbookResArrCheckbox());
+    }
+    return resp.data;
+  }
+);
+
 // redux slice
-const wordDefinition = createSlice({
-  name: "wordDefinition",
+const word = createSlice({
+  name: "word",
   initialState,
   reducers: {
     resetSuggestedWord: (state) => {
@@ -48,30 +63,16 @@ const wordDefinition = createSlice({
       state.chosenWordDefinition.abbreviation = action.payload.fl;
 
       if (Object.keys(action.payload).includes("cxs")) {
-        state.chosenWordDefinition.senses.push(action.payload.cxs);
+        state.chosenWordDefinition.senseArr.push(action.payload.cxs);
         state.chosenWordDefinition.shortDef = action.payload.cxs;
       } else {
         state.chosenWordDefinition.shortDef = action.payload.shortdef;
-        state.chosenWordDefinition.senses.push(
+        state.chosenWordDefinition.senseArr.push(
           action.payload.def[0].sseq[0][0][1].dt
         );
       }
     },
   },
-
-  // to trigger api call
-  // extraReducers: {
-  //   [getWordDefinition.pending]: (state) => {
-  //     state.isLoading = true;
-  //   },
-  //   [getWordDefinition.fulfilled]: (state, action) => {
-  //     state.isLoading = false;
-  //     state.suggestedWord.push(action.payload);
-  //   },
-  //   [getWordDefinition.rejected]: (state, action) => {
-  //     state.isLoading = false;
-  //   },
-  // },
   extraReducers: (builder) => {
     builder
       .addCase(getWordDefinition.fulfilled, (state, action) => {
@@ -83,10 +84,18 @@ const wordDefinition = createSlice({
       })
       .addCase(getWordDefinition.rejected, (state) => {
         state.isLoading = true;
+      })
+      .addCase(postWordToBook.fulfilled, (state, action) => {
+        state.isSavingLoading = false;
+      })
+      .addCase(postWordToBook.pending, (state) => {
+        state.isSavingLoading = true;
+      })
+      .addCase(postWordToBook.rejected, (state) => {
+        state.isSavingLoading = true;
       });
   },
 });
 
-export const { resetSuggestedWord, addChosenWordDefinition } =
-  wordDefinition.actions;
-export default wordDefinition.reducer;
+export const { resetSuggestedWord, addChosenWordDefinition } = word.actions;
+export default word.reducer;

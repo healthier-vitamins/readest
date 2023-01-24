@@ -8,10 +8,26 @@ const notion = new Client({
 });
 
 exports.handler = async function (event, context) {
-  //   const { selectedBooks, wordDefinition } = JSON.parse(event.body);
-  //   selectedBooks.forEach(async (book) => {
-  //     console.log("individual bookies: ", book);
-  //     console.log("word def in api: ", wordDefinition);
+  const { selectedBookArr, wordDef } = JSON.parse(event.body);
+
+  /*
+  @typedef {Object} wordDef
+  @property {string} title
+  @property {string} abbreviation
+  @property {Object} senseArr
+  @property {Object} shortDef
+  */
+
+  function bookMapper(selectedBookArr) {
+    const tempArr = [];
+    selectedBookArr.forEach((bookId) => {
+      tempArr.push({
+        id: bookId,
+      });
+    });
+    // console.log(tempArr);
+    return tempArr;
+  }
 
   try {
     const response = await notion.pages.create({
@@ -23,7 +39,7 @@ exports.handler = async function (event, context) {
         [wordSchema.TITLE]: [
           {
             text: {
-              content: "woooooo",
+              content: wordDef.title,
             },
           },
         ],
@@ -51,11 +67,7 @@ exports.handler = async function (event, context) {
             },
           },
         ],
-        [wordSchema.PARENT_BOOK]: [
-          {
-            id: "25f5492d-c2e7-4f61-8c92-3c1e58a3eb55",
-          },
-        ],
+        [wordSchema.PARENT_BOOK]: bookMapper(selectedBookArr),
       },
     });
     return {

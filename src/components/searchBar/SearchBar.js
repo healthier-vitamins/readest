@@ -10,7 +10,7 @@ import {
   resetSuggestedWord,
   getWordDefinition,
   addChosenWordDefinition,
-} from "../../store/slices/wordDefinition.slice";
+} from "../../store/slices/word.slice";
 import "./SearchBar.css";
 
 function SearchBar() {
@@ -19,7 +19,7 @@ function SearchBar() {
   const queriedWordRef = createRef();
   const [touched, setTouched] = useState(false);
   const { suggestedWord, isLoading } = useSelector((store) => {
-    return store.wordDefinition;
+    return store.word;
   });
   const dispatch = useDispatch();
 

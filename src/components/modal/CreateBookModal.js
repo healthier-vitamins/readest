@@ -2,16 +2,16 @@ import { createRef, useState } from "react";
 import { Modal, Form, Spinner, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import "./CreateBookModal.css";
-import { toggleCreateBookModal } from "../../store/slices/states.slice";
-import { postBook } from "../../store/slices/books.slice";
+import { toggleCreateBookModal } from "../../store/slices/state.slice";
+import { postBook } from "../../store/slices/book.slice";
 
 function CreateBookModal() {
   const { createBookModalState } = useSelector((store) => {
-    return store.states;
+    return store.state;
   });
   const [isClicked, setisClicked] = useState(false);
   const { isLoading } = useSelector((state) => {
-    return state.books;
+    return state.book;
   });
   const [isInvalid, setIsInvalid] = useState(false);
   const dispatch = useDispatch();
@@ -25,10 +25,10 @@ function CreateBookModal() {
       setIsInvalid(true);
     } else {
       setIsInvalid(false);
-      const bookDeets = {
+      const bookDetailObj = {
         title: bookTitleRef.current.value,
       };
-      dispatch(postBook(bookDeets));
+      dispatch(postBook(bookDetailObj));
     }
   }
 

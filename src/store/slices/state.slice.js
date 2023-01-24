@@ -6,8 +6,8 @@ const initialState = {
 };
 
 // redux slice
-const states = createSlice({
-  name: "states",
+const state = createSlice({
+  name: "state",
   initialState,
   reducers: {
     toggleCreateBookModal: (state) => {
@@ -19,5 +19,5 @@ const states = createSlice({
   },
 });
 
-export const { toggleCreateBookModal, toggleSaveWordModal } = states.actions;
-export default states.reducer;
+export const { toggleCreateBookModal, toggleSaveWordModal } = state.actions;
+export default state.reducer;

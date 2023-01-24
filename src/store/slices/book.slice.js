@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { toggleCreateBookModal } from "./states.slice";
+import { toggleCreateBookModal } from "./state.slice";
 
 const initialState = {
-  booksRes: {},
-  booksResCheckbox: [],
+  bookRes: {},
+  bookResArrCheckbox: [],
   isLoading: true,
   selectedBook: {
     bookObj: "Definition",
@@ -26,23 +26,23 @@ export const postBook = createAsyncThunk(
     const resp = await axios.post(`/api/postBook`, payload);
     if (resp.status === 200) {
       thunkApi.dispatch(toggleCreateBookModal());
-      thunkApi.dispatch(getBooks());
+      thunkApi.dispatch(getAllBook());
     }
     return resp.data;
   }
 );
 
 // get books
-export const getBooks = createAsyncThunk(
-  "getBooks",
+export const getAllBook = createAsyncThunk(
+  "getAllBook",
   async (payload, thunkApi) => {
-    const resp = await axios.get(`/api/getBooks`);
+    const resp = await axios.get(`/api/getAllBook`);
     return resp.data;
   }
 );
 
-const books = createSlice({
-  name: "books",
+const book = createSlice({
+  name: "book",
   initialState,
   reducers: {
     addBookSelection: (state, action) => {
@@ -78,15 +78,15 @@ const books = createSlice({
       state.bookSelection[action.payload].active = true;
       state.selectedBook = state.bookSelection[action.payload];
     },
-    handleBooksResCheckBoxChange: (state, action) => {
-      state.booksResCheckbox.forEach((item, index) => {
+    handlebookResArrCheckboxChange: (state, action) => {
+      state.bookResArrCheckbox.forEach((item, index) => {
         if (index === action.payload) {
           item.checked = !item.checked;
         }
       });
     },
-    resetBooksResCheckBox: (state) => {
-      state.booksResCheckbox.forEach((item) => (item.checked = false));
+    resetbookResArrCheckbox: (state) => {
+      state.bookResArrCheckbox.forEach((item) => (item.checked = false));
     },
   },
   extraReducers: (builder) => {
@@ -100,9 +100,9 @@ const books = createSlice({
       .addCase(postBook.rejected, (state) => {
         state.isLoading = true;
       })
-      .addCase(getBooks.fulfilled, (state, action) => {
+      .addCase(getAllBook.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.booksRes = action.payload;
+        state.bookRes = action.payload;
         let tempObj;
         let tempArr = [];
 
@@ -114,12 +114,12 @@ const books = createSlice({
           tempArr.push(tempObj);
         });
         console.log("temp arr, ", tempArr);
-        state.booksResCheckbox = tempArr;
+        state.bookResArrCheckbox = tempArr;
       })
-      .addCase(getBooks.pending, (state) => {
+      .addCase(getAllBook.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getBooks.rejected, (state) => {
+      .addCase(getAllBook.rejected, (state) => {
         state.isLoading = true;
       });
   },
@@ -128,7 +128,7 @@ const books = createSlice({
 export const {
   addBookSelection,
   changeActiveTab,
-  handleBooksResCheckBoxChange,
-  resetBooksResCheckBox
-} = books.actions;
-export default books.reducer;
+  handlebookResArrCheckboxChange,
+  resetbookResArrCheckbox,
+} = book.actions;
+export default book.reducer;

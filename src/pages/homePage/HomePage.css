@@ -36,9 +36,12 @@
 
 .tabs-selection {
   width: 100%;
+  max-width: 62.9rem;
   padding: 0.3rem 0.3rem 0rem 0.3rem;
   background-color: rgb(241, 239, 232);
   display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 .tab-option {
@@ -74,4 +77,9 @@
   align-items: center;
   margin-right: 0.3rem;
   margin-top: 0.13rem;
+  width: fit-content;
+}
+
+::-webkit-scrollbar {
+  height: 0.1px;
 }

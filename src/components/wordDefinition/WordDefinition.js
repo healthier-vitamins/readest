@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./WordDefinition.css";
 import { AiOutlineSave } from "react-icons/ai";
 import React from "react";
-import { toggleSaveWordModal } from "../../store/slices/states.slice";
+import { toggleSaveWordModal } from "../../store/slices/state.slice";
 
 function WordDefinition() {
   const dispatch = useDispatch();
@@ -11,9 +11,9 @@ function WordDefinition() {
   const { chosenWordDefinition, isWordChosen } = useSelector((state) => {
     console.log(
       "chosen word definition ",
-      state.wordDefinition.chosenWordDefinition
+      state.word.chosenWordDefinition
     );
-    return state.wordDefinition;
+    return state.word;
   });
 
   function RenderShortDefLogic() {

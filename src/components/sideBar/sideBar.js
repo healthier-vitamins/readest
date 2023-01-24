@@ -1,8 +1,8 @@
 import "./SideBar.css";
 import { FiPlusSquare } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleCreateBookModal } from "../../store/slices/states.slice";
-import { addBookSelection, getBooks } from "../../store/slices/books.slice";
+import { toggleCreateBookModal } from "../../store/slices/state.slice";
+import { addBookSelection, getAllBook } from "../../store/slices/book.slice";
 import React, { useEffect } from "react";
 import bookSchema from "../../utils/bookUtil.ts";
 
@@ -11,12 +11,12 @@ function SideBar() {
   function handleCreateBook() {
     dispatch(toggleCreateBookModal());
   }
-  const { booksRes } = useSelector((state) => {
-    return state.books;
+  const { bookRes } = useSelector((state) => {
+    return state.book;
   });
 
   useEffect(() => {
-    dispatch(getBooks());
+    dispatch(getAllBook());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -42,8 +42,8 @@ function SideBar() {
         <FiPlusSquare />
       </div>
       <div className="book-tab-box">
-        {Array.isArray(booksRes.results) && booksRes.results.length > 0
-          ? booksRes.results.map((book, index) => {
+        {Array.isArray(bookRes.results) && bookRes.results.length > 0
+          ? bookRes.results.map((book, index) => {
               return RenderBookTab(book, index);
             })
           : null}
