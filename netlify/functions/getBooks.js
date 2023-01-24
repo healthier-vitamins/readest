@@ -1,3 +1,4 @@
+import bookSchema from "../../src/utils/bookUtil";
 const { Client } = require("@notionhq/client");
 const { HttpStatusCode } = require("axios");
 
@@ -11,14 +12,14 @@ exports.handler = async function (event, context) {
     const response = await notion.databases.query({
       database_id: NOTION_DB_BOOK_KEY,
       filter: {
-        property: "Status",
+        property: bookSchema.STATUS,
         select: {
           equals: "Live",
         },
       },
       sorts: [
         {
-          property: "Created time",
+          property: bookSchema.CREATED_TIME,
           direction: "descending",
         },
       ],

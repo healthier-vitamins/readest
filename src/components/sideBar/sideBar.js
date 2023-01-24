@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleCreateBookModal } from "../../store/slices/states.slice";
 import { addBookSelection, getBooks } from "../../store/slices/books.slice";
 import React, { useEffect } from "react";
+import bookSchema from "../../utils/bookUtil.ts";
 
 function SideBar() {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ function SideBar() {
             dispatch(addBookSelection(book));
           }}
         >
-          {book.properties["Book name"].rich_text[0].plain_text}
+          {book.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text}
         </div>
       </React.Fragment>
     );

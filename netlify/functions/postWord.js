@@ -1,6 +1,6 @@
+import wordSchema from "../../src/utils/wordUtil";
 const { Client } = require("@notionhq/client");
 const { HttpStatusCode } = require("axios");
-const { wordSchema } = require("../../src/utils/wordTemplate");
 
 const { NOTION_KEY, NOTION_DB_WORD_KEY } = process.env;
 const notion = new Client({
@@ -35,28 +35,27 @@ exports.handler = async function (event, context) {
           },
         ],
         [wordSchema.STATUS]: {
-          select: {
-            name: "Live",
+          name: "Live",
+        },
+        [wordSchema.DEFINITION]: [
+          {
+            text: {
+              content: "wooo",
+            },
           },
-        },
-        [wordSchema.DEFINITION]: {
-          rich_text: [
-            {
-              text: {
-                content: "wooooo definition",
-              },
+        ],
+        [wordSchema.ABBREVIATION]: [
+          {
+            text: {
+              content: "wooooo abbreviation",
             },
-          ],
-        },
-        [wordSchema.ABBREVIATION]: {
-          rich_text: [
-            {
-              text: {
-                content: "wooooo abbreviation",
-              },
-            },
-          ],
-        },
+          },
+        ],
+        [wordSchema.PARENT_BOOK]: [
+          {
+            id: "25f5492d-c2e7-4f61-8c92-3c1e58a3eb55",
+          },
+        ],
       },
     });
     return {

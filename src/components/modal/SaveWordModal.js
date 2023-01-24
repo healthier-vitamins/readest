@@ -8,6 +8,7 @@ import {
 } from "../../store/slices/books.slice";
 
 import { toggleSaveWordModal } from "../../store/slices/states.slice";
+import bookSchema from "../../utils/bookUtil.ts";
 import "./SaveWordModal.css";
 
 function SaveWordModal() {
@@ -40,11 +41,11 @@ function SaveWordModal() {
     return (
       <React.Fragment key={String(index)}>
         <div
-          className="book-tab"
+          className="book-bar"
           onClick={() => dispatch(handleBooksResCheckBoxChange(index))}
         >
           <label className="book-label">
-            {book.properties["Book name"].rich_text[0].plain_text}
+            {book.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text}
           </label>
           <input
             type={"checkbox"}

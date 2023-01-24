@@ -1,7 +1,7 @@
 const { Client } = require("@notionhq/client");
-const { wordSchema } = require("../../src/utils/wordTemplate");
+const { wordSchema } = require("../../src/utils/wordUtil");
 
-const { NOTION_KEY, NOTION_DB_BOOK_KEY } = process.env;
+const { NOTION_KEY } = process.env;
 const notion = new Client({
   auth: NOTION_KEY,
 });
@@ -10,7 +10,7 @@ exports.handler = async function (event, context) {
   console.log(wordSchema.WORD);
   try {
     const response = await notion.pages.retrieve({
-      page_id: "bcf66db723304d96b02cc0870a8aabe5",
+      page_id: "ecdf9105b1e7469ea9be06bdecced12a",
       // parent: "490181b3-45f5-477f-a631-8a73cd41cb71"
     });
 

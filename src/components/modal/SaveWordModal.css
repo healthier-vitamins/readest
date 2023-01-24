@@ -3,7 +3,8 @@
   width: 100%;
   border-radius: 0.375rem;
   height: 10rem;
-  overflow: scroll;
+  overflow: auto;
+  overflow-wrap: break-word;
 }
 
 .list-book-container {
@@ -13,13 +14,13 @@
   width: 100%;
 }
 
-.book-tab {
+.book-bar {
   border-top: 0.375px solid lightgray;
   padding: 0.3rem 0.6rem 0.3rem 0.6rem;
   display: flex;
 }
 
-.book-tab:first-child {
+.book-bar:first-child {
   border-top: none;
 }
 
@@ -30,4 +31,9 @@
 
 .book-label {
   width: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 0.00001px;
+  visibility: hidden;
 }

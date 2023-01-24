@@ -1,3 +1,4 @@
+import bookSchema from "../../src/utils/bookUtil";
 const { Client } = require("@notionhq/client");
 
 const { NOTION_KEY, NOTION_DB_BOOK_KEY } = process.env;
@@ -14,7 +15,7 @@ exports.handler = async function (event, context) {
         type: "database_id",
       },
       properties: {
-        "Book name": {
+        [bookSchema.BOOK_NAME]: {
           rich_text: [
             {
               text: {
@@ -23,7 +24,7 @@ exports.handler = async function (event, context) {
             },
           ],
         },
-        Name: {
+        [bookSchema.TITLE]: {
           title: [
             {
               text: {
@@ -32,7 +33,7 @@ exports.handler = async function (event, context) {
             },
           ],
         },
-        Status: {
+        [bookSchema.STATUS]: {
           select: {
             name: "Live",
           },

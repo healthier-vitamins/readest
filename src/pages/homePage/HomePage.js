@@ -1,5 +1,3 @@
-// import { Offcanvas } from "react-bootstrap";
-// import { useDispatch, useSelector } from "react-redux";
 import WordDefinition from "../../components/wordDefinition/WordDefinition";
 import "./HomePage.css";
 import SideBar from "../../components/sideBar/SideBar";
@@ -7,8 +5,7 @@ import SideBar from "../../components/sideBar/SideBar";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import { changeActiveTab } from "../../store/slices/books.slice";
-
-// import { toggleOffCanvas } from "../../store/actions/states.action";
+import bookSchema from "../../utils/bookUtil.ts";
 
 function HomePage() {
   const { bookSelection, selectedBook } = useSelector((state) => {
@@ -54,7 +51,10 @@ function HomePage() {
           }}
         >
           <div className="tab-option">
-            {obj.bookObj.properties["Book name"].rich_text[0].plain_text}
+            {
+              obj.bookObj.properties[bookSchema.BOOK_NAME].rich_text[0]
+                .plain_text
+            }
           </div>
           <div
             className="active-tab-option"
