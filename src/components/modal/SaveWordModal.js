@@ -1,20 +1,23 @@
-import React from "react";
-import { Modal } from "react-bootstrap";
+import React, { useState } from "react";
+import { Modal, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import {
   handlebookResArrCheckboxChange,
   resetbookResArrCheckbox,
 } from "../../store/slices/book.slice";
-
 import { toggleSaveWordModal } from "../../store/slices/state.slice";
 import { postWordToBook } from "../../store/slices/word.slice";
 import bookSchema from "../../utils/bookUtil.ts";
 import "./SaveWordModal.css";
 
 function SaveWordModal() {
+  // const [hasSelectedBook, setHasSelectedBook] = useState(false);
+  const [isSaveClicked, setIsSaveClicked] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
   const { saveWordModalState } = useSelector((state) => state.state);
-  const { chosenWordDefinition } = useSelector((state) => state.word);
+  const { chosenWordDefinition, isSavingLoading } = useSelector(
+    (state) => state.word
+  );
   const { bookRes, bookResArrCheckbox } = useSelector((state) => state.book);
   const dispatch = useDispatch();
 
@@ -43,7 +46,10 @@ function SaveWordModal() {
       <React.Fragment key={String(index)}>
         <div
           className="book-bar"
-          onClick={() => dispatch(handlebookResArrCheckboxChange(index))}
+          onClick={() => {
+            dispatch(handlebookResArrCheckboxChange(index));
+            setIsInvalid(false);
+          }}
         >
           <label className="book-label">
             {book.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text}
@@ -60,17 +66,46 @@ function SaveWordModal() {
   }
 
   function handleSave() {
-    const checkedBookArr = [];
-    bookResArrCheckbox.forEach((bookObj) => {
-      if (bookObj.checked) {
-        checkedBookArr.push(bookObj.result.id);
-      }
-    });
-    const payloadObj = {
-      selectedBookArr: checkedBookArr,
-      wordDef: chosenWordDefinition,
-    };
-    dispatch(postWordToBook(payloadObj));
+    const hasSelectedBook = bookResArrCheckbox.some(
+      (ele) => ele.checked === true
+    );
+    if (hasSelectedBook) {
+      setIsSaveClicked(true);
+      const checkedBookArr = [];
+      bookResArrCheckbox.forEach((bookObj) => {
+        if (bookObj.checked) {
+          checkedBookArr.push(bookObj.result.id);
+        }
+      });
+      const payloadObj = {
+        selectedBookArr: checkedBookArr,
+        wordDef: chosenWordDefinition,
+      };
+      dispatch(postWordToBook(payloadObj));
+      setIsInvalid(false);
+    } else {
+      setIsInvalid(true);
+    }
+  }
+
+  function handleCancel() {
+    dispatch(toggleSaveWordModal());
+    dispatch(resetbookResArrCheckbox());
+    setIsInvalid(false);
+    // setHasSelectedBook(false);
+    setIsSaveClicked(false);
+  }
+
+  function HandleErrMsg() {
+    if (isInvalid) {
+      return (
+        <div className="err-msg">
+          <small>*Please select at least one book.</small>
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 
   return (
@@ -81,6 +116,9 @@ function SaveWordModal() {
       onHide={() => {
         dispatch(toggleSaveWordModal());
         dispatch(resetbookResArrCheckbox());
+        setIsInvalid(false);
+        // setHasSelectedBook(false);
+        setIsSaveClicked(false);
       }}
     >
       <Modal.Body>
@@ -107,8 +145,17 @@ function SaveWordModal() {
                 })
               : null}
           </div>
-          <div className="save-btn">
-            <Link onClick={handleSave}>Save</Link>
+          <div className="footer-btns">
+            <HandleErrMsg></HandleErrMsg>
+            <div className="save-word-to-book-btn" onClick={handleSave}>
+              {isSavingLoading && isSaveClicked && !isInvalid ? (
+                <Spinner size="sm" className="spinner"></Spinner>
+              ) : null}
+              Save
+            </div>
+            <div className="cancel-word-to-book-btn" onClick={handleCancel}>
+              Cancel
+            </div>
           </div>
         </div>
       </Modal.Footer>
