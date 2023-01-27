@@ -7,7 +7,6 @@ const wordSchema = {
   CREATED_TIME: "CREATED_TIME",
   LAST_EDITED_TIME: "LAST_EDITED_TIME",
   PARENT_BOOK: "PARENT_BOOK",
-  WORDS_IN_BOOK: "WORDS_IN_BOOK",
 };
 
 export default wordSchema;

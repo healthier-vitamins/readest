@@ -113,7 +113,7 @@ const book = createSlice({
           };
           tempArr.push(tempObj);
         });
-        console.log("temp arr, ", tempArr);
+        // console.log("temp arr, ", tempArr);
         state.bookResArrCheckbox = tempArr;
       })
       .addCase(getAllBook.pending, (state) => {

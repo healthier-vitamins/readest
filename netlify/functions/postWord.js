@@ -11,12 +11,12 @@ exports.handler = async function (event, context) {
   const { selectedBookArr, wordDef } = JSON.parse(event.body);
 
   /*
-  @typedef {Object} wordDef
-  @property {string} title
-  @property {string} abbreviation
-  @property {Object} senseArr
-  @property {Object} shortDef
-  */
+   * @typedef {Object} wordDef
+   * @property {string} title
+   * @property {string} abbreviation
+   * @property {Object} senseArr
+   * @property {Object} shortDef
+   */
 
   function bookMapper(selectedBookArr) {
     const tempArr = [];

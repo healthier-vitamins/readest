@@ -1,5 +1,4 @@
 const { Client } = require("@notionhq/client");
-const { wordSchema } = require("../../src/utils/wordUtil");
 
 const { NOTION_KEY } = process.env;
 const notion = new Client({
@@ -7,16 +6,13 @@ const notion = new Client({
 });
 
 exports.handler = async function (event, context) {
-  console.log(wordSchema.WORD);
   try {
-    const response = await notion.pages.retrieve({
-      page_id: "ecdf9105b1e7469ea9be06bdecced12a",
-      // parent: "490181b3-45f5-477f-a631-8a73cd41cb71"
-    });
+    const response = await notion.databases.query({
+      // page_id: "25f5492dc2e74f618c923c1e58a3eb55",
+      // page_id: "2ca52834-8db0-4595-bc9b-ed565deb1748",
 
-    // console.log(event);
-    // console.log(context);
-    // console.log(response.results[0].properties.Words);
+      database_id: "4a3666d6-6287-4211-8fc7-9cbbe213a161",
+    });
     return {
       statusCode: 200,
       body: JSON.stringify({ response }),
