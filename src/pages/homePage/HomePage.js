@@ -1,7 +1,6 @@
 import WordDefinition from "../../components/wordDefinition/WordDefinition";
 import "./HomePage.css";
 import SideBar from "../../components/sideBar/SideBar";
-
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import { changeActiveTab } from "../../store/slices/book.slice";
@@ -11,6 +10,7 @@ function HomePage() {
   const { bookSelection, selectedBook } = useSelector((state) => {
     return state.book;
   });
+  const { offCanvasModalState } = useSelector((state) => state.state);
   const dispatch = useDispatch();
 
   function activeTabsLogic(active) {
@@ -64,13 +64,35 @@ function HomePage() {
       </React.Fragment>
     );
   }
+  function handleOffCanvasLogic(payload) {
+    const sidebarWidth = 16;
+    // eslint-disable-next-line no-restricted-globals
+    const fullscreenWidth = screen.width / 16;
+    const canvasOpenWidth = fullscreenWidth - sidebarWidth;
+
+    if (payload === "sidebar") {
+      return offCanvasModalState
+        ? { width: `${sidebarWidth}rem`, minWidth: `${sidebarWidth}rem` }
+        : { width: "0rem" };
+    }
+    if (payload === "container") {
+      return offCanvasModalState
+        ? { width: `${canvasOpenWidth}rem` }
+        : { width: `${fullscreenWidth}rem` };
+    }
+  }
 
   return (
+    // {/* <div className="ultimate-bottom"></div> */}
+    // <div className="main-container">
     <div className="main-container">
-      <div className="sidebar-container">
+      <div
+        className="sidebar-container"
+        style={handleOffCanvasLogic("sidebar")}
+      >
         <SideBar></SideBar>
       </div>
-      <div className="right-container">
+      <div className="right-main-box" style={handleOffCanvasLogic("container")}>
         <div className="tabs-selection">
           {bookSelection.map((obj, index) => {
             return RenderTabs(obj, index);
@@ -79,7 +101,6 @@ function HomePage() {
         {selectedBook.bookObj === "Definition" && (
           <WordDefinition></WordDefinition>
         )}
-        <div className="ultimate-bottom"></div>
       </div>
     </div>
   );

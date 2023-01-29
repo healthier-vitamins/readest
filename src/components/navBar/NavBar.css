@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
 
 .top-navbar {
   background-color: rgb(219, 203, 148);
@@ -41,16 +41,32 @@
 .right-link {
   font-weight: 700;
   text-decoration: none;
-  color: rgb(187, 180, 156);
+  color: rgb(168, 140, 89);
   font-size: 15px;
   /* font-family: "roboto"; */
   /* letter-spacing: 0.6px; */
+}
+
+.right-link:hover {
+  color: rgb(219, 212, 190);
 }
 
 .left-box {
   flex: 1;
 }
 
-.right-link:hover {
+.arrow-head-box {
+  background-color: rgb(255, 247, 232);
+  font-size: 1.3rem;
+  /* border: 1px solid black; */
+  padding-left: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(158, 128, 72);
+}
+
+.arrow-head-icon:hover {
+  cursor: pointer;
   color: rgb(219, 212, 190);
 }

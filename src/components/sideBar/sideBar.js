@@ -37,7 +37,7 @@ function SideBar() {
   }
 
   return (
-    <div className="sidebar-container">
+    <>
       <div className="add-book-btn" onClick={handleCreateBook}>
         <FiPlusSquare />
       </div>
@@ -48,7 +48,7 @@ function SideBar() {
             })
           : null}
       </div>
-    </div>
+    </>
   );
 }
 
