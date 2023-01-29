@@ -65,26 +65,30 @@ function HomePage() {
     );
   }
   function handleOffCanvasLogic(payload) {
-    const sidebarWidth = 16;
+    const sidebarWidth = 17;
     // eslint-disable-next-line no-restricted-globals
     const fullscreenWidth = screen.width / 16;
     const canvasOpenWidth = fullscreenWidth - sidebarWidth;
 
     if (payload === "sidebar") {
       return offCanvasModalState
-        ? { width: `${sidebarWidth}rem`, minWidth: `${sidebarWidth}rem` }
-        : { width: "0rem" };
+        ? // ? { width: `${sidebarWidth}rem`, minWidth: `${sidebarWidth}rem` }
+          // : { width: "0rem" };
+          { transform: "translateX(0)" }
+        : {};
     }
     if (payload === "container") {
       return offCanvasModalState
-        ? { width: `${canvasOpenWidth}rem` }
-        : { width: `${fullscreenWidth}rem` };
+        ? {
+            width: `${canvasOpenWidth}rem`,
+            marginLeft: `${sidebarWidth}rem`,
+            transition: `width 0.7s, margin-left 0.6s`,
+          }
+        : { width: `${fullscreenWidth}rem`, transition: `margin-left 0.6s` };
     }
   }
 
   return (
-    // {/* <div className="ultimate-bottom"></div> */}
-    // <div className="main-container">
     <div className="main-container">
       <div
         className="sidebar-container"

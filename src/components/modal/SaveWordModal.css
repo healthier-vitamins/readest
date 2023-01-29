@@ -35,6 +35,7 @@
 
 ::-webkit-scrollbar {
   width: 0.00001px;
+  height: 0.00001px;
   visibility: hidden;
 }
 

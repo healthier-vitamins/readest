@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "./NavBar.css";
 import SearchBar from "../searchBar/SearchBar";
-import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
+import { RxDoubleArrowRight } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleOffCanvasModal } from "../../store/slices/state.slice";
 
@@ -22,15 +22,23 @@ function NavBar() {
       <div className="bottom-navbar">
         <div className="arrow-head-box">
           {offCanvasModalState ? (
-            <BiLeftArrow
+            <RxDoubleArrowRight
               className="arrow-head-icon"
               onClick={handleOffCanvas}
-            ></BiLeftArrow>
+              style={{
+                transition: `transform 0.3s`,
+                transform: `rotate(180deg)`,
+              }}
+            ></RxDoubleArrowRight>
           ) : (
-            <BiRightArrow
+            <RxDoubleArrowRight
               className="arrow-head-icon"
               onClick={handleOffCanvas}
-            ></BiRightArrow>
+              style={{
+                transition: `transform 0.3s`,
+                transform: `rotate(360deg)`,
+              }}
+            ></RxDoubleArrowRight>
           )}
         </div>
         <p className="left-box"></p>
