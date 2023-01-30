@@ -9,7 +9,11 @@ const wordSchema = {
   PARENT_BOOK: "PARENT_BOOK",
 };
 
-export default wordSchema;
+// export default wordSchema;
+
+module.exports = {
+  wordSchema,
+};
 // interface wordSchemaIdInterface {
 //   TITLE: { id: string; type: string };
 //   STATUS: { id: string; type: string };

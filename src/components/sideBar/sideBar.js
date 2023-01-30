@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleCreateBookModal } from "../../store/slices/state.slice";
 import { addBookSelection, getAllBook } from "../../store/slices/book.slice";
 import React, { useEffect } from "react";
-import bookSchema from "../../utils/bookUtil.ts";
+import { bookSchema } from "../../utils/bookUtil.ts";
 
 function SideBar() {
   const dispatch = useDispatch();

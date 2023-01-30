@@ -4,7 +4,7 @@ import SideBar from "../../components/sideBar/SideBar";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import { changeActiveTab } from "../../store/slices/book.slice";
-import bookSchema from "../../utils/bookUtil.ts";
+import { bookSchema } from "../../utils/bookUtil.ts";
 
 function HomePage() {
   const { bookSelection, selectedBook } = useSelector((state) => {

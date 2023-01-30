@@ -1,4 +1,4 @@
-import bookSchema from "../../src/utils/bookUtil";
+import { bookSchema } from "../../src/utils/bookUtil";
 const { Client } = require("@notionhq/client");
 const { HttpStatusCode } = require("axios");
 

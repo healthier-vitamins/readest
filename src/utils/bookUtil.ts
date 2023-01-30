@@ -7,4 +7,6 @@ const bookSchema = {
   WORDS: "WORDS",
 };
 
-export default bookSchema;
+module.exports = {
+  bookSchema,
+};

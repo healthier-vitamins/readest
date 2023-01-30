@@ -1,4 +1,4 @@
-import wordSchema from "../../src/utils/wordUtil";
+import { wordSchema } from "../../src/utils/wordUtil";
 const { Client } = require("@notionhq/client");
 const { HttpStatusCode } = require("axios");
 
