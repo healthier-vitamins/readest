@@ -1,4 +1,4 @@
-const wordSchema = {
+const wordSchema: wordSchemaInterface = {
   TITLE: "Name",
   STATUS: "STATUS",
   WORD: "WORD",
@@ -9,22 +9,22 @@ const wordSchema = {
   PARENT_BOOK: "PARENT_BOOK",
 };
 
-// export default wordSchema;
+interface wordSchemaInterface {
+  TITLE: string;
+  STATUS: string;
+  WORD: string;
+  DEFINITION: string;
+  ABBREVIATION: string;
+  CREATED_TIME: string;
+  LAST_EDITED_TIME: string;
+  PARENT_BOOK: string;
+}
 
-module.exports = {
-  wordSchema,
-};
-// interface wordSchemaIdInterface {
-//   TITLE: { id: string; type: string };
-//   STATUS: { id: string; type: string };
-//   WORD: { id: string; type: string };
-//   DEFINITION: { id: string; type: string };
-//   ABBREVIATION: { id: string; type: string };
-//   CREATED_TIME: { id: string; type: string };
-//   LAST_EDITED_TIME: { id: string; type: string };
-//   PARENT_BOOK: { id: string; type: string };
-//   WORDS_IN_BOOK: { id: string; type: string };
-// }
+// module.exports = {
+//   wordSchema,
+// };
+
+export { wordSchema, wordSchemaInterface };
 
 // export const wordSchemaId: wordSchemaIdInterface = {
 //   TITLE: { id: "title", type: "title" },

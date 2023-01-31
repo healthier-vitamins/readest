@@ -8,8 +8,10 @@ import { toggleOffCanvasModal } from "../../store/slices/state.slice";
 function NavBar() {
   const dispatch = useDispatch();
   const { offCanvasModalState } = useSelector((state) => state.state);
+
   function handleOffCanvas() {
     dispatch(toggleOffCanvasModal());
+
   }
 
   return (

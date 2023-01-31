@@ -7,10 +7,9 @@
 }
 
 .right-main-box {
-  width: 100%;
+  /* width: 100%; */
   display: flex;
   flex-flow: column;
-  transition: transform 0.6s ease-out;
   align-items: center;
 }
 
@@ -27,15 +26,13 @@
   /* z-index: 1; */
   /* left: 0; */
   /* overflow-x: hidden; */
-  transition: transform 0.6s;
+  transition: transform 0.4s;
   transform: translateX(-100%);
 }
 
 @media screen and (min-width: 280px) and (max-width: 768px) {
-  .searchbar-container {
-    width: 18rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
+  .sidebar-container {
+    min-width: 12rem;
   }
 }
 
@@ -84,4 +81,19 @@
   margin-right: 0.3rem;
   margin-top: 0.13rem;
   width: fit-content;
+}
+
+.definition-container {
+  display: flexbox;
+  justify-content: center;
+}
+
+.mobile-hidden {
+  background-color: rgba(0, 0, 0, 0.16);
+  transition: background-color 0.3s;
+}
+
+.mobile-active-hidden {
+  background-color: rgba(241, 239, 232, 0.16);
+  transition: background-color 0.3s;
 }

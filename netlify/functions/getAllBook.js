@@ -29,6 +29,8 @@ exports.handler = async function (event, context) {
       body: JSON.stringify(response),
     };
   } catch (err) {
+    console.log(err);
+    console.log(err.message);
     return {
       statusCode: HttpStatusCode.NotFound,
       body: err.toString(),

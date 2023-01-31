@@ -7,6 +7,8 @@ const bookSchema = {
   WORDS: "WORDS",
 };
 
-module.exports = {
-  bookSchema,
-};
+// module.exports = {
+//   bookSchema,
+// };
+
+export { bookSchema };

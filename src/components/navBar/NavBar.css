@@ -70,3 +70,10 @@
   cursor: pointer;
   color: rgb(219, 212, 190);
 }
+
+@media screen and (min-width: 280px) and (max-width: 768px) {
+  .right-link {
+    visibility: hidden;
+    width: 0;
+  }
+}

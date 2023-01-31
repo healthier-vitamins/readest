@@ -31,7 +31,6 @@ input:focus {
 .dropdown-list:hover {
   background-color: rgb(238, 230, 223);
   cursor: pointer;
-
 }
 
 .dropdown-box {
@@ -59,4 +58,10 @@ span {
   font-weight: 600;
   color: grey;
   font-style: italic;
+}
+
+@media screen and (min-width: 280px) and (max-width: 768px) {
+  input, .dropdown-box {
+    width: 10rem;
+  }
 }

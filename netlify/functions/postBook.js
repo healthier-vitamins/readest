@@ -1,4 +1,4 @@
-import { wordSchema } from "../../src/utils/wordUtil";
+import { wordSchema } from "../../src/utils/wordUtil.ts";
 import { bookSchema } from "../../src/utils/bookUtil";
 const { Client } = require("@notionhq/client");
 
@@ -10,6 +10,7 @@ const notion = new Client({
 exports.handler = async function (event, context) {
   const { title } = JSON.parse(event.body);
   let id;
+  // first create page in book database
   try {
     const response = await notion.pages.create({
       parent: {
@@ -50,6 +51,7 @@ exports.handler = async function (event, context) {
       body: err.toString(),
     };
   }
+  // create block child database
   try {
     const response = await notion.databases.create({
       parent: {
@@ -65,7 +67,7 @@ exports.handler = async function (event, context) {
         },
       ],
       properties: {
-        Name: {
+        [wordSchema.TITLE]: {
           type: "title",
           title: {},
         },
@@ -107,6 +109,8 @@ exports.handler = async function (event, context) {
     };
   } catch (err) {
     console.err(err);
+    console.log(err);
+    console.log(err.message);
     return {
       statusCode: 500,
       body: err.toString(),

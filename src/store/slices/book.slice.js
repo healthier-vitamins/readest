@@ -6,7 +6,8 @@ const initialState = {
   bookRes: {},
   bookResArrCheckbox: [],
   isLoading: true,
-  selectedBook: {
+  // will only contain 1 book at any time
+  selectedTab: {
     bookObj: "Definition",
     active: true,
   },
@@ -61,14 +62,14 @@ const book = createSlice({
             JSON.stringify(book.bookObj) === JSON.stringify(action.payload)
         );
         state.bookSelection[index].active = true;
-        state.selectedBook = state.bookSelection[index];
+        state.selectedTab = state.bookSelection[index];
       } else {
         const tempObj = {
           bookObj: action.payload,
           active: true,
         };
         state.bookSelection.push(tempObj);
-        state.selectedBook = tempObj;
+        state.selectedTab = tempObj;
       }
     },
     changeActiveTab: (state, action) => {
@@ -76,7 +77,7 @@ const book = createSlice({
         book.active = false;
       });
       state.bookSelection[action.payload].active = true;
-      state.selectedBook = state.bookSelection[action.payload];
+      state.selectedTab = state.bookSelection[action.payload];
     },
     handlebookResArrCheckboxChange: (state, action) => {
       state.bookResArrCheckbox.forEach((item, index) => {

@@ -13,7 +13,8 @@
 .book-tab-box {
   display: flex;
   flex-flow: column;
-  height: 25rem;
+  height: fit-content;
+  max-height: 25rem;
   overflow: auto;
   overflow-wrap: break-word;
   border: 0.375px solid lightgray;

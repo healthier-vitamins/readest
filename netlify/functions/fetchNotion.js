@@ -1,5 +1,4 @@
 const { Client } = require("@notionhq/client");
-const { default: axios } = require("axios");
 
 const { NOTION_KEY } = process.env;
 const notion = new Client({

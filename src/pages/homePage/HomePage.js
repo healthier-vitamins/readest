@@ -2,16 +2,29 @@ import WordDefinition from "../../components/wordDefinition/WordDefinition";
 import "./HomePage.css";
 import SideBar from "../../components/sideBar/SideBar";
 import { useDispatch, useSelector } from "react-redux";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { changeActiveTab } from "../../store/slices/book.slice";
 import { bookSchema } from "../../utils/bookUtil.ts";
 
 function HomePage() {
-  const { bookSelection, selectedBook } = useSelector((state) => {
+  const { bookSelection, selectedTab } = useSelector((state) => {
     return state.book;
   });
   const { offCanvasModalState } = useSelector((state) => state.state);
   const dispatch = useDispatch();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    window.addEventListener("resize", onResizeInstant());
+    return () => window.removeEventListener("resize", onResizeInstant());
+    // eslint-disable-next-line
+  }, [window.innerWidth]);
+
+  function onResizeInstant() {
+    setWindowWidth(window.innerWidth);
+    window.setTimeout(setWindowWidth(window.innerWidth), 5);
+    return () => window.clearTimeout(setWindowWidth(window.innerWidth), 5);
+  }
 
   function activeTabsLogic(active) {
     if (active) {
@@ -33,9 +46,15 @@ function HomePage() {
               dispatch(changeActiveTab(index));
             }}
           >
-            <div className="tab-option">{obj.bookObj}</div>
             <div
-              className="active-tab-option"
+              className={`tab-option ${handleOffCanvasClass("mobile-opacity")}`}
+            >
+              {obj.bookObj}
+            </div>
+            <div
+              className={`active-tab-option ${handleOffCanvasClass(
+                "mobile-active-opacity"
+              )}`}
               style={activeTabsLogic(obj.active)}
             ></div>
           </div>
@@ -50,41 +69,76 @@ function HomePage() {
             dispatch(changeActiveTab(index));
           }}
         >
-          <div className="tab-option">
+          <div
+            className={`tab-option ${handleOffCanvasClass("mobile-opacity")}`}
+          >
             {
               obj.bookObj.properties[bookSchema.BOOK_NAME].rich_text[0]
                 .plain_text
             }
           </div>
           <div
-            className="active-tab-option"
+            className={`active-tab-option ${handleOffCanvasClass(
+              "mobile-active-opacity"
+            )}`}
             style={activeTabsLogic(obj.active)}
           ></div>
         </div>
       </React.Fragment>
     );
   }
-  function handleOffCanvasLogic(payload) {
-    const sidebarWidth = 17;
+  function handleOffCanvasStyle(payload) {
+    const sidebarWidth = windowWidth < 768 ? 12 : 17;
     // eslint-disable-next-line no-restricted-globals
-    const fullscreenWidth = screen.width / 16;
+    const fullscreenWidth = windowWidth / 16;
     const canvasOpenWidth = fullscreenWidth - sidebarWidth;
 
     if (payload === "sidebar") {
-      return offCanvasModalState
-        ? // ? { width: `${sidebarWidth}rem`, minWidth: `${sidebarWidth}rem` }
-          // : { width: "0rem" };
-          { transform: "translateX(0)" }
-        : {};
+      // ? { width: `${sidebarWidth}rem`, minWidth: `${sidebarWidth}rem` } : { width: "0rem" };
+      return offCanvasModalState ? { transform: "translateX(0)" } : {};
     }
     if (payload === "container") {
       return offCanvasModalState
         ? {
             width: `${canvasOpenWidth}rem`,
             marginLeft: `${sidebarWidth}rem`,
-            transition: `width 0.7s, margin-left 0.6s`,
+            transition: `width 0.5s, margin-left 0.4s`,
           }
-        : { width: `${fullscreenWidth}rem`, transition: `margin-left 0.6s` };
+        : {
+            width: `${fullscreenWidth}rem`,
+            transition: `margin-left 0.4s`,
+          };
+    }
+    if (payload === "definition") {
+      if (windowWidth < 768) {
+        return offCanvasModalState
+          ? {
+              transform: "translateX(100%)",
+              opacity: "0%",
+              transition: "opacity 0.25s, transform 0.4s",
+            }
+          : {
+              transform: "translateX(0)",
+              opacity: "1",
+              transition: "opacity 0.6s, transform 0.6s",
+            };
+      }
+    }
+  }
+
+  function handleOffCanvasClass(payload) {
+    if (payload === "definition") {
+      return offCanvasModalState ? "hidden" : null;
+    }
+    if (payload === "mobile-opacity") {
+      if (windowWidth < 768) {
+        return offCanvasModalState ? "mobile-hidden" : null;
+      }
+    }
+    if (payload === "mobile-active-opacity") {
+      if (windowWidth < 768) {
+        return offCanvasModalState ? "mobile-active-hidden" : null;
+      }
     }
   }
 
@@ -92,19 +146,31 @@ function HomePage() {
     <div className="main-container">
       <div
         className="sidebar-container"
-        style={handleOffCanvasLogic("sidebar")}
+        style={handleOffCanvasStyle("sidebar")}
       >
         <SideBar></SideBar>
       </div>
-      <div className="right-main-box" style={handleOffCanvasLogic("container")}>
-        <div className="tabs-selection">
+      <div
+        className={`right-main-box ${handleOffCanvasClass("mobile-opacity")}`}
+        style={handleOffCanvasStyle("container")}
+      >
+        <div
+          className={`tabs-selection ${handleOffCanvasClass("mobile-opacity")}`}
+        >
           {bookSelection.map((obj, index) => {
             return RenderTabs(obj, index);
           })}
         </div>
-        {selectedBook.bookObj === "Definition" && (
-          <WordDefinition></WordDefinition>
-        )}
+        <div
+          className={`definition-container ${handleOffCanvasClass(
+            "definition"
+          )}`}
+          style={handleOffCanvasStyle("definition")}
+        >
+          {selectedTab.bookObj === "Definition" && (
+            <WordDefinition></WordDefinition>
+          )}
+        </div>
       </div>
     </div>
   );
