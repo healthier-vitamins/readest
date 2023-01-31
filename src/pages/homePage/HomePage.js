@@ -1,6 +1,6 @@
 import WordDefinition from "../../components/wordDefinition/WordDefinition";
 import "./HomePage.css";
-import SideBar from "../../components/sideBar/SideBar";
+import SideNavBar from "../../components/sideNavBar/SideNavBar";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { changeActiveTab } from "../../store/slices/book.slice";
@@ -148,7 +148,7 @@ function HomePage() {
         className="sidebar-container"
         style={handleOffCanvasStyle("sidebar")}
       >
-        <SideBar></SideBar>
+        <SideNavBar></SideNavBar>
       </div>
       <div
         className={`right-main-box ${handleOffCanvasClass("mobile-opacity")}`}

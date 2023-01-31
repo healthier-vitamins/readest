@@ -11,7 +11,6 @@ function NavBar() {
 
   function handleOffCanvas() {
     dispatch(toggleOffCanvasModal());
-
   }
 
   return (
@@ -46,7 +45,9 @@ function NavBar() {
         <p className="left-box"></p>
         <SearchBar className="center-bar"></SearchBar>
         <div className="right-box">
-          <Link className="right-link">Sign Up/Login</Link>
+          <Link to="#" className="right-link">
+            Sign Up/Login
+          </Link>
         </div>
       </div>
     </div>
