@@ -1,13 +1,13 @@
-import React from "react";
+// import React from "react";
 
-function WordsPage() {
-  // async function getBook() {
-  //   await axios.get(`/api/fetchNotion`).then((res) => {
-  //     console.log(res.data);
-  //   });
-  // }
+// function WordsPage() {
+//   // async function getBook() {
+//   //   await axios.get(`/api/fetchNotion`).then((res) => {
+//   //     console.log(res.data);
+//   //   });
+//   // }
 
-  return <></>;
-}
+//   return <></>;
+// }
 
-export default WordsPage;
+// export default WordsPage;
