@@ -6,8 +6,10 @@ import Layout from "./pages/Layout";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
+  // const basename = document.querySelector("base")?.getAttribute("href") ?? "/";
   return (
     <>
+      {/* basename={basename} */}
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout></Layout>}>
