@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { changeActiveTab } from "../../store/slices/book.slice";
 import { bookSchema } from "../../utils/bookUtil.ts";
+import WordPage from "../wordPage/WordPage";
 
 function HomePage() {
   const { bookSelection, selectedTab } = useSelector((state) => {
@@ -142,6 +143,18 @@ function HomePage() {
     }
   }
 
+  function checkSelectedPageLogic() {
+    for (let i = 0; i < bookSelection.length; i++) {
+      if (
+        JSON.stringify(bookSelection[i].bookObj) ===
+        JSON.stringify(selectedTab.bookObj)
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   return (
     <div className="main-container">
       <div
@@ -170,6 +183,9 @@ function HomePage() {
           {selectedTab.bookObj === "Definition" && (
             <WordDefinition></WordDefinition>
           )}
+          {checkSelectedPageLogic() && selectedTab.bookObj !== "Definition" ? (
+            <WordPage></WordPage>
+          ) : null}
         </div>
       </div>
     </div>

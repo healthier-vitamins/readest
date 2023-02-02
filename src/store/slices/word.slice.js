@@ -19,8 +19,10 @@ const initialState = {
     abbreviation: "",
     shortDef: "",
   },
+  allBookWord: null,
   isLoading: true,
   isSavingLoading: true,
+  isGetWordLoading: true,
 };
 
 // exported api call
@@ -36,11 +38,21 @@ export const getWordDefinition = createAsyncThunk(
 export const postWordToBook = createAsyncThunk(
   "postWordToBook",
   async (payload, thunkApi) => {
-    const resp = await await axios.post("/api/postWord", payload);
+    const resp = await axios.post("/api/postWord", payload);
     if (resp.status === 200) {
       thunkApi.dispatch(toggleSaveWordModal());
       thunkApi.dispatch(resetbookResArrCheckbox());
     }
+    return resp.data;
+  }
+);
+
+export const getWordForBook = createAsyncThunk(
+  "getWordForBook",
+  async (payload, thunkApi) => {
+    const resp = await axios.post("/api/getAllWord", payload);
+    // if (resp.status === 200) {
+    // }
     return resp.data;
   }
 );
@@ -93,6 +105,16 @@ const word = createSlice({
       })
       .addCase(postWordToBook.rejected, (state) => {
         state.isSavingLoading = true;
+      })
+      .addCase(getWordForBook.fulfilled, (state, action) => {
+        state.allBookWord = action.payload;
+        state.isGetWordLoading = false;
+      })
+      .addCase(getWordForBook.pending, (state) => {
+        state.isGetWordLoading = true;
+      })
+      .addCase(getWordForBook.rejected, (state) => {
+        state.isGetWordLoading = true;
       });
   },
 });
