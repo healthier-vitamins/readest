@@ -8,9 +8,10 @@ const notion = new Client({
 });
 
 exports.handler = async function (event, context) {
-  const { selectedBookArr, wordDef } = JSON.parse(event.body);
-  const selectedBookDatabaseArr = [];
-  const results = [];
+  const { bookObj, wordDef } = JSON.parse(event.body);
+  let bookDatabaseId;
+  // const selectedBookDatabaseArr = [];
+  // const results = [];
   /*
    * @typedef {Object} wordDef
    * @property {string} title
@@ -18,37 +19,37 @@ exports.handler = async function (event, context) {
    * @property {Object} senseArr
    * @property {Object} shortDef
    */
-  for (let bookId of selectedBookArr) {
-    try {
-      const response = await notion.blocks.children.list({
-        block_id: bookId,
-      });
-      selectedBookDatabaseArr.push(response.results[0].id);
-    } catch (err) {
-      console.error(err.message);
-      return {
-        statusCode: HttpStatusCode.InternalServerError,
-        body: err.toString(),
-      };
-    }
+  // for (let bookId of selectedBookArr) {
+  try {
+    const response = await notion.blocks.children.list({
+      block_id: bookObj.id,
+    });
+    bookDatabaseId = response.results[0].id;
+  } catch (err) {
+    console.error(err.message);
+    return {
+      statusCode: HttpStatusCode.InternalServerError,
+      body: err.toString(),
+    };
   }
-  for (let bookDatabaseId of selectedBookDatabaseArr) {
-    try {
-      const response = await saveWord(wordDef, bookDatabaseId);
-      results.push({
-        res: JSON.stringify(response),
-      });
-    } catch (err) {
-      return {
-        statusCode: HttpStatusCode.InternalServerError,
-        body: err.toString(),
-      };
-    }
+  // }
+  // for (let bookDatabaseId of selectedBookDatabaseArr) {
+  try {
+    const response = await saveWord(wordDef, bookDatabaseId);
+    // results.push({
+    //   res: JSON.stringify(response),
+    // });
+    return {
+      statusCode: HttpStatusCode.Ok,
+      body: JSON.stringify(response),
+    };
+  } catch (err) {
+    return {
+      statusCode: HttpStatusCode.InternalServerError,
+      body: err.toString(),
+    };
   }
-  return {
-    statusCode: HttpStatusCode.Ok,
-    body: JSON.stringify(results),
-  };
+  // }
 };
 
 async function saveWord(wordDef, bookDatabaseId) {

@@ -12,8 +12,8 @@ import "./SaveWordModal.css";
 
 function SaveWordModal() {
   // const [hasSelectedBook, setHasSelectedBook] = useState(false);
-  const [isSaveClicked, setIsSaveClicked] = useState(false);
-  const [isInvalid, setIsInvalid] = useState(false);
+  // const [isSaveClicked, setIsSaveClicked] = useState(false);
+  // const [isInvalid, setIsInvalid] = useState(false);
   const { saveWordModalState } = useSelector((state) => state.state);
   const { chosenWordDefinition, isSavingLoading } = useSelector(
     (state) => state.word
@@ -42,13 +42,15 @@ function SaveWordModal() {
   function RenderBook(props) {
     const { book, index } = props;
     console.log(bookResArrCheckbox);
+    console.log("book here bitch ||||||||||||||| ", book);
     return (
       <React.Fragment key={String(index)}>
         <div
           className="book-bar"
           onClick={() => {
             dispatch(handlebookResArrCheckboxChange(index));
-            setIsInvalid(false);
+            // setIsInvalid(false);
+            handleSave(book);
           }}
         >
           <label className="book-label">
@@ -65,48 +67,49 @@ function SaveWordModal() {
     );
   }
 
-  function handleSave() {
-    const hasSelectedBook = bookResArrCheckbox.some(
-      (ele) => ele.checked === true
-    );
-    if (hasSelectedBook) {
-      setIsSaveClicked(true);
-      const checkedBookArr = [];
-      bookResArrCheckbox.forEach((bookObj) => {
-        if (bookObj.checked) {
-          checkedBookArr.push(bookObj.result.id);
-        }
-      });
-      const payloadObj = {
-        selectedBookArr: checkedBookArr,
-        wordDef: chosenWordDefinition,
-      };
-      dispatch(postWordToBook(payloadObj));
-      setIsInvalid(false);
-    } else {
-      setIsInvalid(true);
-    }
+  function handleSave(book) {
+    // const hasSelectedBook = bookResArrCheckbox.some(
+    //   (ele) => ele.checked === true
+    // );
+    // if (hasSelectedBook) {
+    // setIsSaveClicked(true);
+    // const checkedBookArr = [];
+    // bookResArrCheckbox.forEach((bookObj) => {
+    //   if (bookObj.checked) {
+    //     checkedBookArr.push(bookObj.result.id);
+    //   }
+    // });
+    const payloadObj = {
+      // selectedBookArr: checkedBookArr,
+      bookObj: book,
+      wordDef: chosenWordDefinition,
+    };
+    dispatch(postWordToBook(payloadObj));
+    //   setIsInvalid(false);
+    // } else {
+    //   setIsInvalid(true);
+    // }
   }
 
-  function handleCancel() {
-    dispatch(toggleSaveWordModal());
-    dispatch(resetbookResArrCheckbox());
-    setIsInvalid(false);
-    // setHasSelectedBook(false);
-    setIsSaveClicked(false);
-  }
+  // function handleCancel() {
+  //   dispatch(toggleSaveWordModal());
+  //   dispatch(resetbookResArrCheckbox());
+  //   setIsInvalid(false);
+  //   // setHasSelectedBook(false);
+  //   setIsSaveClicked(false);
+  // }
 
-  function HandleErrMsg() {
-    if (isInvalid) {
-      return (
-        <div className="err-msg">
-          <small>*Please select at least one book.</small>
-        </div>
-      );
-    } else {
-      return null;
-    }
-  }
+  // function HandleErrMsg() {
+  //   if (isInvalid) {
+  //     return (
+  //       <div className="err-msg">
+  //         <small>*Please select at least one book.</small>
+  //       </div>
+  //     );
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   return (
     <Modal
@@ -116,9 +119,9 @@ function SaveWordModal() {
       onHide={() => {
         dispatch(toggleSaveWordModal());
         dispatch(resetbookResArrCheckbox());
-        setIsInvalid(false);
+        // setIsInvalid(false);
         // setHasSelectedBook(false);
-        setIsSaveClicked(false);
+        // setIsSaveClicked(false);
       }}
     >
       <Modal.Body>
@@ -145,8 +148,8 @@ function SaveWordModal() {
                 })
               : null}
           </div>
-          <div className="footer-btns">
-            <HandleErrMsg></HandleErrMsg>
+          {/* <div className="footer-btns"> */}
+          {/* <HandleErrMsg></HandleErrMsg>
             <div className="save-word-to-book-btn" onClick={handleSave}>
               {isSavingLoading && isSaveClicked && !isInvalid ? (
                 <Spinner size="sm" className="spinner"></Spinner>
@@ -155,8 +158,8 @@ function SaveWordModal() {
             </div>
             <div className="cancel-word-to-book-btn" onClick={handleCancel}>
               Cancel
-            </div>
-          </div>
+            </div> */}
+          {/* </div> */}
         </div>
       </Modal.Footer>
     </Modal>
