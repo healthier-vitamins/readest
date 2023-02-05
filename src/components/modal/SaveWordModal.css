@@ -29,6 +29,14 @@
   width: fit-content;
 }
 
+.book-bar:hover,
+.book-checkbox:hover,
+.book-label:hover,
+.list-book-selection:hover,
+.list-book-container:hover {
+  cursor: pointer;
+}
+
 .book-label {
   width: 100%;
 }

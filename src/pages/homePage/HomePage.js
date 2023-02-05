@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { changeActiveTab } from "../../store/slices/book.slice";
 import { bookSchema } from "../../utils/bookUtil.ts";
 import WordPage from "../wordPage/WordPage";
+import SavedWordToast from "../../components/toast/SavedWordToast";
 
 function HomePage() {
   const { bookSelection, selectedTab } = useSelector((state) => {
@@ -186,6 +187,7 @@ function HomePage() {
           {checkSelectedPageLogic() && selectedTab.bookObj !== "Definition" ? (
             <WordPage></WordPage>
           ) : null}
+          <SavedWordToast></SavedWordToast>
         </div>
       </div>
     </div>

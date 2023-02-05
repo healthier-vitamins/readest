@@ -39,10 +39,10 @@ export const postWordToBook = createAsyncThunk(
   "postWordToBook",
   async (payload, thunkApi) => {
     const resp = await axios.post("/api/postWord", payload);
-    if (resp.status === 200) {
-      thunkApi.dispatch(toggleSaveWordModal());
-      thunkApi.dispatch(resetbookResArrCheckbox());
-    }
+    // if (resp.status === 200) {
+    //   thunkApi.dispatch(toggleSaveWordModal());
+    //   thunkApi.dispatch(resetbookResArrCheckbox());
+    // }
     return resp.data;
   }
 );
@@ -84,6 +84,9 @@ const word = createSlice({
         );
       }
     },
+    toggleIsSavingLoading: (state) => {
+      state.isSavingLoading = !state.isSavingLoading;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -119,5 +122,9 @@ const word = createSlice({
   },
 });
 
-export const { resetSuggestedWord, addChosenWordDefinition } = word.actions;
+export const {
+  resetSuggestedWord,
+  addChosenWordDefinition,
+  toggleIsSavingLoading,
+} = word.actions;
 export default word.reducer;
