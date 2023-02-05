@@ -1,4 +1,8 @@
 .saved-word-toast {
   margin-right: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.toast {
+  margin: 0.7rem !important;
 }

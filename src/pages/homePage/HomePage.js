@@ -184,9 +184,9 @@ function HomePage() {
           {selectedTab.bookObj === "Definition" && (
             <WordDefinition></WordDefinition>
           )}
-          {checkSelectedPageLogic() && selectedTab.bookObj !== "Definition" ? (
+          {/* {checkSelectedPageLogic() && selectedTab.bookObj !== "Definition" ? (
             <WordPage></WordPage>
-          ) : null}
+          ) : null} */}
           <SavedWordToast></SavedWordToast>
         </div>
       </div>

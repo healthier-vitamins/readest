@@ -1,27 +1,79 @@
-import React from "react";
-import { Toast, ToastContainer } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Fade, Toast, ToastContainer } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleIsSavingLoading } from "../../store/slices/word.slice";
+import { removeSavingWordToast } from "../../store/slices/state.slice";
+
 import "./SavedWordToast.css";
 
 function SavedWordToast() {
   const dispatch = useDispatch();
-  const { isSavingLoading } = useSelector((state) => state.word);
+  const { savingWordToast } = useSelector((state) => state.state);
+  const [toastAppeared, setToastAppeared] = useState([]);
+  useEffect(() => {
+    if (savingWordToast.length > 0) {
+      setToastAppeared(savingWordToast);
+    }
+  }, [savingWordToast]);
+
+  //   function RenderToast(book) {
+  //     return (
+  //       <Toast
+  //         className="saved-word-toast"
+  //         onClose={() => dispatch(removeSavingWordToast())}
+  //         show={!!book}
+  //         delay={3000}
+  //         autohide
+  //       >
+  //         <Toast.Body>Word added to {book}</Toast.Body>
+  //       </Toast>
+  //     );
+  //   }
+
+  function timer() {
+    if (savingWordToast.length === 1 && toastAppeared.length === 1) {
+      setTimeout(() => {
+        dispatch(removeSavingWordToast());
+      }, 5700);
+      return () => {
+        clearTimeout(() => {
+          dispatch(removeSavingWordToast());
+        }, 5700);
+      };
+    }
+  }
 
   return (
-    <React.Fragment>
-      <ToastContainer position="bottom-end">
-        <Toast
-          className="saved-word-toast"
-          onClose={() => dispatch(toggleIsSavingLoading())}
-          show={!isSavingLoading}
-          delay={3000}
-          autohide
-        >
-          <Toast.Body>Word added.</Toast.Body>
-        </Toast>
-      </ToastContainer>
-    </React.Fragment>
+    <ToastContainer position="bottom-end" className="saved-word-toast" >
+      {savingWordToast.map((book) => {
+        timer();
+        return (
+          <Toast
+            animation={true}
+            onClose={() => {
+              dispatch(removeSavingWordToast());
+              //   const temp = [];
+              //   console.log(
+              //     "BEFORE? |||||||||||||||||||||||||||||||||||||| ",
+              //     toastAppeared
+              //   );
+              //   for (let i = 0; i < toastAppeared.length - 1; i++) {
+              //     temp.push(toastAppeared[i]);
+              //   }
+              //   console.log(
+              //     "TEMP  ||||||||||||||||||||||||||||||||||||||||||| ",
+              //     temp
+              //   );
+              //   setToastAppeared(temp);
+            }}
+            show={!!book}
+            delay={3000}
+            autohide
+          >
+            <Toast.Body>Word added to {book}</Toast.Body>
+          </Toast>
+        );
+      })}
+    </ToastContainer>
   );
 }
 

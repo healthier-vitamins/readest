@@ -1,7 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { resetbookResArrCheckbox } from "./book.slice";
-import { toggleSaveWordModal } from "./state.slice";
+import { addSavingWordToast, toggleSaveWordModal } from "./state.slice";
+
+import { bookSchema } from "../../utils/bookUtil.ts";
 
 // api url with query passed through as parameter
 function apiUrl(queriedWord) {
@@ -21,7 +23,8 @@ const initialState = {
   },
   allBookWord: null,
   isLoading: true,
-  isSavingLoading: true,
+  isSavingWordLoading: true,
+
   isGetWordLoading: true,
 };
 
@@ -39,11 +42,15 @@ export const postWordToBook = createAsyncThunk(
   "postWordToBook",
   async (payload, thunkApi) => {
     const resp = await axios.post("/api/postWord", payload);
-    // if (resp.status === 200) {
-    //   thunkApi.dispatch(toggleSaveWordModal());
-    //   thunkApi.dispatch(resetbookResArrCheckbox());
-    // }
-    return resp.data;
+    const bookName =
+      payload.bookObj.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text;
+    if (resp.status === 200) {
+      thunkApi.dispatch(addSavingWordToast(bookName));
+    }
+    // console.log(
+    //   "saved word res ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| ",
+    //   )
+    return bookName;
   }
 );
 
@@ -84,9 +91,9 @@ const word = createSlice({
         );
       }
     },
-    toggleIsSavingLoading: (state) => {
-      state.isSavingLoading = !state.isSavingLoading;
-    },
+    // toggleIsSavingWordLoading: (state) => {
+    //   state.isSavingWordLoading = !state.isSavingWordLoading;
+    // },
   },
   extraReducers: (builder) => {
     builder
@@ -101,13 +108,13 @@ const word = createSlice({
         state.isLoading = true;
       })
       .addCase(postWordToBook.fulfilled, (state, action) => {
-        state.isSavingLoading = false;
+        state.isSavingWordLoading = false;
       })
       .addCase(postWordToBook.pending, (state) => {
-        state.isSavingLoading = true;
+        state.isSavingWordLoading = true;
       })
       .addCase(postWordToBook.rejected, (state) => {
-        state.isSavingLoading = true;
+        state.isSavingWordLoading = true;
       })
       .addCase(getWordForBook.fulfilled, (state, action) => {
         state.allBookWord = action.payload;
@@ -125,6 +132,6 @@ const word = createSlice({
 export const {
   resetSuggestedWord,
   addChosenWordDefinition,
-  toggleIsSavingLoading,
+  // toggleIsSavingWordLoading,
 } = word.actions;
 export default word.reducer;

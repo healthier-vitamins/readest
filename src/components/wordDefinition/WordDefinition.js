@@ -7,12 +7,8 @@ import { toggleSaveWordModal } from "../../store/slices/state.slice";
 function WordDefinition() {
   const dispatch = useDispatch();
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { chosenWordDefinition, isWordChosen } = useSelector((state) => {
-    console.log(
-      "chosen word definition ",
-      state.word.chosenWordDefinition
-    );
+    console.log("chosen word definition ", state.word.chosenWordDefinition);
     return state.word;
   });
 

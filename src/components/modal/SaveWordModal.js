@@ -41,8 +41,8 @@ function SaveWordModal() {
 
   function RenderBook(props) {
     const { book, index } = props;
-    console.log(bookResArrCheckbox);
-    console.log("book here bitch ||||||||||||||| ", book);
+    // console.log(bookResArrCheckbox);
+    // console.log("book here bitch ||||||||||||||| ", book);
     return (
       <React.Fragment key={String(index)}>
         <div
@@ -160,7 +160,6 @@ function SaveWordModal() {
               Cancel
             </div> */}
           {/* </div> */}
-          
         </div>
       </Modal.Footer>
     </Modal>
