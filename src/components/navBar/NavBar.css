@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
+
+.top-navbar {
+  background-color: rgb(219, 203, 148);
+  display: flex;
+  justify-content: center;
+  padding: 0.2rem 0rem 0.2rem 0rem;
+}
+
+.center-link {
+  text-decoration: none;
+  color: aliceblue;
+}
+
+.title-span {
+  color: aliceblue;
+  font-family: "Roboto";
+  letter-spacing: 0.6rem;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.center-link:hover {
+  cursor: pointer;
+}
+
+.bottom-navbar {
+  display: flex;
+  justify-content: center;
+  background-color: rgb(255, 247, 232);
+}
+
+.right-box {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 0.7rem;
+}
+
+.right-link {
+  font-weight: 700;
+  text-decoration: none;
+  color: rgb(168, 140, 89);
+  font-size: 15px;
+  /* font-family: "roboto"; */
+  /* letter-spacing: 0.6px; */
+}
+
+.right-link:hover {
+  color: rgb(219, 212, 190);
+}
+
+.left-box {
+  flex: 1;
+}
+
+.arrow-head-box {
+  background-color: rgb(255, 247, 232);
+  font-size: 1.3rem;
+  /* border: 1px solid black; */
+  padding-left: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(158, 128, 72);
+}
+
+.arrow-head-icon:hover {
+  cursor: pointer;
+  color: rgb(219, 212, 190);
+}
+
+@media screen and (min-width: 280px) and (max-width: 768px) {
+  .right-link {
+    visibility: hidden;
+    width: 0;
+  }
+}

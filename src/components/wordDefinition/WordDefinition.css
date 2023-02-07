@@ -1,0 +1,45 @@
+.word-definition-box {
+  width: 28rem;
+  border-radius: 0.5rem;
+  margin-top: 3rem;
+  border: 0.375px lightgrey solid;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
+}
+
+.abbreviation {
+  font-size: 1.05rem;
+  margin-bottom: 0;
+}
+
+.title {
+  margin-bottom: 0.3rem;
+}
+
+.shortdef {
+  margin-bottom: 0;
+}
+
+.box-footer {
+  display: flex;
+  margin-top: 1rem;
+  padding-right: 0.1rem;
+}
+
+.save-btn {
+  font-size: 1.4rem;
+  margin-left: auto;
+}
+
+.save-btn:hover {
+  cursor: pointer;
+  color: rgb(153, 141, 104);
+}
+
+@media screen and (min-width: 280px) and (max-width: 768px) {
+  .word-definition-box {
+    width: 15rem;
+  }
+}
