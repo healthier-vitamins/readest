@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Modal, Spinner } from "react-bootstrap";
+import React from "react";
+import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
   handlebookResArrCheckboxChange,
@@ -15,9 +15,7 @@ function SaveWordModal() {
   // const [isSaveClicked, setIsSaveClicked] = useState(false);
   // const [isInvalid, setIsInvalid] = useState(false);
   const { saveWordModalState } = useSelector((state) => state.state);
-  const { chosenWordDefinition, isSavingLoading } = useSelector(
-    (state) => state.word
-  );
+  const { chosenWordDefinition } = useSelector((state) => state.word);
   const { bookRes, bookResArrCheckbox } = useSelector((state) => state.book);
   const dispatch = useDispatch();
 

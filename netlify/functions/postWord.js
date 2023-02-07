@@ -26,7 +26,7 @@ exports.handler = async function (event, context) {
     });
     bookDatabaseId = response.results[0].id;
   } catch (err) {
-    console.error(err.message);
+    console.error(err.message)
     return {
       statusCode: HttpStatusCode.InternalServerError,
       body: err.toString(),

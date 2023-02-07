@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { resetbookResArrCheckbox } from "./book.slice";
-import { addSavingWordToast, toggleSaveWordModal } from "./state.slice";
+import { addSavingWordToast } from "./state.slice";
 
 import { bookSchema } from "../../utils/bookUtil.ts";
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Fade, Toast, ToastContainer } from "react-bootstrap";
+import { Toast, ToastContainer } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { removeSavingWordToast } from "../../store/slices/state.slice";
 

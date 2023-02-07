@@ -40,14 +40,13 @@ function WordDefinition() {
           </span>
         </h5>
         <RenderShortDefLogic></RenderShortDefLogic>
-        <div
-          className="box-footer"
-          onClick={() => {
-            dispatch(toggleSaveWordModal());
-          }}
-        >
-          <AiOutlineSave className="save-btn" />
-          {/* <AiTwotoneSave /> */}
+        <div className="box-footer">
+          <AiOutlineSave
+            className="save-btn"
+            onClick={() => {
+              dispatch(toggleSaveWordModal());
+            }}
+          />
         </div>
       </div>
     );
