@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { changeActiveTab } from "../../store/slices/book.slice";
 import {
   resetSuggestedWord,
   getWordDefinition,
@@ -103,6 +104,7 @@ function SearchBar() {
                       className="dropdown-list"
                       onClick={() => {
                         dispatch(addChosenWordDefinition(responseObject));
+                        dispatch(changeActiveTab(0));
                         setQueriedWord(responseObject.meta.id.toLowerCase());
                         queriedWordRef.current.value =
                           responseObject.meta.id.toLowerCase();
@@ -164,6 +166,7 @@ function SearchBar() {
               className="dropdown-list"
               onClick={() => {
                 dispatch(addChosenWordDefinition(suggestedWord[0]));
+                dispatch(changeActiveTab(0));
                 setQueriedWord(suggestedWord[0].meta.id.toLowerCase());
                 queriedWordRef.current.value =
                   suggestedWord[0].meta.id.toLowerCase();

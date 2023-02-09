@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { addSavingWordToast } from "./state.slice";
-
 import { bookSchema } from "../../utils/bookUtil.ts";
 
 // api url with query passed through as parameter
@@ -90,9 +89,6 @@ const word = createSlice({
         );
       }
     },
-    // toggleIsSavingWordLoading: (state) => {
-    //   state.isSavingWordLoading = !state.isSavingWordLoading;
-    // },
   },
   extraReducers: (builder) => {
     builder
@@ -128,9 +124,5 @@ const word = createSlice({
   },
 });
 
-export const {
-  resetSuggestedWord,
-  addChosenWordDefinition,
-  // toggleIsSavingWordLoading,
-} = word.actions;
+export const { resetSuggestedWord, addChosenWordDefinition } = word.actions;
 export default word.reducer;

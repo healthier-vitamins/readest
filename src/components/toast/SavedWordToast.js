@@ -33,17 +33,17 @@ function SavedWordToast() {
     if (savingWordToast.length === 1 && toastAppeared.length === 1) {
       setTimeout(() => {
         dispatch(removeSavingWordToast());
-      }, 5700);
+      }, 5500);
       return () => {
         clearTimeout(() => {
           dispatch(removeSavingWordToast());
-        }, 5700);
+        }, 5500);
       };
     }
   }
 
   return (
-    <ToastContainer position="bottom-end" className="saved-word-toast" >
+    <ToastContainer position="bottom-end" className="saved-word-toast">
       {savingWordToast.map((book) => {
         timer();
         return (
@@ -66,7 +66,7 @@ function SavedWordToast() {
               //   setToastAppeared(temp);
             }}
             show={!!book}
-            delay={3000}
+            delay={2500}
             autohide
           >
             <Toast.Body>Word added to {book}</Toast.Body>
