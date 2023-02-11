@@ -4,6 +4,7 @@ import SearchBar from "../searchBar/SearchBar";
 import { RxDoubleArrowRight } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleOffCanvasModal } from "../../store/slices/state.slice";
+import SignUpPopover from "../modal/SignUpPopover";
 
 function NavBar() {
   const dispatch = useDispatch();
@@ -45,9 +46,17 @@ function NavBar() {
         <p className="left-box"></p>
         <SearchBar className="center-bar"></SearchBar>
         <div className="right-box">
-          <Link to="#" className="right-link">
+          {/* <Link
+            to="#"
+            className="right-link"
+            onClick={() => {
+              dispatch(toggleSignUpModal());
+            }}
+          >
             Sign Up/Login
-          </Link>
+          </Link> */}
+
+          <SignUpPopover></SignUpPopover>
         </div>
       </div>
     </div>

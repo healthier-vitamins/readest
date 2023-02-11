@@ -38,19 +38,6 @@
   padding-right: 0.7rem;
 }
 
-.right-link {
-  font-weight: 700;
-  text-decoration: none;
-  color: rgb(168, 140, 89);
-  font-size: 15px;
-  /* font-family: "roboto"; */
-  /* letter-spacing: 0.6px; */
-}
-
-.right-link:hover {
-  color: rgb(219, 212, 190);
-}
-
 .left-box {
   flex: 1;
 }

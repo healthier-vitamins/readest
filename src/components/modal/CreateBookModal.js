@@ -51,6 +51,8 @@ function CreateBookModal() {
             ref={bookTitleRef}
             required
             className="form-control"
+            id="form_control"
+            // id="form-control"
             isInvalid={isInvalid}
             autoFocus={true}
           ></Form.Control>

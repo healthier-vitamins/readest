@@ -4,6 +4,7 @@ const initialState = {
   createBookModalState: false,
   saveWordModalState: false,
   offCanvasModalState: false,
+  signUpPopoverState: false,
   savingWordToast: [],
 };
 
@@ -27,6 +28,10 @@ const state = createSlice({
     removeSavingWordToast: (state) => {
       state.savingWordToast.shift();
     },
+    toggleSignUpPopoverState: (state) => {
+      console.log(state.signUpPopoverState);
+      state.signUpPopoverState = !state.signUpPopoverState;
+    },
   },
 });
 
@@ -36,5 +41,6 @@ export const {
   toggleOffCanvasModal,
   addSavingWordToast,
   removeSavingWordToast,
+  toggleSignUpPopoverState,
 } = state.actions;
 export default state.reducer;

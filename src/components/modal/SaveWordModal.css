@@ -47,38 +47,6 @@
   visibility: hidden;
 }
 
-.save-word-to-book-btn {
-  /* border: 0.375px solid lightgray; */
-  padding: 0.3rem 0.5rem 0.3rem 0.5rem;
-  margin-top: 0.7rem;
-  margin-left: auto;
-  border-radius: 0.375rem;
-  font-weight: 600;
-  background-color: rgb(211, 198, 155);
-  color: white;
-}
-
-.cancel-word-to-book-btn {
-  border: 0.375px solid lightgray;
-  padding: 0.3rem 0.5rem 0.3rem 0.5rem;
-  margin-top: 0.7rem;
-  margin-left: 0.6rem;
-  border-radius: 0.375rem;
-  font-weight: 600;
-  color: rgb(119, 119, 119);
-}
-
-.save-word-to-book-btn:hover {
-  cursor: pointer;
-  background-color: rgb(187, 176, 145);
-}
-
-.cancel-word-to-book-btn:hover {
-  cursor: pointer;
-  background-color: rgb(233, 233, 233);
-  color: rgb(255, 255, 255);
-}
-
 .footer-btns {
   display: flex;
   width: 100%;

@@ -39,6 +39,12 @@
   max-width: 24rem;
 }
 
+#form_control:focus {
+  outline: rgb(238, 230, 223) 3px solid;
+  border-color: rgb(238, 230, 223);
+  box-shadow: none;
+}
+
 .modal-container {
   display: flex;
   flex-flow: column;
