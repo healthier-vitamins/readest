@@ -55,7 +55,6 @@ function NavBar() {
           >
             Sign Up/Login
           </Link> */}
-
           <SignUpPopover></SignUpPopover>
         </div>
       </div>

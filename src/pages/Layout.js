@@ -28,7 +28,6 @@ function Layout() {
       </div>
       <CreateBookModal></CreateBookModal>
       <SaveWordModal></SaveWordModal>
-      {/* <SignUpModal></SignUpModal> */}
     </>
   );
 }

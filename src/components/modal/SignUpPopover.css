@@ -65,4 +65,29 @@
 
 .signup-popover-button-container {
   display: flex;
+  width: 100%;
+}
+
+.popover-box {
+  /* width: 13rem; */
+  padding: 0.1rem 0.9rem 0.1rem 0.9rem;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+#signup_form_control:focus {
+  outline: rgb(238, 230, 223) 3px solid;
+  border-color: rgb(238, 230, 223);
+  box-shadow: none;
+}
+
+#_signup_form_control:focus {
+  outline: rgb(238, 230, 223) 3px solid;
+  border-color: rgb(238, 230, 223);
+  box-shadow: none;
+}
+
+.popover-container {
+  z-index: 4;
 }
