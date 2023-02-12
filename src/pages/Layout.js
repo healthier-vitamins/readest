@@ -3,11 +3,11 @@ import CreateBookModal from "../components/modal/CreateBookModal";
 import SaveWordModal from "../components/modal/SaveWordModal";
 // import SignUpModal from "../components/modal/SignUpModal";
 import NavBar from "../components/navBar/NavBar";
-import useWindowDimensions from "../utils/useWindowDimensions";
+import useWindowDimension from "../utils/useWindowDimension";
 import "./Layout.css";
 
 function Layout() {
-  const { height } = useWindowDimensions();
+  const { height } = useWindowDimension();
 
   function heightLogic() {
     return {
