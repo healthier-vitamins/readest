@@ -1,6 +1,5 @@
 import { HttpStatusCode } from "axios";
 import GoTrue from "gotrue-js";
-// import { resolve } from "../../src/utils/promiseUtil";
 
 exports.handler = async function (event, context) {
   console.log("event ||||||||||||||||||| ", event);
@@ -13,16 +12,18 @@ exports.handler = async function (event, context) {
     setCookie: "true",
   });
 
-  //   const [err, res] = await to(
-  //     auth.signup("audriancyk@gmail.com", "testing123")
-  //   );
-
+  //   const [err, data] = await to(auth.signup(email, password));
   //   if (err) {
   //     return {
   //       statusCode: HttpStatusCode.InternalServerError,
   //       body: err.message,
   //     };
   //   }
+  //   return {
+  //     statusCode: HttpStatusCode.Ok,
+  //     body: JSON.stringify(data),
+  //   };
+
   try {
     const data = await auth.signup(email, password);
     return {

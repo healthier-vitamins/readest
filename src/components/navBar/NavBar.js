@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./NavBar.css";
+import "./NavBar.scss";
 import SearchBar from "../searchBar/SearchBar";
 import { RxDoubleArrowRight } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";

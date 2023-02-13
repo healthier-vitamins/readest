@@ -1,7 +1,9 @@
+@use '../../variables' as *;
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
 
+
 .top-navbar {
-  background-color: rgb(219, 203, 148);
+  background-color: $web-color;
   display: flex;
   justify-content: center;
   padding: 0.2rem 0rem 0.2rem 0rem;
@@ -27,7 +29,7 @@
 .bottom-navbar {
   display: flex;
   justify-content: center;
-  background-color: rgb(255, 247, 232);
+  background-color: $secondary-web-color;
 }
 
 .right-box {
