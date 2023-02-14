@@ -23,9 +23,3 @@
   padding-left: 0.8rem;
   padding-right: 0.8rem;
 }
-
-.loading-spinner {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}

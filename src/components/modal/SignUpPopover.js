@@ -1,12 +1,6 @@
-import React, {
-  createRef,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { Form, Overlay, Popover } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Form, Overlay, Popover, Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { signUp } from "../../store/slices/user.slice";
 import "./SignUpPopover.scss";
 
@@ -15,18 +9,20 @@ function SignUpPopover() {
   const [target, setTarget] = useState(null);
   const [showSignUp, setShowSignUp] = useState(false);
   const ref = useRef(null);
-  const [signUpForm, setSignUpForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-  const signUpFormRef = createRef();
+  // const [signUpFormValue, setSignUpFormValue] = useState({
+  //   name: "",
+  //   email: "",
+  //   password: "",
+  // });
+  const emailRef = useRef("");
+  const nameRef = useRef("");
+  const passwordRef = useRef("");
+
   const dispatch = useDispatch();
-  // const { isSignUpLoading } = useSelector((state) => state.user);
+  const { isSignUpLoading } = useSelector((state) => state.user);
 
   // eslint-disable-next-line
   const onClickOutside = useCallback(() => {
-    // setTouched(false);
     setShow(false);
   });
 
@@ -42,15 +38,78 @@ function SignUpPopover() {
     };
   }, [onClickOutside]);
 
-  function handlePopoverClick(event) {
-    console.log(show);
-    setShow(!show);
-    setTarget(event.target);
+  function signUpForm() {
+    return (
+      <div className="popover-box">
+        <Form>
+          <Form.Group>
+            <Form.Label className="signup-label">Name</Form.Label>
+            <Form.Control
+              type="text"
+              className="signup-form-control"
+              required
+              ref={nameRef}
+              // name="name"
+              // value={signUpFormValue.name}
+              // onChange={handleSignUpOnChange}
+            ></Form.Control>
+            <Form.Label className="signup-label">Email</Form.Label>
+            <Form.Control
+              type="text"
+              className="signup-form-control"
+              required
+              ref={emailRef}
+              // name="email"
+              // value={signUpFormValue.email}
+              // onChange={handleSignUpOnChange}
+            ></Form.Control>
+            <Form.Label className="signup-label">Password</Form.Label>
+            <Form.Control
+              type="password"
+              className="signup-form-control"
+              required
+              ref={passwordRef}
+              // name="password"
+              // value={signUpFormValue.password}
+              // onChange={handleSignUpOnChange}
+            ></Form.Control>
+            <Form.Label className="signup-label">Confirm Password</Form.Label>
+            <Form.Control
+              type="password"
+              className="signup-form-control"
+              required
+            ></Form.Control>
+          </Form.Group>
+        </Form>
+        <div className="links-container">
+          <div
+            className="signup-link"
+            onClick={() => {
+              setShowSignUp(!showSignUp);
+            }}
+          >
+            Already have an account? Login.
+          </div>
+          <div className="signup-popover-button-container">
+            <div className="login-btn" onClick={handleSignUp}>
+              {isSignUpLoading && (
+                <Spinner
+                  animation="border"
+                  id="signup-loading-spinner"
+                ></Spinner>
+              )}{" "}
+              Sign Up
+            </div>
+            <div className="cancel-btn">Cancel</div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
-  function LoginForm() {
+  function loginForm() {
     return (
-      <>
+      <div className="popover-box">
         <Form>
           <Form.Group>
             <Form.Label className="signup-label">Email</Form.Label>
@@ -69,103 +128,54 @@ function SignUpPopover() {
               // isInvalid={true}
             ></Form.Control>
             {/* <div className="signup-error">
-              <small className="signup-error-msg">
-                Username or password is invalid.
-              </small>
-            </div> */}
+                <small className="signup-error-msg">
+                  Username or password is invalid.
+                </small>
+              </div> */}
           </Form.Group>
         </Form>
-        <div className="divider"></div>
-        <div className="signup-popover-button-container">
+        <div className="links-container">
           <div
             className="signup-link"
             onClick={() => {
               setShowSignUp(true);
             }}
           >
-            Sign Up
+            Don't have an account? Sign up.
           </div>
-          <div className="login-btn">Login</div>
-          <div className="cancel-btn">Cancel</div>
+          <div className="signup-popover-button-container">
+            <div className="login-btn">Login</div>
+            <div className="cancel-btn">Cancel</div>
+          </div>
         </div>
-      </>
+      </div>
     );
+  }
+
+  function handlePopoverClick(event) {
+    console.log(show);
+    setShow(!show);
+    setTarget(event.target);
   }
 
   function handleSignUp() {
-    const payload = signUpFormRef.current.value;
-    console.log("payload being sent ||||||||||||||||||| ", payload);
+    const payload = {
+      name: nameRef.current.value,
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+    };
+    console.log(payload);
     dispatch(signUp(payload));
   }
 
-  function handleSignUpOnChange(e) {
-    const { name, value } = e.target;
-    setSignUpForm({ ...signUpForm, [name]: value });
-    console.log(signUpForm);
-    console.log(show);
-  }
-  function SignUpForm() {
-    return (
-      <>
-        <Form>
-          <Form.Group>
-            <Form.Label className="signup-label">Name</Form.Label>
-            <Form.Control
-              type="text"
-              className="signup-form-control"
-              required
-              ref={signUpFormRef}
-              // name="name"
-              // value={signUpForm.name}
-              // onChange={handleSignUpOnChange}
-            ></Form.Control>
-            <Form.Label className="signup-label">Email</Form.Label>
-            <Form.Control
-              type="text"
-              className="signup-form-control"
-              required
-              // ref={signUpFormRef.current.email}
-              // name="email"
-              // value={signUpForm.email}
-              // onChange={handleSignUpOnChange}
-            ></Form.Control>
-            <Form.Label className="signup-label">Password</Form.Label>
-            <Form.Control
-              type="password"
-              className="signup-form-control"
-              required
-              // ref={signUpFormRef.current.password}
-              // name="password"
-              // value={signUpForm.password}
-              // onChange={handleSignUpOnChange}
-            ></Form.Control>
-            <Form.Label className="signup-label">Confirm Password</Form.Label>
-            <Form.Control
-              type="password"
-              className="signup-form-control"
-              required
-            ></Form.Control>
-            <div className="signup-popover-button-container">
-              <div
-                className="signup-link"
-                onClick={() => {
-                  setShowSignUp(!showSignUp);
-                }}
-              >
-                Login
-              </div>
-              <div className="login-btn" onClick={handleSignUp}>
-                {/* {isSignUpLoading && <Spinner animation="border"></Spinner>} Sign
-                Up */}
-                Sign Up
-              </div>
-              <div className="cancel-btn">Cancel</div>
-            </div>
-          </Form.Group>
-        </Form>
-      </>
-    );
-  }
+  // function handleSignUpOnChange(e) {
+  //   // console.log("event |||||||||||||||| ", e);
+  //   // console.log("target |||||||||||||||| ", e.target);
+  //   const { name, value } = e.target;
+  //   setSignUpFormValue({ ...signUpFormValue, [name]: value });
+  //   // console.log(signUpFormValue);
+  //   // console.log(show);
+  // }
 
   return (
     <div ref={ref}>
@@ -177,14 +187,10 @@ function SignUpPopover() {
         target={target}
         placement="bottom-start"
         container={ref}
-        containerPadding={20}
+        containerPadding={25}
       >
         <Popover className="popover-container">
-          <Popover.Body>
-            <div className="popover-box">
-              {showSignUp ? <SignUpForm></SignUpForm> : <LoginForm></LoginForm>}
-            </div>
-          </Popover.Body>
+          <Popover.Body>{showSignUp ? signUpForm() : loginForm()}</Popover.Body>
         </Popover>
       </Overlay>
     </div>
