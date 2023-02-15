@@ -9,21 +9,34 @@ function SignUpPopover() {
   const [target, setTarget] = useState(null);
   const [showSignUp, setShowSignUp] = useState(false);
   const ref = useRef(null);
-  // const [signUpFormValue, setSignUpFormValue] = useState({
-  //   name: "",
-  //   email: "",
-  //   password: "",
-  // });
+  const [signUpPasswordCompare, setSignUpPasswordCompare] = useState({
+    password: "",
+    confirmPassword: "",
+    isDirty: false,
+    isSame: false,
+  });
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const emailRef = useRef("");
   const nameRef = useRef("");
   const passwordRef = useRef("");
+  const confirmPasswordRef = useRef("");
 
   const dispatch = useDispatch();
   const { isSignUpLoading } = useSelector((state) => state.user);
+  const [isSignUpErr, setIsSignUpErr] = useState(false);
 
   // eslint-disable-next-line
   const onClickOutside = useCallback(() => {
     setShow(false);
+    setSignUpPasswordCompare({
+      password: "",
+      confirmPassword: "",
+      isDirty: false,
+      isSame: false,
+    });
+    setShowSignUp(false);
+    setIsSignUpErr(false);
+    setIsSubmitted(false);
   });
 
   useEffect(() => {
@@ -49,9 +62,6 @@ function SignUpPopover() {
               className="signup-form-control"
               required
               ref={nameRef}
-              // name="name"
-              // value={signUpFormValue.name}
-              // onChange={handleSignUpOnChange}
             ></Form.Control>
             <Form.Label className="signup-label">Email</Form.Label>
             <Form.Control
@@ -59,9 +69,6 @@ function SignUpPopover() {
               className="signup-form-control"
               required
               ref={emailRef}
-              // name="email"
-              // value={signUpFormValue.email}
-              // onChange={handleSignUpOnChange}
             ></Form.Control>
             <Form.Label className="signup-label">Password</Form.Label>
             <Form.Control
@@ -69,35 +76,57 @@ function SignUpPopover() {
               className="signup-form-control"
               required
               ref={passwordRef}
-              // name="password"
-              // value={signUpFormValue.password}
-              // onChange={handleSignUpOnChange}
+              name="password"
+              value={signUpPasswordCompare.password}
+              onChange={handleSignUpPasswordCompare}
+              isInvalid={
+                !signUpPasswordCompare.isSame && signUpPasswordCompare.isDirty
+              }
             ></Form.Control>
             <Form.Label className="signup-label">Confirm Password</Form.Label>
             <Form.Control
               type="password"
               className="signup-form-control"
               required
+              ref={confirmPasswordRef}
+              name="confirmPassword"
+              value={signUpPasswordCompare.confirmPassword}
+              onChange={handleSignUpPasswordCompare}
+              isInvalid={
+                !signUpPasswordCompare.isSame && signUpPasswordCompare.isDirty
+              }
             ></Form.Control>
           </Form.Group>
         </Form>
         <div className="links-container">
+          {isSignUpErr && !!signUpPasswordCompare.isDirty && (
+            <div className="signup-error-msg">
+              Something went wrong, please try again later.
+            </div>
+          )}
+          {!signUpPasswordCompare.isSame && !!signUpPasswordCompare.isDirty && (
+            <div className="signup-error-msg">Passwords do not match.</div>
+          )}
           <div
             className="signup-link"
             onClick={() => {
               setShowSignUp(!showSignUp);
+              setIsSubmitted(false);
             }}
           >
             Already have an account? Login.
           </div>
           <div className="signup-popover-button-container">
             <div className="login-btn" onClick={handleSignUp}>
-              {isSignUpLoading && (
-                <Spinner
-                  animation="border"
-                  id="signup-loading-spinner"
-                ></Spinner>
-              )}{" "}
+              {isSignUpLoading &&
+                !!signUpPasswordCompare.isDirty &&
+                !!signUpPasswordCompare.isSame &&
+                !!isSubmitted && (
+                  <Spinner
+                    animation="border"
+                    id="signup-loading-spinner"
+                  ></Spinner>
+                )}{" "}
               Sign Up
             </div>
             <div className="cancel-btn">Cancel</div>
@@ -139,6 +168,7 @@ function SignUpPopover() {
             className="signup-link"
             onClick={() => {
               setShowSignUp(true);
+              setIsSubmitted(false);
             }}
           >
             Don't have an account? Sign up.
@@ -153,29 +183,73 @@ function SignUpPopover() {
   }
 
   function handlePopoverClick(event) {
-    console.log(show);
     setShow(!show);
     setTarget(event.target);
   }
 
-  function handleSignUp() {
-    const payload = {
-      name: nameRef.current.value,
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
-    };
-    console.log(payload);
-    dispatch(signUp(payload));
+  async function handleSignUp() {
+    if (confirmPasswordRef.current.value === passwordRef.current.value) {
+      setIsSubmitted(true);
+      setSignUpPasswordCompare({
+        ...signUpPasswordCompare,
+        isDirty: true,
+        isSame: true,
+      });
+      const payload = {
+        name: nameRef.current.value,
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+      };
+      console.log(payload);
+      // eslint-disable-next-line
+      // const [err, res] = await to(dispatch(signUp(payload)));
+      // if (err) {
+      //   setIsSignUpErr(true);
+      //   setIsSubmitted(false);
+      // } else {
+      //   setShowSignUp(!showSignUp);
+      //   setSignUpPasswordCompare({
+      //     password: "",
+      //     confirmPassword: "",
+      //     isDirty: false,
+      //     isSame: false,
+      //   });
+      //   setIsSubmitted(false);
+      // }
+      const res = await dispatch(signUp(payload));
+      console.log(res?.meta?.requestStatus);
+    } else {
+      setSignUpPasswordCompare({
+        ...signUpPasswordCompare,
+        isSame: false,
+        isDirty: true,
+      });
+      setIsSubmitted(false);
+    }
   }
 
-  // function handleSignUpOnChange(e) {
-  //   // console.log("event |||||||||||||||| ", e);
-  //   // console.log("target |||||||||||||||| ", e.target);
-  //   const { name, value } = e.target;
-  //   setSignUpFormValue({ ...signUpFormValue, [name]: value });
-  //   // console.log(signUpFormValue);
-  //   // console.log(show);
-  // }
+  function handleSignUpPasswordCompare(e) {
+    console.log(signUpPasswordCompare);
+    console.log(passwordRef.current.value, confirmPasswordRef.current.value);
+    if (signUpPasswordCompare.isDirty) {
+      passwordRef.current.value !== confirmPasswordRef.current.value
+        ? setSignUpPasswordCompare({
+            ...signUpPasswordCompare,
+            isSame: false,
+            password: passwordRef.current.value,
+            confirmPassword: confirmPasswordRef.current.value,
+          })
+        : setSignUpPasswordCompare({
+            ...signUpPasswordCompare,
+            isSame: true,
+            password: passwordRef.current.value,
+            confirmPassword: confirmPasswordRef.current.value,
+          });
+    } else {
+      const { name, value } = e.target;
+      setSignUpPasswordCompare({ ...signUpPasswordCompare, [name]: value });
+    }
+  }
 
   return (
     <div ref={ref}>

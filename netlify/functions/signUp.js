@@ -2,8 +2,6 @@ import { HttpStatusCode } from "axios";
 import GoTrue from "gotrue-js";
 
 exports.handler = async function (event, context) {
-  console.log("event ||||||||||||||||||| ", event);
-  console.log("context ||||||||||||||||||| ", context);
   const { email, password } = JSON.parse(event.body);
 
   const auth = new GoTrue({
@@ -26,6 +24,7 @@ exports.handler = async function (event, context) {
 
   try {
     const data = await auth.signup(email, password);
+    console.log("data ????????????????? ", data);
     return {
       statusCode: HttpStatusCode.Ok,
       body: JSON.stringify(data),

@@ -1,5 +1,11 @@
 async function to(promise) {
-  await promise.then((data) => [null, data]).catch((err) => [err]);
+  await promise
+    .then((data) => {
+      return [null, data];
+    })
+    .catch((err) => {
+      return [err];
+    });
 }
 
 // async function to(fn) {
