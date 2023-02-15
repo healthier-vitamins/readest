@@ -36,30 +36,32 @@ function WordPage() {
     }
   }
 
-  function RenderWordDef(wordObj) {
+  function RenderWordDef(wordObj, index) {
     const title = wordObj.properties[wordSchema.WORD].rich_text[0].plain_text;
     const abbreviation =
       wordObj.properties[wordSchema.ABBREVIATION].rich_text[0].plain_text;
     const shortDef =
       wordObj.properties[wordSchema.DEFINITION].rich_text[0].plain_text;
     return (
-      <div className="word-page-definition-box">
-        <h5 className="title">{title}</h5>
-        <span className="abbreviation">{abbreviation}</span>
-        <RenderShortDefLogic shortDef={shortDef}></RenderShortDefLogic>
-      </div>
+      <React.Fragment key={index}>
+        <div className="word-page-definition-box">
+          <h5 className="title">{title}</h5>
+          <span className="abbreviation">{abbreviation}</span>
+          <RenderShortDefLogic shortDef={shortDef}></RenderShortDefLogic>
+        </div>
+      </React.Fragment>
     );
   }
 
   return (
     <div className="word-container">
-      {!isGetWordLoading &&
-        console.log("HERE BABY |||||||||||||||||||||||| ", allBookWord)}
       {!isGetWordLoading ? (
         allBookWord.results.length < 1 ? (
           "No words saved."
         ) : (
-          allBookWord.results.map((wordObj) => RenderWordDef(wordObj))
+          allBookWord.results.map((wordObj, index) =>
+            RenderWordDef(wordObj, index)
+          )
         )
       ) : (
         <div className="loading-spinner">

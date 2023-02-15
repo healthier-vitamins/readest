@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { addSavingWordToast } from "./state.slice";
+import { addToastNotificationArr } from "./state.slice";
 import { bookSchema } from "../../utils/bookUtil.ts";
 
 // api url with query passed through as parameter
@@ -43,7 +43,7 @@ export const postWordToBook = createAsyncThunk(
     const bookName =
       payload.bookObj.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text;
     if (resp.status === 200) {
-      thunkApi.dispatch(addSavingWordToast(bookName));
+      thunkApi.dispatch(addToastNotificationArr(`Word added to ${bookName}.`));
     }
     // console.log(
     //   "saved word res ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| ",

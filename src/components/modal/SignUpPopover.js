@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Form, Overlay, Popover, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { addToastNotificationArr } from "../../store/slices/state.slice";
 import { signUp } from "../../store/slices/user.slice";
+import { to } from "../../utils/promiseUtil";
 import "./SignUpPopover.scss";
 
 function SignUpPopover() {
@@ -25,18 +27,22 @@ function SignUpPopover() {
   const { isSignUpLoading } = useSelector((state) => state.user);
   const [isSignUpErr, setIsSignUpErr] = useState(false);
 
-  // eslint-disable-next-line
-  const onClickOutside = useCallback(() => {
-    setShow(false);
+  function resetAllExceptShowSignUpAndShow() {
     setSignUpPasswordCompare({
       password: "",
       confirmPassword: "",
       isDirty: false,
       isSame: false,
     });
-    setShowSignUp(false);
     setIsSignUpErr(false);
     setIsSubmitted(false);
+  }
+
+  // eslint-disable-next-line
+  const onClickOutside = useCallback(() => {
+    resetAllExceptShowSignUpAndShow();
+    setShowSignUp(false);
+    setShow(false);
   });
 
   useEffect(() => {
@@ -82,6 +88,7 @@ function SignUpPopover() {
               isInvalid={
                 !signUpPasswordCompare.isSame && signUpPasswordCompare.isDirty
               }
+              autoComplete="on"
             ></Form.Control>
             <Form.Label className="signup-label">Confirm Password</Form.Label>
             <Form.Control
@@ -95,6 +102,7 @@ function SignUpPopover() {
               isInvalid={
                 !signUpPasswordCompare.isSame && signUpPasswordCompare.isDirty
               }
+              autoComplete="on"
             ></Form.Control>
           </Form.Group>
         </Form>
@@ -202,22 +210,30 @@ function SignUpPopover() {
       };
       console.log(payload);
       // eslint-disable-next-line
-      // const [err, res] = await to(dispatch(signUp(payload)));
-      // if (err) {
-      //   setIsSignUpErr(true);
-      //   setIsSubmitted(false);
-      // } else {
-      //   setShowSignUp(!showSignUp);
-      //   setSignUpPasswordCompare({
-      //     password: "",
-      //     confirmPassword: "",
-      //     isDirty: false,
-      //     isSame: false,
-      //   });
-      //   setIsSubmitted(false);
-      // }
-      const res = await dispatch(signUp(payload));
-      console.log(res?.meta?.requestStatus);
+      const [err, res] = await to(dispatch(signUp(payload)));
+      // if sign up fails
+      if (err) {
+        setSignUpPasswordCompare({
+          ...signUpPasswordCompare,
+          isDirty: true,
+        });
+        setIsSignUpErr(true);
+        setIsSubmitted(false);
+        // once sign up passes
+      }
+      if (res) {
+        setShowSignUp(false);
+        resetAllExceptShowSignUpAndShow();
+        console.log(res);
+        dispatch(
+          addToastNotificationArr(
+            `Verification email sent to ${res.payload.email}.`
+          )
+        );
+      }
+
+      // const res = await dispatch(signUp(payload));
+      // console.log(res?.meta?.requestStatus);
     } else {
       setSignUpPasswordCompare({
         ...signUpPasswordCompare,

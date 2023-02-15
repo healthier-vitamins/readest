@@ -1,5 +1,5 @@
-async function to(promise) {
-  await promise
+function to(promise) {
+  return promise
     .then((data) => {
       return [null, data];
     })

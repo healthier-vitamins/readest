@@ -4,7 +4,7 @@ const initialState = {
   createBookModalState: false,
   saveWordModalState: false,
   offCanvasModalState: false,
-  savingWordToast: [],
+  toastNotificationArr: [],
 };
 
 // redux slice
@@ -21,11 +21,11 @@ const state = createSlice({
     toggleOffCanvasModal: (state) => {
       state.offCanvasModalState = !state.offCanvasModalState;
     },
-    addSavingWordToast: (state, action) => {
-      state.savingWordToast.push(action.payload);
+    addToastNotificationArr: (state, action) => {
+      state.toastNotificationArr.push(action.payload);
     },
-    removeSavingWordToast: (state) => {
-      state.savingWordToast.shift();
+    removeToastNotificationArr: (state) => {
+      state.toastNotificationArr.shift();
     },
   },
 });
@@ -34,7 +34,7 @@ export const {
   toggleCreateBookModal,
   toggleSaveWordModal,
   toggleOffCanvasModal,
-  addSavingWordToast,
-  removeSavingWordToast,
+  addToastNotificationArr,
+  removeToastNotificationArr,
 } = state.actions;
 export default state.reducer;
