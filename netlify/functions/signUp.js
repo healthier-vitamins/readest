@@ -9,6 +9,11 @@ exports.handler = async function (event, context) {
     audience: "",
     setCookie: "true",
   });
+  // const auth = new GoTrue({
+  //   APIUrl: "https://localhost:8888/.netlify/identity",
+  //   audience: "",
+  //   setCookie: "true",
+  // });
 
   //   const [err, data] = await to(auth.signup(email, password));
   //   if (err) {

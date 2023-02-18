@@ -266,7 +266,7 @@ function SignUpPopover() {
       setSignUpPasswordCompare({ ...signUpPasswordCompare, [name]: value });
     }
   }
-
+  
   return (
     <div ref={ref}>
       <div onClick={handlePopoverClick} className="right-link">
