@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToastNotificationArr } from "../../store/slices/state.slice";
 import { signUp } from "../../store/slices/user.slice";
 import { to } from "../../utils/promiseUtil";
+import useWindowDimension from "../../utils/useWindowDimension";
 import "./SignUpPopover.scss";
 
 function SignUpPopover() {
@@ -23,6 +24,7 @@ function SignUpPopover() {
   const passwordRef = useRef("");
   const confirmPasswordRef = useRef("");
 
+  const { width } = useWindowDimension();
   const dispatch = useDispatch();
   const { isSignUpLoading } = useSelector((state) => state.user);
   const [isSignUpErr, setIsSignUpErr] = useState(false);
@@ -151,7 +153,7 @@ function SignUpPopover() {
           <Form.Group>
             <Form.Label className="signup-label">Email</Form.Label>
             <Form.Control
-              type="text"
+              type="email"
               className="signup-form-control"
               required
               // isInvalid={true}
@@ -266,7 +268,7 @@ function SignUpPopover() {
       setSignUpPasswordCompare({ ...signUpPasswordCompare, [name]: value });
     }
   }
-  
+
   return (
     <div ref={ref}>
       <div onClick={handlePopoverClick} className="right-link">
@@ -277,7 +279,7 @@ function SignUpPopover() {
         target={target}
         placement="bottom-start"
         container={ref}
-        containerPadding={25}
+        containerPadding={width < 300 ? 34 : width < 420 ? 20 : 25}
       >
         <Popover className="popover-container">
           <Popover.Body>{showSignUp ? signUpForm() : loginForm()}</Popover.Body>

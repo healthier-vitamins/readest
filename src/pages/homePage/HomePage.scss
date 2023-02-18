@@ -2,12 +2,11 @@
 
 .main-container {
   display: flex;
-  height: 90vh;
   max-width: 100%;
+  // height: 100vh;
 }
 
 .right-main-box {
-  /* width: 100%; */
   display: flex;
   flex-flow: column;
   align-items: center;
@@ -18,7 +17,6 @@
   flex-flow: column;
   align-items: center;
   border-right: 0.375px solid lightgray;
-  height: 90vh;
   min-width: 17rem;
   width: fit-content;
   position: absolute;
@@ -34,6 +32,7 @@
   .sidebar-container {
     min-width: 12rem;
   }
+
 }
 
 .tabs-selection {
@@ -84,25 +83,12 @@
   margin-right: 0.3rem;
   margin-top: 0.13rem;
   width: fit-content;
-  /* max-height: 3.1rem; */
-  /* border: 1px solid black; */
-  /* padding-bottom: 0; */
 }
 
 .definition-container {
   display: flexbox;
   justify-content: center;
 }
-
-/* .mobile-hidden {
-  background-color: rgba(0, 0, 0, 0.16);
-  transition: background-color 0.3s;
-}
-
-.mobile-active-hidden {
-  background-color: rgba(241, 239, 232, 0.16);
-  transition: background-color 0.3s;
-} */
 
 .selected-active-tab {
   background-color: gray;

@@ -42,16 +42,15 @@
 
 .left-box {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .arrow-head-box {
   background-color: rgb(255, 247, 232);
   font-size: 1.3rem;
-  /* border: 1px solid black; */
-  padding-left: 0.6rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin-left: 0.5rem;
   color: rgb(158, 128, 72);
 }
 
@@ -61,8 +60,9 @@
 }
 
 @media screen and (min-width: 280px) and (max-width: 768px) {
-  .right-link {
-    visibility: hidden;
-    width: 0;
+  .right-box {
+    // visibility: hidden;
+    // width: 0;
+    padding-right: 0.5rem;
   }
 }

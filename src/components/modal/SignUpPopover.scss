@@ -148,3 +148,13 @@
   font-size: 11px;
   margin-right: 0.3rem;
 }
+
+@media screen and (min-width: 280px) and (max-width: 768px) {
+  .right-link {
+    // visibility: hidden;
+    // width: 0;
+    font-size: 12px;
+    margin-left: 0.6rem;
+
+  }
+}

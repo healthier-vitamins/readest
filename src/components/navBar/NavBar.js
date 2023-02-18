@@ -22,39 +22,31 @@ function NavBar() {
         </Link>
       </div>
       <div className="bottom-navbar">
-        <div className="arrow-head-box">
-          {offCanvasModalState ? (
-            <RxDoubleArrowRight
-              className="arrow-head-icon"
-              onClick={handleOffCanvas}
-              style={{
-                transition: `transform 0.3s`,
-                transform: `rotate(180deg)`,
-              }}
-            ></RxDoubleArrowRight>
-          ) : (
-            <RxDoubleArrowRight
-              className="arrow-head-icon"
-              onClick={handleOffCanvas}
-              style={{
-                transition: `transform 0.3s`,
-                transform: `rotate(360deg)`,
-              }}
-            ></RxDoubleArrowRight>
-          )}
+        <div className="left-box">
+          <div className="arrow-head-box">
+            {offCanvasModalState ? (
+              <RxDoubleArrowRight
+                className="arrow-head-icon"
+                onClick={handleOffCanvas}
+                style={{
+                  transition: `transform 0.3s`,
+                  transform: `rotate(180deg)`,
+                }}
+              ></RxDoubleArrowRight>
+            ) : (
+              <RxDoubleArrowRight
+                className="arrow-head-icon"
+                onClick={handleOffCanvas}
+                style={{
+                  transition: `transform 0.3s`,
+                  transform: `rotate(360deg)`,
+                }}
+              ></RxDoubleArrowRight>
+            )}
+          </div>
         </div>
-        <p className="left-box"></p>
         <SearchBar className="center-bar"></SearchBar>
         <div className="right-box">
-          {/* <Link
-            to="#"
-            className="right-link"
-            onClick={() => {
-              dispatch(toggleSignUpModal());
-            }}
-          >
-            Sign Up/Login
-          </Link> */}
           <SignUpPopover></SignUpPopover>
         </div>
       </div>

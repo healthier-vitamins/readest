@@ -8,6 +8,11 @@ function getWindowDimension() {
   };
 }
 
+function setDynamicHeight(height) {
+  // minus off the navbar
+  return (height -= 96);
+}
+
 export default function useWindowDimension() {
   const [windowDimension, setWindowDimensions] = useState(getWindowDimension());
 
@@ -21,3 +26,5 @@ export default function useWindowDimension() {
 
   return windowDimension;
 }
+
+export { setDynamicHeight };

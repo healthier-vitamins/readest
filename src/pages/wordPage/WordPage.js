@@ -3,12 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { getWordForBook } from "../../store/slices/word.slice";
 import { wordSchema } from "../../utils/wordUtil.ts";
 import { Spinner } from "react-bootstrap";
-import "./WordPage.css";
+import "./WordPage.scss";
+import useWindowDimension, {
+  setDynamicHeight,
+} from "../../utils/useWindowDimension";
 
 function WordPage() {
   const { selectedTab } = useSelector((state) => state.book);
   const { allBookWord, isGetWordLoading } = useSelector((state) => state.word);
   const dispatch = useDispatch();
+
+  // eslint-disable-next-line
+  let { width, height } = useWindowDimension();
 
   useEffect(() => {
     const payloadObj = {
@@ -54,7 +60,10 @@ function WordPage() {
   }
 
   return (
-    <div className="word-container">
+    <div
+      className="word-container"
+      style={{ height: setDynamicHeight(height) }}
+    >
       {!isGetWordLoading ? (
         allBookWord.results.length < 1 ? (
           "No words saved."

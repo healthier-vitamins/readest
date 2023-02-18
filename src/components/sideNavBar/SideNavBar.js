@@ -1,4 +1,4 @@
-import "./SideNavBar.css";
+import "./SideNavBar.scss";
 import { FiPlusSquare } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleCreateBookModal } from "../../store/slices/state.slice";
@@ -17,11 +17,10 @@ function SideNavBar() {
 
   useEffect(() => {
     dispatch(getAllBook());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   function RenderBookTab(book, index) {
-    // console.log(book.properties);
     return (
       <React.Fragment key={index}>
         <div

@@ -3,7 +3,7 @@ import { ToastContainer } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { removeToastNotificationArr } from "../../store/slices/state.slice";
 
-import "./SavedWordToast.scss";
+import "./GeneralToast.scss";
 import Toaster from "./Toaster";
 
 function SavedWordToast() {
