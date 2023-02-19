@@ -3,8 +3,7 @@ const { default: GoTrue } = require("gotrue-js");
 const { to } = require("../../src/utils/promiseUtil");
 
 exports.handler = async function (event, context) {
-  // const { token } = JSON.parse(event.body);
-  const token = "Equ5YIn-kxrsMBE4jYu05A";
+  const { token } = JSON.parse(event.body);
   const auth = new GoTrue({
     APIUrl: "https://readest.netlify.app/.netlify/identity",
     audience: "",
