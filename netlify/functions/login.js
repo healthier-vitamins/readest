@@ -13,9 +13,10 @@ exports.handler = async function (event, context) {
 
   const [err, data] = await to(auth.login(email, password, true));
   if (err) {
+    console.log(err);
     return {
-      statusCode: HttpStatusCode.InternalServerError,
-      body: err.message,
+      statusCode: err.status,
+      body: err.json.error_description,
     };
   }
   return { statusCode: HttpStatusCode.Ok, body: JSON.stringify(data) };

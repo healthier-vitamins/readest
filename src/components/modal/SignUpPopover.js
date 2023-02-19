@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Form, Overlay, Popover, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { addToastNotificationArr } from "../../store/slices/state.slice";
-import { signUp } from "../../store/slices/user.slice";
+import { confirmEmail, signUp } from "../../store/slices/user.slice";
 import { to } from "../../utils/promiseUtil";
 import useWindowDimension from "../../utils/useWindowDimension";
 import "./SignUpPopover.scss";
@@ -10,8 +10,13 @@ import "./SignUpPopover.scss";
 function SignUpPopover() {
   const [show, setShow] = useState(false);
   const [target, setTarget] = useState(null);
-  const [showSignUp, setShowSignUp] = useState(false);
+  const [showPopoverState, setShowPopoverState] = useState({
+    signUpState: false,
+    loginState: true,
+    emailConfirmState: false,
+  });
   const ref = useRef(null);
+  const signUpLinkRef = useRef(null);
   const [signUpPasswordCompare, setSignUpPasswordCompare] = useState({
     password: "",
     confirmPassword: "",
@@ -26,10 +31,12 @@ function SignUpPopover() {
 
   const { width } = useWindowDimension();
   const dispatch = useDispatch();
-  const { isSignUpLoading } = useSelector((state) => state.user);
+  const { isSignUpLoading, isConfirmEmailLoading } = useSelector(
+    (state) => state.user
+  );
   const [isSignUpErr, setIsSignUpErr] = useState(false);
 
-  function resetAllExceptShowSignUpAndShow() {
+  function resetAllExceptShowPopoverStateAndShow() {
     setSignUpPasswordCompare({
       password: "",
       confirmPassword: "",
@@ -40,10 +47,23 @@ function SignUpPopover() {
     setIsSubmitted(false);
   }
 
+  function setPopoverStateHelper(stateToTurnOn) {
+    const keys = Object.keys(showPopoverState);
+    const tempObj = {};
+    for (let key of keys) {
+      if (key === stateToTurnOn) {
+        tempObj[key] = true;
+      } else {
+        tempObj[key] = false;
+      }
+    }
+    setShowPopoverState(tempObj);
+  }
+
   // eslint-disable-next-line
   const onClickOutside = useCallback(() => {
-    resetAllExceptShowSignUpAndShow();
-    setShowSignUp(false);
+    resetAllExceptShowPopoverStateAndShow();
+    setPopoverStateHelper("loginState");
     setShow(false);
   });
 
@@ -58,6 +78,120 @@ function SignUpPopover() {
       document.removeEventListener("click", handleClickOutside, true);
     };
   }, [onClickOutside]);
+
+  // for redirected email verification URL fragment
+  useEffect(() => {
+    if (window.location.hash.length > 1) {
+      setPopoverStateHelper("emailConfirmState");
+      setShow(true);
+      setTarget(signUpLinkRef);
+      confirmEmailHelper();
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  async function confirmEmailHelper() {
+    const token = window.location.hash.substring(
+      window.location.hash.indexOf("=") + 1
+    );
+    try {
+      const response = await fetch("http://localhost:8888/api/confirmEmail", {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: "follow", // manual, *follow, error
+        referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: JSON.stringify({ token: token }), // body data type must match "Content-Type" header
+      });
+
+      // if (err) {
+      //   console.log("err ????????????????????? ", err);
+      // }
+      console.log("res ??????????????? ", response);
+      return response.json(); // parses JSON response into native JavaScript objects
+    } catch (err) {
+      console.log("please :/");
+    }
+  }
+
+  function handlePopoverClick(event) {
+    setShow(!show);
+    setTarget(event.target);
+  }
+
+  async function handleSignUp() {
+    if (confirmPasswordRef.current.value === passwordRef.current.value) {
+      setIsSubmitted(true);
+      setSignUpPasswordCompare({
+        ...signUpPasswordCompare,
+        isDirty: true,
+        isSame: true,
+      });
+      const payload = {
+        name: nameRef.current.value,
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+      };
+      console.log(payload);
+      // eslint-disable-next-line
+      const [err, res] = await to(dispatch(signUp(payload)));
+      // if sign up fails
+      if (!!err) {
+        setSignUpPasswordCompare({
+          ...signUpPasswordCompare,
+          isDirty: true,
+        });
+        setIsSignUpErr(true);
+        setIsSubmitted(false);
+        // once sign up passes
+      }
+      if (!!res) {
+        setPopoverStateHelper("loginState");
+        resetAllExceptShowPopoverStateAndShow();
+        console.log(res);
+        dispatch(
+          addToastNotificationArr(
+            `Verification email sent to ${res.payload.email}.`
+          )
+        );
+      }
+    } else {
+      setSignUpPasswordCompare({
+        ...signUpPasswordCompare,
+        isSame: false,
+        isDirty: true,
+      });
+      setIsSubmitted(false);
+    }
+  }
+
+  function handleSignUpPasswordCompare(e) {
+    console.log(signUpPasswordCompare);
+    console.log(passwordRef.current.value, confirmPasswordRef.current.value);
+    if (signUpPasswordCompare.isDirty) {
+      passwordRef.current.value !== confirmPasswordRef.current.value
+        ? setSignUpPasswordCompare({
+            ...signUpPasswordCompare,
+            isSame: false,
+            password: passwordRef.current.value,
+            confirmPassword: confirmPasswordRef.current.value,
+          })
+        : setSignUpPasswordCompare({
+            ...signUpPasswordCompare,
+            isSame: true,
+            password: passwordRef.current.value,
+            confirmPassword: confirmPasswordRef.current.value,
+          });
+    } else {
+      const { name, value } = e.target;
+      setSignUpPasswordCompare({ ...signUpPasswordCompare, [name]: value });
+    }
+  }
 
   function signUpForm() {
     return (
@@ -118,9 +252,9 @@ function SignUpPopover() {
             <div className="signup-error-msg">Passwords do not match.</div>
           )}
           <div
-            className="signup-link"
+            className="popover-state-link"
             onClick={() => {
-              setShowSignUp(!showSignUp);
+              setPopoverStateHelper("loginState");
               setIsSubmitted(false);
             }}
           >
@@ -175,9 +309,9 @@ function SignUpPopover() {
         </Form>
         <div className="links-container">
           <div
-            className="signup-link"
+            className="popover-state-link"
             onClick={() => {
-              setShowSignUp(true);
+              setPopoverStateHelper("signUpState");
               setIsSubmitted(false);
             }}
           >
@@ -192,86 +326,39 @@ function SignUpPopover() {
     );
   }
 
-  function handlePopoverClick(event) {
-    setShow(!show);
-    setTarget(event.target);
-  }
-
-  async function handleSignUp() {
-    if (confirmPasswordRef.current.value === passwordRef.current.value) {
-      setIsSubmitted(true);
-      setSignUpPasswordCompare({
-        ...signUpPasswordCompare,
-        isDirty: true,
-        isSame: true,
-      });
-      const payload = {
-        name: nameRef.current.value,
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
-      };
-      console.log(payload);
-      // eslint-disable-next-line
-      const [err, res] = await to(dispatch(signUp(payload)));
-      // if sign up fails
-      if (err) {
-        setSignUpPasswordCompare({
-          ...signUpPasswordCompare,
-          isDirty: true,
-        });
-        setIsSignUpErr(true);
-        setIsSubmitted(false);
-        // once sign up passes
-      }
-      if (res) {
-        setShowSignUp(false);
-        resetAllExceptShowSignUpAndShow();
-        console.log(res);
-        dispatch(
-          addToastNotificationArr(
-            `Verification email sent to ${res.payload.email}.`
-          )
-        );
-      }
-
-      // const res = await dispatch(signUp(payload));
-      // console.log(res?.meta?.requestStatus);
-    } else {
-      setSignUpPasswordCompare({
-        ...signUpPasswordCompare,
-        isSame: false,
-        isDirty: true,
-      });
-      setIsSubmitted(false);
+  function emailVerified() {
+    if (isConfirmEmailLoading) {
+      return (
+        <div className="popover-box">
+          <Spinner
+            animation="border"
+            id="confirm-email-loading-spinner"
+          ></Spinner>
+        </div>
+      );
     }
-  }
-
-  function handleSignUpPasswordCompare(e) {
-    console.log(signUpPasswordCompare);
-    console.log(passwordRef.current.value, confirmPasswordRef.current.value);
-    if (signUpPasswordCompare.isDirty) {
-      passwordRef.current.value !== confirmPasswordRef.current.value
-        ? setSignUpPasswordCompare({
-            ...signUpPasswordCompare,
-            isSame: false,
-            password: passwordRef.current.value,
-            confirmPassword: confirmPasswordRef.current.value,
-          })
-        : setSignUpPasswordCompare({
-            ...signUpPasswordCompare,
-            isSame: true,
-            password: passwordRef.current.value,
-            confirmPassword: confirmPasswordRef.current.value,
-          });
-    } else {
-      const { name, value } = e.target;
-      setSignUpPasswordCompare({ ...signUpPasswordCompare, [name]: value });
-    }
+    return (
+      <div className="popover-box">
+        <div className="verified-text">
+          Email verified!{" "}
+          <div
+            className="_popover-state-link"
+            onClick={() => setPopoverStateHelper("loginState")}
+          >
+            Please login.
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div ref={ref}>
-      <div onClick={handlePopoverClick} className="right-link">
+      <div
+        onClick={handlePopoverClick}
+        className="right-link"
+        ref={signUpLinkRef}
+      >
         Sign Up/Login
       </div>
       <Overlay
@@ -282,7 +369,15 @@ function SignUpPopover() {
         containerPadding={width < 300 ? 34 : width < 420 ? 20 : 25}
       >
         <Popover className="popover-container">
-          <Popover.Body>{showSignUp ? signUpForm() : loginForm()}</Popover.Body>
+          <Popover.Body>
+            {showPopoverState.signUpState
+              ? signUpForm()
+              : showPopoverState.loginState
+              ? loginForm()
+              : showPopoverState.emailConfirmState
+              ? emailVerified()
+              : null}
+          </Popover.Body>
         </Popover>
       </Overlay>
     </div>
