@@ -1,8 +1,9 @@
+import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Form, Overlay, Popover, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { addToastNotificationArr } from "../../store/slices/state.slice";
-import { confirmEmail, signUp } from "../../store/slices/user.slice";
+import { signUp } from "../../store/slices/user.slice";
 import { to } from "../../utils/promiseUtil";
 import useWindowDimension from "../../utils/useWindowDimension";
 import "./SignUpPopover.scss";
@@ -28,6 +29,8 @@ function SignUpPopover() {
   const nameRef = useRef("");
   const passwordRef = useRef("");
   const confirmPasswordRef = useRef("");
+  const loginEmailRef = useRef("");
+  const loginPasswordRef = useRef("");
 
   const { width } = useWindowDimension();
   const dispatch = useDispatch();
@@ -94,29 +97,14 @@ function SignUpPopover() {
     const token = window.location.hash.substring(
       window.location.hash.indexOf("=") + 1
     );
-    try {
-      const response = await fetch("http://localhost:8888/api/confirmEmail", {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, *cors, same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, *same-origin, omit
-        headers: {
-          "Content-Type": "application/json",
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        redirect: "follow", // manual, *follow, error
-        referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        body: JSON.stringify({ token: token }), // body data type must match "Content-Type" header
-      });
-
-      // if (err) {
-      //   console.log("err ????????????????????? ", err);
-      // }
-      console.log("res ??????????????? ", response);
-      return response.json(); // parses JSON response into native JavaScript objects
-    } catch (err) {
-      console.log("please :/");
+    const [err, res] = await to(
+      axios.post("api/confirmEmail", { token: token })
+    );
+    if (err) {
+      console.error("err |||||||||| ", err.response.data);
+      console.error("err |||||||||| ", err.response.status);
     }
+    console.log("res |||||||||||| ", res);
   }
 
   function handlePopoverClick(event) {
@@ -149,6 +137,8 @@ function SignUpPopover() {
         setIsSignUpErr(true);
         setIsSubmitted(false);
         // once sign up passes
+        console.error("err ||||||||||| ", err.response.status);
+        console.error("err ||||||||||| ", err.response.data);
       }
       if (!!res) {
         setPopoverStateHelper("loginState");
@@ -156,7 +146,7 @@ function SignUpPopover() {
         console.log(res);
         dispatch(
           addToastNotificationArr(
-            `Verification email sent to ${res.payload.email}.`
+            `Verification email sent to ${res.payload?.email}.`
           )
         );
       }
@@ -168,6 +158,19 @@ function SignUpPopover() {
       });
       setIsSubmitted(false);
     }
+  }
+
+  async function handleLogin() {
+    const payload = {
+      email: loginEmailRef.current.value,
+      password: loginPasswordRef.current.value,
+    };
+    const [err, res] = to(axios.post("api/login", payload));
+    if (err) {
+      console.error(err.response.status);
+      console.error(err.response.data);
+    }
+    console.log("res baby |||||||||||||||||| ", res);
   }
 
   function handleSignUpPasswordCompare(e) {
@@ -290,6 +293,7 @@ function SignUpPopover() {
               type="email"
               className="signup-form-control"
               required
+              ref={loginEmailRef}
               // isInvalid={true}
             ></Form.Control>
             <Form.Label className="signup-label">Password</Form.Label>
@@ -298,6 +302,7 @@ function SignUpPopover() {
               className="signup-form-control"
               required
               autoComplete="on"
+              ref={loginPasswordRef}
               // isInvalid={true}
             ></Form.Control>
             {/* <div className="signup-error">
@@ -318,7 +323,9 @@ function SignUpPopover() {
             Don't have an account? Sign up.
           </div>
           <div className="signup-popover-button-container">
-            <div className="login-btn">Login</div>
+            <div className="login-btn" onClick={handleLogin}>
+              Login
+            </div>
             <div className="cancel-btn">Cancel</div>
           </div>
         </div>

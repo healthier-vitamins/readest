@@ -16,18 +16,18 @@ export const signUp = createAsyncThunk("signUp", async (payload, thunkApi) => {
 export const confirmEmail = createAsyncThunk(
   "confirmEmail",
   async (payload, thunkApi) => {
-    try {
-      const response = await axios.get("api/confirmEmail");
-      console.log("res ??????????????? ", response);
-      return response.data;
-    } catch (err) {
-      console.log("err ????????????????????? ", err);
-      thunkApi.rejectWithValue(err);
-    }
+    // try {
+    //   const response = await axios.get("api/confirmEmail");
+    //   console.log("res ??????????????? ", response);
+    //   return response.data;
+    // } catch (err) {
+    //   console.log("err ????????????????????? ", err);
+    //   thunkApi.rejectWithValue(err);
+    // }
 
-    // const resp = await axios.post("api/confirmEmail", payload);
-    // console.log("res ??????????????? ", resp);
-    // return resp.data;
+    const resp = await axios.post("api/confirmEmail", payload);
+    console.log("res ??????????????? ", resp);
+    return resp.data;
 
     // const resp = await axios
     //   .post("api/confirmEmail", payload)
