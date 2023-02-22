@@ -3,8 +3,11 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Form, Overlay, Popover, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { addToastNotificationArr } from "../../store/slices/state.slice";
-import { signUp } from "../../store/slices/user.slice";
-import { to } from "../../utils/promiseUtil";
+// import { addToastNotificationArr } from "../../store/slices/state.slice";
+// import { signUp } from "../../store/slices/user.slice";
+
+import { postData } from "../../utils/apiUtils.ts";
+import { resolvePromise, to } from "../../utils/promiseUtil";
 import useWindowDimension from "../../utils/useWindowDimension";
 import "./SignUpPopover.scss";
 
@@ -112,7 +115,7 @@ function SignUpPopover() {
     setTarget(event.target);
   }
 
-  async function handleSignUp() {
+  function handleSignUp() {
     if (confirmPasswordRef.current.value === passwordRef.current.value) {
       setIsSubmitted(true);
       setSignUpPasswordCompare({
@@ -126,30 +129,56 @@ function SignUpPopover() {
         password: passwordRef.current.value,
       };
       console.log(payload);
+
+      axios
+        .post("/api/signUp", payload)
+        .then((res) => console.log(res))
+        .catch((err) => console.error(err));
+
+      // .then((res) => {
+      //   setPopoverStateHelper("loginState");
+      //   resetAllExceptShowPopoverStateAndShow();
+      //   console.log("resresresrserseresresres ", res);
+      //   dispatch(
+      //     addToastNotificationArr(
+      //       `Verification email sent to ${res.data.email}.`
+      //     )
+      //   );
+      // })
+      // .catch((err) => {
+      //   setSignUpPasswordCompare({
+      //     ...signUpPasswordCompare,
+      //     isDirty: true,
+      //   });
+      //   setIsSignUpErr(true);
+      //   setIsSubmitted(false);
+      //   console.error("errorrororororor ", err);
+      // });
+
       // eslint-disable-next-line
-      const [err, res] = await to(dispatch(signUp(payload)));
+      // const [err, res] = await to(dispatch(signUp(payload)));
       // if sign up fails
-      if (!!err) {
-        setSignUpPasswordCompare({
-          ...signUpPasswordCompare,
-          isDirty: true,
-        });
-        setIsSignUpErr(true);
-        setIsSubmitted(false);
-        // once sign up passes
-        console.error("err ||||||||||| ", err.response.status);
-        console.error("err ||||||||||| ", err.response.data);
-      }
-      if (!!res) {
-        setPopoverStateHelper("loginState");
-        resetAllExceptShowPopoverStateAndShow();
-        console.log(res);
-        dispatch(
-          addToastNotificationArr(
-            `Verification email sent to ${res.payload?.email}.`
-          )
-        );
-      }
+      // if (!!err) {
+      //   setSignUpPasswordCompare({
+      //     ...signUpPasswordCompare,
+      //     isDirty: true,
+      //   });
+      //   setIsSignUpErr(true);
+      //   setIsSubmitted(false);
+      //   // once sign up passes
+      //   console.error("err ||||||||||| ", err.response.status);
+      //   console.error("err ||||||||||| ", err.response.data);
+      // }
+      // if (!!res) {
+      //   setPopoverStateHelper("loginState");
+      //   resetAllExceptShowPopoverStateAndShow();
+      //   console.log(res);
+      //   dispatch(
+      //     addToastNotificationArr(
+      //       `Verification email sent to ${res.payload?.email}.`
+      //     )
+      //   );
+      // }
     } else {
       setSignUpPasswordCompare({
         ...signUpPasswordCompare,
@@ -165,7 +194,7 @@ function SignUpPopover() {
       email: loginEmailRef.current.value,
       password: loginPasswordRef.current.value,
     };
-    const [err, res] = to(axios.post("api/login", payload));
+    const [err, res] = await to(axios.post("api/login", payload));
     if (err) {
       console.error(err.response.status);
       console.error(err.response.data);
@@ -210,7 +239,7 @@ function SignUpPopover() {
             ></Form.Control>
             <Form.Label className="signup-label">Email</Form.Label>
             <Form.Control
-              type="text"
+              type="email"
               className="signup-form-control"
               required
               ref={emailRef}
