@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
 import GoTrue from "gotrue-js";
 import { to } from "../../src/utils/promiseUtil";
-global.fetch = require("node-fetch");
+// global.fetch = require("node-fetch");
 
 exports.handler = async function (event, context) {
   const { email, password } = JSON.parse(event.body);
@@ -11,11 +11,6 @@ exports.handler = async function (event, context) {
     audience: "",
     setCookie: "true",
   });
-  // const auth = new GoTrue({
-  //   APIUrl: "https://localhost:8888/.netlify/identity",
-  //   audience: "",
-  //   setCookie: "true",
-  // });
 
   const [err, data] = await to(auth.signup(email, password));
   if (err) {
