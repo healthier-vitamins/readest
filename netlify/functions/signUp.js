@@ -1,6 +1,7 @@
 import { HttpStatusCode } from "axios";
 import GoTrue from "gotrue-js";
 import { to } from "../../src/utils/promiseUtil";
+global.fetch = require("node-fetch");
 
 exports.handler = async function (event, context) {
   const { email, password } = JSON.parse(event.body);
