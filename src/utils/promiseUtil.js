@@ -8,17 +8,15 @@ function to(promise) {
     });
 }
 
-async function axiosTo(axios) {
-  try {
-    const res = await axios;
-    if (res.status === 200) {
-      console.log(res);
-      return res.data;
-    }
-  } catch (err) {
-    console.error(err);
-    return err;
-  }
+// temporary - to be replace with axios interceptors
+function axiosTo(axios) {
+  return axios
+    .then((res) => {
+      return [null, res.data];
+    })
+    .catch((err) => {
+      return [err.response];
+    });
 }
 
 function resolvePromise(promise) {

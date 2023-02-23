@@ -16,7 +16,7 @@ function Toaster({ noti }) {
         autohide
         animation
         transition={Fade}
-        delay={2500}
+        delay={4000}
       >
         <Toast.Body>
           <div className="toast-body-text">{noti}</div>

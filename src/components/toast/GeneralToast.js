@@ -20,11 +20,11 @@ function SavedWordToast() {
     if (toastNotificationArr.length === 1 && toastAppeared.length === 1) {
       setTimeout(() => {
         dispatch(removeToastNotificationArr());
-      }, 5500);
+      }, 10000);
       return () => {
         clearTimeout(() => {
           dispatch(removeToastNotificationArr());
-        }, 5500);
+        }, 10000);
       };
     }
   }

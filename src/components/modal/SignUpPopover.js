@@ -1,13 +1,11 @@
 import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Form, Overlay, Popover, Spinner } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import Cookies from "universal-cookie";
 import { addToastNotificationArr } from "../../store/slices/state.slice";
-// import { addToastNotificationArr } from "../../store/slices/state.slice";
-// import { signUp } from "../../store/slices/user.slice";
 
-import { postData } from "../../utils/apiUtils.ts";
-import { resolvePromise, to } from "../../utils/promiseUtil";
+import { axiosTo } from "../../utils/promiseUtil";
 import useWindowDimension from "../../utils/useWindowDimension";
 import "./SignUpPopover.scss";
 
@@ -37,10 +35,16 @@ function SignUpPopover() {
 
   const { width } = useWindowDimension();
   const dispatch = useDispatch();
-  const { isSignUpLoading, isConfirmEmailLoading } = useSelector(
-    (state) => state.user
-  );
-  const [isSignUpErr, setIsSignUpErr] = useState(false);
+  const [errorState, setErrorState] = useState({
+    signUpErr: false,
+    loginErr: false,
+  });
+  const [loadingState, setLoadingState] = useState({
+    signUp: true,
+    confirmEmail: true,
+    login: true,
+  });
+  const cookies = new Cookies();
 
   function resetAllExceptShowPopoverStateAndShow() {
     setSignUpPasswordCompare({
@@ -49,8 +53,16 @@ function SignUpPopover() {
       isDirty: false,
       isSame: false,
     });
-    setIsSignUpErr(false);
+    setErrorState({
+      loginErr: false,
+      signUpErr: false,
+    });
     setIsSubmitted(false);
+    setLoadingState({
+      confirmEmail: true,
+      login: true,
+      signUp: true,
+    });
   }
 
   function setPopoverStateHelper(stateToTurnOn) {
@@ -100,14 +112,31 @@ function SignUpPopover() {
     const token = window.location.hash.substring(
       window.location.hash.indexOf("=") + 1
     );
-    const [err, res] = await to(
+    // eslint-disable-next-line
+    const [err, res] = await axiosTo(
       axios.post("api/confirmEmail", { token: token })
     );
     if (err) {
-      console.error("err |||||||||| ", err.response.data);
-      console.error("err |||||||||| ", err.response.status);
+      setLoadingState({
+        ...loadingState,
+        confirmEmail: false,
+      });
+
+      console.error(err);
+      if (err.data === "User not found") {
+        dispatch(
+          addToastNotificationArr(`${err.data}, perhaps email is in use.`)
+        );
+      } else {
+        dispatch(addToastNotificationArr(err.data));
+      }
+      setShow(false);
+      resetAllExceptShowPopoverStateAndShow();
     }
-    console.log("res |||||||||||| ", res);
+    setLoadingState({
+      ...loadingState,
+      confirmEmail: false,
+    });
   }
 
   function handlePopoverClick(event) {
@@ -115,7 +144,7 @@ function SignUpPopover() {
     setTarget(event.target);
   }
 
-  function handleSignUp() {
+  async function handleSignUp() {
     if (confirmPasswordRef.current.value === passwordRef.current.value) {
       setIsSubmitted(true);
       setSignUpPasswordCompare({
@@ -130,55 +159,32 @@ function SignUpPopover() {
       };
       console.log(payload);
 
-      axios
-        .post("/api/signUp", payload)
-        .then((res) => console.log(res))
-        .catch((err) => console.error(err));
+      const [err, res] = await axiosTo(axios.post("/api/signUp", payload));
 
-      // .then((res) => {
-      //   setPopoverStateHelper("loginState");
-      //   resetAllExceptShowPopoverStateAndShow();
-      //   console.log("resresresrserseresresres ", res);
-      //   dispatch(
-      //     addToastNotificationArr(
-      //       `Verification email sent to ${res.data.email}.`
-      //     )
-      //   );
-      // })
-      // .catch((err) => {
-      //   setSignUpPasswordCompare({
-      //     ...signUpPasswordCompare,
-      //     isDirty: true,
-      //   });
-      //   setIsSignUpErr(true);
-      //   setIsSubmitted(false);
-      //   console.error("errorrororororor ", err);
-      // });
+      if (err) {
+        setLoadingState({
+          ...loadingState,
+          signUp: false,
+        });
+        setErrorState({
+          ...errorState,
+          signUpErr: true,
+        });
+        setIsSubmitted(false);
+        dispatch(addToastNotificationArr(err.data));
+      }
 
-      // eslint-disable-next-line
-      // const [err, res] = await to(dispatch(signUp(payload)));
-      // if sign up fails
-      // if (!!err) {
-      //   setSignUpPasswordCompare({
-      //     ...signUpPasswordCompare,
-      //     isDirty: true,
-      //   });
-      //   setIsSignUpErr(true);
-      //   setIsSubmitted(false);
-      //   // once sign up passes
-      //   console.error("err ||||||||||| ", err.response.status);
-      //   console.error("err ||||||||||| ", err.response.data);
-      // }
-      // if (!!res) {
-      //   setPopoverStateHelper("loginState");
-      //   resetAllExceptShowPopoverStateAndShow();
-      //   console.log(res);
-      //   dispatch(
-      //     addToastNotificationArr(
-      //       `Verification email sent to ${res.payload?.email}.`
-      //     )
-      //   );
-      // }
+      if (res) {
+        setLoadingState({
+          ...loadingState,
+          signUp: false,
+        });
+        setPopoverStateHelper("loginState");
+        resetAllExceptShowPopoverStateAndShow();
+        dispatch(
+          addToastNotificationArr(`Verification email sent to ${res?.email}.`)
+        );
+      }
     } else {
       setSignUpPasswordCompare({
         ...signUpPasswordCompare,
@@ -190,16 +196,43 @@ function SignUpPopover() {
   }
 
   async function handleLogin() {
+    console.log("is submited before login ??????????????????? ", isSubmitted);
+    setIsSubmitted(true);
     const payload = {
       email: loginEmailRef.current.value,
       password: loginPasswordRef.current.value,
     };
-    const [err, res] = await to(axios.post("api/login", payload));
+    const [err, res] = await axiosTo(axios.post("api/login", payload));
     if (err) {
-      console.error(err.response.status);
-      console.error(err.response.data);
+      setLoadingState({
+        ...loadingState,
+        login: false,
+      });
+      setErrorState({
+        ...errorState,
+        loginErr: true,
+      });
+      console.error(err);
+      dispatch(addToastNotificationArr(err.data));
     }
     console.log("res baby |||||||||||||||||| ", res);
+    cookies.set("access_token", res.token.access_token, {
+      maxAge: 3600,
+      sameSite: "lax",
+      path: "/",
+    });
+    cookies.set("refresh_token", res.token.refresh_token, {
+      maxAge: 3600,
+      sameSite: "lax",
+      path: "/",
+    });
+    setLoadingState({
+      ...loadingState,
+      login: false,
+    });
+    setShow(false);
+    setTarget(signUpLinkRef);
+    resetAllExceptShowPopoverStateAndShow();
   }
 
   function handleSignUpPasswordCompare(e) {
@@ -275,12 +308,12 @@ function SignUpPopover() {
           </Form.Group>
         </Form>
         <div className="links-container">
-          {isSignUpErr && !!signUpPasswordCompare.isDirty && (
+          {errorState.signUpErr && signUpPasswordCompare.isDirty && (
             <div className="signup-error-msg">
               Something went wrong, please try again later.
             </div>
           )}
-          {!signUpPasswordCompare.isSame && !!signUpPasswordCompare.isDirty && (
+          {!signUpPasswordCompare.isSame && signUpPasswordCompare.isDirty && (
             <div className="signup-error-msg">Passwords do not match.</div>
           )}
           <div
@@ -294,10 +327,10 @@ function SignUpPopover() {
           </div>
           <div className="signup-popover-button-container">
             <div className="login-btn" onClick={handleSignUp}>
-              {isSignUpLoading &&
-                !!signUpPasswordCompare.isDirty &&
-                !!signUpPasswordCompare.isSame &&
-                !!isSubmitted && (
+              {loadingState.signUp &&
+                signUpPasswordCompare.isDirty &&
+                signUpPasswordCompare.isSame &&
+                isSubmitted && (
                   <Spinner
                     animation="border"
                     id="signup-loading-spinner"
@@ -334,11 +367,13 @@ function SignUpPopover() {
               ref={loginPasswordRef}
               // isInvalid={true}
             ></Form.Control>
-            {/* <div className="signup-error">
+            {errorState.loginErr && isSubmitted && (
+              <div className="signup-error">
                 <small className="signup-error-msg">
                   Username or password is invalid.
                 </small>
-              </div> */}
+              </div>
+            )}
           </Form.Group>
         </Form>
         <div className="links-container">
@@ -353,6 +388,12 @@ function SignUpPopover() {
           </div>
           <div className="signup-popover-button-container">
             <div className="login-btn" onClick={handleLogin}>
+              {loadingState.login && isSubmitted && (
+                <Spinner
+                  animation="border"
+                  id="signup-loading-spinner"
+                ></Spinner>
+              )}{" "}
               Login
             </div>
             <div className="cancel-btn">Cancel</div>
@@ -363,7 +404,7 @@ function SignUpPopover() {
   }
 
   function emailVerified() {
-    if (isConfirmEmailLoading) {
+    if (loadingState.confirmEmail) {
       return (
         <div className="popover-box">
           <Spinner
@@ -373,6 +414,7 @@ function SignUpPopover() {
         </div>
       );
     }
+
     return (
       <div className="popover-box">
         <div className="verified-text">
