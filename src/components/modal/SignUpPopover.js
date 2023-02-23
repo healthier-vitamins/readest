@@ -8,6 +8,7 @@ import { addToastNotificationArr } from "../../store/slices/state.slice";
 import { axiosTo } from "../../utils/promiseUtil";
 import useWindowDimension from "../../utils/useWindowDimension";
 import "./SignUpPopover.scss";
+global.fetch = require("node-fetch");
 
 function SignUpPopover() {
   const [show, setShow] = useState(false);
