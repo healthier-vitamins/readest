@@ -8,7 +8,7 @@ function to(promise) {
     });
 }
 
-// temporary - to be replace with axios interceptors
+/** @TODO to be replace with axios interceptors */
 function axiosTo(axios) {
   return axios
     .then((res) => {

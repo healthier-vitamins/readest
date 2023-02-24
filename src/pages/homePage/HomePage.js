@@ -2,7 +2,7 @@ import WordDefinition from "../../components/wordDefinition/WordDefinition";
 import "./HomePage.scss";
 import SideNavBar from "../../components/sideNavBar/SideNavBar";
 import { useDispatch, useSelector } from "react-redux";
-import React from "react";
+import React, { useEffect } from "react";
 import { changeActiveTab } from "../../store/slices/book.slice";
 import { bookSchema } from "../../utils/bookUtil.ts";
 // import WordPage from "../wordPage/WordPage";
@@ -11,6 +11,10 @@ import WordPage from "../wordPage/WordPage";
 import useWindowDimension, {
   setDynamicHeight,
 } from "../../utils/useWindowDimension";
+import Cookies from "universal-cookie";
+import { userLoggedIn } from "../../store/slices/user.slice";
+
+const cookies = new Cookies();
 
 function HomePage() {
   const { bookSelection, selectedTab } = useSelector((state) => {
@@ -20,6 +24,18 @@ function HomePage() {
   const dispatch = useDispatch();
 
   let { width, height } = useWindowDimension();
+
+  useEffect(() => {
+    const token = cookies.get("token");
+    if (token) {
+      const payload = {
+        email: "",
+        token: token,
+        refreshToken: "",
+      };
+      dispatch(userLoggedIn(payload));
+    }
+  }, [dispatch]);
 
   function activeTabsClass(active) {
     if (active) {
@@ -66,6 +82,7 @@ function HomePage() {
       </React.Fragment>
     );
   }
+
   function handleOffCanvasStyle(payload) {
     // change sidebar width based on mobile view
     const sidebarWidth = width < 768 ? 12 : 17;

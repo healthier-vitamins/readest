@@ -4,6 +4,7 @@ import { Form, Overlay, Popover, Spinner } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import Cookies from "universal-cookie";
 import { addToastNotificationArr } from "../../store/slices/state.slice";
+import { userLoggedIn } from "../../store/slices/user.slice";
 
 import { axiosTo } from "../../utils/promiseUtil";
 import useWindowDimension from "../../utils/useWindowDimension";
@@ -45,7 +46,6 @@ function SignUpPopover() {
     confirmEmail: true,
     login: true,
   });
-  const cookies = new Cookies();
 
   function resetAllExceptShowPopoverStateAndShow() {
     setSignUpPasswordCompare({
@@ -64,6 +64,16 @@ function SignUpPopover() {
       login: true,
       signUp: true,
     });
+  }
+
+  function togglePopover(open) {
+    if (open) {
+      setShow(true);
+      setTarget(signUpLinkRef);
+    } else {
+      setShow(false);
+      setTarget(signUpLinkRef);
+    }
   }
 
   function setPopoverStateHelper(stateToTurnOn) {
@@ -204,6 +214,7 @@ function SignUpPopover() {
       password: loginPasswordRef.current.value,
     };
     const [err, res] = await axiosTo(axios.post("api/login", payload));
+    // const [err, res] = await dispatch(login(payload));
     if (err) {
       setLoadingState({
         ...loadingState,
@@ -217,22 +228,18 @@ function SignUpPopover() {
       dispatch(addToastNotificationArr(err.data));
     }
     console.log("res baby |||||||||||||||||| ", res);
-    cookies.set("access_token", res.token.access_token, {
-      maxAge: 3600,
-      sameSite: "lax",
-      path: "/",
-    });
-    cookies.set("refresh_token", res.token.refresh_token, {
-      maxAge: 3600,
-      sameSite: "lax",
-      path: "/",
-    });
+
+    const loginPayload = {
+      token: res.token.access_token,
+      refreshToken: res.token.refresh_token,
+      email: res.email,
+    };
+    dispatch(userLoggedIn(loginPayload));
     setLoadingState({
       ...loadingState,
       login: false,
     });
-    setShow(false);
-    setTarget(signUpLinkRef);
+    togglePopover(false);
     resetAllExceptShowPopoverStateAndShow();
   }
 

@@ -5,7 +5,7 @@
 .top-navbar {
   background-color: $web-color;
   display: flex;
-  justify-content: center;
+  // justify-content: center;
   padding: 0.2rem 0rem 0.2rem 0rem;
 }
 
@@ -45,6 +45,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  padding-left: 0.7rem;
 }
 
 .arrow-head-box {

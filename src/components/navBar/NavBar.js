@@ -17,9 +17,14 @@ function NavBar() {
   return (
     <div>
       <div className="top-navbar">
+        <div className="left-box"></div>
         <Link className="center-link" to={"/"}>
           <span className="title-span">readest</span>
         </Link>
+        <div className="right-box">
+
+          
+        </div>
       </div>
       <div className="bottom-navbar">
         <div className="left-box">
