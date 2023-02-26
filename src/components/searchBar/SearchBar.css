@@ -13,7 +13,11 @@ input:focus {
   /* border: 2px solid #719ece;
   box-shadow: 0 0 1px #719ece; */
   outline: rgb(238, 230, 223) 3px solid;
-  /* b8cee9 */
+  border-color: rgb(238, 230, 223);
+  box-shadow: none;
+  -webkit-outline: rgb(238, 230, 223) 3px solid;
+  -webkit-border-color: rgb(238, 230, 223);
+  -webkit-box-shadow: none;
 }
 
 .dropdown-list {
