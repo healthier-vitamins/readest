@@ -18,6 +18,7 @@ input:focus {
   -webkit-outline: rgb(238, 230, 223) 3px solid;
   -webkit-border-color: rgb(238, 230, 223);
   -webkit-box-shadow: none;
+  
 }
 
 .dropdown-list {

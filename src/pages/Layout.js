@@ -1,12 +1,20 @@
+import { useEffect } from "react";
 import { Outlet } from "react-router";
+import Cookies from "universal-cookie";
 import CreateBookModal from "../components/modal/CreateBookModal";
 import SaveWordModal from "../components/modal/SaveWordModal";
 import NavBar from "../components/navBar/NavBar";
 import useWindowDimension from "../utils/useWindowDimension";
+import { getEmailFromToken, isTokenExpired } from "../utils/cryptography.ts";
+import { useDispatch } from "react-redux";
+import { userLoggedIn } from "../store/slices/user.slice";
 import "./Layout.css";
+
+const cookies = new Cookies();
 
 function Layout() {
   const { height } = useWindowDimension();
+  const dispatch = useDispatch();
 
   function heightLogic() {
     console.log(height);
@@ -14,6 +22,24 @@ function Layout() {
       height: height,
     };
   }
+
+  useEffect(() => {
+    const token = cookies.get("token");
+    if (token) {
+      const isExpired = isTokenExpired(token);
+      if (!isExpired) {
+        const email = getEmailFromToken(token);
+        if (token) {
+          const payload = {
+            email: email,
+            token: token,
+            refreshToken: "",
+          };
+          dispatch(userLoggedIn(payload));
+        }
+      }
+    }
+  }, [dispatch]);
 
   return (
     <>

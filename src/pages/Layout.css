@@ -2,14 +2,14 @@
   /* border: 1px solid black; */
   /* position: sticky; */
   top: 0;
-  height: 6rem;
+  height: 96px;
   z-index: 3;
 }
 
 .outlet {
   /* border: 1px solid orange; */
   /* position: sticky; */
-  top: 6rem;
+  top: calc(100% - 96px);
   /* z-index: -1; */
 }
 

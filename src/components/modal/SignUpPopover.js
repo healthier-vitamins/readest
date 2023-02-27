@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Form, Overlay, Popover, Spinner } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import Cookies from "universal-cookie";
 import { addToastNotificationArr } from "../../store/slices/state.slice";
 import { userLoggedIn } from "../../store/slices/user.slice";
 
@@ -439,7 +438,7 @@ function SignUpPopover() {
   }
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className="test_popover-wrapper">
       <div
         onClick={handlePopoverClick}
         className="right-link"
@@ -466,6 +465,15 @@ function SignUpPopover() {
           </Popover.Body>
         </Popover>
       </Overlay>
+      {/* <div className="test_popover-container">
+        {showPopoverState.signUpState
+          ? signUpForm()
+          : showPopoverState.loginState
+          ? loginForm()
+          : showPopoverState.emailConfirmState
+          ? emailVerified()
+          : null}
+      </div> */}
     </div>
   );
 }
