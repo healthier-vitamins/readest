@@ -11,7 +11,6 @@ import useWindowDimension, {
 function WordPage() {
   const { selectedTab } = useSelector((state) => state.book);
   const { allBookWord, isGetWordLoading } = useSelector((state) => state.word);
-  const { offCanvasModalState } = useSelector((state) => state.state);
   const dispatch = useDispatch();
 
   let { height } = useWindowDimension();
