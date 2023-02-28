@@ -11,10 +11,10 @@ import useWindowDimension, {
 function WordPage() {
   const { selectedTab } = useSelector((state) => state.book);
   const { allBookWord, isGetWordLoading } = useSelector((state) => state.word);
+  const { offCanvasModalState } = useSelector((state) => state.state);
   const dispatch = useDispatch();
 
-  // eslint-disable-next-line
-  let { width, height } = useWindowDimension();
+  let { height } = useWindowDimension();
 
   useEffect(() => {
     const payloadObj = {
@@ -66,7 +66,7 @@ function WordPage() {
     >
       {!isGetWordLoading ? (
         allBookWord.results.length < 1 ? (
-          "No words saved."
+          <div className="no-words">No words saved</div>
         ) : (
           allBookWord.results.map((wordObj, index) =>
             RenderWordDef(wordObj, index)
