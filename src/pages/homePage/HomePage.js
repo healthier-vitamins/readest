@@ -9,9 +9,7 @@ import WordPage from "../wordPage/WordPage";
 import useWindowDimension, {
   setDynamicHeight,
 } from "../../utils/useWindowDimension";
-
-const MOBILE_MIN_WIDTH = 768;
-const MOBILE_FOLD_WIDTH = 280;
+import { globalVars } from "../../utils/globalVars.ts";
 
 function HomePage() {
   const { bookSelection, selectedTab } = useSelector((state) => {
@@ -70,7 +68,7 @@ function HomePage() {
 
   function offCanvasStyleMapper(payload) {
     // change sidebar width based on mobile view
-    const sidebarWidth = width <= MOBILE_FOLD_WIDTH ? 12 : 18;
+    const sidebarWidth = width <= globalVars.MOBILE_FOLD_WIDTH ? 12 : 18;
     // convert to rem
     const fullscreenWidth = width / 16;
     const canvasOpenWidth = fullscreenWidth - sidebarWidth;
@@ -117,7 +115,7 @@ function HomePage() {
       case "container":
         return offCanvasModalState ? "_container-open" : "_container-close";
       case "definition":
-        if (width < MOBILE_MIN_WIDTH) {
+        if (width < globalVars.MOBILE_MIN_WIDTH) {
           return offCanvasModalState ? "_definition-open" : "_definition-close";
         }
         return "";
