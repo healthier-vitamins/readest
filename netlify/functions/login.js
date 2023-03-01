@@ -1,9 +1,11 @@
 import { HttpStatusCode } from "axios";
 import { to } from "../../src/utils/promiseUtil";
-const { default: GoTrue } = require("gotrue-js");
+import GoTrue from "gotrue-js";
+
+const { NETLIFY_IDENTITY_URL } = process.env;
 
 const auth = new GoTrue({
-  APIUrl: "https://readest.netlify.app/.netlify/identity",
+  APIUrl: NETLIFY_IDENTITY_URL,
   audience: "",
   setCookie: "true",
 });

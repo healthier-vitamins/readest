@@ -3,6 +3,7 @@
 .right-link {
   font-weight: 700;
   text-decoration: none;
+  // color: rgb(168, 140, 89);
   color: rgb(168, 140, 89);
   font-size: 15px;
   /* font-family: "roboto"; */
@@ -139,9 +140,9 @@
   max-width: 12.6rem;
 }
 
-.popover-container {
-  z-index: 4;
-}
+// .popover-container {
+//   z-index: 4;
+// }
 
 #signup-loading-spinner {
   height: 16px;
@@ -180,7 +181,7 @@
   }
 }
 
-.test_popover-container {
+.popover-container {
   background-color: rgb(255, 252, 252);
   width: 14rem;
   max-width: fit-content;
@@ -191,27 +192,32 @@
   padding: 0.8rem;
   position: absolute;
   right: 1.2rem;
-  margin-top: 1.2rem;
+  margin-top: 0.3rem;
   visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.27s ease-in-out
 }
 
-.test_popover-container:before {
-  position: absolute;
-  content: "";
-   // note
-   transition-duration: 0.3s;
-   transition-property: transform;
-}
+// .test_popover-container:before {
+//   position: absolute;
+//   // z-index: -1;
+//   content: "";
+//   right: 2rem;
+//   top: -8px;
+//   border-style: solid;
+//   border-width: 0 10px 10px 10px;
+//   border-color: transparent transparent black transparent;
+//   transition-duration: 0.3s;
+//   transition-property: transform;
+// }
 
-.test_popover-wrapper:hover .test_popover-container {
+.popover-show {
   z-index: 4;
   opacity: 1;
   visibility: visible;
-  transform: translate(0, -20px);
-  // transition: all 0.5s cubic-bezier(0.75, -0.02, 0.2, 0.97);
 }
 
-.test_popover-wrapper {
+.popover-wrapper {
   display: inline-block;
   // border: 1px solid black;
 }

@@ -2,16 +2,24 @@ import { Link } from "react-router-dom";
 import "./NavBar.scss";
 import SearchBar from "../searchBar/SearchBar";
 import { RxDoubleArrowRight } from "react-icons/rx";
+import { HiOutlineUserCircle } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleOffCanvasModal } from "../../store/slices/state.slice";
 import SignUpPopover from "../modal/SignUpPopover";
+import { userLoggedOut } from "../../store/slices/user.slice";
 
 function NavBar() {
   const dispatch = useDispatch();
   const { offCanvasModalState } = useSelector((state) => state.state);
-
+  const {
+    authentication: { isUserLoggedIn },
+  } = useSelector((state) => state.user);
   function handleOffCanvas() {
     dispatch(toggleOffCanvasModal());
+  }
+
+  function handleLogout() {
+    dispatch(userLoggedOut());
   }
 
   return (
@@ -22,8 +30,12 @@ function NavBar() {
           <span className="title-span">readest</span>
         </Link>
         <div className="right-box">
-
-          
+          {isUserLoggedIn && (
+            <>
+              <div className="vertical-line"></div>
+              <HiOutlineUserCircle className="user-icon"></HiOutlineUserCircle>
+            </>
+          )}
         </div>
       </div>
       <div className="bottom-navbar">
@@ -52,7 +64,13 @@ function NavBar() {
         </div>
         <SearchBar className="center-bar"></SearchBar>
         <div className="right-box">
-          <SignUpPopover></SignUpPopover>
+          {!isUserLoggedIn ? (
+            <SignUpPopover></SignUpPopover>
+          ) : (
+            <div className="right-link" onClick={handleLogout}>
+              Logout
+            </div>
+          )}
         </div>
       </div>
     </div>

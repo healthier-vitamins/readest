@@ -1,25 +1,22 @@
 import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Form, Overlay, Popover, Spinner } from "react-bootstrap";
+import { Form, Spinner } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addToastNotificationArr } from "../../store/slices/state.slice";
 import { userLoggedIn } from "../../store/slices/user.slice";
-
 import { axiosTo } from "../../utils/promiseUtil";
-import useWindowDimension from "../../utils/useWindowDimension";
+// import useWindowDimension from "../../utils/useWindowDimension";
 import "./SignUpPopover.scss";
-// global.fetch = require("node-fetch");
 
 function SignUpPopover() {
   const [show, setShow] = useState(false);
-  const [target, setTarget] = useState(null);
   const [showPopoverState, setShowPopoverState] = useState({
     signUpState: false,
     loginState: true,
     emailConfirmState: false,
   });
   const ref = useRef(null);
-  const signUpLinkRef = useRef(null);
+  // const signUpLinkRef = useRef(null);
   const [signUpPasswordCompare, setSignUpPasswordCompare] = useState({
     password: "",
     confirmPassword: "",
@@ -34,7 +31,7 @@ function SignUpPopover() {
   const loginEmailRef = useRef("");
   const loginPasswordRef = useRef("");
 
-  const { width } = useWindowDimension();
+  // const { width } = useWindowDimension();
   const dispatch = useDispatch();
   const [errorState, setErrorState] = useState({
     signUpErr: false,
@@ -63,16 +60,6 @@ function SignUpPopover() {
       login: true,
       signUp: true,
     });
-  }
-
-  function togglePopover(open) {
-    if (open) {
-      setShow(true);
-      setTarget(signUpLinkRef);
-    } else {
-      setShow(false);
-      setTarget(signUpLinkRef);
-    }
   }
 
   function setPopoverStateHelper(stateToTurnOn) {
@@ -112,7 +99,6 @@ function SignUpPopover() {
     if (window.location.hash.length > 1) {
       setPopoverStateHelper("emailConfirmState");
       setShow(true);
-      setTarget(signUpLinkRef);
       confirmEmailHelper();
     }
     // eslint-disable-next-line
@@ -151,7 +137,6 @@ function SignUpPopover() {
 
   function handlePopoverClick(event) {
     setShow(!show);
-    setTarget(event.target);
   }
 
   async function handleSignUp() {
@@ -238,7 +223,7 @@ function SignUpPopover() {
       ...loadingState,
       login: false,
     });
-    togglePopover(false);
+    setShow(false);
     resetAllExceptShowPopoverStateAndShow();
   }
 
@@ -437,16 +422,19 @@ function SignUpPopover() {
     );
   }
 
+  function popoverShowClassMapper() {
+    if (show) {
+      return "popover-show";
+    }
+    return "";
+  }
+
   return (
-    <div ref={ref} className="test_popover-wrapper">
-      <div
-        onClick={handlePopoverClick}
-        className="right-link"
-        ref={signUpLinkRef}
-      >
+    <div ref={ref} className={`popover-wrapper ${popoverShowClassMapper()}`}>
+      <div onClick={handlePopoverClick} className="right-link">
         Sign Up/Login
       </div>
-      <Overlay
+      {/* <Overlay
         show={show}
         target={target}
         placement="bottom-start"
@@ -464,8 +452,8 @@ function SignUpPopover() {
               : null}
           </Popover.Body>
         </Popover>
-      </Overlay>
-      {/* <div className="test_popover-container">
+      </Overlay> */}
+      <div className={`popover-container ${popoverShowClassMapper()}`}>
         {showPopoverState.signUpState
           ? signUpForm()
           : showPopoverState.loginState
@@ -473,7 +461,7 @@ function SignUpPopover() {
           : showPopoverState.emailConfirmState
           ? emailVerified()
           : null}
-      </div> */}
+      </div>
     </div>
   );
 }

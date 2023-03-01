@@ -60,6 +60,23 @@
   color: rgb(219, 212, 190);
 }
 
+.user-icon {
+  font-size: 25px;
+  color: rgb(252, 238, 213);
+}
+
+.vertical-line {
+  width: 0.13rem;
+  height: 68%;
+  background-color: rgb(252, 238, 213);
+  margin: 0rem 0.28rem 0rem 0.28rem;
+}
+
+.user-icon:hover {
+  cursor: pointer;
+  color: rgb(192, 181, 161);
+}
+
 @media screen and (min-width: 280px) and (max-width: 768px) {
   .right-box {
     // visibility: hidden;
