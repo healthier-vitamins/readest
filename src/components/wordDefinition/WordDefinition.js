@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import "./WordDefinition.css";
+import "./WordDefinition.scss";
 import { AiOutlineSave } from "react-icons/ai";
 import React from "react";
 import { toggleSaveWordModal } from "../../store/slices/state.slice";

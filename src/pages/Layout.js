@@ -8,6 +8,7 @@ import useWindowDimension from "../utils/useWindowDimension";
 import { getEmailFromToken, isTokenExpired } from "../utils/cryptography.ts";
 import { useDispatch } from "react-redux";
 import { userLoggedIn } from "../store/slices/user.slice";
+import GeneralToast from "../components/toast/GeneralToast";
 import "./Layout.css";
 
 const cookies = new Cookies();
@@ -53,6 +54,7 @@ function Layout() {
       </div>
       <CreateBookModal></CreateBookModal>
       <SaveWordModal></SaveWordModal>
+      <GeneralToast></GeneralToast>
     </>
   );
 }

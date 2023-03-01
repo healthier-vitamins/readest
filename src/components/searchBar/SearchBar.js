@@ -12,7 +12,7 @@ import {
   getWordDefinition,
   addChosenWordDefinition,
 } from "../../store/slices/word.slice";
-import "./SearchBar.css";
+import "./SearchBar.scss";
 
 function SearchBar() {
   const ref = useRef();

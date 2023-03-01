@@ -5,13 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import { changeActiveTab } from "../../store/slices/book.slice";
 import { bookSchema } from "../../utils/bookUtil.ts";
-import GeneralToast from "../../components/toast/GeneralToast";
 import WordPage from "../wordPage/WordPage";
 import useWindowDimension, {
   setDynamicHeight,
 } from "../../utils/useWindowDimension";
 
 const MOBILE_MIN_WIDTH = 768;
+const MOBILE_FOLD_WIDTH = 280;
 
 function HomePage() {
   const { bookSelection, selectedTab } = useSelector((state) => {
@@ -70,7 +70,7 @@ function HomePage() {
 
   function offCanvasStyleMapper(payload) {
     // change sidebar width based on mobile view
-    const sidebarWidth = width < MOBILE_MIN_WIDTH ? 12 : 17;
+    const sidebarWidth = width <= MOBILE_FOLD_WIDTH ? 12 : 18;
     // convert to rem
     const fullscreenWidth = width / 16;
     const canvasOpenWidth = fullscreenWidth - sidebarWidth;
@@ -79,6 +79,7 @@ function HomePage() {
       return offCanvasModalState
         ? {
             height: setDynamicHeight(height),
+            width: `${sidebarWidth}rem`,
           }
         : {
             height: setDynamicHeight(height),
@@ -116,7 +117,10 @@ function HomePage() {
       case "container":
         return offCanvasModalState ? "_container-open" : "_container-close";
       case "definition":
-        return offCanvasModalState ? "_definition-open" : "_definition-close";
+        if (width < MOBILE_MIN_WIDTH) {
+          return offCanvasModalState ? "_definition-open" : "_definition-close";
+        }
+        return "";
       default:
         return "";
     }
@@ -152,15 +156,19 @@ function HomePage() {
         <div className="tabs-selection">
           {bookSelection.map((obj, index) => RenderTabs(obj, index))}
         </div>
-        <div className="definition-container">
+        <div
+          className={`definition-container ${offCanvasClassMapper(
+            "definition"
+          )}`}
+          // style={offCanvasStyleMapper("definition")}
+        >
           {selectedTab.bookObj === "Definition" && (
             <WordDefinition></WordDefinition>
           )}
+          {checkSelectedPageLogic() && selectedTab.bookObj !== "Definition" && (
+            <WordPage></WordPage>
+          )}
         </div>
-        {checkSelectedPageLogic() && selectedTab.bookObj !== "Definition" ? (
-          <WordPage></WordPage>
-        ) : null}
-        <GeneralToast></GeneralToast>
       </div>
     </div>
   );

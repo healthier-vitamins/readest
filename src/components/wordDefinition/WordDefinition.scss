@@ -40,6 +40,15 @@
 
 @media screen and (min-width: 280px) and (max-width: 768px) {
   .word-definition-box {
-    width: 15rem;
+    min-width: 18rem;
+    max-width: 18rem;
+  }
+}
+
+// for fold
+@media screen and (min-width: 0px) and (max-width: 280px) {
+  .word-definition-box {
+    min-width: 13.5rem;
+    max-width: 13.5rem;
   }
 }
