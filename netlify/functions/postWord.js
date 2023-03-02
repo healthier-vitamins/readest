@@ -12,13 +12,15 @@ exports.handler = async function (event, context) {
   let bookDatabaseId;
   // const selectedBookDatabaseArr = [];
   // const results = [];
-  /*
+
+  /**
    * @typedef {Object} wordDef
    * @property {string} title
    * @property {string} abbreviation
    * @property {Object} senseArr
    * @property {Object} shortDef
    */
+
   // for (let bookId of selectedBookArr) {
   try {
     const response = await notion.blocks.children.list({
@@ -26,7 +28,7 @@ exports.handler = async function (event, context) {
     });
     bookDatabaseId = response.results[0].id;
   } catch (err) {
-    console.error(err.message)
+    console.error(err.message);
     return {
       statusCode: HttpStatusCode.InternalServerError,
       body: err.toString(),

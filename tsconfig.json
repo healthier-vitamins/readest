@@ -5,9 +5,11 @@
         "paths": {
             "class/*": ["class/*"]
         },
-        "target": "ES6"
+        "target": "ES6",
+        "esModuleInterop": true,
+        "moduleResolution": "node16"
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
     ]
 }

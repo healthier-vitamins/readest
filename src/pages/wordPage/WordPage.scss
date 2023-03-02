@@ -41,15 +41,25 @@
 }
 
 // for normal phones
-@media screen and (min-width: 280px) and (max-width: 768px) {
-  // .word-container {
-  //   justify-content: center;
-  // }
+@media screen and (min-width: 541px) and (max-width: 768px) {
+  .word-container {
+    justify-content: center;
+  }
 
   .word-page-definition-box {
     margin: 0rem 0rem 2rem 0rem;
   }
 }
+
+
+@media screen and (min-width: 280px) and (max-width: 541px) {
+  .word-page-definition-box {
+    max-width: 12.5rem;
+    min-width: 12.5rem;
+  }
+}
+
+
 
 // for fold
 @media screen and (min-width: 0px) and (max-width: 280px) {

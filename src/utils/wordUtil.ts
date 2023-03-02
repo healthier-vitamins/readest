@@ -1,4 +1,4 @@
-const wordSchema: wordSchemaInterface = {
+const wordSchema: WordSchema = {
   TITLE: "Name",
   STATUS: "STATUS",
   WORD: "WORD",
@@ -9,7 +9,7 @@ const wordSchema: wordSchemaInterface = {
   PARENT_BOOK: "PARENT_BOOK",
 };
 
-interface wordSchemaInterface {
+interface WordSchema {
   TITLE: string;
   STATUS: string;
   WORD: string;
@@ -24,7 +24,7 @@ interface wordSchemaInterface {
 //   wordSchema,
 // };
 
-export { wordSchema, wordSchemaInterface };
+export { wordSchema, WordSchema };
 
 // export const wordSchemaId: wordSchemaIdInterface = {
 //   TITLE: { id: "title", type: "title" },

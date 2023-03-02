@@ -7,14 +7,13 @@ import "./WordPage.scss";
 import useWindowDimension, {
   setDynamicHeight,
 } from "../../utils/useWindowDimension";
-import { globalVars } from "../../utils/globalVars.ts";
 
 function WordPage() {
   const { selectedTab } = useSelector((state) => state.book);
   const { allBookWord, isGetWordLoading } = useSelector((state) => state.word);
   const dispatch = useDispatch();
 
-  let { width, height } = useWindowDimension();
+  let { height } = useWindowDimension();
 
   useEffect(() => {
     const payloadObj = {
@@ -59,15 +58,9 @@ function WordPage() {
     );
   }
 
-  function mobileViewClassMapper() {
-    if (width <= globalVars.MOBILE_MIN_WIDTH) {
-      return "justify-center";
-    }
-  }
-
   return (
     <div
-      className={`word-container ${mobileViewClassMapper()}`}
+      className="word-container"
       style={{ height: setDynamicHeight(height) }}
     >
       {!isGetWordLoading ? (
