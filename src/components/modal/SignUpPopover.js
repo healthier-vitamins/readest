@@ -428,8 +428,8 @@ function SignUpPopover() {
 
     return (
       <div className="popover-box">
-        <div className="verified-text">
-          Email verified!{" "}
+        <div className="confirm-email-textline">
+          <div className="verified-text">Email verified! </div>
           <div
             className="_popover-state-link"
             onClick={() =>

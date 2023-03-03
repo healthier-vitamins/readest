@@ -140,9 +140,10 @@
   max-width: 12.6rem;
 }
 
-// .popover-container {
-//   z-index: 4;
-// }
+.confirm-email-textline {
+  display: flex;
+  align-items: center;
+}
 
 #signup-loading-spinner {
   height: 16px;
@@ -154,7 +155,7 @@
 .verified-text {
   color: $web-font-color;
   display: flex;
-  align-items: center;
+  font-size: 13px;
 }
 
 #confirm-email-loading-spinner {
@@ -166,9 +167,11 @@
 }
 
 ._popover-state-link {
+  display: flex;
   margin-left: 0.2rem;
-  font-size: 12.6px;
+  font-size: 12px;
   margin-top: 0;
+  color: $web-font-color;
 }
 
 @media screen and (min-width: 280px) and (max-width: 768px) {
