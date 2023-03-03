@@ -1,22 +1,31 @@
 import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Form, Spinner } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { addToastNotificationArr } from "../../store/slices/state.slice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToastNotificationArr,
+  setShowPopoverPage,
+  setShowPopoverState,
+  toggleShowPopoverState,
+} from "../../store/slices/state.slice";
 import { userLoggedIn } from "../../store/slices/user.slice";
 import { axiosTo } from "../../utils/promiseUtil";
 // import useWindowDimension from "../../utils/useWindowDimension";
+import { globalVars } from "../../utils/globalVars.ts";
 import "./SignUpPopover.scss";
 
 function SignUpPopover() {
-  const [show, setShow] = useState(false);
-  const [showPopoverState, setShowPopoverState] = useState({
-    signUpState: false,
-    loginState: true,
-    emailConfirmState: false,
-  });
+  // const [show, setShow] = useState(false);
+  // const [showPopoverState, setShowPopoverState] = useState({
+  //   signUpState: false,
+  //   loginState: true,
+  //   emailConfirmState: false,
+  // });
   const ref = useRef(null);
   // const signUpLinkRef = useRef(null);
+  const {
+    showPopoverState: { state, show },
+  } = useSelector((state) => state.state);
   const [signUpPasswordCompare, setSignUpPasswordCompare] = useState({
     password: "",
     confirmPassword: "",
@@ -62,24 +71,26 @@ function SignUpPopover() {
     });
   }
 
-  function setPopoverStateHelper(stateToTurnOn) {
-    const keys = Object.keys(showPopoverState);
-    const tempObj = {};
-    for (let key of keys) {
-      if (key === stateToTurnOn) {
-        tempObj[key] = true;
-      } else {
-        tempObj[key] = false;
-      }
-    }
-    setShowPopoverState(tempObj);
-  }
+  // function setPopoverStateHelper(stateToTurnOn) {
+  //   const keys = Object.keys(showPopoverState);
+  //   const tempObj = {};
+  //   for (let key of keys) {
+  //     if (key === stateToTurnOn) {
+  //       tempObj[key] = true;
+  //     } else {
+  //       tempObj[key] = false;
+  //     }
+  //   }
+  //   setShowPopoverState(tempObj);
+  // }
 
   // eslint-disable-next-line
   const onClickOutside = useCallback(() => {
     resetAllExceptShowPopoverStateAndShow();
-    setPopoverStateHelper("loginState");
-    setShow(false);
+    // setPopoverStateHelper(globalVars.POPOVER_LOGIN);
+    // setShow(false);
+    dispatch(setShowPopoverPage(globalVars.POPOVER_LOGIN));
+    dispatch(setShowPopoverState(false));
   });
 
   useEffect(() => {
@@ -97,8 +108,10 @@ function SignUpPopover() {
   // for redirected email verification URL fragment
   useEffect(() => {
     if (window.location.hash.length > 1) {
-      setPopoverStateHelper("emailConfirmState");
-      setShow(true);
+      // setPopoverStateHelper("emailConfirmState");
+      // setShow(true);
+      dispatch(setShowPopoverPage(globalVars.POPOVER_CONFIRM_EMAIL));
+      dispatch(setShowPopoverState(true));
       confirmEmailHelper();
     }
     // eslint-disable-next-line
@@ -126,7 +139,8 @@ function SignUpPopover() {
       } else {
         dispatch(addToastNotificationArr(err.data));
       }
-      setShow(false);
+      // setShow(false);
+      dispatch(setShowPopoverState(false));
       resetAllExceptShowPopoverStateAndShow();
     }
     setLoadingState({
@@ -136,7 +150,8 @@ function SignUpPopover() {
   }
 
   function handlePopoverClick(event) {
-    setShow(!show);
+    // setShow(!show);
+    dispatch(toggleShowPopoverState());
   }
 
   async function handleSignUp() {
@@ -174,7 +189,8 @@ function SignUpPopover() {
           ...loadingState,
           signUp: false,
         });
-        setPopoverStateHelper("loginState");
+        // setPopoverStateHelper(globalVars.POPOVER_LOGIN);
+        dispatch(setShowPopoverPage(globalVars.POPOVER_LOGIN));
         resetAllExceptShowPopoverStateAndShow();
         dispatch(
           addToastNotificationArr(`Verification email sent to ${res?.email}.`)
@@ -223,7 +239,8 @@ function SignUpPopover() {
       ...loadingState,
       login: false,
     });
-    setShow(false);
+    // setShow(false);
+    dispatch(setShowPopoverState(false));
     resetAllExceptShowPopoverStateAndShow();
   }
 
@@ -311,7 +328,8 @@ function SignUpPopover() {
           <div
             className="popover-state-link"
             onClick={() => {
-              setPopoverStateHelper("loginState");
+              // setPopoverStateHelper(globalVars.POPOVER_LOGIN);
+              dispatch(setShowPopoverPage(globalVars.POPOVER_LOGIN));
               setIsSubmitted(false);
             }}
           >
@@ -372,7 +390,8 @@ function SignUpPopover() {
           <div
             className="popover-state-link"
             onClick={() => {
-              setPopoverStateHelper("signUpState");
+              // setPopoverStateHelper(globalVars.POPOVER_SIGNUP);
+              dispatch(setShowPopoverPage(globalVars.POPOVER_SIGNUP));
               setIsSubmitted(false);
             }}
           >
@@ -413,7 +432,9 @@ function SignUpPopover() {
           Email verified!{" "}
           <div
             className="_popover-state-link"
-            onClick={() => setPopoverStateHelper("loginState")}
+            onClick={() =>
+              dispatch(setShowPopoverPage(globalVars.POPOVER_LOGIN))
+            }
           >
             Please login.
           </div>
@@ -454,11 +475,11 @@ function SignUpPopover() {
         </Popover>
       </Overlay> */}
       <div className={`popover-container ${popoverShowClassMapper()}`}>
-        {showPopoverState.signUpState
+        {state.signUpState
           ? signUpForm()
-          : showPopoverState.loginState
+          : state.loginState
           ? loginForm()
-          : showPopoverState.emailConfirmState
+          : state.emailConfirmState
           ? emailVerified()
           : null}
       </div>

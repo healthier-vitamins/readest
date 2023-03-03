@@ -1,3 +1,11 @@
+// @ts-ignore
+import { store } from "../store/store";
+import {
+  addToastNotificationArr,
+  setShowPopoverState,
+  // @ts-ignore
+} from "../store/slices/state.slice.js";
+
 const userSchema: UserSchema = {
   TITLE: "Name",
   STATUS: "STATUS",
@@ -18,4 +26,14 @@ interface UserSchema {
   LAST_EDITED_TIME: string;
 }
 
-export { userSchema, UserSchema };
+function protectedFunction(fn: any) {
+  const logged = store.getState().user.authentication.isUserLoggedIn;
+  if (logged) {
+    return fn();
+  } else {
+    store.dispatch(addToastNotificationArr("Please login."));
+    store.dispatch(setShowPopoverState(true));
+  }
+}
+
+export { userSchema, UserSchema, protectedFunction };

@@ -1,3 +1,4 @@
+import { globalVars } from "./globalVars";
 import { useEffect, useState } from "react";
 
 function getWindowDimension() {
@@ -8,9 +9,9 @@ function getWindowDimension() {
   };
 }
 
-function setDynamicHeight(height) {
+function setDynamicHeight(height: number) {
   // minus off the navbar
-  return (height -= 96);
+  return (height -= globalVars.NAVBAR_HEIGHT);
 }
 
 export default function useWindowDimension() {

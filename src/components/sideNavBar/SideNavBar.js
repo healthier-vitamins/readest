@@ -5,6 +5,7 @@ import { toggleCreateBookModal } from "../../store/slices/state.slice";
 import { addBookSelection, getAllBook } from "../../store/slices/book.slice";
 import React, { useEffect } from "react";
 import { bookSchema } from "../../utils/bookUtil.ts";
+import { protectedFunction } from "../../utils/userUtil.ts";
 
 function SideNavBar() {
   const dispatch = useDispatch();
@@ -37,9 +38,15 @@ function SideNavBar() {
 
   return (
     <>
-      <div className="add-book-btn" onClick={handleCreateBook}>
+      <div
+        className="add-book-btn"
+        onClick={() => {
+          protectedFunction(handleCreateBook);
+        }}
+      >
         <FiPlusSquare />
       </div>
+
       <div className="book-tab-box">
         {Array.isArray(bookRes.results) && bookRes.results.length > 0
           ? bookRes.results.map((book, index) => {

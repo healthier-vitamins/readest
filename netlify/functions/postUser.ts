@@ -10,6 +10,7 @@ const notion = new Client({
 });
 
 exports.handler = async function (event: any, context: any) {
+  console.log(event, context);
   const { email, name } = JSON.parse(event.body);
   const date = moment().format("MMMM Do YYYY, h:mm:ss a");
   console.log(date);
@@ -18,7 +19,7 @@ exports.handler = async function (event: any, context: any) {
   const [err, response] = await to(
     notion.pages.create({
       parent: {
-        database_id: NOTION_DB_USER_KEY,
+        database_id: NOTION_DB_USER_KEY ? NOTION_DB_USER_KEY : "",
         type: "database_id",
       },
       properties: {
@@ -69,7 +70,7 @@ exports.handler = async function (event: any, context: any) {
         },
         [userSchema.IS_DELETED]: {
           select: {
-            name: "N",
+            name: "NO",
           },
         },
         [userSchema.STATUS]: {

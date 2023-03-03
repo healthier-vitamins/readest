@@ -4,6 +4,14 @@ const initialState = {
   createBookModalState: false,
   saveWordModalState: false,
   offCanvasModalState: false,
+  showPopoverState: {
+    show: false,
+    state: {
+      signUpState: false,
+      loginState: true,
+      emailConfirmState: false,
+    },
+  },
   toastNotificationArr: [],
 };
 
@@ -27,6 +35,28 @@ const state = createSlice({
     removeToastNotificationArr: (state) => {
       state.toastNotificationArr.shift();
     },
+    setShowPopoverPage: (state, action) => {
+      const keys = Object.keys(state.showPopoverState.state);
+      const hold = {};
+      for (let key of keys) {
+        if (key === action.payload) {
+          hold[key] = true;
+        } else {
+          hold[key] = false;
+        }
+      }
+      state.showPopoverState.state = hold;
+    },
+    toggleShowPopoverState: (state) => {
+      state.showPopoverState.show = !state.showPopoverState.show;
+    },
+    setShowPopoverState: (state, action) => {
+      if (action.payload) {
+        state.showPopoverState.show = true;
+      } else {
+        state.showPopoverState.show = false;
+      }
+    },
   },
 });
 
@@ -36,5 +66,8 @@ export const {
   toggleOffCanvasModal,
   addToastNotificationArr,
   removeToastNotificationArr,
+  setShowPopoverPage,
+  toggleShowPopoverState,
+  setShowPopoverState,
 } = state.actions;
 export default state.reducer;
