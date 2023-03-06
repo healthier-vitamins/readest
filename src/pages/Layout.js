@@ -18,7 +18,6 @@ function Layout() {
   const dispatch = useDispatch();
 
   function heightLogic() {
-    console.log(height);
     return {
       height: height,
     };

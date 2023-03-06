@@ -134,7 +134,7 @@ function SignUpPopover() {
       console.error(err);
       if (err.data === "User not found") {
         dispatch(
-          addToastNotificationArr(`${err.data}, perhaps email is in use.`)
+          addToastNotificationArr(`${err.data}, perhaps email is in use`)
         );
       } else {
         dispatch(addToastNotificationArr(err.data));
@@ -193,7 +193,7 @@ function SignUpPopover() {
         dispatch(setShowPopoverPage(globalVars.POPOVER_LOGIN));
         resetAllExceptShowPopoverStateAndShow();
         dispatch(
-          addToastNotificationArr(`Verification email sent to ${res?.email}.`)
+          addToastNotificationArr(`Verification email sent to ${res?.email}`)
         );
       }
     } else {
@@ -341,11 +341,14 @@ function SignUpPopover() {
                 signUpPasswordCompare.isDirty &&
                 signUpPasswordCompare.isSame &&
                 isSubmitted && (
-                  <Spinner
-                    animation="border"
-                    id="signup-loading-spinner"
-                  ></Spinner>
-                )}{" "}
+                  <>
+                    <Spinner
+                      animation="border"
+                      id="signup-loading-spinner"
+                    ></Spinner>
+                    &nbsp;
+                  </>
+                )}
               Sign Up
             </div>
             <div className="cancel-btn">Cancel</div>

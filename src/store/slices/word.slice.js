@@ -43,7 +43,7 @@ export const postWordToBook = createAsyncThunk(
     const bookName =
       payload.bookObj.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text;
     if (resp.status === 200) {
-      thunkApi.dispatch(addToastNotificationArr(`Word added to ${bookName}.`));
+      thunkApi.dispatch(addToastNotificationArr(`Word added to ${bookName}`));
     }
     // console.log(
     //   "saved word res ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| ",

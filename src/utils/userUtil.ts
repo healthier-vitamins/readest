@@ -31,7 +31,7 @@ function protectedFunction(fn: any) {
   if (logged) {
     return fn();
   } else {
-    store.dispatch(addToastNotificationArr("Please login."));
+    store.dispatch(addToastNotificationArr("Please login"));
     store.dispatch(setShowPopoverState(true));
   }
 }

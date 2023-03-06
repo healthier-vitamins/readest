@@ -201,10 +201,11 @@
   transition: opacity 0.27s ease-in-out
 }
 
-// .test_popover-container:before {
+// .popover-container:before {
+//   border: 1px solid black;
 //   position: absolute;
 //   // z-index: -1;
-//   content: "";
+//   content: "test";
 //   right: 2rem;
 //   top: -8px;
 //   border-style: solid;
@@ -215,7 +216,7 @@
 // }
 
 .popover-show {
-  z-index: 4;
+  z-index: 5;
   opacity: 1;
   visibility: visible;
 }
