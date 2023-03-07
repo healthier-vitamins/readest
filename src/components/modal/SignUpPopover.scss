@@ -222,6 +222,13 @@
 }
 
 .popover-wrapper {
+  position: relative;
   display: inline-block;
-  // border: 1px solid black;
 }
+
+.popover-wrapper:hover .popover-container {
+  z-index: 5;
+  opacity: 1;
+  visibility: visible;
+}
+

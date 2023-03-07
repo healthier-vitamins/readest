@@ -21,7 +21,7 @@ function SignUpPopover() {
   //   loginState: true,
   //   emailConfirmState: false,
   // });
-  const ref = useRef(null);
+  const ref1 = useRef(null);
   // const signUpLinkRef = useRef(null);
   const {
     showPopoverState: { state, show },
@@ -85,7 +85,7 @@ function SignUpPopover() {
   // }
 
   // eslint-disable-next-line
-  const onClickOutside = useCallback(() => {
+  const onClickOutside1 = useCallback(() => {
     resetAllExceptShowPopoverStateAndShow();
     // setPopoverStateHelper(globalVars.POPOVER_LOGIN);
     // setShow(false);
@@ -94,16 +94,16 @@ function SignUpPopover() {
   });
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (ref.current && !ref.current.contains(event.target)) {
-        onClickOutside && onClickOutside();
+    const handleClickOutside1 = (event) => {
+      if (ref1.current && !ref1.current.contains(event.target)) {
+        onClickOutside1 && onClickOutside1();
       }
     };
-    document.addEventListener("click", handleClickOutside, true);
+    document.addEventListener("click", handleClickOutside1, true);
     return () => {
-      document.removeEventListener("click", handleClickOutside, true);
+      document.removeEventListener("click", handleClickOutside1, true);
     };
-  }, [onClickOutside]);
+  }, [onClickOutside1]);
 
   // for redirected email verification URL fragment
   useEffect(() => {
@@ -155,7 +155,10 @@ function SignUpPopover() {
   }
 
   async function handleSignUp() {
-    if (confirmPasswordRef.current.value === passwordRef.current.value) {
+    if (
+      confirmPasswordRef.current.value === passwordRef.current.value &&
+      passwordRef.current.value !== ""
+    ) {
       setIsSubmitted(true);
       setSignUpPasswordCompare({
         ...signUpPasswordCompare,
@@ -454,7 +457,7 @@ function SignUpPopover() {
   }
 
   return (
-    <div ref={ref} className={`popover-wrapper ${popoverShowClassMapper()}`}>
+    <div ref={ref1} className="popover-wrapper">
       <div onClick={handlePopoverClick} className="right-link">
         Sign Up/Login
       </div>

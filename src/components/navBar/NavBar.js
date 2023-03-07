@@ -67,7 +67,7 @@ function NavBar() {
           {!isUserLoggedIn ? (
             <SignUpPopover></SignUpPopover>
           ) : (
-            <div className="right-link" onClick={handleLogout}>
+            <div className="right-link" onClick={() => handleLogout()}>
               Logout
             </div>
           )}
