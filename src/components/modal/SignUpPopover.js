@@ -13,6 +13,7 @@ import { axiosTo } from "../../utils/promiseUtil";
 // import useWindowDimension from "../../utils/useWindowDimension";
 import { globalVars } from "../../utils/globalVars.ts";
 import "./SignUpPopover.scss";
+import OnClickOutsideComponent from "../OnClickOutsideComponent";
 
 function SignUpPopover() {
   // const [show, setShow] = useState(false);
@@ -21,7 +22,7 @@ function SignUpPopover() {
   //   loginState: true,
   //   emailConfirmState: false,
   // });
-  const ref1 = useRef(null);
+  const ref = useRef(null);
   // const signUpLinkRef = useRef(null);
   const {
     showPopoverState: { state, show },
@@ -85,25 +86,31 @@ function SignUpPopover() {
   // }
 
   // eslint-disable-next-line
-  const onClickOutside1 = useCallback(() => {
-    resetAllExceptShowPopoverStateAndShow();
-    // setPopoverStateHelper(globalVars.POPOVER_LOGIN);
-    // setShow(false);
-    dispatch(setShowPopoverPage(globalVars.POPOVER_LOGIN));
-    dispatch(setShowPopoverState(false));
-  });
+  // const onClickOutside1 = useCallback(() => {
+  //   // setPopoverStateHelper(globalVars.POPOVER_LOGIN);
+  //   // setShow(false);
+  //   resetAllExceptShowPopoverStateAndShow();
+  //   dispatch(setShowPopoverPage(globalVars.POPOVER_LOGIN));
+  //   dispatch(setShowPopoverState(false));
+  // });
 
-  useEffect(() => {
-    const handleClickOutside1 = (event) => {
-      if (ref1.current && !ref1.current.contains(event.target)) {
-        onClickOutside1 && onClickOutside1();
-      }
-    };
-    document.addEventListener("click", handleClickOutside1, true);
-    return () => {
-      document.removeEventListener("click", handleClickOutside1, true);
-    };
-  }, [onClickOutside1]);
+  function onClickOutsideFunc() {
+    resetAllExceptShowPopoverStateAndShow();
+    // dispatch(setShowPopoverPage(globalVars.POPOVER_LOGIN));
+    // dispatch(setShowPopoverState(false));
+  }
+
+  // useEffect(() => {
+  //   const handleClickOutside1 = (event) => {
+  //     if (ref1.current && !ref1.current.contains(event.target)) {
+  //       onClickOutside1 && onClickOutside1();
+  //     }
+  //   };
+  //   document.addEventListener("click", handleClickOutside1, true);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside1, true);
+  //   };
+  // }, [onClickOutside1]);
 
   // for redirected email verification URL fragment
   useEffect(() => {
@@ -457,7 +464,12 @@ function SignUpPopover() {
   }
 
   return (
-    <div ref={ref1} className="popover-wrapper">
+    // <div ref={ref} className="popover-wrapper">
+    <OnClickOutsideComponent
+      onClickOutsideFunc={onClickOutsideFunc}
+      arrOfFunc={[setShowPopoverPage(globalVars.POPOVER_LOGIN), setShowPopoverState(false)]}
+      className="popover-wrapper"
+    >
       <div onClick={handlePopoverClick} className="right-link">
         Sign Up/Login
       </div>
@@ -489,7 +501,8 @@ function SignUpPopover() {
           ? emailVerified()
           : null}
       </div>
-    </div>
+    </OnClickOutsideComponent>
+    // </div>
   );
 }
 
