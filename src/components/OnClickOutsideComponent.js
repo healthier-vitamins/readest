@@ -1,20 +1,21 @@
 import { useCallback, useEffect, useRef } from "react";
-import { store } from "../../src/store/store";
-// import { setShowPopoverState } from "../store/slices/state.slice";
+import { useDispatch } from "react-redux";
+// import {
+//   setShowPopoverPage,
+//   setShowPopoverState,
+// } from "../store/slices/state.slice";
+// import { globalVars } from "../../src/utils/globalVars";
 
-function OnClickOutsideComponent({ onClickOutsideFunc, arrOfFunc, children }) {
+function OnClickOutsideComponent({ onClickOutsideFunc, children }) {
+  //   const dispatch = useDispatch();
   const ref = useRef(null);
 
+  // eslint-disable-next-line
   const onClickOutside = useCallback(() => {
-    // resetAllExceptShowPopoverStateAndShow();
+    onClickOutsideFunc();
     // dispatch(setShowPopoverPage(globalVars.POPOVER_LOGIN));
     // dispatch(setShowPopoverState(false));
-    for (let func of arrOfFunc) {
-      //   console.log(func);
-      store.dispatch(func);
-    }
-    onClickOutsideFunc();
-  }, []);
+  });
 
   useEffect(() => {
     const handleClickOutside = (event) => {

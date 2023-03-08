@@ -22,7 +22,7 @@ function SignUpPopover() {
   //   loginState: true,
   //   emailConfirmState: false,
   // });
-  const ref = useRef(null);
+  // const ref = useRef(null);
   // const signUpLinkRef = useRef(null);
   const {
     showPopoverState: { state, show },
@@ -361,7 +361,14 @@ function SignUpPopover() {
                 )}
               Sign Up
             </div>
-            <div className="cancel-btn">Cancel</div>
+            <div
+              className="cancel-btn"
+              onClick={() => {
+                dispatch(setShowPopoverState(false));
+              }}
+            >
+              Cancel
+            </div>
           </div>
         </div>
       </div>
@@ -420,7 +427,14 @@ function SignUpPopover() {
               )}{" "}
               Login
             </div>
-            <div className="cancel-btn">Cancel</div>
+            <div
+              className="cancel-btn"
+              onClick={() => {
+                dispatch(setShowPopoverState(false));
+              }}
+            >
+              Cancel
+            </div>
           </div>
         </div>
       </div>
@@ -467,7 +481,6 @@ function SignUpPopover() {
     // <div ref={ref} className="popover-wrapper">
     <OnClickOutsideComponent
       onClickOutsideFunc={onClickOutsideFunc}
-      arrOfFunc={[setShowPopoverPage(globalVars.POPOVER_LOGIN), setShowPopoverState(false)]}
       className="popover-wrapper"
     >
       <div onClick={handlePopoverClick} className="right-link">
