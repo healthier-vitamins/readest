@@ -1,11 +1,11 @@
-@use '../../variables' as *;
+@use "../../variables" as *;
 
 .right-link {
   font-weight: 700;
   text-decoration: none;
-  // color: rgb(168, 140, 89);
   color: rgb(168, 140, 89);
   font-size: 15px;
+  // color: rgb(168, 140, 89);
   /* font-family: "roboto"; */
   /* letter-spacing: 0.6px; */
 }
@@ -38,7 +38,6 @@
 .signup-error-msg {
   color: red;
   font-size: 11px;
-
 }
 
 .login-btn {
@@ -60,7 +59,8 @@
   color: rgb(119, 119, 119);
 }
 
-.popover-state-link, ._popover-state-link {
+.popover-state-link,
+._popover-state-link {
   margin-top: 0.1rem;
   font-weight: 600;
   color: $web-font-color;
@@ -74,7 +74,8 @@
   width: 100%;
 }
 
-.popover-state-link:hover, ._popover-state-link:hover {
+.popover-state-link:hover,
+._popover-state-link:hover {
   cursor: pointer;
   text-decoration: underline;
 }
@@ -180,7 +181,6 @@
     // width: 0;
     font-size: 12px;
     margin-left: 0.6rem;
-
   }
 }
 
@@ -195,10 +195,10 @@
   padding: 0.8rem;
   position: absolute;
   right: 1.2rem;
-  margin-top: 0.3rem;
+  margin-top: 0.2rem;
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.27s ease-in-out
+  // transition: opacity 0.27s ease-in-out
 }
 
 // .popover-container:before {
@@ -231,4 +231,3 @@
 //   opacity: 1;
 //   visibility: visible;
 // }
-

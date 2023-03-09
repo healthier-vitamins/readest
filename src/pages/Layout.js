@@ -9,7 +9,7 @@ import { getEmailFromToken, isTokenExpired } from "../utils/cryptography.ts";
 import { useDispatch } from "react-redux";
 import { userLoggedIn } from "../store/slices/user.slice";
 import GeneralToast from "../components/toast/GeneralToast";
-import "./Layout.css";
+import "./Layout.scss";
 
 const cookies = new Cookies();
 
@@ -17,7 +17,7 @@ function Layout() {
   const { height } = useWindowDimension();
   const dispatch = useDispatch();
 
-  function heightLogic() {
+  function setHeight() {
     return {
       height: height,
     };
@@ -43,7 +43,7 @@ function Layout() {
 
   return (
     <>
-      <div className="mainest" style={heightLogic()}>
+      <div className="mainest" style={setHeight()}>
         <div className="all-navbar">
           <NavBar></NavBar>
         </div>

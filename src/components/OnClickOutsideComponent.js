@@ -1,35 +1,15 @@
-import { useCallback, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
-// import {
-//   setShowPopoverPage,
-//   setShowPopoverState,
-// } from "../store/slices/state.slice";
-// import { globalVars } from "../../src/utils/globalVars";
+// import useWindowDimension from "../utils/useWindowDimension.ts";
+import "./OnClickOutsideComponent.scss";
 
 function OnClickOutsideComponent({ onClickOutsideFunc, children }) {
-  //   const dispatch = useDispatch();
-  const ref = useRef(null);
+  // const { height, width } = useWindowDimension();
 
-  // eslint-disable-next-line
-  const onClickOutside = useCallback(() => {
-    onClickOutsideFunc();
-    // dispatch(setShowPopoverPage(globalVars.POPOVER_LOGIN));
-    // dispatch(setShowPopoverState(false));
-  });
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (ref.current && !ref.current.contains(event.target)) {
-        onClickOutside && onClickOutside();
-      }
-    };
-    document.addEventListener("click", handleClickOutside, true);
-    return () => {
-      document.removeEventListener("click", handleClickOutside, true);
-    };
-  }, [onClickOutside, ref]);
-
-  return <div ref={ref}>{children}</div>;
+  return (
+    <div>
+      {/* className="outside-overlay" style={{ width: width, height: height }} */}
+      {children}
+    </div>
+  );
 }
 
 export default OnClickOutsideComponent;
