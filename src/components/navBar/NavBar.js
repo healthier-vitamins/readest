@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import "./NavBar.scss";
 import SearchBar from "../searchBar/SearchBar";
-import { RxDoubleArrowRight } from "react-icons/rx";
 import { HiOutlineUserCircle } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import SignUpPopover from "../popover/SignUpPopover";
@@ -10,6 +9,8 @@ import React from "react";
 import { changeActiveTab } from "../../store/slices/book.slice";
 import { bookSchema } from "../../utils/bookUtil.ts";
 import BookSelectionPopover from "../popover/BookSelectionPopover";
+import OnClickOutsideComponent from "../OnClickOutsideComponent";
+import { setBookSelectionPopoverState } from "../../store/slices/state.slice";
 
 function NavBar() {
   const dispatch = useDispatch();
@@ -21,6 +22,14 @@ function NavBar() {
 
   function handleLogout() {
     dispatch(userLoggedOut());
+  }
+
+  function clickOutsideHelper() {
+    dispatch(setBookSelectionPopoverState(false));
+  }
+
+  function onClickOutsideFunc() {
+    clickOutsideHelper();
   }
 
   // helper for selected active tabs
@@ -88,30 +97,10 @@ function NavBar() {
       </div>
       <div className="bottom-navbar">
         <div className="left-box">
-          {/* <div className="arrow-head-box">
-            {offCanvasModalState ? (
-              <RxDoubleArrowRight
-                className="arrow-head-icon"
-                onClick={handleOffCanvas}
-                style={{
-                  transition: `transform 0.3s`,
-                  transform: `rotate(180deg)`,
-                }}
-              ></RxDoubleArrowRight>
-            ) : (
-              <RxDoubleArrowRight
-                className="arrow-head-icon"
-                onClick={handleOffCanvas}
-                style={{
-                  transition: `transform 0.3s`,
-                  transform: `rotate(360deg)`,
-                }}
-              ></RxDoubleArrowRight>
-            )}
-            
-          </div> */}
           <div className="books-tab-button">
-            <BookSelectionPopover></BookSelectionPopover>
+            <OnClickOutsideComponent onClickOutsideFunc={onClickOutsideFunc}>
+              <BookSelectionPopover></BookSelectionPopover>
+            </OnClickOutsideComponent>
           </div>
         </div>
         <SearchBar></SearchBar>

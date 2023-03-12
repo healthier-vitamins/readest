@@ -29,6 +29,13 @@ const state = createSlice({
     toggleBookSelectionPopoverState: (state) => {
       state.bookSelectionPopoverState = !state.bookSelectionPopoverState;
     },
+    setBookSelectionPopoverState: (state, action) => {
+      if (action.payload) {
+        state.bookSelectionPopoverState = true;
+      } else {
+        state.bookSelectionPopoverState = false;
+      }
+    },
     addToastNotificationArr: (state, action) => {
       state.toastNotificationArr.push(action.payload);
     },
@@ -69,5 +76,6 @@ export const {
   setShowPopoverPage,
   toggleShowPopoverState,
   setShowPopoverState,
+  setBookSelectionPopoverState,
 } = state.actions;
 export default state.reducer;

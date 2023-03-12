@@ -3,7 +3,7 @@
 .word-container {
   width: 100%;
   overflow-y: auto;
-  padding: 2rem 1rem 0rem 1rem;
+  padding: 1rem;
   display: flex;
   flex-flow: row;
   flex-wrap: wrap;
@@ -54,28 +54,21 @@
   }
 }
 
-
 @media screen and (min-width: 280px) and (max-width: 540px) {
   .word-page-definition-box {
     max-width: 17.5rem;
     min-width: 17.5rem;
-    
   }
   .word-container {
     justify-content: center;
     padding: 1rem 0rem 0rem 0rem;
-    
   }
-
 }
-
-
 
 // for fold
 @media screen and (min-width: 0px) and (max-width: 280px) {
   .word-page-definition-box {
     min-width: 13.5rem;
     max-width: 13.5rem;
-   
   }
 }

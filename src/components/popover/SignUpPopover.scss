@@ -4,7 +4,7 @@
   font-weight: 700;
   text-decoration: none;
   // color: rgb(168, 140, 89);
-  color: rgb(136, 116, 79);
+  color: rgb(138, 117, 81);
   font-size: 15px;
   // color: rgb(168, 140, 89);
   /* font-family: "roboto"; */
@@ -12,7 +12,8 @@
 }
 
 .right-link:hover {
-  color: rgb(190, 185, 167);
+  // color: rgb(190, 185, 167);
+  color: rgb(192, 181, 161);
   cursor: pointer;
 }
 
@@ -188,8 +189,9 @@
   position: absolute;
   right: 1.1rem;
   margin-top: 0.2rem;
-  visibility: hidden;
-  opacity: 0;
+  z-index: 4;
+  // visibility: hidden;
+  // opacity: 0;
   // transition: opacity 0.27s ease-in-out
 }
 
@@ -207,16 +209,11 @@
 //   transition-property: transform;
 // }
 
-.popover-show {
-  z-index: 5;
-  opacity: 1;
-  visibility: visible;
-}
-
-.popover-wrapper {
-  position: relative;
-  display: inline-block;
-}
+// .popover-wrapper {
+// position: relative;
+// display: inline-block;
+// border: 1px solid black;
+// }
 
 // .popover-wrapper:hover .popover-container {
 //   z-index: 5;

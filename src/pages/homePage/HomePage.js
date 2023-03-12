@@ -138,29 +138,29 @@ function HomePage() {
       >
         <SideNavBar></SideNavBar>
       </div> */}
-      <div
+      {/* <div
         // className={`right-main-box ${offCanvasClassMapper("container")}`}
         // style={offCanvasStyleMapper("container")}
         className="right-main-box"
-      >
-        {/* <div className="tabs-selection">
+      > */}
+      {/* <div className="tabs-selection">
           {bookSelection.map((obj, index) => RenderTabs(obj, index))}
         </div> */}
-        <div
-          // className={`definition-container ${offCanvasClassMapper(
-          //   "definition"
-          // )}`}
-          // style={offCanvasStyleMapper("definition")}
-          className="definition-container"
-        >
-          {selectedTab.bookObj === "Definition" && (
-            <WordDefinition></WordDefinition>
-          )}
-          {checkSelectedPageLogic() && selectedTab.bookObj !== "Definition" && (
-            <WordPage></WordPage>
-          )}
-        </div>
+      <div
+        // className={`definition-container ${offCanvasClassMapper(
+        //   "definition"
+        // )}`}
+        // style={offCanvasStyleMapper("definition")}
+        className="definition-container"
+      >
+        {selectedTab.bookObj === "Definition" && (
+          <WordDefinition></WordDefinition>
+        )}
+        {checkSelectedPageLogic() && selectedTab.bookObj !== "Definition" && (
+          <WordPage></WordPage>
+        )}
       </div>
+      {/* </div> */}
     </div>
   );
 }

@@ -4,7 +4,7 @@ import Cookies from "universal-cookie";
 import CreateBookModal from "../components/modal/CreateBookModal";
 import SaveWordModal from "../components/modal/SaveWordModal";
 import NavBar from "../components/navBar/NavBar";
-import useWindowDimension from "../utils/useWindowDimension";
+// import useWindowDimension from "../utils/useWindowDimension";
 import { getEmailFromToken, isTokenExpired } from "../utils/cryptography.ts";
 import { useDispatch } from "react-redux";
 import { userLoggedIn } from "../store/slices/user.slice";
@@ -14,14 +14,14 @@ import "./Layout.scss";
 const cookies = new Cookies();
 
 function Layout() {
-  const { height, width } = useWindowDimension();
+  // const { height, width } = useWindowDimension();
   const dispatch = useDispatch();
 
-  function setHeight() {
-    return {
-      height: height,
-    };
-  }
+  // function setHeight() {
+  //   return {
+  //     height: height,
+  //   };
+  // }
 
   useEffect(() => {
     const token = cookies.get("token");

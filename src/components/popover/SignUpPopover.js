@@ -10,9 +10,9 @@ import {
 } from "../../store/slices/state.slice";
 import { userLoggedIn } from "../../store/slices/user.slice";
 import { axiosTo } from "../../utils/promiseUtil";
-// import useWindowDimension from "../../utils/useWindowDimension";
 import { GLOBALVARS } from "../../utils/GLOBALVARS.ts";
 import "./SignUpPopover.scss";
+import { useNavigate } from "react-router-dom";
 import OnClickOutsideComponent from "../OnClickOutsideComponent";
 
 function SignUpPopover() {
@@ -22,6 +22,7 @@ function SignUpPopover() {
   //   loginState: true,
   //   emailConfirmState: false,
   // });
+  const navigate = useNavigate();
   // const ref = useRef(null);
   // const signUpLinkRef = useRef(null);
   const {
@@ -86,31 +87,34 @@ function SignUpPopover() {
   // }
 
   // eslint-disable-next-line
-  // const onClickOutside1 = useCallback(() => {
+  // const onClickOutside = useCallback(() => {
   //   // setPopoverStateHelper(GLOBALVARS.POPOVER_LOGIN);
   //   // setShow(false);
   //   resetAllExceptShowPopoverStateAndShow();
-  //   dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
-  //   dispatch(setShowPopoverState(false));
+  //   clickOutsideHelper();
   // });
+
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (ref.current && !ref.current.contains(event.target)) {
+  //       onClickOutside && onClickOutside();
+  //     }
+  //   };
+  //   document.addEventListener("click", handleClickOutside, true);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside, true);
+  //   };
+  // }, [onClickOutside]);
+
+  function clickOutsideHelper() {
+    dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
+    dispatch(setShowPopoverState(false));
+  }
 
   function onClickOutsideFunc() {
     resetAllExceptShowPopoverStateAndShow();
-    // dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
-    // dispatch(setShowPopoverState(false));
+    clickOutsideHelper();
   }
-
-  // useEffect(() => {
-  //   const handleClickOutside1 = (event) => {
-  //     if (ref1.current && !ref1.current.contains(event.target)) {
-  //       onClickOutside1 && onClickOutside1();
-  //     }
-  //   };
-  //   document.addEventListener("click", handleClickOutside1, true);
-  //   return () => {
-  //     document.removeEventListener("click", handleClickOutside1, true);
-  //   };
-  // }, [onClickOutside1]);
 
   // for redirected email verification URL fragment
   useEffect(() => {
@@ -146,18 +150,23 @@ function SignUpPopover() {
       } else {
         dispatch(addToastNotificationArr(err.data));
       }
-      // setShow(false);
       dispatch(setShowPopoverState(false));
       resetAllExceptShowPopoverStateAndShow();
+      // const urlWithoutToken = window.location.href.substring(
+      //   0,
+      //   window.location.href.indexOf("#")
+      // );
+      navigate(`/`, { replace: true });
+    } else {
+      setLoadingState({
+        ...loadingState,
+        confirmEmail: false,
+      });
+      navigate(`/`, { replace: true });
     }
-    setLoadingState({
-      ...loadingState,
-      confirmEmail: false,
-    });
   }
 
   function handlePopoverClick(event) {
-    // setShow(!show);
     dispatch(toggleShowPopoverState());
   }
 
@@ -249,7 +258,6 @@ function SignUpPopover() {
       ...loadingState,
       login: false,
     });
-    // setShow(false);
     dispatch(setShowPopoverState(false));
     resetAllExceptShowPopoverStateAndShow();
   }
@@ -470,61 +478,34 @@ function SignUpPopover() {
     );
   }
 
-  function popoverShowClassMapper() {
-    if (show) {
-      return "popover-show";
-    }
-    return "";
-  }
-
   function buttonClickedStyleMapper() {
     if (show) return { color: "rgb(190, 185, 167)" };
     return {};
   }
 
   return (
-    // <div ref={ref} className="popover-wrapper">
-    <OnClickOutsideComponent
-      onClickOutsideFunc={onClickOutsideFunc}
-      className="popover-wrapper"
-    >
-      <div
-        onClick={handlePopoverClick}
-        className="right-link"
-        style={buttonClickedStyleMapper()}
-      >
-        Login
-      </div>
-      {/* <Overlay
-        show={show}
-        target={target}
-        placement="bottom-start"
-        container={ref}
-        containerPadding={width < 300 ? 34 : width < 420 ? 20 : 25}
-      >
-        <Popover className="popover-container">
-          <Popover.Body>
-            {showPopoverState.signUpState
+    <OnClickOutsideComponent onClickOutsideFunc={onClickOutsideFunc}>
+      <div className="popover-wrapper">
+        <div
+          onClick={handlePopoverClick}
+          className="right-link"
+          style={buttonClickedStyleMapper()}
+        >
+          Login
+        </div>
+        {show && (
+          <div className="popover-container">
+            {state.signUpState
               ? signUpForm()
-              : showPopoverState.loginState
+              : state.loginState
               ? loginForm()
-              : showPopoverState.emailConfirmState
+              : state.emailConfirmState
               ? emailVerified()
               : null}
-          </Popover.Body>
-        </Popover>
-      </Overlay> */}
-      <div className={`popover-container ${popoverShowClassMapper()}`}>
-        {state.signUpState
-          ? signUpForm()
-          : state.loginState
-          ? loginForm()
-          : state.emailConfirmState
-          ? emailVerified()
-          : null}
+          </div>
+        )}
       </div>
     </OnClickOutsideComponent>
-    // </div>
   );
 }
 

@@ -52,7 +52,6 @@ function BookSelectionPopover() {
 
   return (
     <div className="book-tab-popover-wrapper">
-      {/* <RxHamburgerMenu className="hamburger-icon"></RxHamburgerMenu> */}
       <div
         className="show-book-tab-button"
         onClick={() => dispatch(toggleBookSelectionPopoverState())}
