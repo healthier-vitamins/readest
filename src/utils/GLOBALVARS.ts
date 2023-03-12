@@ -1,4 +1,4 @@
-export const globalVars = {
+export const GLOBALVARS = {
   MOBILE_MIN_WIDTH: 767,
   MOBILE_FOLD_WIDTH: 280,
   NAVBAR_HEIGHT: 96,

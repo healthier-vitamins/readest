@@ -3,7 +3,8 @@
 .right-link {
   font-weight: 700;
   text-decoration: none;
-  color: rgb(168, 140, 89);
+  // color: rgb(168, 140, 89);
+  color: rgb(136, 116, 79);
   font-size: 15px;
   // color: rgb(168, 140, 89);
   /* font-family: "roboto"; */
@@ -11,7 +12,7 @@
 }
 
 .right-link:hover {
-  color: rgb(219, 212, 190);
+  color: rgb(190, 185, 167);
   cursor: pointer;
 }
 
@@ -175,15 +176,6 @@
   color: $web-font-color;
 }
 
-@media screen and (min-width: 280px) and (max-width: 768px) {
-  .right-link {
-    // visibility: hidden;
-    // width: 0;
-    font-size: 12px;
-    margin-left: 0.6rem;
-  }
-}
-
 .popover-container {
   background-color: rgb(255, 254, 254);
   width: 14rem;
@@ -194,7 +186,7 @@
   display: flex;
   padding: 0.8rem;
   position: absolute;
-  right: 1.2rem;
+  right: 1.1rem;
   margin-top: 0.2rem;
   visibility: hidden;
   opacity: 0;
@@ -231,3 +223,16 @@
 //   opacity: 1;
 //   visibility: visible;
 // }
+
+@media screen and (min-width: 280px) and (max-width: 768px) {
+  .right-link {
+    // visibility: hidden;
+    // width: 0;
+    font-size: 13px;
+    margin-left: 0.6rem;
+  }
+
+  .popover-container {
+    right: 0.9rem;
+  }
+}

@@ -114,7 +114,7 @@ function NavBar() {
             <BookSelectionPopover></BookSelectionPopover>
           </div>
         </div>
-        <SearchBar className="center-bar"></SearchBar>
+        <SearchBar></SearchBar>
         <div className="right-box">
           {!isUserLoggedIn ? (
             <SignUpPopover></SignUpPopover>

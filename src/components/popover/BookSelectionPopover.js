@@ -8,6 +8,8 @@ import React, { useEffect } from "react";
 import { bookSchema } from "../../utils/bookUtil.ts";
 import { protectedFunction } from "../../utils/userUtil.ts";
 import { FiPlusSquare } from "react-icons/fi";
+import { BiBookHeart } from "react-icons/bi";
+import { MdOutlineDeleteSweep } from "react-icons/md";
 import "./BookSelectionPopover.scss";
 
 function BookSelectionPopover() {
@@ -34,6 +36,15 @@ function BookSelectionPopover() {
     );
   }
 
+  function buttonClickedStyleMapper() {
+    if (bookSelectionPopoverState) {
+      return {
+        color: "#B3A895",
+      };
+    }
+    return {};
+  }
+
   useEffect(() => {
     dispatch(getAllBook());
     // eslint-disable-next-line
@@ -46,20 +57,23 @@ function BookSelectionPopover() {
         className="show-book-tab-button"
         onClick={() => dispatch(toggleBookSelectionPopoverState())}
       >
-        Books
+        <BiBookHeart
+          className="book-icon"
+          style={buttonClickedStyleMapper()}
+        ></BiBookHeart>
       </div>
+
       {bookSelectionPopoverState && (
         <div className="book-tab-popover-container">
           <div
-            className="add-book-btn"
+            className="book-selection-buttons"
             onClick={() => {
               protectedFunction(handleCreateBook);
             }}
           >
-            <FiPlusSquare />
-            {/* Add Book */}
+            <FiPlusSquare className="add-book-icon" />
+            <MdOutlineDeleteSweep className="_add-book-icon" />
           </div>
-
           <div className="book-tab-box">
             {Array.isArray(bookRes.results) && bookRes.results.length > 0
               ? bookRes.results.map((book, index) => {

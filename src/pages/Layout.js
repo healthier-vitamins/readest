@@ -14,7 +14,7 @@ import "./Layout.scss";
 const cookies = new Cookies();
 
 function Layout() {
-  const { height } = useWindowDimension();
+  const { height, width } = useWindowDimension();
   const dispatch = useDispatch();
 
   function setHeight() {
@@ -43,7 +43,9 @@ function Layout() {
 
   return (
     <>
-      <div className="mainest" style={setHeight()}>
+      {/* height: 1287 */}
+      {/* width: 1278 */}
+      <div className="mainest">
         <div className="all-navbar">
           <NavBar></NavBar>
         </div>

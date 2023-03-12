@@ -11,7 +11,7 @@ import {
 import { userLoggedIn } from "../../store/slices/user.slice";
 import { axiosTo } from "../../utils/promiseUtil";
 // import useWindowDimension from "../../utils/useWindowDimension";
-import { globalVars } from "../../utils/globalVars.ts";
+import { GLOBALVARS } from "../../utils/GLOBALVARS.ts";
 import "./SignUpPopover.scss";
 import OnClickOutsideComponent from "../OnClickOutsideComponent";
 
@@ -87,16 +87,16 @@ function SignUpPopover() {
 
   // eslint-disable-next-line
   // const onClickOutside1 = useCallback(() => {
-  //   // setPopoverStateHelper(globalVars.POPOVER_LOGIN);
+  //   // setPopoverStateHelper(GLOBALVARS.POPOVER_LOGIN);
   //   // setShow(false);
   //   resetAllExceptShowPopoverStateAndShow();
-  //   dispatch(setShowPopoverPage(globalVars.POPOVER_LOGIN));
+  //   dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
   //   dispatch(setShowPopoverState(false));
   // });
 
   function onClickOutsideFunc() {
     resetAllExceptShowPopoverStateAndShow();
-    // dispatch(setShowPopoverPage(globalVars.POPOVER_LOGIN));
+    // dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
     // dispatch(setShowPopoverState(false));
   }
 
@@ -117,7 +117,7 @@ function SignUpPopover() {
     if (window.location.hash.length > 1) {
       // setPopoverStateHelper("emailConfirmState");
       // setShow(true);
-      dispatch(setShowPopoverPage(globalVars.POPOVER_CONFIRM_EMAIL));
+      dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_CONFIRM_EMAIL));
       dispatch(setShowPopoverState(true));
       confirmEmailHelper();
     }
@@ -199,8 +199,8 @@ function SignUpPopover() {
           ...loadingState,
           signUp: false,
         });
-        // setPopoverStateHelper(globalVars.POPOVER_LOGIN);
-        dispatch(setShowPopoverPage(globalVars.POPOVER_LOGIN));
+        // setPopoverStateHelper(GLOBALVARS.POPOVER_LOGIN);
+        dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
         resetAllExceptShowPopoverStateAndShow();
         dispatch(
           addToastNotificationArr(`Verification email sent to ${res?.email}`)
@@ -338,8 +338,8 @@ function SignUpPopover() {
           <div
             className="popover-state-link"
             onClick={() => {
-              // setPopoverStateHelper(globalVars.POPOVER_LOGIN);
-              dispatch(setShowPopoverPage(globalVars.POPOVER_LOGIN));
+              // setPopoverStateHelper(GLOBALVARS.POPOVER_LOGIN);
+              dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
               setIsSubmitted(false);
             }}
           >
@@ -410,8 +410,8 @@ function SignUpPopover() {
           <div
             className="popover-state-link"
             onClick={() => {
-              // setPopoverStateHelper(globalVars.POPOVER_SIGNUP);
-              dispatch(setShowPopoverPage(globalVars.POPOVER_SIGNUP));
+              // setPopoverStateHelper(GLOBALVARS.POPOVER_SIGNUP);
+              dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_SIGNUP));
               setIsSubmitted(false);
             }}
           >
@@ -460,7 +460,7 @@ function SignUpPopover() {
           <div
             className="_popover-state-link"
             onClick={() =>
-              dispatch(setShowPopoverPage(globalVars.POPOVER_LOGIN))
+              dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN))
             }
           >
             Please login.
@@ -477,14 +477,23 @@ function SignUpPopover() {
     return "";
   }
 
+  function buttonClickedStyleMapper() {
+    if (show) return { color: "rgb(190, 185, 167)" };
+    return {};
+  }
+
   return (
     // <div ref={ref} className="popover-wrapper">
     <OnClickOutsideComponent
       onClickOutsideFunc={onClickOutsideFunc}
       className="popover-wrapper"
     >
-      <div onClick={handlePopoverClick} className="right-link">
-        Sign Up/Login
+      <div
+        onClick={handlePopoverClick}
+        className="right-link"
+        style={buttonClickedStyleMapper()}
+      >
+        Login
       </div>
       {/* <Overlay
         show={show}

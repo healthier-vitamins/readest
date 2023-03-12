@@ -59,7 +59,7 @@ function HomePage() {
 
   // function offCanvasStyleMapper(payload) {
   //   // change sidebar width based on mobile view
-  //   const sidebarWidth = width <= globalVars.MOBILE_FOLD_WIDTH ? 12 : 18;
+  //   const sidebarWidth = width <= GLOBALVARS.MOBILE_FOLD_WIDTH ? 12 : 18;
   //   // convert to rem
   //   const fullscreenWidth = width / 16;
   //   const canvasOpenWidth = fullscreenWidth - sidebarWidth;
@@ -106,7 +106,7 @@ function HomePage() {
   //     case "container":
   //       return offCanvasModalState ? "_container-open" : "_container-close";
   //     case "definition":
-  //       if (width < globalVars.MOBILE_MIN_WIDTH) {
+  //       if (width < GLOBALVARS.MOBILE_MIN_WIDTH) {
   //         return offCanvasModalState ? "_definition-open" : "_definition-close";
   //       }
   //       return "";
