@@ -1,7 +1,9 @@
 import { userSchema } from "../../src/utils/userUtil";
 import { Client } from "@notionhq/client";
 import { HttpStatusCode } from "axios";
+// @ts-ignore
 const moment = require("moment");
+// @ts-ignore
 const { to } = require("../../src/utils/promiseUtil");
 
 const { NOTION_KEY, NOTION_DB_USER_KEY } = process.env;
