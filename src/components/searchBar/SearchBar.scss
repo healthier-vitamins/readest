@@ -9,7 +9,7 @@ input {
   width: 18rem;
 }
 
-input:focus {
+input:not([type="checkbox"]):focus {
   /* border: 2px solid #719ece;
   box-shadow: 0 0 1px #719ece; */
   outline: rgb(238, 230, 223) 3px solid;
@@ -34,10 +34,10 @@ input:focus {
   -o-outline-radius: 0.375rem;
 }
 
-.input:not([type="checkbox"]):focus {
-  -webkit-border-radius: 0;
-  border-radius: 0;
-}
+// .input:not([type="checkbox"]):focus {
+//   -webkit-border-radius: 0;
+//   border-radius: 0;
+// }
 
 .dropdown-list {
   /* background-color: rgb(245, 244, 243); */
