@@ -1,40 +1,25 @@
 // import ApiError from "class/ApiError";
 import axios from "axios";
+import { axiosTo } from "./promiseUtil";
 
-// import { to } from "./promiseUtil";
-
-async function userSignUp(payload: {
-  name: string;
-  email: string;
-  password: string;
-}) {
-  try {
-    const res = await axios.post("api/signUp", payload);
-    console.log(res);
-    return res.data;
-  } catch (err) {
-    console.log(err);
-    return err;
+async function userSignUp(successFuncs: any, errFuncs: any, payload: any) {
+  const [err, res] = await axiosTo(axios.post("api/signUp", payload));
+  if (err) {
+    errFuncs(err);
+    return;
   }
+  successFuncs(res);
+  return;
 }
 
-// Example POST method implementation:
-async function postData(url = "", data = {}) {
-  // Default options are marked with *
-  const response = await fetch(url, {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    mode: "cors", // no-cors, *cors, same-origin
-    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: "same-origin", // include, *same-origin, omit
-    headers: {
-      "Content-Type": "application/json",
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    redirect: "follow", // manual, *follow, error
-    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify(data), // body data type must match "Content-Type" header
-  });
-  return response.json(); // parses JSON response into native JavaScript objects
+async function login(successFuncs: any, errFuncs: any, payload: any) {
+  const [err, res] = await axiosTo(axios.post("api/login", payload));
+  if (err) {
+    errFuncs(err);
+    return;
+  }
+  successFuncs(res);
+  return;
 }
 
-export { userSignUp, postData };
+export { userSignUp, login };

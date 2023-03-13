@@ -6,6 +6,7 @@
 .book-tab-popover-container {
   background-color: rgb(255, 254, 254);
   width: fit-content;
+  min-width: 13rem;
   border: 0.375px solid lightgray;
   border-radius: 0.375rem;
   height: fit-content;
@@ -89,4 +90,12 @@
 .book-icon {
   font-size: 22px;
   color: rgb(94, 92, 89);
+}
+
+#book-selection-spinner {
+  height: 24px;
+  width: 24px;
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+  color: rgb(141, 119, 78);
 }

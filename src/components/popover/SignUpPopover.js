@@ -14,17 +14,10 @@ import { GLOBALVARS } from "../../utils/GLOBALVARS.ts";
 import "./SignUpPopover.scss";
 import { useNavigate } from "react-router-dom";
 import OnClickOutsideComponent from "../OnClickOutsideComponent";
+import { login, userSignUp } from "../../utils/apiUtils.ts";
 
 function SignUpPopover() {
-  // const [show, setShow] = useState(false);
-  // const [showPopoverState, setShowPopoverState] = useState({
-  //   signUpState: false,
-  //   loginState: true,
-  //   emailConfirmState: false,
-  // });
   const navigate = useNavigate();
-  // const ref = useRef(null);
-  // const signUpLinkRef = useRef(null);
   const {
     showPopoverState: { state, show },
   } = useSelector((state) => state.state);
@@ -42,7 +35,6 @@ function SignUpPopover() {
   const loginEmailRef = useRef("");
   const loginPasswordRef = useRef("");
 
-  // const { width } = useWindowDimension();
   const dispatch = useDispatch();
   const [errorState, setErrorState] = useState({
     signUpErr: false,
@@ -73,39 +65,6 @@ function SignUpPopover() {
     });
   }
 
-  // function setPopoverStateHelper(stateToTurnOn) {
-  //   const keys = Object.keys(showPopoverState);
-  //   const tempObj = {};
-  //   for (let key of keys) {
-  //     if (key === stateToTurnOn) {
-  //       tempObj[key] = true;
-  //     } else {
-  //       tempObj[key] = false;
-  //     }
-  //   }
-  //   setShowPopoverState(tempObj);
-  // }
-
-  // eslint-disable-next-line
-  // const onClickOutside = useCallback(() => {
-  //   // setPopoverStateHelper(GLOBALVARS.POPOVER_LOGIN);
-  //   // setShow(false);
-  //   resetAllExceptShowPopoverStateAndShow();
-  //   clickOutsideHelper();
-  // });
-
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (ref.current && !ref.current.contains(event.target)) {
-  //       onClickOutside && onClickOutside();
-  //     }
-  //   };
-  //   document.addEventListener("click", handleClickOutside, true);
-  //   return () => {
-  //     document.removeEventListener("click", handleClickOutside, true);
-  //   };
-  // }, [onClickOutside]);
-
   function clickOutsideHelper() {
     dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
     dispatch(setShowPopoverState(false));
@@ -119,8 +78,6 @@ function SignUpPopover() {
   // for redirected email verification URL fragment
   useEffect(() => {
     if (window.location.hash.length > 1) {
-      // setPopoverStateHelper("emailConfirmState");
-      // setShow(true);
       dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_CONFIRM_EMAIL));
       dispatch(setShowPopoverState(true));
       confirmEmailHelper();
@@ -152,10 +109,6 @@ function SignUpPopover() {
       }
       dispatch(setShowPopoverState(false));
       resetAllExceptShowPopoverStateAndShow();
-      // const urlWithoutToken = window.location.href.substring(
-      //   0,
-      //   window.location.href.indexOf("#")
-      // );
       navigate(`/`, { replace: true });
     } else {
       setLoadingState({
@@ -188,9 +141,9 @@ function SignUpPopover() {
       };
       console.log(payload);
 
-      const [err, res] = await axiosTo(axios.post("/api/signUp", payload));
+      // const [err, res] = await axiosTo(axios.post("/api/signUp", payload));
 
-      if (err) {
+      function errFuncs(err) {
         setLoadingState({
           ...loadingState,
           signUp: false,
@@ -203,18 +156,44 @@ function SignUpPopover() {
         dispatch(addToastNotificationArr(err.data));
       }
 
-      if (res) {
+      function successFuncs(res) {
         setLoadingState({
           ...loadingState,
           signUp: false,
         });
-        // setPopoverStateHelper(GLOBALVARS.POPOVER_LOGIN);
         dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
         resetAllExceptShowPopoverStateAndShow();
         dispatch(
           addToastNotificationArr(`Verification email sent to ${res?.email}`)
         );
       }
+
+      userSignUp(successFuncs, errFuncs, payload);
+
+      // if (err) {
+      //   setLoadingState({
+      //     ...loadingState,
+      //     signUp: false,
+      //   });
+      //   setErrorState({
+      //     ...errorState,
+      //     signUpErr: true,
+      //   });
+      //   setIsSubmitted(false);
+      //   dispatch(addToastNotificationArr(err.data));
+      // }
+
+      // if (res) {
+      //   setLoadingState({
+      //     ...loadingState,
+      //     signUp: false,
+      //   });
+      //   dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
+      //   resetAllExceptShowPopoverStateAndShow();
+      //   dispatch(
+      //     addToastNotificationArr(`Verification email sent to ${res?.email}`)
+      //   );
+      // }
     } else {
       setSignUpPasswordCompare({
         ...signUpPasswordCompare,
@@ -232,9 +211,8 @@ function SignUpPopover() {
       email: loginEmailRef.current.value,
       password: loginPasswordRef.current.value,
     };
-    const [err, res] = await axiosTo(axios.post("api/login", payload));
-    // const [err, res] = await dispatch(login(payload));
-    if (err) {
+
+    function errFuncs(err) {
       setLoadingState({
         ...loadingState,
         login: false,
@@ -246,20 +224,25 @@ function SignUpPopover() {
       console.error(err);
       dispatch(addToastNotificationArr(err.data));
     }
-    console.log("res baby |||||||||||||||||| ", res);
 
-    const loginPayload = {
-      token: res.token.access_token,
-      refreshToken: res.token.refresh_token,
-      email: res.email,
-    };
-    dispatch(userLoggedIn(loginPayload));
-    setLoadingState({
-      ...loadingState,
-      login: false,
-    });
-    dispatch(setShowPopoverState(false));
-    resetAllExceptShowPopoverStateAndShow();
+    function successFuncs(res) {
+      console.log("res baby |||||||||||||||||| ", res);
+
+      const loginPayload = {
+        token: res.token.access_token,
+        refreshToken: res.token.refresh_token,
+        email: res.email,
+      };
+      dispatch(userLoggedIn(loginPayload));
+      setLoadingState({
+        ...loadingState,
+        login: false,
+      });
+      dispatch(setShowPopoverState(false));
+      resetAllExceptShowPopoverStateAndShow();
+    }
+
+    login(successFuncs, errFuncs, payload);
   }
 
   function handleSignUpPasswordCompare(e) {

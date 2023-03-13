@@ -11,6 +11,7 @@ import { FiPlusSquare } from "react-icons/fi";
 import { BiBookHeart } from "react-icons/bi";
 import { MdOutlineDeleteSweep } from "react-icons/md";
 import "./BookSelectionPopover.scss";
+import { Spinner } from "react-bootstrap";
 
 function BookSelectionPopover() {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ function BookSelectionPopover() {
     dispatch(toggleCreateBookModal());
   }
   const { bookSelectionPopoverState } = useSelector((state) => state.state);
-  const { bookRes } = useSelector((state) => state.book);
+  const { bookRes, getAllBookIsLoading } = useSelector((state) => state.book);
 
   function RenderBookTab(book, index) {
     return (
@@ -62,26 +63,30 @@ function BookSelectionPopover() {
         ></BiBookHeart>
       </div>
 
-      {bookSelectionPopoverState && (
+      {bookSelectionPopoverState ? (
         <div className="book-tab-popover-container">
-          <div
-            className="book-selection-buttons"
-            onClick={() => {
-              protectedFunction(handleCreateBook);
-            }}
-          >
-            <FiPlusSquare className="add-book-icon" />
+          <div className="book-selection-buttons">
+            <FiPlusSquare
+              className="add-book-icon"
+              onClick={() => {
+                protectedFunction(handleCreateBook);
+              }}
+            />
             <MdOutlineDeleteSweep className="_add-book-icon" />
           </div>
-          <div className="book-tab-box">
-            {Array.isArray(bookRes.results) && bookRes.results.length > 0
-              ? bookRes.results.map((book, index) => {
-                  return RenderBookTab(book, index);
-                })
-              : null}
-          </div>
+          {getAllBookIsLoading ? (
+            <Spinner id="book-selection-spinner"></Spinner>
+          ) : (
+            <div className="book-tab-box">
+              {Array.isArray(bookRes.results) && bookRes.results.length > 0
+                ? bookRes.results.map((book, index) => {
+                    return RenderBookTab(book, index);
+                  })
+                : null}
+            </div>
+          )}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

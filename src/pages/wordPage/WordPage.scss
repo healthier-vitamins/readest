@@ -41,6 +41,8 @@
 .no-words {
   font-weight: 600;
   color: $web-font-color;
+  width: 100%;
+  text-align: center;
 }
 
 @media screen and (min-width: 540px) and (max-width: 767px) {

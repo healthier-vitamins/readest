@@ -10,7 +10,7 @@ function CreateBookModal() {
     return store.state;
   });
   const [isClicked, setisClicked] = useState(false);
-  const { isLoading } = useSelector((state) => {
+  const { postBookIsLoading } = useSelector((state) => {
     return state.book;
   });
   const [isInvalid, setIsInvalid] = useState(false);
@@ -69,7 +69,7 @@ function CreateBookModal() {
               handleCreateBook(event);
             }}
           >
-            {isLoading && isClicked && !isInvalid ? (
+            {postBookIsLoading && isClicked && !isInvalid ? (
               <Spinner size="sm" className="spinner"></Spinner>
             ) : null}
             Confirm

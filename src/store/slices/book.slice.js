@@ -5,7 +5,8 @@ import { toggleCreateBookModal } from "./state.slice";
 const initialState = {
   bookRes: {},
   bookResArrCheckbox: [],
-  isLoading: true,
+  postBookIsLoading: true,
+  getAllBookIsLoading: true,
   // will only contain 1 book at any time
   selectedTab: {
     bookObj: "Definition",
@@ -93,16 +94,16 @@ const book = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(postBook.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.postBookIsLoading = false;
       })
       .addCase(postBook.pending, (state) => {
-        state.isLoading = true;
+        state.postBookIsLoading = true;
       })
       .addCase(postBook.rejected, (state) => {
-        state.isLoading = true;
+        state.postBookIsLoading = true;
       })
       .addCase(getAllBook.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.getAllBookIsLoading = false;
         state.bookRes = action.payload;
         let tempObj;
         let tempArr = [];
@@ -118,10 +119,10 @@ const book = createSlice({
         state.bookResArrCheckbox = tempArr;
       })
       .addCase(getAllBook.pending, (state) => {
-        state.isLoading = true;
+        state.getAllBookIsLoading = true;
       })
       .addCase(getAllBook.rejected, (state) => {
-        state.isLoading = true;
+        state.getAllBookIsLoading = true;
       });
   },
 });
