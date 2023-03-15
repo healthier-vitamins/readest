@@ -467,7 +467,10 @@ function SignUpPopover() {
   }
 
   return (
-    <OnClickOutsideComponent onClickOutsideFunc={onClickOutsideFunc}>
+    <OnClickOutsideComponent
+      onClickOutsideFunc={onClickOutsideFunc}
+      isShowing={show}
+    >
       <div className="popover-wrapper">
         <div
           onClick={handlePopoverClick}

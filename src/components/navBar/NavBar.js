@@ -15,6 +15,7 @@ import { setBookSelectionPopoverState } from "../../store/slices/state.slice";
 function NavBar() {
   const dispatch = useDispatch();
   const { bookSelection } = useSelector((state) => state.book);
+  const { bookSelectionPopoverState } = useSelector((state) => state.state);
 
   const {
     authentication: { isUserLoggedIn },
@@ -98,7 +99,10 @@ function NavBar() {
       <div className="bottom-navbar">
         <div className="left-box">
           <div className="books-tab-button">
-            <OnClickOutsideComponent onClickOutsideFunc={onClickOutsideFunc}>
+            <OnClickOutsideComponent
+              onClickOutsideFunc={onClickOutsideFunc}
+              isShowing={bookSelectionPopoverState}
+            >
               <BookSelectionPopover></BookSelectionPopover>
             </OnClickOutsideComponent>
           </div>

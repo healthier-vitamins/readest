@@ -113,6 +113,7 @@ function SaveWordModal() {
     <Modal
       centered
       animation={true}
+      
       show={saveWordModalState}
       onHide={() => {
         dispatch(toggleSaveWordModal());
