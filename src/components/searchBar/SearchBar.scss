@@ -10,8 +10,6 @@ input {
 }
 
 input:not([type="checkbox"]):focus {
-  /* border: 2px solid #719ece;
-  box-shadow: 0 0 1px #719ece; */
   outline: rgb(238, 230, 223) 3px solid;
   -webkit-outline: rgb(238, 230, 223) 3px solid;
   -moz-outline: rgb(238, 230, 223) 3px solid;
@@ -87,5 +85,13 @@ span {
   input,
   .dropdown-box {
     width: 10rem;
+  }
+}
+
+/* Target iOS devices */
+@media only screen and (min-device-width: 320px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
+  input:not([type="checkbox"]):focus {
+    border-radius: 0.375rem;
+    -webkit-border-radius: 0.375rem;
   }
 }
