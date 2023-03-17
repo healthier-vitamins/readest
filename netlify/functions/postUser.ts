@@ -1,10 +1,9 @@
 import { userSchema } from "../../src/utils/userUtil";
 import { Client } from "@notionhq/client";
 import { HttpStatusCode } from "axios";
-// @ts-ignore
+import { bookSchema } from "utils/bookUtil";
 const moment = require("moment");
-// @ts-ignore
-const { to } = require("../../src/utils/promiseUtil");
+// const { to } = require("../../src/utils/promiseUtil");
 
 const { NOTION_KEY, NOTION_DB_USER_KEY } = process.env;
 const notion = new Client({
@@ -16,10 +15,10 @@ exports.handler = async function (event: any, context: any) {
   const { email, name } = JSON.parse(event.body);
   const date = moment().format("MMMM Do YYYY, h:mm:ss a");
   console.log(date);
-  // let id;
+  let parentId;
 
-  const [err, response] = await to(
-    notion.pages.create({
+  try {
+    const response = await notion.pages.create({
       parent: {
         database_id: NOTION_DB_USER_KEY ? NOTION_DB_USER_KEY : "",
         type: "database_id",
@@ -71,9 +70,22 @@ exports.handler = async function (event: any, context: any) {
           ],
         },
         [userSchema.IS_DELETED]: {
-          select: {
-            name: "NO",
-          },
+          rich_text: [
+            {
+              text: {
+                content: "N",
+              },
+            },
+          ],
+        },
+        [userSchema.VERIFIED]: {
+          rich_text: [
+            {
+              text: {
+                content: "N",
+              },
+            },
+          ],
         },
         [userSchema.STATUS]: {
           status: {
@@ -81,18 +93,73 @@ exports.handler = async function (event: any, context: any) {
           },
         },
       },
-    })
-  );
-
-  if (err) {
+    });
+    parentId = response.id;
+  } catch (err: any) {
+    console.log("notion's err ", err);
     return {
-      statusCode: HttpStatusCode.InternalServerError,
+      statusCode: HttpStatusCode.BadRequest,
       body: err.message,
     };
   }
 
-  return {
-    statusCode: HttpStatusCode.Ok,
-    body: JSON.stringify(response),
-  };
+  try {
+    const response = await notion.databases.create({
+      parent: {
+        page_id: parentId,
+        type: "page_id",
+      },
+      is_inline: true,
+      title: [
+        {
+          type: "text",
+          text: {
+            content: "BOOKS",
+          },
+        },
+      ],
+      properties: {
+        [bookSchema.TITLE]: {
+          type: "title",
+          title: {},
+        },
+        [bookSchema.STATUS]: {
+          type: "select",
+          select: {
+            options: [
+              {
+                name: "Live",
+              },
+            ],
+          },
+        },
+        [bookSchema.BOOK_NAME]: {
+          type: "rich_text",
+          rich_text: {},
+        },
+        [bookSchema.WORDS]: {
+          type: "rich_text",
+          rich_text: {},
+        },
+        [bookSchema.CREATED_TIME]: {
+          type: "created_time",
+          created_time: {},
+        },
+        [bookSchema.LAST_EDITED_TIME]: {
+          type: "created_time",
+          created_time: {},
+        },
+      },
+    });
+    return {
+      statusCode: HttpStatusCode.Ok,
+      body: JSON.stringify(response),
+    };
+  } catch (err: any) {
+    console.log("notion's ERROR ", err);
+    return {
+      statusCode: HttpStatusCode.BadRequest,
+      body: err.message,
+    };
+  }
 };

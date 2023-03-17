@@ -7,35 +7,50 @@ input {
   padding: 0.2rem 0.5rem 0.2rem 0.6rem;
   border-radius: 0.375rem;
   width: 18rem;
+  // border: 3px solid transparent;
 }
 
 input:not([type="checkbox"]):focus {
-  outline: rgb(238, 230, 223) 3px solid;
-  -webkit-outline: rgb(238, 230, 223) 3px solid;
-  -moz-outline: rgb(238, 230, 223) 3px solid;
-  -o-outline: rgb(238, 230, 223) 3px solid;
+  // outline: rgb(238, 230, 223) 3px solid;
+  // -webkit-outline: rgb(238, 230, 223) 3px solid;
+  // -moz-outline: rgb(238, 230, 223) 3px solid;
+  // -o-outline: rgb(238, 230, 223) 3px solid;
+  // // outline: none;
+  // // border: 3px solid rgb(238, 230, 223);
+  // border-color: rgb(238, 230, 223);
+  // -webkit-border-color: rgb(238, 230, 223);
+  // -moz-border-color: rgb(238, 230, 223);
+  // -o-border-color: rgb(238, 230, 223);
+  // box-shadow: none;
+  // -webkit-box-shadow: none;
+  // -moz-box-shadow: none;
+  // -o-box-shadow: none;
+  // border-radius: 0.375rem;
+  // -o-border-radius: 0.375rem;
+  // -webkit-border-radius: 0.375rem;
+  // -moz-border-radius: 0.375rem;
+
+  // outline-radius
+  // -webkit-outline-radius: 0.375rem;
+  // -moz-outline-radius: 0.375rem;
+  // -o-outline-radius: 0.375rem;
+
+  outline: none;
   border-color: rgb(238, 230, 223);
+  box-shadow: 0 0 0 3px rgb(238, 230, 223);
+
+  -webkit-outline: none;
   -webkit-border-color: rgb(238, 230, 223);
-  -moz-border-color: rgb(238, 230, 223);
+  -webkit-box-shadow: 0 0 0 3px rgb(238, 230, 223);
+
+  -o-outline: none;
   -o-border-color: rgb(238, 230, 223);
-  box-shadow: none;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  -o-box-shadow: none;
-  border-radius: 0.375rem;
-  -o-border-radius: 0.375rem;
-  -webkit-border-radius: 0.375rem;
-  -moz-border-radius: 0.375rem;
+  -o-box-shadow: 0 0 0 3px rgb(238, 230, 223);
 
-  -webkit-outline-radius: 0.375rem;
-  -moz-outline-radius: 0.375rem;
-  -o-outline-radius: 0.375rem;
+  -moz-outline: none;
+  -moz-border-color: rgb(238, 230, 223);
+  -moz-box-shadow: 0 0 0 3px rgb(238, 230, 223);
 }
-
-// .input:not([type="checkbox"]):focus {
-//   -webkit-border-radius: 0;
-//   border-radius: 0;
-// }
 
 .dropdown-list {
   /* background-color: rgb(245, 244, 243); */

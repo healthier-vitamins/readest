@@ -3,22 +3,34 @@ import axios from "axios";
 import { axiosTo } from "./promiseUtil";
 
 async function userSignUp(successFuncs: any, errFuncs: any, payload: any) {
-  const [err, res] = await axiosTo(axios.post("api/signUp", payload));
-  if (err) {
-    errFuncs(err);
+  const [goTrueErr, goTrueRes] = await axiosTo(
+    axios.post("api/signUp", payload)
+  );
+  if (goTrueErr) {
+    errFuncs(goTrueErr);
     return;
   }
-  successFuncs(res);
+  // eslint-disable-next-line
+  const [notionErr, notionRes] = await axiosTo(
+    axios.post("api/postUser", payload)
+  );
+  if (notionErr) {
+    errFuncs(notionErr);
+    return;
+  }
+  successFuncs(goTrueRes);
   return;
 }
 
 async function login(successFuncs: any, errFuncs: any, payload: any) {
-  const [err, res] = await axiosTo(axios.post("api/login", payload));
-  if (err) {
-    errFuncs(err);
+  const [goTrueErr, goTrueRes] = await axiosTo(
+    axios.post("api/login", payload)
+  );
+  if (goTrueErr) {
+    errFuncs(goTrueErr);
     return;
   }
-  successFuncs(res);
+  successFuncs(goTrueRes);
   return;
 }
 

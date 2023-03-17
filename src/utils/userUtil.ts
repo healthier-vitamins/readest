@@ -12,6 +12,7 @@ const userSchema: UserSchema = {
   NAME: "NAME",
   EMAIL: "EMAIL",
   IS_DELETED: "IS_DELETED",
+  VERIFIED: "VERIFIED",
   CREATED_TIME: "CREATED_TIME",
   LAST_EDITED_TIME: "LAST_EDITED_TIME",
 };
@@ -22,6 +23,7 @@ interface UserSchema {
   NAME: string;
   EMAIL: string;
   IS_DELETED: string;
+  VERIFIED: string;
   CREATED_TIME: string;
   LAST_EDITED_TIME: string;
 }

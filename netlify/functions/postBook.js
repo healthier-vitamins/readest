@@ -1,5 +1,6 @@
 import { wordSchema } from "../../src/utils/wordUtil.ts";
 import { bookSchema } from "../../src/utils/bookUtil";
+import { HttpStatusCode } from "axios";
 const { Client } = require("@notionhq/client");
 
 const { NOTION_KEY, NOTION_DB_BOOK_KEY } = process.env;
@@ -104,7 +105,7 @@ exports.handler = async function (event, context) {
       },
     });
     return {
-      statusCode: 200,
+      statusCode: HttpStatusCode.Ok,
       body: JSON.stringify(response),
     };
   } catch (err) {
