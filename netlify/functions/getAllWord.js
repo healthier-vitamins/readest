@@ -1,7 +1,7 @@
 // 2ca52834-8db0-4595-bc9b-ed565deb1748
 const { Client } = require("@notionhq/client");
 const { HttpStatusCode } = require("axios");
-const { wordSchema } = require("../../src/utils/wordUtil");
+const { wordSchema } = require("../../src/utils/schemas/wordSchema.ts");
 
 const { NOTION_KEY } = process.env;
 const notion = new Client({

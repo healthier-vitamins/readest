@@ -1,5 +1,5 @@
-import { wordSchema } from "../../src/utils/wordUtil.ts";
-import { bookSchema } from "../../src/utils/bookUtil";
+import { wordSchema } from "../../src/utils/schemas/wordSchema.ts";
+import { bookSchema } from "../../src/utils/schemas/bookSchema.ts";
 import { HttpStatusCode } from "axios";
 const { Client } = require("@notionhq/client");
 
