@@ -14,7 +14,7 @@ import { GLOBALVARS } from "../../utils/GLOBALVARS.ts";
 import "./SignUpPopover.scss";
 import { useNavigate } from "react-router-dom";
 import OnClickOutsideComponent from "../OnClickOutsideComponent";
-import { login, userSignUp } from "../../utils/apiUtils.ts";
+import { login, userSignUp } from "../../utils/userApis.ts";
 
 function SignUpPopover() {
   const navigate = useNavigate();
