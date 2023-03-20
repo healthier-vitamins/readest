@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { Form, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,12 +8,11 @@ import {
   toggleShowPopoverState,
 } from "../../store/slices/state.slice";
 import { userLoggedIn } from "../../store/slices/user.slice";
-import { axiosTo } from "../../utils/promiseUtil";
 import { GLOBALVARS } from "../../utils/GLOBALVARS.ts";
 import "./SignUpPopover.scss";
 import { useNavigate } from "react-router-dom";
 import OnClickOutsideComponent from "../OnClickOutsideComponent";
-import { login, userSignUp } from "../../utils/userApis.ts";
+import { login, userSignUp, verifyUser } from "../../utils/userApis.ts";
 
 function SignUpPopover() {
   const navigate = useNavigate();
@@ -66,12 +64,12 @@ function SignUpPopover() {
   }
 
   function clickOutsideHelper() {
-    dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
+    // dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
     dispatch(setShowPopoverState(false));
   }
 
   function onClickOutsideFunc() {
-    resetAllExceptShowPopoverStateAndShow();
+    // resetAllExceptShowPopoverStateAndShow();
     clickOutsideHelper();
   }
 
@@ -89,11 +87,11 @@ function SignUpPopover() {
     const token = window.location.hash.substring(
       window.location.hash.indexOf("=") + 1
     );
-    // eslint-disable-next-line
-    const [err, res] = await axiosTo(
-      axios.post("api/confirmEmail", { token: token })
-    );
-    if (err) {
+    const payload = {
+      token: token,
+    };
+
+    function errFuncs(err) {
       setLoadingState({
         ...loadingState,
         confirmEmail: false,
@@ -110,13 +108,17 @@ function SignUpPopover() {
       dispatch(setShowPopoverState(false));
       resetAllExceptShowPopoverStateAndShow();
       navigate(`/`, { replace: true });
-    } else {
+    }
+
+    function successFuncs(res) {
       setLoadingState({
         ...loadingState,
         confirmEmail: false,
       });
       navigate(`/`, { replace: true });
     }
+
+    verifyUser(successFuncs, errFuncs, payload);
   }
 
   function handlePopoverClick(event) {

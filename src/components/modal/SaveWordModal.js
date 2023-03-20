@@ -7,7 +7,7 @@ import {
 } from "../../store/slices/book.slice";
 import { toggleSaveWordModal } from "../../store/slices/state.slice";
 import { postWordToBook } from "../../store/slices/word.slice";
-import { bookSchema } from "../../utils/bookUtil.ts";
+import { bookSchema } from "../../utils/schemas/bookSchema.ts";
 import "./SaveWordModal.css";
 
 function SaveWordModal() {
@@ -113,7 +113,6 @@ function SaveWordModal() {
     <Modal
       centered
       animation={true}
-      
       show={saveWordModalState}
       onHide={() => {
         dispatch(toggleSaveWordModal());

@@ -7,7 +7,7 @@ import SignUpPopover from "../popover/SignUpPopover";
 import { userLoggedOut } from "../../store/slices/user.slice";
 import React from "react";
 import { changeActiveTab } from "../../store/slices/book.slice";
-import { bookSchema } from "../../utils/bookUtil.ts";
+import { bookSchema } from "../../utils/schemas/bookSchema.ts";
 import BookSelectionPopover from "../popover/BookSelectionPopover";
 import OnClickOutsideComponent from "../OnClickOutsideComponent";
 import { setBookSelectionPopoverState } from "../../store/slices/state.slice";

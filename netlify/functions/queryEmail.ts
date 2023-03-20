@@ -1,5 +1,6 @@
 import { HttpStatusCode } from "axios";
 import { Client } from "@notionhq/client";
+import { userSchema } from "utils/schemas/userSchema";
 
 const { NOTION_KEY, NOTION_DB_USER_KEY } = process.env;
 const notion = new Client({
@@ -14,7 +15,7 @@ exports.handler = async function (event: any, context: any) {
       filter: {
         and: [
           {
-            property: "rich_text",
+            property: userSchema.EMAIL,
             rich_text: { equals: email },
           },
         ],

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getWordForBook } from "../../store/slices/word.slice";
-import { wordSchema } from "../../utils/wordUtil.ts";
+import { wordSchema } from "../../utils/schemas/wordSchema.ts";
 import { Spinner } from "react-bootstrap";
 import "./WordPage.scss";
 // import useWindowDimension, {

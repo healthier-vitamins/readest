@@ -10,16 +10,34 @@ async function userSignUp(successFuncs: any, errFuncs: any, payload: any) {
     errFuncs(goTrueErr);
     return;
   }
-  // eslint-disable-next-line
-  const [notionErr, notionRes] = await axiosTo(
-    axios.post("api/postUser", payload)
+
+  // search if email exists in db
+  const [queryEmailErr, queryEmailRes] = await axiosTo(
+    axios.post("api/queryEmail", payload)
   );
-  if (notionErr) {
-    errFuncs(notionErr);
+
+  if (queryEmailErr) {
+    errFuncs(queryEmailErr);
     return;
   }
-  successFuncs(goTrueRes);
-  return;
+
+  // if email exists
+  if (queryEmailRes.results.length > 0) {
+    successFuncs(goTrueRes);
+    return;
+  } else {
+    // create new account in notion
+    // eslint-disable-next-line
+    const [notionErr, notionRes] = await axiosTo(
+      axios.post("api/postUser", payload)
+    );
+    if (notionErr) {
+      errFuncs(notionErr);
+      return;
+    }
+    successFuncs(goTrueRes);
+    return;
+  }
 }
 
 async function login(successFuncs: any, errFuncs: any, payload: any) {
@@ -30,8 +48,31 @@ async function login(successFuncs: any, errFuncs: any, payload: any) {
     errFuncs(goTrueErr);
     return;
   }
+
+  // eslint-disable-next-line
+  const [updateLoggedInErr, updateLoggedInRes] = await axiosTo(
+    axios.post("api/updateLoggedInDate", payload)
+  );
+
+  if (updateLoggedInErr) {
+    errFuncs(updateLoggedInErr);
+    return;
+  }
+
   successFuncs(goTrueRes);
   return;
 }
 
-export { userSignUp, login };
+async function verifyUser(successFuncs: any, errFuncs: any, payload: any) {
+  // eslint-disable-next-line
+  const [err, res] = await axiosTo(axios.post("api/confirmEmail", payload));
+
+  if (err) {
+    errFuncs(err);
+    return;
+  }
+  successFuncs(res);
+  return;
+}
+
+export { userSignUp, login, verifyUser };

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { addToastNotificationArr } from "./state.slice";
-import { bookSchema } from "../../utils/bookUtil.ts";
+import { bookSchema } from "../../utils/schemas/bookSchema";
 
 // api url with query passed through as parameter
 function apiUrl(queriedWord) {

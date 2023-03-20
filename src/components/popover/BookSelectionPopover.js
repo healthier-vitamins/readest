@@ -5,8 +5,8 @@ import {
 } from "../../store/slices/state.slice";
 import { addBookSelection, getAllBook } from "../../store/slices/book.slice";
 import React, { useEffect } from "react";
-import { bookSchema } from "../../utils/bookUtil.ts";
-import { protectedFunction } from "../../utils/userUtil.ts";
+import { bookSchema } from "../../utils/schemas/bookSchema.ts";
+import protectedFunction from "../../utils/protectedFunc.ts";
 import { FiPlusSquare } from "react-icons/fi";
 import { BiBookHeart } from "react-icons/bi";
 import { MdOutlineDeleteSweep } from "react-icons/md";

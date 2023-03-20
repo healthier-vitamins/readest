@@ -1,7 +1,7 @@
-import { userSchema } from "../../src/utils/userUtil";
+import { userSchema } from "../../src/utils/schemas/userSchema";
 import { Client } from "@notionhq/client";
 import { HttpStatusCode } from "axios";
-import { bookSchema } from "utils/bookUtil";
+import { bookSchema } from "utils/schemas/bookSchema";
 const moment = require("moment");
 // const { to } = require("../../src/utils/promiseUtil");
 
@@ -11,10 +11,9 @@ const notion = new Client({
 });
 
 exports.handler = async function (event: any, context: any) {
-  console.log(event, context);
+  moment.locale("en-sg");
   const { email, name } = JSON.parse(event.body);
   const date = moment().format("MMMM Do YYYY, h:mm:ss a");
-  console.log(date);
   let parentId;
 
   try {
@@ -34,13 +33,7 @@ exports.handler = async function (event: any, context: any) {
           ],
         },
         [userSchema.EMAIL]: {
-          rich_text: [
-            {
-              text: {
-                content: email,
-              },
-            },
-          ],
+          email: email,
         },
         [userSchema.NAME]: {
           rich_text: [
@@ -78,11 +71,11 @@ exports.handler = async function (event: any, context: any) {
             },
           ],
         },
-        [userSchema.VERIFIED]: {
+        [userSchema.LAST_LOGGED_IN]: {
           rich_text: [
             {
               text: {
-                content: "N",
+                content: date,
               },
             },
           ],
