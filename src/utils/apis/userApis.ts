@@ -1,6 +1,10 @@
 // import ApiError from "class/ApiError";
 import axios from "axios";
-import { axiosTo } from "./promiseUtil";
+import { axiosTo } from "../promiseUtil";
+// @ts-ignore
+import { store } from "../../store/store";
+// @ts-ignore
+import { addUserPageId } from "../../store/slices/user.slice.js";
 
 async function userSignUp(successFuncs: any, errFuncs: any, payload: any) {
   const [goTrueErr, goTrueRes] = await axiosTo(
@@ -58,6 +62,9 @@ async function login(successFuncs: any, errFuncs: any, payload: any) {
     errFuncs(updateLoggedInErr);
     return;
   }
+
+  console.log(updateLoggedInRes);
+  store.dispatch(addUserPageId(updateLoggedInRes.id));
 
   successFuncs(goTrueRes);
   return;

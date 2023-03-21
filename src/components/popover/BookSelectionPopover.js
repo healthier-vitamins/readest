@@ -78,11 +78,13 @@ function BookSelectionPopover() {
             <Spinner id="book-selection-spinner"></Spinner>
           ) : (
             <div className="book-tab-box">
-              {Array.isArray(bookRes.results) && bookRes.results.length > 0
-                ? bookRes.results.map((book, index) => {
-                    return RenderBookTab(book, index);
-                  })
-                : null}
+              {Array.isArray(bookRes.results) && bookRes.results.length > 0 ? (
+                bookRes.results.map((book, index) => {
+                  return RenderBookTab(book, index);
+                })
+              ) : (
+                <div className="no-words">No books saved.</div>
+              )}
             </div>
           )}
         </div>

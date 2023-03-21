@@ -9,6 +9,7 @@ const initialState = {
   authentication: {
     isUserLoggedIn: false,
     userEmail: null,
+    userPageId: null,
   },
 };
 
@@ -64,6 +65,18 @@ const user = createSlice({
         sameSite: "lax",
         path: "/",
       });
+      cookies.remove("page-id", {
+        sameSite: "lax",
+        path: "/",
+      });
+    },
+    addUserPageId: (state, action) => {
+      const id = action.payload;
+      cookies.set("page-id", id, {
+        maxAge: 3600,
+        sameSite: "lax",
+        path: "/",
+      });
     },
   },
   // extraReducers: (builder) => {
@@ -89,5 +102,5 @@ const user = createSlice({
   // });
   // },
 });
-export const { userLoggedIn, userLoggedOut } = user.actions;
+export const { userLoggedIn, userLoggedOut, addUserPageId } = user.actions;
 export default user.reducer;

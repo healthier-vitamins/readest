@@ -40,9 +40,25 @@
 }
 
 #form_control:focus {
-  outline: rgb(238, 230, 223) 3px solid;
-  border-color: rgb(238, 230, 223);
-  box-shadow: none;
+  // outline: rgb(238, 230, 223) 3px solid;
+  // border-color: rgb(238, 230, 223);
+  // box-shadow: none;
+
+  outline: none !important;
+  border-color: rgb(238, 230, 223) !important;
+  box-shadow: 0 0 0 3px rgb(238, 230, 223) !important;
+
+  -webkit-outline: none !important;
+  -webkit-border-color: rgb(238, 230, 223) !important;
+  -webkit-box-shadow: 0 0 0 3px rgb(238, 230, 223) !important;
+
+  -o-outline: none !important;
+  -o-border-color: rgb(238, 230, 223) !important;
+  -o-box-shadow: 0 0 0 3px rgb(238, 230, 223) !important;
+
+  -moz-outline: none !important;
+  -moz-border-color: rgb(238, 230, 223) !important;
+  -moz-box-shadow: 0 0 0 3px rgb(238, 230, 223) !important;
 }
 
 .modal-container {

@@ -1,11 +1,13 @@
 import { createRef, useState } from "react";
 import { Modal, Form, Spinner, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import "./CreateBookModal.css";
+import "./CreateBookModal.scss";
 import { toggleCreateBookModal } from "../../store/slices/state.slice";
 import { postBook } from "../../store/slices/book.slice";
+import Cookies from "universal-cookie";
 
 function CreateBookModal() {
+  const cookies = new Cookies();
   const { createBookModalState } = useSelector((store) => {
     return store.state;
   });
@@ -25,10 +27,13 @@ function CreateBookModal() {
       setIsInvalid(true);
     } else {
       setIsInvalid(false);
-      const bookDetailObj = {
+      const id = cookies.get("page-id");
+      const payload = {
         title: bookTitleRef.current.value,
+        id: id,
       };
-      dispatch(postBook(bookDetailObj));
+
+      dispatch(postBook(payload));
     }
   }
 

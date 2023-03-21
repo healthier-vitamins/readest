@@ -10,8 +10,10 @@ const notion = new Client({
 
 exports.handler = async function (event: any, context: any) {
   const { email } = JSON.parse(event.body);
-  moment.locale("en-sg");
-  const date = moment().format("MMMM Do YYYY, h:mm:ss a");
+  const dateNow = new Date().toString();
+  const date = moment()
+    .utc(dateNow + "8:00")
+    .format("MMMM Do YYYY, h:mm:ss a");
   let accountId;
   try {
     const response = await notion.databases.query({
@@ -33,33 +35,38 @@ exports.handler = async function (event: any, context: any) {
       statusCode: HttpStatusCode.InternalServerError,
       body: err.message,
     };
-  }
-  if (accountId) {
-    try {
-      const response = await notion.pages.update({
-        page_id: accountId,
-        properties: {
-          [userSchema.LAST_LOGGED_IN]: {
-            rich_text: [
-              {
-                type: "text",
-                text: {
-                  content: date,
+  } finally {
+    if (accountId) {
+      try {
+        const response = await notion.pages.update({
+          page_id: accountId,
+          properties: {
+            [userSchema.LAST_LOGGED_IN]: {
+              rich_text: [
+                {
+                  type: "text",
+                  text: {
+                    content: date,
+                  },
                 },
-              },
-            ],
+              ],
+            },
           },
-        },
-      });
-      return {
-        statusCode: HttpStatusCode.Ok,
-        body: JSON.stringify(response),
-      };
-    } catch (err: any) {
-      return {
-        statusCode: HttpStatusCode.InternalServerError,
-        body: err.message,
-      };
+        });
+        return {
+          statusCode: HttpStatusCode.Ok,
+          body: JSON.stringify(response),
+        };
+      } catch (err: any) {
+        return {
+          statusCode: HttpStatusCode.InternalServerError,
+          body: err.message,
+        };
+      }
     }
+    return {
+      statusCode: HttpStatusCode.InternalServerError,
+      body: "Something went wrong. Please contact Audrian on this issue.",
+    };
   }
 };

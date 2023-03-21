@@ -12,7 +12,7 @@ import { GLOBALVARS } from "../../utils/GLOBALVARS.ts";
 import "./SignUpPopover.scss";
 import { useNavigate } from "react-router-dom";
 import OnClickOutsideComponent from "../OnClickOutsideComponent";
-import { login, userSignUp, verifyUser } from "../../utils/userApis.ts";
+import { login, userSignUp, verifyUser } from "../../utils/apis/userApis.ts";
 
 function SignUpPopover() {
   const navigate = useNavigate();
@@ -64,12 +64,12 @@ function SignUpPopover() {
   }
 
   function clickOutsideHelper() {
-    // dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
+    dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
     dispatch(setShowPopoverState(false));
   }
 
   function onClickOutsideFunc() {
-    // resetAllExceptShowPopoverStateAndShow();
+    resetAllExceptShowPopoverStateAndShow();
     clickOutsideHelper();
   }
 

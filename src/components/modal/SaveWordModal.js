@@ -8,7 +8,7 @@ import {
 import { toggleSaveWordModal } from "../../store/slices/state.slice";
 import { postWordToBook } from "../../store/slices/word.slice";
 import { bookSchema } from "../../utils/schemas/bookSchema.ts";
-import "./SaveWordModal.css";
+import "./SaveWordModal.scss";
 
 function SaveWordModal() {
   // const [hasSelectedBook, setHasSelectedBook] = useState(false);

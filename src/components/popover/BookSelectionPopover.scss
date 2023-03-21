@@ -65,11 +65,13 @@
 
 .add-book-icon {
   font-size: 18px;
+  color: rgb(94, 92, 89);
 }
 
 ._add-book-icon {
   font-size: 20px;
   margin-left: 0.1rem;
+  color: rgb(94, 92, 89);
 }
 
 .add-book-icon:hover {
@@ -93,8 +95,9 @@
 }
 
 #book-selection-spinner {
-  height: 24px;
-  width: 24px;
+  height: 20px;
+  width: 20px;
+  font-size: 15px;
   margin-top: 0.3rem;
   margin-bottom: 0.3rem;
   color: rgb(141, 119, 78);
