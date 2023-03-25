@@ -67,7 +67,7 @@ function CreateBookModal() {
         </InputGroup>
 
         <div className="btn-container">
-          <div
+          <button
             className="cfm-btn"
             onClick={(event) => {
               setisClicked(true);
@@ -78,8 +78,8 @@ function CreateBookModal() {
               <Spinner size="sm" className="spinner"></Spinner>
             ) : null}
             Confirm
-          </div>
-          <div
+          </button>
+          <button
             className="cancel-btn"
             onClick={() => {
               dispatch(toggleCreateBookModal());
@@ -87,8 +87,8 @@ function CreateBookModal() {
               setisClicked(false);
             }}
           >
-            Cancel
-          </div>
+            <div className="cancel-font">Cancel</div>
+          </button>
         </div>
       </Modal.Body>
     </Modal>
