@@ -10,7 +10,7 @@ function to(promise: any) {
     });
 }
 
-/** @TODO to be replace with axios interceptors */
+/** //TODO to be replace with axios interceptors */
 function axiosTo(axios: any) {
   return axios
     .then((res: AxiosResponse) => {

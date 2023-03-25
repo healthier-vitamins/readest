@@ -9,10 +9,10 @@ exports.handler = async function (event, context) {
   try {
     const response = await notion.blocks.children.list({
       //? user account page id
-      // block_id: "552976822f714655a049d60dc8462368",
+      block_id: "552976822f714655a049d60dc8462368",
 
       //? user account child database id
-      block_id: "f5fd916a-a5d5-4867-956d-b2bd8c53c3c7",
+      // block_id: "f5fd916a-a5d5-4867-956d-b2bd8c53c3c7",
 
       // page_id: "2ca52834-8db0-4595-bc9b-ed565deb1748",
       // database_id: "473d8c52-4d47-4d13-b5d5-d2aee88ae5d0",

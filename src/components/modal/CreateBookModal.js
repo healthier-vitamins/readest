@@ -27,12 +27,12 @@ function CreateBookModal() {
       setIsInvalid(true);
     } else {
       setIsInvalid(false);
-      const id = cookies.get("page-id");
+      const id = cookies.get("user-id");
       const payload = {
         title: bookTitleRef.current.value,
         id: id,
       };
-
+      
       dispatch(postBook(payload));
     }
   }

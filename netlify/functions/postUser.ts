@@ -62,15 +62,6 @@ exports.handler = async function (event: any, context: any) {
             },
           ],
         },
-        [userSchema.IS_DELETED]: {
-          rich_text: [
-            {
-              text: {
-                content: "N",
-              },
-            },
-          ],
-        },
         [userSchema.LAST_LOGGED_IN]: {
           rich_text: [
             {
@@ -82,7 +73,7 @@ exports.handler = async function (event: any, context: any) {
         },
         [userSchema.STATUS]: {
           status: {
-            name: "Live",
+            name: "LIVE",
           },
         },
       },
@@ -121,7 +112,12 @@ exports.handler = async function (event: any, context: any) {
           select: {
             options: [
               {
-                name: "Live",
+                name: "LIVE",
+                color: "blue",
+              },
+              {
+                name: "DELETED",
+                color: "red",
               },
             ],
           },
@@ -130,17 +126,13 @@ exports.handler = async function (event: any, context: any) {
           type: "rich_text",
           rich_text: {},
         },
-        [bookSchema.WORDS]: {
+        [bookSchema.CREATED_TIME]: {
           type: "rich_text",
           rich_text: {},
         },
-        [bookSchema.CREATED_TIME]: {
-          type: "created_time",
-          created_time: {},
-        },
         [bookSchema.LAST_EDITED_TIME]: {
-          type: "created_time",
-          created_time: {},
+          type: "rich_text",
+          rich_text: {},
         },
       },
     });

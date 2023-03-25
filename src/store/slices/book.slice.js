@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { toggleCreateBookModal } from "./state.slice";
+import { axiosTo } from "../../utils/promiseUtil";
+import { addToastNotificationArr, toggleCreateBookModal } from "./state.slice";
 
 const initialState = {
   bookRes: {},
@@ -25,12 +26,14 @@ const initialState = {
 export const postBook = createAsyncThunk(
   "postBook",
   async (payload, thunkApi) => {
-    const resp = await axios.post(`/api/postBook`, payload);
-    if (resp.status === 200) {
-      thunkApi.dispatch(toggleCreateBookModal());
-      thunkApi.dispatch(getAllBook());
+    const [err, res] = await axiosTo(axios.post("/api/postBook", payload));
+    if (err) {
+      thunkApi.dispatch(addToastNotificationArr(err.data));
+      return;
     }
-    return resp.data;
+    thunkApi.dispatch(toggleCreateBookModal());
+    thunkApi.dispatch(getAllBook());
+    return res;
   }
 );
 
