@@ -142,6 +142,10 @@ exports.handler = async function (event: any, context: any) {
           type: "rich_text",
           rich_text: {},
         },
+        [wordSchema.SENTENCE]: {
+          type: "rich_text",
+          rich_text: {},
+        },
       },
     });
     return {

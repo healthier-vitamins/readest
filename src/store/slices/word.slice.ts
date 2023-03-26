@@ -4,13 +4,31 @@ import { addToastNotificationArr } from "./state.slice";
 import { bookSchema } from "../../utils/schemas/bookSchema";
 
 // api url with query passed through as parameter
-function apiUrl(queriedWord) {
+function apiUrl(queriedWord: string) {
   return `https://dictionaryapi.com/api/v3/references/sd4/json/${queriedWord}?key=${process.env.REACT_APP_DICTIONARY_KEY}`;
   // return `https://dictionaryapi.com/api/v3/references/ithesaurus/json/${queriedWord}?key=${process.env.REACT_APP_DICTIONARY_KEY}`;
 }
 
+type ChosenWordDefinition = {
+  title: string;
+  senseArr: any[];
+  abbreviation: string;
+  shortDef: string;
+};
+
+interface InitialState {
+  suggestedWord: any[];
+  isWordChosen: boolean;
+  chosenWordDefinition: ChosenWordDefinition;
+  allBookWord: any;
+  isLoading: boolean;
+  isSavingWordLoading: boolean;
+
+  isGetWordLoading: boolean;
+}
+
 // action initialstate
-const initialState = {
+const initialState: InitialState = {
   suggestedWord: [],
   isWordChosen: false,
   chosenWordDefinition: {
@@ -29,7 +47,7 @@ const initialState = {
 // exported api call
 export const getWordDefinition = createAsyncThunk(
   "getWordDefinition",
-  async (queriedWord, thunkApi) => {
+  async (queriedWord: string, thunkApi) => {
     const resp = await axios.get(apiUrl(queriedWord));
     // console.log("fetched data ", resp.data);
     return resp.data;
@@ -38,7 +56,7 @@ export const getWordDefinition = createAsyncThunk(
 
 export const postWordToBook = createAsyncThunk(
   "postWordToBook",
-  async (payload, thunkApi) => {
+  async (payload: any, thunkApi) => {
     const resp = await axios.post("/api/postWord", payload);
     const bookName =
       payload.bookObj.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text;
@@ -125,4 +143,4 @@ const word = createSlice({
 });
 
 export const { resetSuggestedWord, addChosenWordDefinition } = word.actions;
-export default word.reducer;
+export default word;

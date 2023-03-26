@@ -3,7 +3,26 @@ import axios from "axios";
 import { axiosTo } from "../../utils/promiseUtil";
 import { addToastNotificationArr, toggleCreateBookModal } from "./state.slice";
 
-const initialState = {
+type BookSelection = {
+  bookObj: string;
+  active: boolean;
+};
+
+interface InitialState {
+  bookRes: any;
+  bookResArrCheckbox: any[];
+  postBookIsLoading: boolean;
+  getAllBookIsLoading: boolean;
+  // will only contain 1 book at any time
+  selectedTab: {
+    bookObj: string;
+    active: boolean;
+  };
+  lastSavedBook: any[];
+  bookSelection: BookSelection[];
+}
+
+const initialState: InitialState = {
   bookRes: {},
   bookResArrCheckbox: [],
   postBookIsLoading: true,
@@ -25,7 +44,7 @@ const initialState = {
 // create book
 export const postBook = createAsyncThunk(
   "postBook",
-  async (payload, thunkApi) => {
+  async (payload: any, thunkApi) => {
     const [err, res] = await axiosTo(axios.post("/api/postBook", payload));
     if (err) {
       thunkApi.dispatch(addToastNotificationArr(err.data));
@@ -41,8 +60,11 @@ export const postBook = createAsyncThunk(
 export const getAllBook = createAsyncThunk(
   "getAllBook",
   async (payload, thunkApi) => {
-    const resp = await axios.get(`/api/getAllBook`);
-    return resp.data;
+    const [err, res] = await axiosTo(axios.get(`/api/getAllBook`));
+    if (err) {
+      thunkApi.dispatch(addToastNotificationArr(err.data));
+    }
+    return res;
   }
 );
 
@@ -84,14 +106,14 @@ const book = createSlice({
       state.selectedTab = state.bookSelection[action.payload];
     },
     handlebookResArrCheckboxChange: (state, action) => {
-      state.bookResArrCheckbox.forEach((item, index) => {
+      state.bookResArrCheckbox.forEach((item: any, index) => {
         if (index === action.payload) {
           item.checked = !item.checked;
         }
       });
     },
     resetbookResArrCheckbox: (state) => {
-      state.bookResArrCheckbox.forEach((item) => (item.checked = false));
+      state.bookResArrCheckbox.forEach((item: any) => (item.checked = false));
     },
   },
   extraReducers: (builder) => {
@@ -109,9 +131,9 @@ const book = createSlice({
         state.getAllBookIsLoading = false;
         state.bookRes = action.payload;
         let tempObj;
-        let tempArr = [];
+        let tempArr: any[] = [];
 
-        action.payload.results.forEach((result) => {
+        action.payload.results.forEach((result: any) => {
           tempObj = {
             result: result,
             checked: false,
@@ -136,4 +158,4 @@ export const {
   handlebookResArrCheckboxChange,
   resetbookResArrCheckbox,
 } = book.actions;
-export default book.reducer;
+export default book;

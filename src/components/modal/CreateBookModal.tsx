@@ -1,38 +1,40 @@
 import { createRef, useState } from "react";
 import { Modal, Form, Spinner, InputGroup } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
 import "./CreateBookModal.scss";
+// @ts-ignore
 import { toggleCreateBookModal } from "../../store/slices/state.slice";
+// @ts-ignore
 import { postBook } from "../../store/slices/book.slice";
 import Cookies from "universal-cookie";
+import { useAppDispatch, useAppSelector } from "store/hooks";
 
 function CreateBookModal() {
   const cookies = new Cookies();
-  const { createBookModalState } = useSelector((store) => {
+  const { createBookModalState } = useAppSelector((store: any) => {
     return store.state;
   });
   const [isClicked, setisClicked] = useState(false);
-  const { postBookIsLoading } = useSelector((state) => {
+  const { postBookIsLoading } = useAppSelector((state) => {
     return state.book;
   });
   const [isInvalid, setIsInvalid] = useState(false);
-  const dispatch = useDispatch();
-  const bookTitleRef = createRef();
+  const dispatch = useAppDispatch();
+  const bookTitleRef = createRef<HTMLInputElement>();
 
   async function handleCreateBook() {
     if (
-      bookTitleRef.current.value === "" ||
-      bookTitleRef.current.value.startsWith(" ")
+      bookTitleRef.current!.value === "" ||
+      bookTitleRef.current!.value.startsWith(" ")
     ) {
       setIsInvalid(true);
     } else {
       setIsInvalid(false);
       const id = cookies.get("user-id");
       const payload = {
-        title: bookTitleRef.current.value,
+        title: bookTitleRef.current!.value,
         id: id,
       };
-      
+
       dispatch(postBook(payload));
     }
   }
@@ -71,7 +73,7 @@ function CreateBookModal() {
             className="cfm-btn"
             onClick={(event) => {
               setisClicked(true);
-              handleCreateBook(event);
+              handleCreateBook();
             }}
           >
             {postBookIsLoading && isClicked && !isInvalid ? (

@@ -2,9 +2,9 @@
 import axios from "axios";
 import { axiosTo } from "../promiseUtil";
 // @ts-ignore
-import { store } from "../../store/store";
+import store from "../../store/store";
 // @ts-ignore
-import { addUserPageId } from "../../store/slices/user.slice.js";
+import { addUserPageId } from "../../store/slices/user.slice";
 
 async function userSignUp(successFuncs: any, errFuncs: any, payload: any) {
   const [goTrueErr, goTrueRes] = await axiosTo(

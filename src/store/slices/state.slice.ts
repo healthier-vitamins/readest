@@ -1,6 +1,24 @@
+import { PayloadAction } from "@reduxjs/toolkit";
 const { createSlice } = require("@reduxjs/toolkit");
 
-const initialState = {
+type ShowPopoverState = {
+  signUpState: boolean;
+  loginState: boolean;
+  emailConfirmState: boolean;
+};
+
+interface InitialState {
+  createBookModalState: boolean;
+  saveWordModalState: boolean;
+  bookSelectionPopoverState: boolean;
+  showPopoverState: {
+    show: boolean;
+    state: ShowPopoverState;
+  };
+  toastNotificationArr: any[];
+}
+
+const initialState: InitialState = {
   createBookModalState: false,
   saveWordModalState: false,
   bookSelectionPopoverState: false,
@@ -16,35 +34,35 @@ const initialState = {
 };
 
 // redux slice
-const state = createSlice({
+const stateSlice = createSlice({
   name: "state",
   initialState,
   reducers: {
-    toggleCreateBookModal: (state) => {
+    toggleCreateBookModal: (state: any) => {
       state.createBookModalState = !state.createBookModalState;
     },
-    toggleSaveWordModal: (state) => {
+    toggleSaveWordModal: (state: any) => {
       state.saveWordModalState = !state.saveWordModalState;
     },
-    toggleBookSelectionPopoverState: (state) => {
+    toggleBookSelectionPopoverState: (state: any) => {
       state.bookSelectionPopoverState = !state.bookSelectionPopoverState;
     },
-    setBookSelectionPopoverState: (state, action) => {
+    setBookSelectionPopoverState: (state: any, action: PayloadAction<any>) => {
       if (action.payload) {
         state.bookSelectionPopoverState = true;
       } else {
         state.bookSelectionPopoverState = false;
       }
     },
-    addToastNotificationArr: (state, action) => {
+    addToastNotificationArr: (state: any, action: PayloadAction<any>) => {
       state.toastNotificationArr.push(action.payload);
     },
-    removeToastNotificationArr: (state) => {
+    removeToastNotificationArr: (state: any) => {
       state.toastNotificationArr.shift();
     },
-    setShowPopoverPage: (state, action) => {
+    setShowPopoverPage: (state: any, action: PayloadAction<any>) => {
       const keys = Object.keys(state.showPopoverState.state);
-      const hold = {};
+      const hold: any = {};
       for (let key of keys) {
         if (key === action.payload) {
           hold[key] = true;
@@ -54,10 +72,10 @@ const state = createSlice({
       }
       state.showPopoverState.state = hold;
     },
-    toggleShowPopoverState: (state) => {
+    toggleShowPopoverState: (state: any) => {
       state.showPopoverState.show = !state.showPopoverState.show;
     },
-    setShowPopoverState: (state, action) => {
+    setShowPopoverState: (state: any, action: PayloadAction<any>) => {
       if (action.payload) {
         state.showPopoverState.show = true;
       } else {
@@ -77,5 +95,5 @@ export const {
   toggleShowPopoverState,
   setShowPopoverState,
   setBookSelectionPopoverState,
-} = state.actions;
-export default state.reducer;
+} = stateSlice.actions;
+export default stateSlice.reducer;

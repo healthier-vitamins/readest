@@ -1,12 +1,13 @@
 // @ts-ignore
-import { store } from "../store/store";
+import store from "../store/store";
 import {
   addToastNotificationArr,
   setShowPopoverState,
   // @ts-ignore
-} from "../store/slices/state.slice.js";
+} from "../store/slices/state.slice";
 
 export default function protectedFunction(fn: any) {
+  // @ts-ignore
   const logged = store.getState().user.authentication.isUserLoggedIn;
   if (logged) {
     return fn();

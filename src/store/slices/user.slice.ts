@@ -1,15 +1,27 @@
+import { PayloadAction } from "@reduxjs/toolkit";
 import Cookies from "universal-cookie";
-
 const { createSlice } = require("@reduxjs/toolkit");
 const cookies = new Cookies();
 
-const initialState = {
+type Authentication = {
+  isUserLoggedIn: boolean;
+  userEmail: string | null;
+  // userPageId: any;
+};
+
+interface InitialState {
+  // isSignUpLoading: true,
+  // isConfirmEmailLoading: true,
+  authentication: Authentication;
+}
+
+const initialState: InitialState = {
   // isSignUpLoading: true,
   // isConfirmEmailLoading: true,
   authentication: {
     isUserLoggedIn: false,
     userEmail: null,
-    userPageId: null,
+    // userPageId: null,
   },
 };
 
@@ -34,12 +46,11 @@ const initialState = {
 //   return res.data;
 // });
 
-const user = createSlice({
+const userSlice = createSlice({
   name: "user",
   initialState,
-
   reducers: {
-    userLoggedIn: (state, action) => {
+    userLoggedIn: (state: InitialState, action: PayloadAction<any>) => {
       const { token, refreshToken, email } = action.payload;
       cookies.set("token", token, {
         maxAge: 3600,
@@ -54,7 +65,7 @@ const user = createSlice({
       state.authentication.isUserLoggedIn = true;
       state.authentication.userEmail = email;
     },
-    userLoggedOut: (state) => {
+    userLoggedOut: (state: InitialState) => {
       state.authentication.isUserLoggedIn = false;
       state.authentication.userEmail = null;
       cookies.remove("token", {
@@ -69,8 +80,12 @@ const user = createSlice({
         sameSite: "lax",
         path: "/",
       });
+      cookies.remove("user-id", {
+        sameSite: "lax",
+        path: "/",
+      });
     },
-    addUserPageId: (state, action) => {
+    addUserPageId: (state: InitialState, action: PayloadAction<any>) => {
       const id = action.payload;
       cookies.set("user-id", id, {
         maxAge: 3600,
@@ -102,5 +117,5 @@ const user = createSlice({
   // });
   // },
 });
-export const { userLoggedIn, userLoggedOut, addUserPageId } = user.actions;
-export default user.reducer;
+export const { userLoggedIn, userLoggedOut, addUserPageId } = userSlice.actions;
+export default userSlice;
