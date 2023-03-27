@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { axiosTo } from "../../utils/promiseUtil";
+import { axiosTo } from "../../utils/promise";
 import { addToastNotificationArr, toggleCreateBookModal } from "./state.slice";
 
 type BookSelection = {

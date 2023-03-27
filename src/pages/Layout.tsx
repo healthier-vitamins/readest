@@ -6,16 +6,16 @@ import SaveWordModal from "../components/modal/SaveWordModal";
 import NavBar from "../components/navBar/NavBar";
 // import useWindowDimension from "../utils/useWindowDimension";
 import { getEmailFromToken, isTokenExpired } from "../utils/cryptography.ts";
-import { useDispatch } from "react-redux";
 import { userLoggedIn } from "../store/slices/user.slice";
 import GeneralToast from "../components/toast/GeneralToast";
 import "./Layout.scss";
+import { useAppDispatch } from "store/hooks";
 
 const cookies = new Cookies();
 
 function Layout() {
   // const { height, width } = useWindowDimension();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // function setHeight() {
   //   return {
