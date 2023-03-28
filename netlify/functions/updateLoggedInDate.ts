@@ -1,6 +1,6 @@
 import { HttpStatusCode } from "axios";
 import { Client } from "@notionhq/client";
-import { userSchema } from "utils/schemas/userSchema";
+import { userSchema } from "../../src/utils/schemas/userSchema";
 const moment = require("moment");
 
 const { NOTION_KEY, NOTION_DB_USER_KEY } = process.env;
@@ -12,7 +12,7 @@ exports.handler = async function (event: any, context: any) {
   const { email } = JSON.parse(event.body);
   const dateNow = new Date().toString();
   const date = moment()
-    .utc(dateNow + "8:00")
+    .utc(dateNow + "+8:00")
     .format("MMMM Do YYYY, h:mm:ss a");
   let accountId;
   try {

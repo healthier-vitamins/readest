@@ -1,5 +1,4 @@
 // TODO fix this export {} by replacing notion client with a class instead
-export {};
 const { Client } = require("@notionhq/client");
 const { HttpStatusCode } = require("axios");
 const { wordSchema } = require("../../src/utils/schemas/wordSchema");
@@ -41,7 +40,7 @@ exports.handler = async function (event, context) {
   }
 };
 
-async function getBookDatabase(bookId) {
+async function getBookDatabase(bookId: number) {
   try {
     const response = await notion.blocks.children.list({
       block_id: bookId,
