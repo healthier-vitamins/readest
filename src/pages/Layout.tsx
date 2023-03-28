@@ -5,7 +5,7 @@ import CreateBookModal from "../components/modal/CreateBookModal";
 import SaveWordModal from "../components/modal/SaveWordModal";
 import NavBar from "../components/navBar/NavBar";
 // import useWindowDimension from "../utils/useWindowDimension";
-import { getEmailFromToken, isTokenExpired } from "../utils/cryptography.ts";
+import { getEmailFromToken, isTokenExpired } from "../utils/cryptography";
 import { userLoggedIn } from "../store/slices/user.slice";
 import GeneralToast from "../components/toast/GeneralToast";
 import "./Layout.scss";

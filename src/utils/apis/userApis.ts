@@ -1,6 +1,6 @@
 // import ApiError from "class/ApiError";
 import axios from "axios";
-import { axiosTo } from "../promiseUtil";
+import { axiosTo } from "../promise";
 // @ts-ignore
 import store from "../../store/store";
 // @ts-ignore
@@ -63,7 +63,6 @@ async function login(successFuncs: any, errFuncs: any, payload: any) {
     return;
   }
 
-  console.log(updateLoggedInRes);
   store.dispatch(addUserPageId(updateLoggedInRes.id));
 
   successFuncs(goTrueRes);

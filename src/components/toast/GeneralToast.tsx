@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "store/hooks";
 import { removeToastNotificationArr } from "../../store/slices/state.slice";
 
 import "./GeneralToast.scss";
 import Toaster from "./Toaster";
 
 function SavedWordToast() {
-  const dispatch = useDispatch();
-  const { toastNotificationArr } = useSelector((state) => state.state);
+  const dispatch = useAppDispatch();
+  const { toastNotificationArr } = useAppSelector((state: any) => state.state);
   const [toastAppeared, setToastAppeared] = useState([]);
   useEffect(() => {
     if (toastNotificationArr.length > 0) {
@@ -18,20 +18,18 @@ function SavedWordToast() {
 
   function timer() {
     if (toastNotificationArr.length === 1 && toastAppeared.length === 1) {
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         dispatch(removeToastNotificationArr());
       }, 10000);
       return () => {
-        clearTimeout(() => {
-          dispatch(removeToastNotificationArr());
-        }, 10000);
+        clearTimeout(timeoutId);
       };
     }
   }
 
   return (
     <ToastContainer position="bottom-end" className="saved-word-toast">
-      {toastNotificationArr.map((noti, index) => {
+      {toastNotificationArr.map((noti: string, index: number) => {
         timer();
         return (
           <React.Fragment key={index}>

@@ -1,25 +1,27 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "store/hooks";
 import {
   handlebookResArrCheckboxChange,
   resetbookResArrCheckbox,
 } from "../../store/slices/book.slice";
 import { toggleSaveWordModal } from "../../store/slices/state.slice";
 import { postWordToBook } from "../../store/slices/word.slice";
-import { bookSchema } from "../../utils/schemas/bookSchema.ts";
+import { bookSchema } from "../../utils/schemas/bookSchema";
 import "./SaveWordModal.scss";
 
 function SaveWordModal() {
   // const [hasSelectedBook, setHasSelectedBook] = useState(false);
   // const [isSaveClicked, setIsSaveClicked] = useState(false);
   // const [isInvalid, setIsInvalid] = useState(false);
-  const { saveWordModalState } = useSelector((state) => state.state);
-  const { chosenWordDefinition } = useSelector((state) => state.word);
-  const { bookRes, bookResArrCheckbox } = useSelector((state) => state.book);
-  const dispatch = useDispatch();
+  const { saveWordModalState } = useAppSelector((state: any) => state.state);
+  const { chosenWordDefinition } = useAppSelector((state) => state.word);
+  const { bookRes, bookResArrCheckbox } = useAppSelector((state) => state.book);
+  const dispatch = useAppDispatch();
 
-  function RenderShortDefLogic() {
+  const RenderShortDefLogic: Function = ():
+    | React.ReactElement[]
+    | React.ReactElement => {
     const { shortDef } = chosenWordDefinition;
     if (Array.isArray(shortDef)) {
       return shortDef.map((def, index) => {
@@ -35,9 +37,9 @@ function SaveWordModal() {
     } else {
       return <p className="shortdef">{shortDef}</p>;
     }
-  }
+  };
 
-  function RenderBook(props) {
+  function RenderBook(props: any) {
     const { book, index } = props;
     // console.log(bookResArrCheckbox);
     // console.log("book here bitch ||||||||||||||| ", book);
@@ -65,7 +67,7 @@ function SaveWordModal() {
     );
   }
 
-  function handleSave(book) {
+  function handleSave(book: any) {
     // const hasSelectedBook = bookResArrCheckbox.some(
     //   (ele) => ele.checked === true
     // );
@@ -135,7 +137,7 @@ function SaveWordModal() {
         <div className="list-book-container">
           <div className="list-book-selection">
             {Array.isArray(bookRes.results) && bookRes.results.length > 0
-              ? bookRes.results.map((book, index) => {
+              ? bookRes.results.map((book: any, index: number) => {
                   return (
                     <RenderBook
                       book={book}

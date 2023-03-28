@@ -1,17 +1,19 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { getWordForBook } from "../../store/slices/word.slice";
-import { wordSchema } from "../../utils/schemas/wordSchema.ts";
+import { wordSchema } from "../../utils/schemas/wordSchema";
 import { Spinner } from "react-bootstrap";
 import "./WordPage.scss";
+import { useAppDispatch, useAppSelector } from "store/hooks";
 // import useWindowDimension, {
 //   setDynamicHeight,
 // } from "../../utils/useWindowDimension";
 
 function WordPage() {
-  const { selectedTab } = useSelector((state) => state.book);
-  const { allBookWord, isGetWordLoading } = useSelector((state) => state.word);
-  const dispatch = useDispatch();
+  const { selectedTab } = useAppSelector((state) => state.book);
+  const { allBookWord, isGetWordLoading } = useAppSelector(
+    (state) => state.word
+  );
+  const dispatch = useAppDispatch();
 
   // let { height } = useWindowDimension();
 
@@ -23,7 +25,9 @@ function WordPage() {
     // eslint-disable-next-line
   }, [selectedTab.bookObj]);
 
-  function RenderShortDefLogic({ shortDef }) {
+  const RenderShortDefLogic: Function = ({
+    shortDef,
+  }: any): React.ReactElement[] | React.ReactElement => {
     shortDef = JSON.parse(shortDef);
     if (Array.isArray(shortDef)) {
       return shortDef.map((def, index) => {
@@ -39,9 +43,9 @@ function WordPage() {
     } else {
       return <p className="shortdef">{shortDef}</p>;
     }
-  }
+  };
 
-  function RenderWordDef(wordObj, index) {
+  function RenderWordDef(wordObj: any, index: number) {
     const title = wordObj.properties[wordSchema.WORD].rich_text[0].plain_text;
     const abbreviation =
       wordObj.properties[wordSchema.ABBREVIATION].rich_text[0].plain_text;
@@ -67,7 +71,7 @@ function WordPage() {
         allBookWord.results.length < 1 ? (
           <div className="no-words">No words saved</div>
         ) : (
-          allBookWord.results.map((wordObj, index) =>
+          allBookWord.results.map((wordObj: any, index: number) =>
             RenderWordDef(wordObj, index)
           )
         )

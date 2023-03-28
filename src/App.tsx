@@ -7,16 +7,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout></Layout>}>
-            <Route index element={<HomePage></HomePage>}></Route>
-            {/* <Route path="/words" element={<WordsPage></WordsPage>}></Route> */}
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout></Layout>}>
+          <Route index element={<HomePage></HomePage>}></Route>
+          {/* <Route path="/words" element={<WordsPage></WordsPage>}></Route> */}
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

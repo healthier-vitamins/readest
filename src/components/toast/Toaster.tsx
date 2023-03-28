@@ -3,7 +3,7 @@ import { Fade, Toast } from "react-bootstrap";
 import { removeToastNotificationArr } from "../../store/slices/state.slice";
 import "./Toaster.scss";
 
-function Toaster({ noti }) {
+function Toaster({ noti }: any) {
   const dispatch = useDispatch();
   return (
     noti && (

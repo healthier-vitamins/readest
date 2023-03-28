@@ -1,7 +1,8 @@
-// 2ca52834-8db0-4595-bc9b-ed565deb1748
+// TODO fix this export {} by replacing notion client with a class instead
+export {};
 const { Client } = require("@notionhq/client");
 const { HttpStatusCode } = require("axios");
-const { wordSchema } = require("../../src/utils/schemas/wordSchema.ts");
+const { wordSchema } = require("../../src/utils/schemas/wordSchema");
 
 const { NOTION_KEY } = process.env;
 const notion = new Client({
@@ -32,7 +33,7 @@ exports.handler = async function (event, context) {
       body: JSON.stringify(response),
     };
   } catch (err) {
-    console.err(err.message);
+    console.error(err.message);
     return {
       statusCode: HttpStatusCode.InternalServerError,
       body: err.toString(),

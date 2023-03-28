@@ -2,24 +2,26 @@ import { Link } from "react-router-dom";
 import "./NavBar.scss";
 import SearchBar from "../searchBar/SearchBar";
 import { HiOutlineUserCircle } from "react-icons/hi";
-import { useDispatch, useSelector } from "react-redux";
 import SignUpPopover from "../popover/SignUpPopover";
 import { userLoggedOut } from "../../store/slices/user.slice";
 import React from "react";
 import { changeActiveTab } from "../../store/slices/book.slice";
-import { bookSchema } from "../../utils/schemas/bookSchema.ts";
+import { bookSchema } from "../../utils/schemas/bookSchema";
 import BookSelectionPopover from "../popover/BookSelectionPopover";
 import OnClickOutsideComponent from "../OnClickOutsideComponent";
 import { setBookSelectionPopoverState } from "../../store/slices/state.slice";
+import { useAppDispatch, useAppSelector } from "store/hooks";
 
 function NavBar() {
-  const dispatch = useDispatch();
-  const { bookSelection } = useSelector((state) => state.book);
-  const { bookSelectionPopoverState } = useSelector((state) => state.state);
+  const dispatch = useAppDispatch();
+  const { bookSelection } = useAppSelector((state) => state.book);
+  const { bookSelectionPopoverState } = useAppSelector(
+    (state: any) => state.state
+  );
 
   const {
     authentication: { isUserLoggedIn },
-  } = useSelector((state) => state.user);
+  } = useAppSelector((state: any) => state.user);
 
   function handleLogout() {
     dispatch(userLoggedOut());
@@ -34,13 +36,13 @@ function NavBar() {
   }
 
   // helper for selected active tabs
-  function activeTabsClass(active) {
+  function activeTabsClass(active: any) {
     if (active) {
       return "selected-active-tab";
     }
   }
 
-  function RenderTabs(obj, index) {
+  function RenderTabs(obj: any, index: number) {
     if (obj.bookObj === "Definition") {
       return (
         <React.Fragment key={index}>

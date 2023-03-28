@@ -1,20 +1,24 @@
+import { useAppSelector } from "../store/hooks";
 import { useCallback, useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
 import "./OnClickOutsideComponent.scss";
 
-function OnClickOutsideComponent({ onClickOutsideFunc, isShowing, children }) {
-  const ref = useRef(null);
-  const { createBookModalState, saveWordModalState } = useSelector(
-    (state) => state.state
+function OnClickOutsideComponent({
+  onClickOutsideFunc,
+  isShowing,
+  children,
+}: any) {
+  const ref: any = useRef(null);
+  const { createBookModalState, saveWordModalState } = useAppSelector(
+    (state: any) => state.state
   );
-  // eslint-disable-next-line
+
   const onClickOutside = useCallback(() => {
     onClickOutsideFunc();
-  });
+  }, [onClickOutsideFunc]);
 
   useEffect(() => {
     if (isShowing && !createBookModalState && !saveWordModalState) {
-      const handleClickOutside = (event) => {
+      const handleClickOutside = (event: any) => {
         if (ref.current && !ref.current.contains(event.target)) {
           onClickOutside && onClickOutside();
         }

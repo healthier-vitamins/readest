@@ -20,4 +20,4 @@ interface WordSchema {
   SENTENCE: string;
 }
 
-export { wordSchema, WordSchema };
+export { wordSchema };

@@ -1,3 +1,4 @@
+export {}
 //! https://www.mit.edu/~ecprice/wordlist.10000
 // export const listOfWords = [
 //     a

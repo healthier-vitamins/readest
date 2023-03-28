@@ -1,18 +1,19 @@
 import "./SideNavBar.scss";
 import { FiPlusSquare } from "react-icons/fi";
-import { useDispatch, useSelector } from "react-redux";
+
 import { toggleCreateBookModal } from "../../store/slices/state.slice";
 import { addBookSelection, getAllBook } from "../../store/slices/book.slice";
 import React, { useEffect } from "react";
-import { bookSchema } from "../../utils/bookUtil.ts";
-import { protectedFunction } from "../../utils/userUtil.ts";
+import { bookSchema } from "../../utils/schemas/bookSchema";
+import protectedFunction from "../../utils/protectedFunc";
+import { useAppDispatch, useAppSelector } from "store/hooks";
 
 function SideNavBar() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   function handleCreateBook() {
     dispatch(toggleCreateBookModal());
   }
-  const { bookRes } = useSelector((state) => {
+  const { bookRes } = useAppSelector((state) => {
     return state.book;
   });
 
@@ -21,7 +22,7 @@ function SideNavBar() {
     // eslint-disable-next-line
   }, []);
 
-  function RenderBookTab(book, index) {
+  function RenderBookTab(book: any, index: number) {
     return (
       <React.Fragment key={index}>
         <div
@@ -49,7 +50,7 @@ function SideNavBar() {
 
       <div className="book-tab-box">
         {Array.isArray(bookRes.results) && bookRes.results.length > 0
-          ? bookRes.results.map((book, index) => {
+          ? bookRes.results.map((book: any, index: number) => {
               return RenderBookTab(book, index);
             })
           : null}

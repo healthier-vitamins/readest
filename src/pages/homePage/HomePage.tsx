@@ -2,10 +2,10 @@ import WordDefinition from "../../components/wordDefinition/WordDefinition";
 import "./HomePage.scss";
 import React from "react";
 import WordPage from "../wordPage/WordPage";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "store/hooks";
 
 function HomePage() {
-  const { bookSelection, selectedTab } = useSelector((state) => state.book);
+  const { bookSelection, selectedTab } = useAppSelector((state) => state.book);
   // const { offCanvasModalState } = useSelector((state) => state.state);
   // const dispatch = useDispatch();
 

@@ -4,7 +4,7 @@ import { axiosTo } from "../../utils/promise";
 import { addToastNotificationArr, toggleCreateBookModal } from "./state.slice";
 
 type BookSelection = {
-  bookObj: string;
+  bookObj: any;
   active: boolean;
 };
 
@@ -14,10 +14,7 @@ interface InitialState {
   postBookIsLoading: boolean;
   getAllBookIsLoading: boolean;
   // will only contain 1 book at any time
-  selectedTab: {
-    bookObj: string;
-    active: boolean;
-  };
+  selectedTab: BookSelection;
   lastSavedBook: any[];
   bookSelection: BookSelection[];
 }

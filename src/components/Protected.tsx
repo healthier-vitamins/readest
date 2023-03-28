@@ -1,4 +1,4 @@
-function Protected({ children, isUserLoggedIn }) {
+function Protected({ children, isUserLoggedIn }: any) {
   return isUserLoggedIn ? children : null;
 }
 

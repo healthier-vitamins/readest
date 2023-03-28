@@ -1,18 +1,20 @@
-import { useDispatch, useSelector } from "react-redux";
 import "./WordDefinition.scss";
 import { AiOutlineSave } from "react-icons/ai";
 import React from "react";
 import { toggleSaveWordModal } from "../../store/slices/state.slice";
+import { useAppDispatch, useAppSelector } from "store/hooks";
 
 function WordDefinition() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const { chosenWordDefinition, isWordChosen } = useSelector((state) => {
+  const { chosenWordDefinition, isWordChosen } = useAppSelector((state) => {
     console.log("chosen word definition ", state.word.chosenWordDefinition);
     return state.word;
   });
 
-  function RenderShortDefLogic() {
+  const RenderShortDefLogic: Function = ():
+    | React.ReactElement[]
+    | React.ReactElement => {
     const { shortDef } = chosenWordDefinition;
     if (Array.isArray(shortDef)) {
       return shortDef.map((def, index) => {
@@ -26,9 +28,13 @@ function WordDefinition() {
         );
       });
     } else {
-      return <p className="shortdef">{shortDef}</p>;
+      return (
+        <React.Fragment>
+          <p className="shortdef">{shortDef}</p>
+        </React.Fragment>
+      );
     }
-  }
+  };
 
   function RenderWordDefinitionBox() {
     return (
@@ -39,7 +45,7 @@ function WordDefinition() {
             {chosenWordDefinition.abbreviation}
           </span>
         </h5>
-        <RenderShortDefLogic></RenderShortDefLogic>
+        <RenderShortDefLogic />
         <div className="box-footer">
           <AiOutlineSave
             className="save-btn"

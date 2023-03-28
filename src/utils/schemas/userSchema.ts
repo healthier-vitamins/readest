@@ -20,4 +20,4 @@ interface UserSchema {
   LAST_LOGGED_IN: string;
 }
 
-export { userSchema, UserSchema };
+export { userSchema };

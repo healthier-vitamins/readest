@@ -1,5 +1,3 @@
+function createBook(payload: any) {}
 
-
-function createBook(payload: any) {
-    
-}
+export {};

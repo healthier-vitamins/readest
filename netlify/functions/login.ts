@@ -1,5 +1,5 @@
 import { HttpStatusCode } from "axios";
-import { to } from "../../src/utils/promiseUtil";
+import { to } from "../../src/utils/promise";
 import GoTrue from "gotrue-js";
 
 const { NETLIFY_IDENTITY_URL } = process.env;
@@ -7,7 +7,7 @@ const { NETLIFY_IDENTITY_URL } = process.env;
 const auth = new GoTrue({
   APIUrl: NETLIFY_IDENTITY_URL,
   audience: "",
-  setCookie: "true",
+  setCookie: true,
 });
 
 exports.handler = async function (event, context) {

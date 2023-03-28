@@ -1,11 +1,6 @@
-import React, {
-  createRef,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { useDispatch, useSelector } from "react-redux";
+import OnClickOutsideComponent from "components/OnClickOutsideComponent";
+import React, { createRef, useState } from "react";
+import { useAppDispatch, useAppSelector } from "store/hooks";
 import { changeActiveTab } from "../../store/slices/book.slice";
 import {
   resetSuggestedWord,
@@ -15,32 +10,35 @@ import {
 import "./SearchBar.scss";
 
 function SearchBar() {
-  const ref = useRef();
+  // const ref = createRef();
   const [queriedWord, setQueriedWord] = useState("");
-  const queriedWordRef = createRef();
+  const queriedWordRef = createRef<any>();
   const [touched, setTouched] = useState(false);
-  const { suggestedWord, isLoading } = useSelector((store) => {
+  const { suggestedWord, isLoading } = useAppSelector((store) => {
     return store.word;
   });
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const onClickOutside = useCallback(() => {
+  // const onClickOutside = useCallback(() => {
+
+  // }, []);
+
+  function onClickOutsideFunc() {
     setTouched(false);
-  }, []);
+  }
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (ref.current && !ref.current.contains(event.target)) {
+  //       onClickOutside && onClickOutside();
+  //     }
+  //   };
+  //   document.addEventListener("click", handleClickOutside, true);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside, true);
+  //   };
+  // }, [onClickOutside]);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (ref.current && !ref.current.contains(event.target)) {
-        onClickOutside && onClickOutside();
-      }
-    };
-    document.addEventListener("click", handleClickOutside, true);
-    return () => {
-      document.removeEventListener("click", handleClickOutside, true);
-    };
-  }, [onClickOutside]);
-
-  function handleOnChangeQuery(value) {
+  function handleOnChangeQuery(value: any) {
     setQueriedWord(value);
     dispatch(resetSuggestedWord);
     if (typeof value === "string" && value.length > 0) {
@@ -48,16 +46,16 @@ function SearchBar() {
     }
   }
 
-  function handleWordWithoutDefObj(word) {
+  function handleWordWithoutDefObj(word: any) {
     if (typeof word === "string" && word.length > 0) {
       dispatch(getWordDefinition(word));
     }
     setQueriedWord(word.toLowerCase());
-    queriedWordRef.current.value = word.toLowerCase();
+    queriedWordRef!.current!.value = word.toLowerCase();
     setTouched(true);
   }
 
-  function RenderAbbreviations(props) {
+  function RenderAbbreviations(props: any) {
     const { wordObject } = props;
     if (
       Array.isArray(wordObject) &&
@@ -212,23 +210,28 @@ function SearchBar() {
   }
 
   return (
-    <div className="searchbar-box" ref={ref}>
-      <input
-        type="text"
-        placeholder="Search word"
-        onChange={(e) => {
-          handleOnChangeQuery(e.target.value);
-          setTouched(true);
-        }}
-        onFocus={() => {
-          setTouched(true);
-        }}
-        ref={queriedWordRef}
-      ></input>
-      <div className="dropdown-box">
-        <RenderSuggestedWord></RenderSuggestedWord>
+    <OnClickOutsideComponent
+      onClickOutsideFunc={onClickOutsideFunc}
+      isShowing={touched}
+    >
+      <div className="searchbar-box">
+        <input
+          type="text"
+          placeholder="Search word"
+          onChange={(e) => {
+            handleOnChangeQuery(e.target.value);
+            setTouched(true);
+          }}
+          onFocus={() => {
+            setTouched(true);
+          }}
+          ref={queriedWordRef}
+        ></input>
+        <div className="dropdown-box">
+          <RenderSuggestedWord></RenderSuggestedWord>
+        </div>
       </div>
-    </div>
+    </OnClickOutsideComponent>
   );
 }
 

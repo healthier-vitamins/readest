@@ -72,7 +72,7 @@ export const postWordToBook = createAsyncThunk(
 
 export const getWordForBook = createAsyncThunk(
   "getWordForBook",
-  async (payload, thunkApi) => {
+  async (payload: any, thunkApi) => {
     const resp = await axios.post("/api/getAllWord", payload);
     // if (resp.status === 200) {
     // }
