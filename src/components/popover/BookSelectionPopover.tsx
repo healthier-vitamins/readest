@@ -52,8 +52,7 @@ function BookSelectionPopover() {
 
   useEffect(() => {
     dispatch(getAllBook());
-    // eslint-disable-next-line
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="book-tab-popover-wrapper">

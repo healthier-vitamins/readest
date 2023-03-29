@@ -1,7 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import Cookies from "universal-cookie";
 import { axiosTo } from "../../utils/promise";
 import { addToastNotificationArr, toggleCreateBookModal } from "./state.slice";
+const cookies = new Cookies();
 
 type BookSelection = {
   bookObj: any;
@@ -57,6 +59,8 @@ export const postBook = createAsyncThunk(
 export const getAllBook = createAsyncThunk(
   "getAllBook",
   async (payload, thunkApi) => {
+    const userId = cookies.get("user-id", { doNotParse: true });
+    if (!userId) return [];
     const [err, res] = await axiosTo(axios.get(`/api/getAllBook`));
     if (err) {
       thunkApi.dispatch(addToastNotificationArr(err.data));
@@ -130,13 +134,15 @@ const book = createSlice({
         let tempObj;
         let tempArr: any[] = [];
 
-        action.payload.results.forEach((result: any) => {
-          tempObj = {
-            result: result,
-            checked: false,
-          };
-          tempArr.push(tempObj);
-        });
+        if (action.payload?.results?.length > 0) {
+          action.payload.results.forEach((result: any) => {
+            tempObj = {
+              result: result,
+              checked: false,
+            };
+            tempArr.push(tempObj);
+          });
+        }
         // console.log("temp arr, ", tempArr);
         state.bookResArrCheckbox = tempArr;
       })

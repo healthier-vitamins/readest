@@ -18,14 +18,33 @@ function WordDefinition() {
     const { shortDef } = chosenWordDefinition;
     if (Array.isArray(shortDef)) {
       return shortDef.map((def, index) => {
-        return (
-          <React.Fragment key={index}>
-            <p className="shortdef">
-              {++index}.&nbsp;
-              {def}
-            </p>
-          </React.Fragment>
-        );
+        if (typeof def === "object") {
+          return (
+            <React.Fragment key={index}>
+              <p className="shortdef">{shortDef[0].cxl}</p>
+              {shortDef[0]?.cxtis &&
+                shortDef[0].cxtis.map((word: any, index: number) => {
+                  return (
+                    <React.Fragment key={index}>
+                      <p className="shortdef">
+                        {++index}.&nbsp;{word.cxt}
+                      </p>
+                      <br />
+                    </React.Fragment>
+                  );
+                })}
+            </React.Fragment>
+          );
+        } else {
+          return (
+            <React.Fragment key={index}>
+              <p className="shortdef">
+                {++index}.&nbsp;
+                {def}
+              </p>
+            </React.Fragment>
+          );
+        }
       });
     } else {
       return (
@@ -42,7 +61,9 @@ function WordDefinition() {
         <h5 className="title">
           {chosenWordDefinition.title}&nbsp;&nbsp;
           <span className="abbreviation">
-            {chosenWordDefinition.abbreviation}
+            {chosenWordDefinition.abbreviation
+              ? chosenWordDefinition.abbreviation
+              : "No abbreviation"}
           </span>
         </h5>
         <RenderShortDefLogic />

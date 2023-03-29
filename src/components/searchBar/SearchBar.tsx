@@ -19,28 +19,13 @@ function SearchBar() {
   });
   const dispatch = useAppDispatch();
 
-  // const onClickOutside = useCallback(() => {
-
-  // }, []);
-
   function onClickOutsideFunc() {
     setTouched(false);
   }
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (ref.current && !ref.current.contains(event.target)) {
-  //       onClickOutside && onClickOutside();
-  //     }
-  //   };
-  //   document.addEventListener("click", handleClickOutside, true);
-  //   return () => {
-  //     document.removeEventListener("click", handleClickOutside, true);
-  //   };
-  // }, [onClickOutside]);
 
   function handleOnChangeQuery(value: any) {
     setQueriedWord(value);
-    dispatch(resetSuggestedWord);
+    dispatch(resetSuggestedWord());
     if (typeof value === "string" && value.length > 0) {
       dispatch(getWordDefinition(value));
     }
