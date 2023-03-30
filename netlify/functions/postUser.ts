@@ -1,7 +1,7 @@
 import { userSchema } from "../../src/utils/schemas/userSchema";
 import { Client } from "@notionhq/client";
 import { HttpStatusCode } from "axios";
-import { bookSchema } from "utils/schemas/bookSchema";
+import { bookSchema } from "../../src/utils/schemas/bookSchema";
 const moment = require("moment");
 // const { to } = require("../../src/utils/promiseUtil");
 
@@ -108,19 +108,8 @@ exports.handler = async function (event: any, context: any) {
           title: {},
         },
         [bookSchema.STATUS]: {
-          type: "select",
-          select: {
-            options: [
-              {
-                name: "LIVE",
-                color: "blue",
-              },
-              {
-                name: "DELETED",
-                color: "red",
-              },
-            ],
-          },
+          type: "status",
+          status: {},
         },
         [bookSchema.BOOK_NAME]: {
           type: "rich_text",

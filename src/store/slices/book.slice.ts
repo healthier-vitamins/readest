@@ -61,7 +61,9 @@ export const getAllBook = createAsyncThunk(
   async (payload, thunkApi) => {
     const userId = cookies.get("user-id", { doNotParse: true });
     if (!userId) return [];
-    const [err, res] = await axiosTo(axios.get(`/api/getAllBook`));
+    const [err, res] = await axiosTo(
+      axios.get(`/api/getAllBook`, { params: { userId: userId } })
+    );
     if (err) {
       thunkApi.dispatch(addToastNotificationArr(err.data));
     }

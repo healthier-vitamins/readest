@@ -26,7 +26,11 @@ function BookSelectionPopover() {
     (state) => state.book
   );
 
-  function RenderBookTab(book: any, index: any) {
+  const {
+    authentication: { isUserLoggedIn },
+  } = useAppSelector((state: any) => state.user);
+
+  function RenderBookTab({ book, index }: any) {
     return (
       <React.Fragment key={index}>
         <div
@@ -52,7 +56,7 @@ function BookSelectionPopover() {
 
   useEffect(() => {
     dispatch(getAllBook());
-  }, [dispatch]);
+  }, [dispatch, isUserLoggedIn]);
 
   return (
     <div className="book-tab-popover-wrapper">
@@ -68,27 +72,37 @@ function BookSelectionPopover() {
 
       {bookSelectionPopoverState ? (
         <div className="book-tab-popover-container">
-          <div className="book-selection-buttons">
-            <FiPlusSquare
-              className="add-book-icon"
-              onClick={() => {
-                protectedFunction(handleCreateBook);
-              }}
-            />
-            <MdOutlineDeleteSweep className="_add-book-icon" />
-          </div>
           {getAllBookIsLoading ? (
             <Spinner id="book-selection-spinner"></Spinner>
           ) : (
-            <div className="book-tab-box">
+            <React.Fragment>
+              {isUserLoggedIn && (
+                <div className="book-selection-buttons">
+                  <FiPlusSquare
+                    className="add-book-icon"
+                    onClick={() => {
+                      protectedFunction(handleCreateBook);
+                    }}
+                  />
+                  <MdOutlineDeleteSweep className="_add-book-icon" />
+                </div>
+              )}
               {Array.isArray(bookRes.results) && bookRes.results.length > 0 ? (
                 bookRes.results.map((book: any, index: number) => {
-                  return RenderBookTab(book, index);
+                  return (
+                    <div className="book-tab-box">
+                      <RenderBookTab book={book} index={index} />
+                    </div>
+                  );
                 })
-              ) : (
+              ) : isUserLoggedIn ? (
                 <div className="no-words">No books saved.</div>
+              ) : (
+                <div className="login-for-books-words">
+                  Please login to save books.
+                </div>
               )}
-            </div>
+            </React.Fragment>
           )}
         </div>
       ) : null}
