@@ -88,13 +88,11 @@ function BookSelectionPopover() {
                 </div>
               )}
               {Array.isArray(bookRes.results) && bookRes.results.length > 0 ? (
-                bookRes.results.map((book: any, index: number) => {
-                  return (
-                    <div className="book-tab-box">
-                      <RenderBookTab book={book} index={index} />
-                    </div>
-                  );
-                })
+                <div className="book-tab-box">
+                  {bookRes.results.map((book: any, index: number) => {
+                    return <RenderBookTab book={book} index={index} />;
+                  })}
+                </div>
               ) : isUserLoggedIn ? (
                 <div className="no-words">No books saved.</div>
               ) : (
