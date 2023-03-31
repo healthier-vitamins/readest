@@ -12,6 +12,10 @@ import { MdOutlineDeleteSweep } from "react-icons/md";
 import "./BookSelectionPopover.scss";
 import { Spinner } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "store/hooks";
+import {
+  setShowPopoverPage,
+  toggleShowPopoverState,
+} from "../../store/slices/state.slice";
 
 function BookSelectionPopover() {
   const dispatch = useAppDispatch();
@@ -96,7 +100,13 @@ function BookSelectionPopover() {
               ) : isUserLoggedIn ? (
                 <div className="no-words">No books saved.</div>
               ) : (
-                <div className="login-for-books-words">
+                <div
+                  className="__popover-state-link"
+                  onClick={() => {
+                    dispatch(setShowPopoverPage("loginState"));
+                    dispatch(toggleShowPopoverState());
+                  }}
+                >
                   Please login to save books.
                 </div>
               )}
