@@ -3,6 +3,7 @@ import { AiOutlineSave } from "react-icons/ai";
 import React from "react";
 import { toggleSaveWordModal } from "../../store/slices/state.slice";
 import { useAppDispatch, useAppSelector } from "store/hooks";
+import protectedFunction from "utils/protectedFunc";
 
 function WordDefinition() {
   const dispatch = useAppDispatch();
@@ -11,6 +12,10 @@ function WordDefinition() {
     console.log("chosen word definition ", state.word.chosenWordDefinition);
     return state.word;
   });
+
+  const {
+    authentication: { isUserLoggedIn },
+  } = useAppSelector((state: any) => state.user);
 
   const RenderShortDefLogic: Function = ():
     | React.ReactElement[]
@@ -71,7 +76,9 @@ function WordDefinition() {
           <AiOutlineSave
             className="save-btn"
             onClick={() => {
-              dispatch(toggleSaveWordModal());
+              isUserLoggedIn
+                ? dispatch(toggleSaveWordModal())
+                : protectedFunction("");
             }}
           />
         </div>

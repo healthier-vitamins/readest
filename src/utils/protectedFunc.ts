@@ -8,9 +8,10 @@ import {
 
 export default function protectedFunction(fn: any) {
   // TODO to come back to this :/
-  // @ts-ignore
-  const logged = store.getState().user.authentication.isUserLoggedIn;
-  if (logged) {
+  const {
+    authentication: { isUserLoggedIn },
+  }: any = store.getState().user;
+  if (isUserLoggedIn) {
     return fn();
   } else {
     store.dispatch(addToastNotificationArr("Please login"));

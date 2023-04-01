@@ -4,6 +4,7 @@ import HomePage from "./pages/homePage/HomePage";
 import Layout from "./pages/Layout";
 // import WordsPage from "./pages/wordsPage/WordsPage";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./main.scss";
 
 function App() {
   return (

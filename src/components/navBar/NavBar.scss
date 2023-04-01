@@ -1,4 +1,4 @@
-@use "../../variables" as *;
+@import "../../variables";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
 
 .top-navbar {
@@ -67,7 +67,7 @@
 
 .user-icon {
   font-size: 25px;
-  color: rgb(252, 238, 213);
+  color: rgb(252, 238, 213) !important;
 }
 
 .vertical-line {
