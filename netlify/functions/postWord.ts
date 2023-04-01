@@ -76,7 +76,7 @@ async function saveWord(wordDef, bookDatabaseId) {
         },
       ],
       [wordSchema.STATUS]: {
-        name: "Live",
+        name: "LIVE",
       },
       [wordSchema.DEFINITION]: [
         {

@@ -5,9 +5,9 @@
 [functions] 
     node_bundler = "esbuild"
 [dev]
-    command = "npm start"
-    targetPort = 3000
+    framework = "create-react-app"
+    functionsPort = 3001
 [[redirects]]
-  from = "/*"
-  to = "/"
-  status = 200
+    from = "/*"
+    to = "/"
+    status = 200

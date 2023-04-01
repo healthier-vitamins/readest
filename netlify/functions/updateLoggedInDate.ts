@@ -10,11 +10,13 @@ const notion = new Client({
 
 exports.handler = async function (event: any, context: any) {
   const { email } = JSON.parse(event.body);
-  const dateNow = new Date().toString();
-  const date = moment()
-    .utc(dateNow + "+8:00")
-    .format("MMMM Do YYYY, h:mm:ss a");
-  let accountId;
+  const dateNow = new Date().toLocaleString("en-sg", {
+    hour12: false,
+    timeZone: "Asia/Singapore",
+  });
+  const date = moment(dateNow).format("MMMM Do YYYY, h:mm:ss a");
+
+  let accountId: string | null = null;
   try {
     const response = await notion.databases.query({
       database_id: NOTION_DB_USER_KEY ? NOTION_DB_USER_KEY : "",
@@ -36,7 +38,7 @@ exports.handler = async function (event: any, context: any) {
       body: err.message,
     };
   } finally {
-    if (accountId) {
+    if (accountId !== null) {
       try {
         const response = await notion.pages.update({
           page_id: accountId,

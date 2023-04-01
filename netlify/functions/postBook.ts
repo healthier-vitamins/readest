@@ -25,10 +25,11 @@ exports.handler = async function (event: any, context: any) {
     };
   }
 
-  const dateNow = new Date().toString();
-  const date = moment()
-    .utc(dateNow + "8:00")
-    .format("MMMM Do YYYY, h:mm:ss a");
+  const dateNow = new Date().toLocaleString("en-sg", {
+    hour12: false,
+    timeZone: "Asia/Singapore",
+  });
+  const date = moment(dateNow).format("MMMM Do YYYY, h:mm:ss a");
 
   try {
     const response = await notion.pages.create({
@@ -74,7 +75,7 @@ exports.handler = async function (event: any, context: any) {
           ],
         },
         [bookSchema.STATUS]: {
-          select: {
+          status: {
             name: "LIVE",
           },
         },
@@ -82,6 +83,7 @@ exports.handler = async function (event: any, context: any) {
     });
     createdBookId = response.id;
   } catch (err: any) {
+    console.log(err.message);
     return {
       statusCode: HttpStatusCode.InternalServerError,
       body: JSON.stringify("Something went wrong creating book entry."),

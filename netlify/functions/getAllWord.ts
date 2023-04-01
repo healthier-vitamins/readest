@@ -17,7 +17,7 @@ exports.handler = async function (event, context) {
       filter: {
         property: wordSchema.STATUS,
         select: {
-          equals: "Live",
+          equals: "LIVE",
         },
       },
       sorts: [
