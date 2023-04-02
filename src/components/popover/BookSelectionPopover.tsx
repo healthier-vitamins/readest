@@ -74,7 +74,7 @@ function BookSelectionPopover() {
         ></BiBookHeart>
       </div>
 
-      {bookSelectionPopoverState ? (
+      {bookSelectionPopoverState && (
         <div className="book-tab-popover-container">
           {getAllBookIsLoading ? (
             <Spinner id="book-selection-spinner"></Spinner>
@@ -113,7 +113,7 @@ function BookSelectionPopover() {
             </React.Fragment>
           )}
         </div>
-      ) : null}
+      )}
     </div>
   );
 }
