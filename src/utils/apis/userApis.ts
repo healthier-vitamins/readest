@@ -1,10 +1,9 @@
 // import ApiError from "class/ApiError";
 import axios from "axios";
 import { axiosTo } from "../promise";
-// @ts-ignore
 import store from "../../store/store";
-// @ts-ignore
-import { addUserPageId } from "../../store/slices/user.slice";
+import { addUserPageId, userLoggedOut } from "../../store/slices/user.slice";
+import { resetBookSelection } from "store/slices/book.slice";
 
 async function userSignUp(successFuncs: any, errFuncs: any, payload: any) {
   const [goTrueErr, goTrueRes] = await axiosTo(
@@ -81,4 +80,9 @@ async function verifyUser(successFuncs: any, errFuncs: any, payload: any) {
   return;
 }
 
-export { userSignUp, login, verifyUser };
+async function logout() {
+  store.dispatch(userLoggedOut());
+  store.dispatch(resetBookSelection());
+}
+
+export { userSignUp, login, verifyUser, logout };

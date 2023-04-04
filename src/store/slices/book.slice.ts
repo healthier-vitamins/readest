@@ -10,6 +10,13 @@ type BookSelection = {
   active: boolean;
 };
 
+const BookSelectionDefault: [BookSelection] = [
+  {
+    bookObj: "Definition",
+    active: true,
+  },
+];
+
 interface InitialState {
   bookRes: any;
   bookResArrCheckbox: any[];
@@ -17,7 +24,7 @@ interface InitialState {
   getAllBookIsLoading: boolean;
   // will only contain 1 book at any time
   selectedTab: BookSelection;
-  lastSavedBook: any[];
+  // lastSavedBook: any[];
   bookSelection: BookSelection[];
 }
 
@@ -31,7 +38,7 @@ const initialState: InitialState = {
     bookObj: "Definition",
     active: true,
   },
-  lastSavedBook: [],
+  // lastSavedBook: [],
   bookSelection: [
     {
       bookObj: "Definition",
@@ -101,6 +108,9 @@ const book = createSlice({
         state.selectedTab = tempObj;
       }
     },
+    resetBookSelection: (state) => {
+      state.bookSelection = BookSelectionDefault;
+    },
     changeActiveTab: (state, action) => {
       state.bookSelection.forEach((book) => {
         book.active = false;
@@ -162,5 +172,6 @@ export const {
   changeActiveTab,
   handlebookResArrCheckboxChange,
   resetbookResArrCheckbox,
+  resetBookSelection,
 } = book.actions;
 export default book;

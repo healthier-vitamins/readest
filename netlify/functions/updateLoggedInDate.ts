@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
 import { Client } from "@notionhq/client";
 import { userSchema } from "../../src/utils/schemas/userSchema";
-const moment = require("moment");
+import moment from "moment";
 
 const { NOTION_KEY, NOTION_DB_USER_KEY } = process.env;
 const notion = new Client({

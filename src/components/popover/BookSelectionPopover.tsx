@@ -94,7 +94,11 @@ function BookSelectionPopover() {
               {Array.isArray(bookRes.results) && bookRes.results.length > 0 ? (
                 <div className="book-tab-box">
                   {bookRes.results.map((book: any, index: number) => {
-                    return <RenderBookTab book={book} index={index} />;
+                    return (
+                      <React.Fragment key={index}>
+                        <RenderBookTab book={book} index={index} />
+                      </React.Fragment>
+                    );
                   })}
                 </div>
               ) : isUserLoggedIn ? (

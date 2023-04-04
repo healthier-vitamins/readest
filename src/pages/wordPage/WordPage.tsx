@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { getWordForBook } from "../../store/slices/word.slice";
 import { wordSchema } from "../../utils/schemas/wordSchema";
 import { Spinner } from "react-bootstrap";
 import "./WordPage.scss";
 import { useAppDispatch, useAppSelector } from "store/hooks";
+import { getAllWordsForBook } from "utils/apis/wordApis";
+import axios from "axios";
 // import useWindowDimension, {
 //   setDynamicHeight,
 // } from "../../utils/useWindowDimension";
@@ -14,16 +16,37 @@ function WordPage() {
     (state) => state.word
   );
   const dispatch = useAppDispatch();
+  const [abortController, setAbortController] = useState<any>(null);
 
   // let { height } = useWindowDimension();
 
   useEffect(() => {
-    const payloadObj = {
-      bookId: selectedTab.bookObj.id,
-    };
-    dispatch(getWordForBook(payloadObj));
+    getAllWordsForBookTrigger();
     // eslint-disable-next-line
   }, [selectedTab.bookObj]);
+
+  async function getAllWordsForBookTrigger() {
+    if (abortController) abortController.abort();
+
+    const newAbortController = new AbortController();
+    setAbortController(newAbortController);
+    const payload = {
+      bookId: selectedTab.bookObj.id,
+      abortController: abortController,
+    };
+    // dispatch(getWordForBook(payload));
+    getAllWordsForBook(payload);
+    // const resp = await axios.post("/api/getAllWord", payload, {
+    //   signal: abortController,
+    // });
+  }
+
+  useEffect(() => {
+    if (!isGetWordLoading) setAbortController(null);
+    console.log(
+      `isGetWordLoading |||||||||| ${isGetWordLoading} \n abortControllerState |||||||||| ${abortController}`
+    );
+  }, [isGetWordLoading]);
 
   const RenderShortDefLogic: Function = ({
     shortDef,

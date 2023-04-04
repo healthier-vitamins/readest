@@ -73,7 +73,18 @@ export const postWordToBook = createAsyncThunk(
 export const getWordForBook = createAsyncThunk(
   "getWordForBook",
   async (payload: any, thunkApi) => {
-    const resp = await axios.post("/api/getAllWord", payload);
+    const abortController = payload?.abortController;
+    console.log("abort controller ein api ||||||||||| ", abortController);
+    let resp;
+    if (abortController) {
+      console.log("with abortController");
+      resp = await axios.post("/api/getAllWord", payload, {
+        signal: abortController,
+      });
+    } else {
+      console.log("without abortController");
+      resp = await axios.post("/api/getAllWord", payload);
+    }
     // if (resp.status === 200) {
     // }
     return resp.data;

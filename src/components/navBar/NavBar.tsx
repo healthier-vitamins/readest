@@ -3,7 +3,6 @@ import "./NavBar.scss";
 import SearchBar from "../searchBar/SearchBar";
 import { HiOutlineUserCircle } from "react-icons/hi";
 import SignUpPopover from "../popover/SignUpPopover";
-import { userLoggedOut } from "../../store/slices/user.slice";
 import React from "react";
 import { changeActiveTab } from "../../store/slices/book.slice";
 import { bookSchema } from "../../utils/schemas/bookSchema";
@@ -11,6 +10,7 @@ import BookSelectionPopover from "../popover/BookSelectionPopover";
 import OnClickOutsideComponent from "../OnClickOutsideComponent";
 import { setBookSelectionPopoverState } from "../../store/slices/state.slice";
 import { useAppDispatch, useAppSelector } from "store/hooks";
+import { logout } from "utils/apis/userApis";
 
 function NavBar() {
   const dispatch = useAppDispatch();
@@ -23,9 +23,6 @@ function NavBar() {
     authentication: { isUserLoggedIn },
   } = useAppSelector((state: any) => state.user);
 
-  function handleLogout() {
-    dispatch(userLoggedOut());
-  }
 
   function clickOutsideHelper() {
     dispatch(setBookSelectionPopoverState(false));
@@ -114,7 +111,7 @@ function NavBar() {
           {!isUserLoggedIn ? (
             <SignUpPopover></SignUpPopover>
           ) : (
-            <div className="right-link" onClick={() => handleLogout()}>
+            <div className="right-link" onClick={() => logout()}>
               Logout
             </div>
           )}
