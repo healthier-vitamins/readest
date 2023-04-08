@@ -40,7 +40,6 @@ const initialState: InitialState = {
   allBookWord: null,
   isLoading: true,
   isSavingWordLoading: true,
-
   isGetWordLoading: true,
 };
 
@@ -74,20 +73,30 @@ export const getWordForBook = createAsyncThunk(
   "getWordForBook",
   async (payload: any, thunkApi) => {
     const abortController = payload?.abortController;
-    console.log("abort controller ein api ||||||||||| ", abortController);
+    // const { setAbortController } = payload;
+    console.log("abort controller in api ||||||||||| ", abortController);
     let resp;
     if (abortController) {
       console.log("with abortController");
       resp = await axios.post("/api/getAllWord", payload, {
-        signal: abortController,
+        signal: abortController.signal,
       });
     } else {
       console.log("without abortController");
       resp = await axios.post("/api/getAllWord", payload);
     }
-    // if (resp.status === 200) {
-    // }
-    return resp.data;
+    if (resp.status !== 200) {
+      thunkApi.dispatch(
+        addToastNotificationArr(
+          "Something went wrong getting words. Please try again."
+        )
+      );
+      thunkApi.dispatch(addToastNotificationArr(resp.statusText));
+      return;
+      // setAbortController(null);
+    } else {
+      return resp.data;
+    }
   }
 );
 

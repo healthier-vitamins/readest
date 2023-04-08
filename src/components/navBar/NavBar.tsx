@@ -23,7 +23,6 @@ function NavBar() {
     authentication: { isUserLoggedIn },
   } = useAppSelector((state: any) => state.user);
 
-
   function clickOutsideHelper() {
     dispatch(setBookSelectionPopoverState(false));
   }
@@ -118,7 +117,7 @@ function NavBar() {
         </div>
       </div>
       <div className="tabs-selection">
-        {bookSelection.map((obj, index) => RenderTabs(obj, index))}
+        {bookSelection.map((obj: any, index: number) => RenderTabs(obj, index))}
       </div>
     </div>
   );

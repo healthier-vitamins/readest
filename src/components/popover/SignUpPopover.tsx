@@ -338,6 +338,7 @@ function SignUpPopover() {
                     <Spinner
                       animation="border"
                       id="signup-loading-spinner"
+                      size="sm"
                     ></Spinner>
                     &nbsp;
                   </>
@@ -406,6 +407,7 @@ function SignUpPopover() {
                 <Spinner
                   animation="border"
                   id="signup-loading-spinner"
+                  size="sm"
                 ></Spinner>
               )}{" "}
               Login

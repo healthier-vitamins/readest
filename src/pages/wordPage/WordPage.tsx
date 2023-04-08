@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getWordForBook } from "../../store/slices/word.slice";
 import { wordSchema } from "../../utils/schemas/wordSchema";
 import { Spinner } from "react-bootstrap";
 import "./WordPage.scss";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import { getAllWordsForBook } from "utils/apis/wordApis";
-import axios from "axios";
+import { getWordForBook } from "store/slices/word.slice";
 // import useWindowDimension, {
 //   setDynamicHeight,
 // } from "../../utils/useWindowDimension";
@@ -26,27 +25,27 @@ function WordPage() {
   }, [selectedTab.bookObj]);
 
   async function getAllWordsForBookTrigger() {
-    if (abortController) abortController.abort();
-
+    // if (abortController) {
+    //   abortController.abort();
+    //   console.log("aborted");
+    // }
     const newAbortController = new AbortController();
+    // console.log("old abort controller ||||||||||| ", abortController);
+    // console.log("new abort controller ||||||||||| ", newAbortController);
     setAbortController(newAbortController);
     const payload = {
       bookId: selectedTab.bookObj.id,
       abortController: abortController,
+      setAbortController: setAbortController,
     };
-    // dispatch(getWordForBook(payload));
-    getAllWordsForBook(payload);
-    // const resp = await axios.post("/api/getAllWord", payload, {
-    //   signal: abortController,
-    // });
-  }
+    dispatch(getWordForBook(payload));
+    // getAllWordsForBook(payload);
 
-  useEffect(() => {
-    if (!isGetWordLoading) setAbortController(null);
-    console.log(
-      `isGetWordLoading |||||||||| ${isGetWordLoading} \n abortControllerState |||||||||| ${abortController}`
-    );
-  }, [isGetWordLoading]);
+    // if (abortController) {
+    //   abortController.abort();
+    //   console.log("aborted");
+    // }
+  }
 
   const RenderShortDefLogic: Function = ({
     shortDef,

@@ -16,6 +16,7 @@ interface InitialState {
     state: ShowPopoverState;
   };
   toastNotificationArr: any[];
+  abortController: any;
 }
 
 const initialState: InitialState = {
@@ -31,6 +32,7 @@ const initialState: InitialState = {
     },
   },
   toastNotificationArr: [],
+  abortController: null,
 };
 
 // redux slice
@@ -81,6 +83,12 @@ const stateSlice = createSlice({
       } else {
         state.showPopoverState.show = false;
       }
+    },
+    setAbortController: (state: any, action: PayloadAction<any>) => {
+      state.abortController = action.payload;
+    },
+    removeAbortController: (state: any) => {
+      state.abortController = null;
     },
   },
 });
