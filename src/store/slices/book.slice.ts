@@ -112,6 +112,7 @@ const book = createSlice({
       state.bookSelection = BookSelectionDefault;
     },
     changeActiveTab: (state, action) => {
+      // TODO HERE
       state.bookSelection.forEach((book) => {
         book.active = false;
       });
@@ -141,6 +142,7 @@ const book = createSlice({
         state.postBookIsLoading = true;
       })
       .addCase(getAllBook.fulfilled, (state, action) => {
+        // TODO HERE
         state.getAllBookIsLoading = false;
         state.bookRes = action.payload;
         let tempObj;

@@ -40,7 +40,9 @@ function BookSelectionPopover() {
         <div
           className="tab"
           onClick={() => {
+            // TODO HERE URL
             dispatch(addBookSelection(book));
+            console.log("book |||||| ", book);
           }}
         >
           {book.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text}

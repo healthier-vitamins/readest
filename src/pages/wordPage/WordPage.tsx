@@ -5,6 +5,7 @@ import "./WordPage.scss";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import { getAllWordsForBook } from "utils/apis/wordApis";
 import { getWordForBook } from "store/slices/word.slice";
+import { useParams } from "react-router-dom";
 // import useWindowDimension, {
 //   setDynamicHeight,
 // } from "../../utils/useWindowDimension";
@@ -16,7 +17,7 @@ function WordPage() {
   );
   const dispatch = useAppDispatch();
   const [abortController, setAbortController] = useState<any>(null);
-
+    const params = useParams()
   // let { height } = useWindowDimension();
 
   useEffect(() => {

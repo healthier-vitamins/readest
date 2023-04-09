@@ -46,6 +46,7 @@ function NavBar() {
           <div
             className="singular-tab"
             onClick={() => {
+              // TODO HERE URL
               dispatch(changeActiveTab(index));
             }}
           >

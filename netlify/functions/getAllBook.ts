@@ -41,7 +41,7 @@ exports.handler = async function (event, context) {
     });
     // TODO filter book response to only contain book name and book id
     // @ts-ignore
-    // console.log("response |||||||||||| ", response.results[0].properties);
+    console.log("response |||||||||||| ", response.results[0].properties);
     return {
       statusCode: HttpStatusCode.Ok,
       body: JSON.stringify(response),
