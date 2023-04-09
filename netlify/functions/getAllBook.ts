@@ -38,14 +38,41 @@ exports.handler = async function (event, context) {
           },
         ],
       },
+      // sorts: [
+      //   {
+      //     property: "CREATED_TIME",
+      //     direction: "descending"
+      //   }
+      // ]
     });
-    // TODO filter book response to only contain book name and book id
+
     // @ts-ignore
-    console.log("response |||||||||||| ", response.results[0].properties);
+    // console.log("response |||||||||||| ", response.results[0].properties);
+    let simplifiedResponse;
+    if (response.results.length > 0) {
+      simplifiedResponse = response.results.map((obj) => {
+        // const tempArr = [];
+        const tempObj = {
+          id: obj.id,
+          // @ts-ignore
+          bookName: obj.properties.BOOK_NAME.rich_text[0].plain_text,
+        };
+        // tempArr.push(tempObj)
+        return tempObj;
+      });
+    } else {
+      simplifiedResponse = [];
+    }
+    console.log(simplifiedResponse);
     return {
       statusCode: HttpStatusCode.Ok,
-      body: JSON.stringify(response),
+      body: JSON.stringify(simplifiedResponse),
     };
+
+    // return {
+    //   statusCode: HttpStatusCode.Ok,
+    //   body: JSON.stringify(response),
+    // };
   } catch (err) {
     console.log(err);
     console.log(err.message);

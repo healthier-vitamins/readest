@@ -67,10 +67,11 @@ function NavBar() {
           }}
         >
           <div className="tab-option">
-            {
+            {/* {
               obj.bookObj.properties[bookSchema.BOOK_NAME].rich_text[0]
                 .plain_text
-            }
+            } */}
+            {obj.bookObj.bookName}
           </div>
           <div
             className={`active-tab-option ${activeTabsClass(obj.active)}`}

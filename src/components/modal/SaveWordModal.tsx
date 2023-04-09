@@ -75,7 +75,8 @@ function SaveWordModal() {
           }}
         >
           <label className="book-label">
-            {book.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text}
+            {/* {book.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text} */}
+            {book.bookName}
           </label>
           <input
             type={"checkbox"}
@@ -141,8 +142,8 @@ function SaveWordModal() {
       <Modal.Footer>
         <div className="list-book-container">
           <div className="list-book-selection">
-            {Array.isArray(bookRes.results) && bookRes.results.length > 0
-              ? bookRes.results.map((book: any, index: number) => {
+            {Array.isArray(bookRes) && bookRes.length > 0
+              ? bookRes.map((book: any, index: number) => {
                   return (
                     <RenderBook
                       book={book}

@@ -142,14 +142,13 @@ const book = createSlice({
         state.postBookIsLoading = true;
       })
       .addCase(getAllBook.fulfilled, (state, action) => {
-        // TODO HERE
         state.getAllBookIsLoading = false;
         state.bookRes = action.payload;
         let tempObj;
         let tempArr: any[] = [];
 
-        if (action.payload?.results?.length > 0) {
-          action.payload.results.forEach((result: any) => {
+        if (action.payload?.length > 0) {
+          action.payload.forEach((result: any) => {
             tempObj = {
               result: result,
               checked: false,

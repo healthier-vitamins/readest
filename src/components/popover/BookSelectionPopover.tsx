@@ -45,7 +45,8 @@ function BookSelectionPopover() {
             console.log("book |||||| ", book);
           }}
         >
-          {book.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text}
+          {/* {book.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text} */}
+          {book.bookName}
         </div>
       </React.Fragment>
     );
@@ -93,9 +94,9 @@ function BookSelectionPopover() {
                   <MdOutlineDeleteSweep className="_add-book-icon" />
                 </div>
               )}
-              {Array.isArray(bookRes.results) && bookRes.results.length > 0 ? (
+              {Array.isArray(bookRes) && bookRes.length > 0 ? (
                 <div className="book-tab-box">
-                  {bookRes.results.map((book: any, index: number) => {
+                  {bookRes.map((book: any, index: number) => {
                     return (
                       <React.Fragment key={index}>
                         <RenderBookTab book={book} index={index} />

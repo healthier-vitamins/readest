@@ -1,4 +1,3 @@
-// TODO fix this export {} by replacing notion client with a class instead
 const { Client } = require("@notionhq/client");
 const { HttpStatusCode } = require("axios");
 const { wordSchema } = require("../../src/utils/schemas/wordSchema");
