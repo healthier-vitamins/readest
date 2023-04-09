@@ -64,8 +64,6 @@ function SaveWordModal() {
 
   function RenderBook(props: any) {
     const { book, index } = props;
-    // console.log(bookResArrCheckbox);
-    // console.log("book here bitch ||||||||||||||| ", book);
     return (
       <React.Fragment key={String(index)}>
         <div
@@ -91,27 +89,11 @@ function SaveWordModal() {
   }
 
   function handleSave(book: any) {
-    // const hasSelectedBook = bookResArrCheckbox.some(
-    //   (ele) => ele.checked === true
-    // );
-    // if (hasSelectedBook) {
-    // setIsSaveClicked(true);
-    // const checkedBookArr = [];
-    // bookResArrCheckbox.forEach((bookObj) => {
-    //   if (bookObj.checked) {
-    //     checkedBookArr.push(bookObj.result.id);
-    //   }
-    // });
     const payloadObj = {
-      // selectedBookArr: checkedBookArr,
       bookObj: book,
       wordDef: chosenWordDefinition,
     };
     dispatch(postWordToBook(payloadObj));
-    //   setIsInvalid(false);
-    // } else {
-    //   setIsInvalid(true);
-    // }
   }
 
   // function handleCancel() {

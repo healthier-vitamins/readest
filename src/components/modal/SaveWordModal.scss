@@ -2,7 +2,8 @@
   border: 0.375px solid lightgray;
   width: 100%;
   border-radius: 0.375rem;
-  height: 10rem;
+  height: fit-content;
+  max-height: 10rem;
   overflow: auto;
   overflow-wrap: break-word;
 }
@@ -22,6 +23,10 @@
 
 .book-bar:first-child {
   border-top: none;
+}
+
+.book-bar-btm-border:last-child {
+  border-bottom: 0.375px solid lightgray;
 }
 
 .book-checkbox {

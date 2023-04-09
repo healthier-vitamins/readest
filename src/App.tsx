@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import HomePage from "./pages/homePage/HomePage";
 import Layout from "./pages/Layout";
-// import WordsPage from "./pages/wordsPage/WordsPage";
+import WordsPage from "./pages/wordPage/WordPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./main.scss";
 
@@ -11,8 +11,11 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout></Layout>}>
-          <Route index element={<HomePage></HomePage>}></Route>
-          {/* <Route path="/words" element={<WordsPage></WordsPage>}></Route> */}
+          <Route index={true} element={<HomePage></HomePage>}></Route>
+          <Route
+            path="book/:bookName"
+            element={<WordsPage></WordsPage>}
+          ></Route>
         </Route>
       </Routes>
     </BrowserRouter>

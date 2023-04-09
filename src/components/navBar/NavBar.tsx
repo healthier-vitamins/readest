@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./NavBar.scss";
 import SearchBar from "../searchBar/SearchBar";
 import { HiOutlineUserCircle } from "react-icons/hi";
@@ -14,6 +14,7 @@ import { logout } from "utils/apis/userApis";
 
 function NavBar() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { bookSelection } = useAppSelector((state) => state.book);
   const { bookSelectionPopoverState } = useAppSelector(
     (state: any) => state.state
@@ -116,6 +117,7 @@ function NavBar() {
           )}
         </div>
       </div>
+      <>{console.log(bookSelection)}</>
       <div className="tabs-selection">
         {bookSelection.map((obj: any, index: number) => RenderTabs(obj, index))}
       </div>
