@@ -90,6 +90,7 @@ function SaveWordModal() {
   }
 
   function handleSave(book: any) {
+    // TODO books cannot contain special characters
     const payloadObj = {
       bookObj: book,
       wordDef: chosenWordDefinition,

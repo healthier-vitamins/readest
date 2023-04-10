@@ -10,6 +10,7 @@ const notion = new Client({
 exports.handler = async function (event, context) {
   const { bookId } = JSON.parse(event.body);
   const databaseId = await getBookDatabase(bookId);
+
   try {
     const response = await notion.databases.query({
       database_id: databaseId,

@@ -16,9 +16,11 @@ import {
   setShowPopoverPage,
   toggleShowPopoverState,
 } from "../../store/slices/state.slice";
+import { useNavigate } from "react-router-dom";
 
 function BookSelectionPopover() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   function handleCreateBook() {
     dispatch(toggleCreateBookModal());
@@ -43,6 +45,7 @@ function BookSelectionPopover() {
             // TODO HERE URL
             dispatch(addBookSelection(book));
             console.log("book |||||| ", book);
+            navigate(`/book/${book.bookName}--${book.id}`);
           }}
         >
           {/* {book.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text} */}

@@ -10,9 +10,9 @@ type BookSelection = {
   active: boolean;
 };
 
-const BookSelectionDefault: [BookSelection] = [
+const BookSelectionDefault: BookSelection[] = [
   {
-    bookObj: "Definition",
+    bookObj: { bookName: "Definition", id: "0" },
     active: true,
   },
 ];
@@ -41,7 +41,7 @@ const initialState: InitialState = {
   // lastSavedBook: [],
   bookSelection: [
     {
-      bookObj: "Definition",
+      bookObj: { bookName: "Definition", id: "0" },
       active: true,
     },
   ],
@@ -53,6 +53,10 @@ export const postBook = createAsyncThunk(
   async (payload: any, thunkApi) => {
     const [err, res] = await axiosTo(axios.post("/api/postBook", payload));
     if (err) {
+      if (err.status === 500) {
+        thunkApi.dispatch(addToastNotificationArr("Please refresh the page"));
+        return;
+      }
       thunkApi.dispatch(addToastNotificationArr(err.data));
       return;
     }
@@ -88,10 +92,18 @@ const book = createSlice({
       });
 
       if (
-        state.bookSelection.some(
-          (book) =>
-            JSON.stringify(book.bookObj) === JSON.stringify(action.payload)
-        )
+        state.bookSelection.some((book) => {
+          console.log(
+            "book slice bookobj?????? ",
+            book.bookObj.id,
+            "|||||||| ",
+            action.payload
+          );
+          return (
+            // JSON.stringify(book.bookObj) === JSON.stringify(action.payload)
+            book.bookObj.id === action.payload.id
+          );
+        })
       ) {
         const index = state.bookSelection.findIndex(
           (book) =>
@@ -112,7 +124,6 @@ const book = createSlice({
       state.bookSelection = BookSelectionDefault;
     },
     changeActiveTab: (state, action) => {
-      // TODO HERE
       state.bookSelection.forEach((book) => {
         book.active = false;
       });

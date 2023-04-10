@@ -3,12 +3,9 @@ import { wordSchema } from "../../utils/schemas/wordSchema";
 import { Spinner } from "react-bootstrap";
 import "./WordPage.scss";
 import { useAppDispatch, useAppSelector } from "store/hooks";
-import { getAllWordsForBook } from "utils/apis/wordApis";
 import { getWordForBook } from "store/slices/word.slice";
 import { useParams } from "react-router-dom";
-// import useWindowDimension, {
-//   setDynamicHeight,
-// } from "../../utils/useWindowDimension";
+import { addBookSelection } from "store/slices/book.slice";
 
 function WordPage() {
   const { selectedTab } = useAppSelector((state) => state.book);
@@ -17,15 +14,25 @@ function WordPage() {
   );
   const dispatch = useAppDispatch();
   const [abortController, setAbortController] = useState<any>(null);
-    const params = useParams()
-  // let { height } = useWindowDimension();
+  const params = useParams();
 
   useEffect(() => {
     getAllWordsForBookTrigger();
     // eslint-disable-next-line
   }, [selectedTab.bookObj]);
 
+  useEffect(() => {
+    const [bookName, id] = params!.bookName!.split("--");
+    const payload = {
+      id: id,
+      bookName: bookName,
+    };
+    dispatch(addBookSelection(payload));
+  }, [params, dispatch]);
+
   async function getAllWordsForBookTrigger() {
+    // eslint-disable-next-line
+    const [bookName, id] = params!.bookName!.split("--");
     // if (abortController) {
     //   abortController.abort();
     //   console.log("aborted");
@@ -34,18 +41,14 @@ function WordPage() {
     // console.log("old abort controller ||||||||||| ", abortController);
     // console.log("new abort controller ||||||||||| ", newAbortController);
     setAbortController(newAbortController);
+
     const payload = {
-      bookId: selectedTab.bookObj.id,
+      // bookId: selectedTab.bookObj.id,
+      bookId: id,
       abortController: abortController,
       setAbortController: setAbortController,
     };
     dispatch(getWordForBook(payload));
-    // getAllWordsForBook(payload);
-
-    // if (abortController) {
-    //   abortController.abort();
-    //   console.log("aborted");
-    // }
   }
 
   const RenderShortDefLogic: Function = ({

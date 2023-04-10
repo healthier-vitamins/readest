@@ -40,7 +40,8 @@ function NavBar() {
   }
 
   function RenderTabs(obj: any, index: number) {
-    if (obj.bookObj === "Definition") {
+    console.log("obj here |||||| ", obj);
+    if (obj.bookObj.bookName === "Definition") {
       return (
         <React.Fragment key={index}>
           <div
@@ -48,9 +49,15 @@ function NavBar() {
             onClick={() => {
               // TODO HERE URL
               dispatch(changeActiveTab(index));
+              // eslint-disable-next-line
+              if (obj.bookObj.id == 0) {
+                navigate("/");
+              } else {
+                navigate(`/book/${obj.bookObj.bookName}--${obj.bookObj.id}`);
+              }
             }}
           >
-            <div className="tab-option">{obj.bookObj}</div>
+            <div className="tab-option">{obj.bookObj.bookName}</div>
             <div
               className={`active-tab-option ${activeTabsClass(obj.active)}`}
             ></div>
@@ -64,6 +71,12 @@ function NavBar() {
           className="singular-tab"
           onClick={() => {
             dispatch(changeActiveTab(index));
+            // eslint-disable-next-line
+            if (obj.bookObj.id == 0) {
+              navigate("/");
+            } else {
+              navigate(`/book/${obj.bookObj.bookName}--${obj.bookObj.id}`);
+            }
           }}
         >
           <div className="tab-option">
@@ -119,7 +132,6 @@ function NavBar() {
           )}
         </div>
       </div>
-      <>{console.log(bookSelection)}</>
       <div className="tabs-selection">
         {bookSelection.map((obj: any, index: number) => RenderTabs(obj, index))}
       </div>

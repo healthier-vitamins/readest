@@ -8,9 +8,11 @@ import {
   addChosenWordDefinition,
 } from "../../store/slices/word.slice";
 import "./SearchBar.scss";
+import { useNavigate } from "react-router-dom";
 
 function SearchBar() {
   // const ref = createRef();
+  const navigate = useNavigate();
   const [queriedWord, setQueriedWord] = useState("");
   const queriedWordRef = createRef<any>();
   const [touched, setTouched] = useState(false);
@@ -88,6 +90,7 @@ function SearchBar() {
                       onClick={() => {
                         dispatch(addChosenWordDefinition(responseObject));
                         dispatch(changeActiveTab(0));
+                        navigate("/");
                         setQueriedWord(responseObject.meta.id.toLowerCase());
                         queriedWordRef.current.value =
                           responseObject.meta.id.toLowerCase();
@@ -150,6 +153,7 @@ function SearchBar() {
               onClick={() => {
                 dispatch(addChosenWordDefinition(suggestedWord[0]));
                 dispatch(changeActiveTab(0));
+                navigate("/");
                 setQueriedWord(suggestedWord[0].meta.id.toLowerCase());
                 queriedWordRef.current.value =
                   suggestedWord[0].meta.id.toLowerCase();
