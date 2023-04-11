@@ -75,6 +75,7 @@ export class ApiTracker {
     try {
       const responseData = await this.executeApiCall(apiCall);
       onSuccess(responseData);
+      this.previousApiCall = null;
       return responseData;
     } catch (error) {
       console.error("API call failed:", error);
