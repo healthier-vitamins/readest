@@ -38,7 +38,7 @@ const initialState: InitialState = {
     abbreviation: "",
     shortDef: "",
   },
-  allBookWord: [],
+  allBookWord: null,
   isLoading: true,
   isSavingWordLoading: true,
   isGetWordLoading: true,

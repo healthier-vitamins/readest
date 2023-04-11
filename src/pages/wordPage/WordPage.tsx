@@ -20,6 +20,8 @@ function WordPage() {
     // eslint-disable-next-line
   }, [selectedTab.bookObj]);
 
+  // TODO on logout to redirect to main page
+
   useEffect(() => {
     const [bookName, id] = params!.bookName!.split("--");
     const payload = {
