@@ -5,12 +5,12 @@ import store from "../../store/store";
 import { addUserPageId, userLoggedOut } from "../../store/slices/user.slice";
 import { resetBookSelection } from "store/slices/book.slice";
 
-async function userSignUp(successFuncs: any, errFuncs: any, payload: any) {
+async function userSignUp(onSuccess: any, onError: any, payload: any) {
   const [goTrueErr, goTrueRes] = await axiosTo(
     axios.post("api/signUp", payload)
   );
   if (goTrueErr) {
-    errFuncs(goTrueErr);
+    onError(goTrueErr);
     return;
   }
 
@@ -20,13 +20,13 @@ async function userSignUp(successFuncs: any, errFuncs: any, payload: any) {
   );
 
   if (queryEmailErr) {
-    errFuncs(queryEmailErr);
+    onError(queryEmailErr);
     return;
   }
 
   // if email exists
   if (queryEmailRes.results.length > 0) {
-    successFuncs(goTrueRes);
+    onSuccess(goTrueRes);
     return;
   } else {
     // create new account in notion
@@ -35,20 +35,20 @@ async function userSignUp(successFuncs: any, errFuncs: any, payload: any) {
       axios.post("api/postUser", payload)
     );
     if (notionErr) {
-      errFuncs(notionErr);
+      onError(notionErr);
       return;
     }
-    successFuncs(goTrueRes);
+    onSuccess(goTrueRes);
     return;
   }
 }
 
-async function login(successFuncs: any, errFuncs: any, payload: any) {
+async function login(onSuccess: any, onError: any, payload: any) {
   const [goTrueErr, goTrueRes] = await axiosTo(
     axios.post("api/login", payload)
   );
   if (goTrueErr) {
-    errFuncs(goTrueErr);
+    onError(goTrueErr);
     return;
   }
 
@@ -58,25 +58,25 @@ async function login(successFuncs: any, errFuncs: any, payload: any) {
   );
 
   if (updateLoggedInErr) {
-    errFuncs(updateLoggedInErr);
+    onError(updateLoggedInErr);
     return;
   }
 
   store.dispatch(addUserPageId(updateLoggedInRes.id));
 
-  successFuncs(goTrueRes);
+  onSuccess(goTrueRes);
   return;
 }
 
-async function verifyUser(successFuncs: any, errFuncs: any, payload: any) {
+async function verifyUser(onSuccess: any, onError: any, payload: any) {
   // eslint-disable-next-line
   const [err, res] = await axiosTo(axios.post("api/confirmEmail", payload));
 
   if (err) {
-    errFuncs(err);
+    onError(err);
     return;
   }
-  successFuncs(res);
+  onSuccess(res);
   return;
 }
 

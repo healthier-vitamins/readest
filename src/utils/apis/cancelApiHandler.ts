@@ -1,5 +1,3 @@
-import axios from "axios";
-
 const CancelToken = new AbortController();
 
 export function createCancelTokenHandler(apiObject: any) {
@@ -8,6 +6,9 @@ export function createCancelTokenHandler(apiObject: any) {
 
   // for each property in apiObject, i.e. for each request
   Object.getOwnPropertyNames(apiObject).forEach((propertyName) => {
+    console.log("property name ||||||||| ", propertyName);
+    console.log("apiObject ||||||||| ", apiObject);
+
     // initializing the cancel token of the request
     const cancelTokenRequestHandler: any = {
       cancelToken: undefined,
@@ -19,9 +20,7 @@ export function createCancelTokenHandler(apiObject: any) {
         // if a previous cancel token exists,
         // cancel the request
         cancelTokenRequestHandler.cancelToken &&
-          cancelTokenRequestHandler.cancelToken.cancel(
-            `${propertyName} canceled`
-          );
+          cancelTokenRequestHandler.cancelToken.abort();
 
         // creating a new cancel token
         cancelTokenRequestHandler.cancelToken = CancelToken;
@@ -32,5 +31,6 @@ export function createCancelTokenHandler(apiObject: any) {
     };
   });
 
+  console.log("returned cancltokenhandler |||||||||| ", cancelTokenHandler);
   return cancelTokenHandler;
 }

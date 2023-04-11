@@ -13,7 +13,6 @@ function WordPage() {
     (state) => state.word
   );
   const dispatch = useAppDispatch();
-  const [abortController, setAbortController] = useState<any>(null);
   const params = useParams();
 
   useEffect(() => {
@@ -31,22 +30,16 @@ function WordPage() {
   }, [params, dispatch]);
 
   async function getAllWordsForBookTrigger() {
-    // eslint-disable-next-line
     const [bookName, id] = params!.bookName!.split("--");
     // if (abortController) {
     //   abortController.abort();
     //   console.log("aborted");
     // }
-    const newAbortController = new AbortController();
-    // console.log("old abort controller ||||||||||| ", abortController);
-    // console.log("new abort controller ||||||||||| ", newAbortController);
-    setAbortController(newAbortController);
 
     const payload = {
       // bookId: selectedTab.bookObj.id,
       bookId: id,
-      abortController: abortController,
-      setAbortController: setAbortController,
+      bookName: bookName,
     };
     dispatch(getWordForBook(payload));
   }
@@ -112,15 +105,12 @@ function WordPage() {
   }
 
   return (
-    <div
-      className="word-container"
-      // style={{ height: setDynamicHeight(height) }}
-    >
+    <div className="word-container">
       {!isGetWordLoading ? (
-        allBookWord.results.length < 1 ? (
+        allBookWord?.results.length < 1 ? (
           <div className="no-words">No words saved</div>
         ) : (
-          allBookWord.results.map((wordObj: any, index: number) =>
+          allBookWord?.results.map((wordObj: any, index: number) =>
             RenderWordDef(wordObj, index)
           )
         )

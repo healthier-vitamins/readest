@@ -10,7 +10,12 @@ function to(promise: any) {
     });
 }
 
- //TODO to be replace with axios interceptors 
+//TODO to be replace with axios interceptors
+/**
+ * Axios promise handler.
+ * {err} returns with data/status/headers
+ * {res} returns the data by default
+ */
 function axiosTo(axios: any) {
   return axios
     .then((res: AxiosResponse) => {

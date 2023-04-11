@@ -10,8 +10,6 @@ const notion = new Client({
 exports.handler = async function (event, context) {
   const { bookObj, wordDef } = JSON.parse(event.body);
   let bookDatabaseId;
-  // const selectedBookDatabaseArr = [];
-  // const results = [];
 
   /**
    * @typedef {Object} wordDef
@@ -20,8 +18,6 @@ exports.handler = async function (event, context) {
    * @property {Object} senseArr
    * @property {Object} shortDef
    */
-
-  // for (let bookId of selectedBookArr) {
   try {
     const response = await notion.blocks.children.list({
       block_id: bookObj.id,
@@ -34,16 +30,13 @@ exports.handler = async function (event, context) {
       body: err.toString(),
     };
   }
-  // }
-  // for (let bookDatabaseId of selectedBookDatabaseArr) {
+
   try {
+    // eslint-disable-next-line
     const response = await saveWord(wordDef, bookDatabaseId);
-    // results.push({
-    //   res: JSON.stringify(response),
-    // });
     return {
       statusCode: HttpStatusCode.Ok,
-      body: JSON.stringify(response),
+      body: JSON.stringify(""),
     };
   } catch (err) {
     return {
@@ -51,7 +44,6 @@ exports.handler = async function (event, context) {
       body: err.toString(),
     };
   }
-  // }
 };
 
 async function saveWord(wordDef, bookDatabaseId) {

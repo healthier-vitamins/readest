@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { addToastNotificationArr } from "./state.slice";
-import { bookSchema } from "../../utils/schemas/bookSchema";
-
+import { axiosTo } from "utils/promise";
+import { ApiCall, ApiTracker } from "utils/apis/apiTracker";
+const apiTracker = new ApiTracker();
 // api url with query passed through as parameter
 function apiUrl(queriedWord: string) {
   return `https://dictionaryapi.com/api/v3/references/sd4/json/${queriedWord}?key=${process.env.REACT_APP_DICTIONARY_KEY}`;
@@ -37,7 +38,7 @@ const initialState: InitialState = {
     abbreviation: "",
     shortDef: "",
   },
-  allBookWord: null,
+  allBookWord: [],
   isLoading: true,
   isSavingWordLoading: true,
   isGetWordLoading: true,
@@ -56,15 +57,21 @@ export const getWordDefinition = createAsyncThunk(
 export const postWordToBook = createAsyncThunk(
   "postWordToBook",
   async (payload: any, thunkApi) => {
-    const resp = await axios.post("/api/postWord", payload);
-    const bookName =
-      payload.bookObj.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text;
-    if (resp.status === 200) {
-      thunkApi.dispatch(addToastNotificationArr(`Word added to ${bookName}`));
+    const [err, res] = await axiosTo(axios.post("/api/postWord", payload));
+    console.log("RES ???????????????? ", res);
+    const { bookName } = payload.bookObj;
+    // payload.bookObj.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text;
+    if (err) {
+      thunkApi.dispatch(
+        addToastNotificationArr(
+          `Something went wrong adding word to ${bookName}. Please try again.`
+        )
+      );
+      console.error(err.data);
+      return;
     }
-    // console.log(
-    //   "saved word res ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| ",
-    //   )
+
+    thunkApi.dispatch(addToastNotificationArr(`Word added to ${bookName}`));
     return bookName;
   }
 );
@@ -72,31 +79,33 @@ export const postWordToBook = createAsyncThunk(
 export const getWordForBook = createAsyncThunk(
   "getWordForBook",
   async (payload: any, thunkApi) => {
-    const abortController = payload?.abortController;
-    // const { setAbortController } = payload;
-    console.log("abort controller in api ||||||||||| ", abortController);
-    let resp;
-    if (abortController) {
-      console.log("with abortController");
-      resp = await axios.post("/api/getAllWord", payload, {
-        signal: abortController.signal,
-      });
-    } else {
-      console.log("without abortController");
-      resp = await axios.post("/api/getAllWord", payload);
-    }
-    if (resp.status !== 200) {
-      thunkApi.dispatch(
-        addToastNotificationArr(
-          "Something went wrong getting words. Please try again."
-        )
-      );
-      thunkApi.dispatch(addToastNotificationArr(resp.statusText));
-      return;
-      // setAbortController(null);
-    } else {
-      return resp.data;
-    }
+    let res: any;
+    const apiCall: ApiCall = {
+      id: payload.bookId,
+      abortController: new AbortController(),
+      method: "post",
+      url: "/api/getAllWord",
+      payload: payload,
+    };
+    res = await apiTracker.callApi(apiCall, (data) => {
+      console.log("DATA PLEASE WORK? ||||||| ", data.data);
+      return data.data;
+    });
+    console.log(res);
+    return res.data;
+
+    // const [err, res] = await axiosTo(axios.post("/api/getAllWord", payload));
+    // if (err) {
+    //   thunkApi.dispatch(
+    //     addToastNotificationArr(
+    //       "Something went wrong getting words. Please try again."
+    //     )
+    //   );
+    //   console.error("ERRRRR |||||||||||| ", err.data);
+    //   return;
+    // }
+    // console.log("ressss ||||||||||| ", res);
+    // return res;
   }
 );
 
@@ -150,6 +159,7 @@ const word = createSlice({
         state.isSavingWordLoading = true;
       })
       .addCase(getWordForBook.fulfilled, (state, action) => {
+        console.log("fulfiled ??????????? ", action.payload);
         state.allBookWord = action.payload;
         state.isGetWordLoading = false;
       })

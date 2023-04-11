@@ -40,7 +40,6 @@ function NavBar() {
   }
 
   function RenderTabs(obj: any, index: number) {
-    console.log("obj here |||||| ", obj);
     if (obj.bookObj.bookName === "Definition") {
       return (
         <React.Fragment key={index}>

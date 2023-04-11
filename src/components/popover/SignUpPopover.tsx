@@ -107,7 +107,7 @@ function SignUpPopover() {
       token: token,
     };
 
-    function errFuncs(err: any) {
+    function onError(err: any) {
       setLoadingState({
         ...loadingState,
         confirmEmail: false,
@@ -126,7 +126,7 @@ function SignUpPopover() {
       navigate(`/`, { replace: true });
     }
 
-    function successFuncs(res: any) {
+    function onSuccess(res: any) {
       setLoadingState({
         ...loadingState,
         confirmEmail: false,
@@ -134,7 +134,7 @@ function SignUpPopover() {
       navigate(`/`, { replace: true });
     }
 
-    verifyUser(successFuncs, errFuncs, payload);
+    verifyUser(onSuccess, onError, payload);
   }
 
   function handlePopoverClick() {
@@ -159,9 +159,7 @@ function SignUpPopover() {
       };
       console.log(payload);
 
-      // const [err, res] = await axiosTo(axios.post("/api/signUp", payload));
-
-      function errFuncs(err: any) {
+      function onError(err: any) {
         setLoadingState({
           ...loadingState,
           signUp: false,
@@ -174,7 +172,7 @@ function SignUpPopover() {
         dispatch(addToastNotificationArr(err.data));
       }
 
-      function successFuncs(res: any) {
+      function onSuccess(res: any) {
         setLoadingState({
           ...loadingState,
           signUp: false,
@@ -186,7 +184,7 @@ function SignUpPopover() {
         );
       }
 
-      userSignUp(successFuncs, errFuncs, payload);
+      userSignUp(onSuccess, onError, payload);
     } else {
       setSignUpPasswordCompare({
         ...signUpPasswordCompare,
@@ -204,7 +202,7 @@ function SignUpPopover() {
       password: loginPasswordRef!.current!.value,
     };
 
-    function errFuncs(err: any) {
+    function onError(err: any) {
       setLoadingState({
         ...loadingState,
         login: false,
@@ -220,7 +218,7 @@ function SignUpPopover() {
       dispatch(addToastNotificationArr(err.data));
     }
 
-    function successFuncs(res: any) {
+    function onSuccess(res: any) {
       const loginPayload = {
         token: res.token.access_token,
         refreshToken: res.token.refresh_token,
@@ -235,7 +233,7 @@ function SignUpPopover() {
       resetAllExceptShowPopoverStateAndShow();
     }
 
-    login(successFuncs, errFuncs, payload);
+    login(onSuccess, onError, payload);
   }
 
   function handleSignUpPasswordCompare(e: any) {

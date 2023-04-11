@@ -63,7 +63,7 @@ exports.handler = async function (event, context) {
     } else {
       simplifiedResponse = [];
     }
-    console.log(simplifiedResponse);
+    // console.log(simplifiedResponse);
     return {
       statusCode: HttpStatusCode.Ok,
       body: JSON.stringify(simplifiedResponse),

@@ -93,12 +93,6 @@ const book = createSlice({
 
       if (
         state.bookSelection.some((book) => {
-          console.log(
-            "book slice bookobj?????? ",
-            book.bookObj.id,
-            "|||||||| ",
-            action.payload
-          );
           return (
             // JSON.stringify(book.bookObj) === JSON.stringify(action.payload)
             book.bookObj.id === action.payload.id

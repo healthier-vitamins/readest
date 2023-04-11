@@ -31,7 +31,6 @@ function BookSelectionPopover() {
   const { bookRes, getAllBookIsLoading } = useAppSelector(
     (state) => state.book
   );
-
   const {
     authentication: { isUserLoggedIn },
   } = useAppSelector((state: any) => state.user);
