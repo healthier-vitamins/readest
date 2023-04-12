@@ -1,9 +1,9 @@
-// import ApiError from "class/ApiError";
 import axios from "axios";
 import { axiosTo } from "../promise";
 import store from "../../store/store";
 import { addUserPageId, userLoggedOut } from "../../store/slices/user.slice";
 import { resetBookSelection } from "store/slices/book.slice";
+import { NavigateFunction } from "react-router-dom";
 
 async function userSignUp(onSuccess: any, onError: any, payload: any) {
   const [goTrueErr, goTrueRes] = await axiosTo(
@@ -52,7 +52,6 @@ async function login(onSuccess: any, onError: any, payload: any) {
     return;
   }
 
-  // eslint-disable-next-line
   const [updateLoggedInErr, updateLoggedInRes] = await axiosTo(
     axios.post("api/updateLoggedInDate", payload)
   );
@@ -80,9 +79,10 @@ async function verifyUser(onSuccess: any, onError: any, payload: any) {
   return;
 }
 
-async function logout() {
+async function logout(navigate: NavigateFunction) {
   store.dispatch(userLoggedOut());
   store.dispatch(resetBookSelection());
+  navigate("/");
 }
 
 export { userSignUp, login, verifyUser, logout };

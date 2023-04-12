@@ -88,10 +88,9 @@ export const getWordForBook = createAsyncThunk(
       payload: payload,
     };
     res = await apiTracker.callApi(apiCall, (data) => {
-      console.log("DATA PLEASE WORK? ||||||| ", data.data);
       return data.data;
     });
-    console.log(res);
+    console.log("DATA PLEASE WORK? ||||||| ", res);
     return res.data;
 
     // const [err, res] = await axiosTo(axios.post("/api/getAllWord", payload));

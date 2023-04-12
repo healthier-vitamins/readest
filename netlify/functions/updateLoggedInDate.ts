@@ -10,11 +10,16 @@ const notion = new Client({
 
 exports.handler = async function (event: any, context: any) {
   const { email } = JSON.parse(event.body);
-  const dateNow = new Date().toLocaleString("en-sg", {
-    hour12: false,
-    timeZone: "Asia/Singapore",
-  });
-  const date = moment(dateNow).format("MMMM Do YYYY, h:mm:ss a");
+  // const dateNow = new Date().toLocaleString("en-sg", {
+  //   hour12: false,
+  //   timeZone: "Asia/Singapore",
+  // });
+  // const date = moment(dateNow).format("MMMM Do YYYY, h:mm:ss a");
+  const date = moment().format("MMMM Do YYYY, h:mm:ss a");
+  console.log(moment());
+
+  const dateISO = moment().toISOString(true);
+  console.log("ISO STRING ||||||||||||||  ", dateISO);
 
   let accountId: string | null = null;
   try {
@@ -52,6 +57,11 @@ exports.handler = async function (event: any, context: any) {
                   },
                 },
               ],
+            },
+            DATE: {
+              date: {
+                start: dateISO,
+              },
             },
           },
         });

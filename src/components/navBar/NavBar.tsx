@@ -5,7 +5,6 @@ import { HiOutlineUserCircle } from "react-icons/hi";
 import SignUpPopover from "../popover/SignUpPopover";
 import React from "react";
 import { changeActiveTab } from "../../store/slices/book.slice";
-import { bookSchema } from "../../utils/schemas/bookSchema";
 import BookSelectionPopover from "../popover/BookSelectionPopover";
 import OnClickOutsideComponent from "../OnClickOutsideComponent";
 import { setBookSelectionPopoverState } from "../../store/slices/state.slice";
@@ -46,9 +45,7 @@ function NavBar() {
           <div
             className="singular-tab"
             onClick={() => {
-              // TODO HERE URL
               dispatch(changeActiveTab(index));
-              // eslint-disable-next-line
               if (obj.bookObj.id == 0) {
                 navigate("/");
               } else {
@@ -125,7 +122,7 @@ function NavBar() {
           {!isUserLoggedIn ? (
             <SignUpPopover></SignUpPopover>
           ) : (
-            <div className="right-link" onClick={() => logout()}>
+            <div className="right-link" onClick={() => logout(navigate)}>
               Logout
             </div>
           )}
