@@ -2,7 +2,7 @@ import { wordSchema } from "../../src/utils/schemas/wordSchema";
 import { bookSchema } from "../../src/utils/schemas/bookSchema";
 import { HttpStatusCode } from "axios";
 import { Client } from "@notionhq/client";
-const moment = require("moment");
+import moment from "moment-timezone";
 
 const { NOTION_KEY } = process.env;
 const notion = new Client({
@@ -25,11 +25,16 @@ exports.handler = async function (event: any, context: any) {
     };
   }
 
-  const dateNow = new Date().toLocaleString("en-sg", {
-    hour12: false,
-    timeZone: "Asia/Singapore",
-  });
-  const date = moment(dateNow).format("MMMM Do YYYY, h:mm:ss a");
+  // const dateNow = new Date().toLocaleString("en-sg", {
+  //   hour12: false,
+  //   timeZone: "Asia/Singapore",
+  // });
+  // const date = moment(dateNow).format("MMMM Do YYYY, h:mm:ss a");
+
+  moment.tz.setDefault("Asia/Singapore");
+  // const date = moment().format("MMMM Do YYYY, h:mm:ss a");
+
+  const currentDateIso = moment().toISOString(true);
 
   try {
     const response = await notion.pages.create({
@@ -57,25 +62,17 @@ exports.handler = async function (event: any, context: any) {
           ],
         },
         [bookSchema.CREATED_TIME]: {
-          rich_text: [
-            {
-              text: {
-                content: date,
-              },
-            },
-          ],
+          date: {
+            start: currentDateIso,
+          },
         },
         [bookSchema.LAST_EDITED_TIME]: {
-          rich_text: [
-            {
-              text: {
-                content: date,
-              },
-            },
-          ],
+          date: {
+            start: currentDateIso,
+          },
         },
         [bookSchema.STATUS]: {
-          status: {
+          select: {
             name: "LIVE",
           },
         },
@@ -137,12 +134,12 @@ exports.handler = async function (event: any, context: any) {
           rich_text: {},
         },
         [wordSchema.CREATED_TIME]: {
-          type: "rich_text",
-          rich_text: {},
+          type: "created_time",
+          created_time: {},
         },
         [wordSchema.LAST_EDITED_TIME]: {
-          type: "rich_text",
-          rich_text: {},
+          type: "date",
+          date: {},
         },
         [wordSchema.SENTENCE]: {
           type: "rich_text",

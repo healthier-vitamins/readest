@@ -1,6 +1,6 @@
 import { HttpStatusCode } from "axios";
 import { Client } from "@notionhq/client";
-import { userSchema } from "utils/schemas/userSchema";
+import { userSchema } from "../../src/utils/schemas/userSchema";
 
 const { NOTION_KEY, NOTION_DB_USER_KEY } = process.env;
 const notion = new Client({

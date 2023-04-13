@@ -32,7 +32,7 @@ exports.handler = async function (event, context) {
         and: [
           {
             property: bookSchema.STATUS,
-            status: {
+            select: {
               equals: "LIVE",
             },
           },

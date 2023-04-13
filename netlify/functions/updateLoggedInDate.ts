@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
 import { Client } from "@notionhq/client";
 import { userSchema } from "../../src/utils/schemas/userSchema";
-import moment from "moment";
+import moment from "moment-timezone";
 
 const { NOTION_KEY, NOTION_DB_USER_KEY } = process.env;
 const notion = new Client({
@@ -15,11 +15,12 @@ exports.handler = async function (event: any, context: any) {
   //   timeZone: "Asia/Singapore",
   // });
   // const date = moment(dateNow).format("MMMM Do YYYY, h:mm:ss a");
+  moment.tz.setDefault("Asia/Singapore");
   const date = moment().format("MMMM Do YYYY, h:mm:ss a");
   console.log(moment());
 
-  const dateISO = moment().toISOString(true);
-  console.log("ISO STRING ||||||||||||||  ", dateISO);
+  const currentDateIso = moment().toISOString(true);
+  console.log("ISO STRING ||||||||||||||  ", currentDateIso);
 
   let accountId: string | null = null;
   try {
@@ -49,18 +50,8 @@ exports.handler = async function (event: any, context: any) {
           page_id: accountId,
           properties: {
             [userSchema.LAST_LOGGED_IN]: {
-              rich_text: [
-                {
-                  type: "text",
-                  text: {
-                    content: date,
-                  },
-                },
-              ],
-            },
-            DATE: {
               date: {
-                start: dateISO,
+                start: currentDateIso,
               },
             },
           },

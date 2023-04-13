@@ -460,12 +460,12 @@ function SignUpPopover() {
 
   return (
     <OnClickOutsideComponent
-      onClickOutsideFunc={onClickOutsideFunc}
+      onClickOutsideFunc={!state.emailConfirmState ? onClickOutsideFunc : null}
       isShowing={show}
     >
       <div className="popover-wrapper">
         <div
-          onClick={handlePopoverClick}
+          onClick={!state.emailConfirmState ? handlePopoverClick : undefined}
           className="right-link"
           style={buttonClickedStyleMapper()}
         >

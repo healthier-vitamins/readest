@@ -2,7 +2,7 @@ import { userSchema } from "../../src/utils/schemas/userSchema";
 import { Client } from "@notionhq/client";
 import { HttpStatusCode } from "axios";
 import { bookSchema } from "../../src/utils/schemas/bookSchema";
-const moment = require("moment");
+import moment from "moment-timezone";
 // const { to } = require("../../src/utils/promiseUtil");
 
 const { NOTION_KEY, NOTION_DB_USER_KEY } = process.env;
@@ -11,9 +11,14 @@ const notion = new Client({
 });
 
 exports.handler = async function (event: any, context: any) {
-  moment.locale("en-sg");
+  moment.tz.setDefault("Asia/Singapore");
+  // const date = moment().format("MMMM Do YYYY, h:mm:ss a");
+
+  const currentDateIso = moment().toISOString(true);
+
+  // moment.locale("en-sg");
+  // const date = moment().format("MMMM Do YYYY, h:mm:ss a");
   const { email, name } = JSON.parse(event.body);
-  const date = moment().format("MMMM Do YYYY, h:mm:ss a");
   let parentId;
 
   try {
@@ -45,31 +50,19 @@ exports.handler = async function (event: any, context: any) {
           ],
         },
         [userSchema.CREATED_TIME]: {
-          rich_text: [
-            {
-              text: {
-                content: date,
-              },
-            },
-          ],
+          date: {
+            start: currentDateIso,
+          },
         },
         [userSchema.LAST_EDITED_TIME]: {
-          rich_text: [
-            {
-              text: {
-                content: "",
-              },
-            },
-          ],
+          date: {
+            start: currentDateIso,
+          },
         },
         [userSchema.LAST_LOGGED_IN]: {
-          rich_text: [
-            {
-              text: {
-                content: date,
-              },
-            },
-          ],
+          date: {
+            start: currentDateIso,
+          },
         },
         [userSchema.STATUS]: {
           status: {
@@ -108,20 +101,31 @@ exports.handler = async function (event: any, context: any) {
           title: {},
         },
         [bookSchema.STATUS]: {
-          type: "status",
-          status: {},
+          type: "select",
+          select: {
+            options: [
+              {
+                name: "LIVE",
+                color: "blue",
+              },
+              {
+                name: "DELETED",
+                color: "red",
+              },
+            ],
+          },
         },
         [bookSchema.BOOK_NAME]: {
           type: "rich_text",
           rich_text: {},
         },
         [bookSchema.CREATED_TIME]: {
-          type: "rich_text",
-          rich_text: {},
+          type: "created_time",
+          created_time: {},
         },
         [bookSchema.LAST_EDITED_TIME]: {
-          type: "rich_text",
-          rich_text: {},
+          type: "date",
+          date: {},
         },
       },
     });
