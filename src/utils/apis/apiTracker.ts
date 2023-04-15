@@ -78,7 +78,7 @@ export class ApiTracker {
       this.previousApiCall = null;
       return responseData;
     } catch (error) {
-      console.error("API call failed:", error);
+      console.error("API call cancelled:", error);
     }
   }
 

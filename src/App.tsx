@@ -5,6 +5,7 @@ import Layout from "./pages/Layout";
 import WordsPage from "./pages/wordPage/WordPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./main.scss";
+import Protected from "components/Protected";
 
 function App() {
   return (
@@ -14,7 +15,11 @@ function App() {
           <Route index={true} element={<HomePage></HomePage>}></Route>
           <Route
             path="book/:bookName"
-            element={<WordsPage></WordsPage>}
+            element={
+              <Protected>
+                <WordsPage />
+              </Protected>
+            }
           ></Route>
         </Route>
       </Routes>

@@ -3,6 +3,25 @@ import word from "./slices/word.slice";
 import stateReducer from "./slices/state.slice";
 import book from "./slices/book.slice";
 import userReducer from "./slices/user.slice";
+// import {
+//   persistStore,
+//   persistReducer,
+//   FLUSH,
+//   REHYDRATE,
+//   PAUSE,
+//   PERSIST,
+//   PURGE,
+//   REGISTER,
+// } from "redux-persist";
+// import storage from "redux-persist/lib/storage";
+
+// const persistConfig = {
+//   key: "root",
+//   version: 1,
+//   storage,
+// };
+
+// const rootReducer = persistReducer(persistConfig, userReducer);
 
 const store = configureStore({
   reducer: {

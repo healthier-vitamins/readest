@@ -4,7 +4,7 @@ import { Spinner } from "react-bootstrap";
 import "./WordPage.scss";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import { getWordForBook } from "store/slices/word.slice";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { addBookSelection } from "store/slices/book.slice";
 
 function WordPage() {
@@ -12,18 +12,11 @@ function WordPage() {
   const { allBookWord, isGetWordLoading } = useAppSelector(
     (state) => state.word
   );
-  const { authentication: isUserLoggedIn } = useAppSelector(
-    (state: any) => state.user
-  );
+  const {
+    authentication: { isUserLoggedIn },
+  } = useAppSelector((state: any) => state.user);
   const dispatch = useAppDispatch();
   const params = useParams();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isUserLoggedIn) {
-      navigate("/");
-    }
-  }, [isUserLoggedIn, navigate]);
 
   useEffect(() => {
     getAllWordsForBookTrigger();
@@ -31,13 +24,15 @@ function WordPage() {
   }, [selectedTab.bookObj]);
 
   useEffect(() => {
-    const [bookName, id] = params!.bookName!.split("--");
-    const payload = {
-      id: id,
-      bookName: bookName,
-    };
-    dispatch(addBookSelection(payload));
-  }, [params, dispatch]);
+    if (isUserLoggedIn) {
+      const [bookName, id] = params!.bookName!.split("--");
+      const payload = {
+        id: id,
+        bookName: bookName,
+      };
+      dispatch(addBookSelection(payload));
+    }
+  }, [params, dispatch, isUserLoggedIn]);
 
   async function getAllWordsForBookTrigger() {
     const [bookName, id] = params!.bookName!.split("--");

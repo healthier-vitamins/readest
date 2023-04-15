@@ -1,3 +1,4 @@
+import { GLOBALVARS } from "./../../src/utils/GLOBALVARS";
 import { bookSchema } from "../../src/utils/schemas/bookSchema";
 import { Client } from "@notionhq/client";
 import { HttpStatusCode } from "axios";
@@ -8,7 +9,7 @@ const notion = new Client({
 });
 
 exports.handler = async function (event, context) {
-  const { userId } = event.queryStringParameters;
+  const { userId, bookName } = event.queryStringParameters;
 
   let booksDbId: string;
   try {
@@ -21,7 +22,7 @@ exports.handler = async function (event, context) {
     console.log(err.message);
     return {
       statusCode: HttpStatusCode.NotFound,
-      body: "Books database not found. Please contact Audrian.",
+      body: GLOBALVARS.ERROR_BOOK_DB_NOT_FOUND,
     };
   }
 
@@ -36,6 +37,12 @@ exports.handler = async function (event, context) {
               equals: "LIVE",
             },
           },
+          {
+            property: bookSchema.BOOK_NAME,
+            rich_text: {
+              equals: bookName,
+            },
+          },
         ],
       },
       // sorts: [
@@ -46,40 +53,27 @@ exports.handler = async function (event, context) {
       // ]
     });
 
-    // @ts-ignore
-    // console.log("response |||||||||||| ", response.results[0].properties);
-    let simplifiedResponse;
-    if (response.results.length > 0) {
-      simplifiedResponse = response.results.map((obj) => {
-        // const tempArr = [];
-        const tempObj = {
-          id: obj.id,
-          // @ts-ignore
-          bookName: obj.properties.BOOK_NAME.rich_text[0].plain_text,
-        };
-        // tempArr.push(tempObj)
-        return tempObj;
-      });
+    if (
+      // @ts-ignore
+      response.results[0].properties[bookSchema.BOOK_NAME].rich_text[0]
+        .plain_text
+    ) {
+      return {
+        statusCode: HttpStatusCode.Conflict,
+        body: GLOBALVARS.ERROR_BOOK_NAME_ALRDY_EXISTS,
+      };
     } else {
-      simplifiedResponse = [];
+      return {
+        statusCode: HttpStatusCode.Ok,
+        body: "",
+      };
     }
-    // console.log(simplifiedResponse);
-    return {
-      statusCode: HttpStatusCode.Ok,
-      body: JSON.stringify(simplifiedResponse),
-    };
-
-    // return {
-    //   statusCode: HttpStatusCode.Ok,
-    //   body: JSON.stringify(response),
-    // };
   } catch (err) {
     console.log(err);
     console.log(err.message);
     return {
       statusCode: HttpStatusCode.InternalServerError,
-      body: "Books database found but books not found. Please contact Audrian.",
+      body: GLOBALVARS.ERROR_ACCESSING_BOOK_DB,
     };
   }
-
 };

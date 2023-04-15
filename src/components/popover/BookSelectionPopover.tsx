@@ -41,7 +41,6 @@ function BookSelectionPopover() {
         <div
           className="tab"
           onClick={() => {
-            // TODO HERE URL
             dispatch(addBookSelection(book));
             console.log("book |||||| ", book);
             navigate(`/book/${book.bookName}--${book.id}`);

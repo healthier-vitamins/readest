@@ -3,7 +3,7 @@ import WordDefinition from "../../components/wordDefinition/WordDefinition";
 import "./HomePage.scss";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
-import { changeActiveTab } from "store/slices/book.slice";
+import { changeActiveTab, resetBookSelection } from "store/slices/book.slice";
 
 function HomePage() {
   // const { selectedTab } = useAppSelector((state) => state.book);
@@ -24,6 +24,7 @@ function HomePage() {
   useEffect(() => {
     if (window.location.pathname === "/") {
       dispatch(changeActiveTab(0));
+      // dispatch(resetBookSelection());
     }
   }, [dispatch]);
 
