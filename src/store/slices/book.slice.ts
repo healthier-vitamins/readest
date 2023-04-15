@@ -5,10 +5,15 @@ import { axiosTo } from "../../utils/promise";
 import { addToastNotificationArr, toggleCreateBookModal } from "./state.slice";
 const cookies = new Cookies();
 
-type BookSelection = {
-  bookObj: any;
+interface BookRes {
+  bookName: string;
+  id: string;
+}
+
+interface BookSelection {
+  bookObj: BookRes;
   active: boolean;
-};
+}
 
 const BookSelectionDefault: BookSelection[] = [
   {
@@ -18,7 +23,7 @@ const BookSelectionDefault: BookSelection[] = [
 ];
 
 interface InitialState {
-  bookRes: any;
+  bookRes: BookRes[];
   bookResArrCheckbox: any[];
   postBookIsLoading: boolean;
   getAllBookIsLoading: boolean;
@@ -29,13 +34,13 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
-  bookRes: {},
+  bookRes: [],
   bookResArrCheckbox: [],
   postBookIsLoading: true,
   getAllBookIsLoading: true,
   // will only contain 1 book at any time
   selectedTab: {
-    bookObj: "Definition",
+    bookObj: { bookName: "Definition", id: "0" },
     active: true,
   },
   // lastSavedBook: [],
@@ -76,6 +81,10 @@ export const getAllBook = createAsyncThunk(
       axios.get(`/api/getAllBook`, { params: { userId: userId } })
     );
     if (err) {
+      if (err.status === 500) {
+        thunkApi.dispatch(addToastNotificationArr("Please refresh the page"));
+        return;
+      }
       thunkApi.dispatch(addToastNotificationArr(err.data));
     }
     return res;

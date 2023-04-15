@@ -49,8 +49,8 @@ function SideNavBar() {
       </div>
 
       <div className="book-tab-box">
-        {Array.isArray(bookRes.results) && bookRes.results.length > 0
-          ? bookRes.results.map((book: any, index: number) => {
+        {Array.isArray(bookRes) && bookRes.length > 0
+          ? bookRes.map((book: any, index: number) => {
               return RenderBookTab(book, index);
             })
           : null}
