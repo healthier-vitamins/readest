@@ -3,24 +3,22 @@
 .timer-progress-shade {
   //   content: "\2593";
   //   content: "\2591";
-  color: rgb(212, 193, 128);
+  color: rgb(218, 203, 155);
   width: fit-content;
 }
-
 
 .timer-container {
   display: flex;
   flex-flow: column;
-  justify-content: center;
-  border: 0.375px solid lightgray;
-  height: 5rem;
-  max-height: 5rem;
-  width: 14rem;
-  padding: 1rem;
-  border-radius: 0.375rem;
 }
 
 .timer-progress-bar {
   width: 100%;
   display: flex;
+}
+
+.timer-header {
+  font-size: 14px;
+  color: rgb(199, 172, 125);
+  font-weight: 500;
 }

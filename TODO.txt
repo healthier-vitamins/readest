@@ -1,9 +1,11 @@
 1. check if book exists before saved 
     1a. change url to bookName only
 2. add book regex check
-3. add year YearTimer
+3. add stoics api
 4. delete books
 5. 
+
+ - add year YearTimer
 
 {
     "object": "list",

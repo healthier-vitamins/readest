@@ -1,9 +1,12 @@
 import YearTimer from "components/yearTimer/YearTimer";
-import WordDefinition from "../../components/wordDefinition/WordDefinition";
 import "./HomePage.scss";
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "store/hooks";
-import { changeActiveTab, resetBookSelection } from "store/slices/book.slice";
+import { useAppDispatch } from "store/hooks";
+import { changeActiveTab } from "store/slices/book.slice";
+import { isTokenExpired } from "utils/cryptography";
+import Cookies from "universal-cookie";
+import { setIsLoggedIn, setIsLoggedOut } from "store/slices/user.slice";
+const cookies = new Cookies();
 
 function HomePage() {
   // const { selectedTab } = useAppSelector((state) => state.book);
@@ -28,11 +31,27 @@ function HomePage() {
     }
   }, [dispatch]);
 
+  useEffect(() => {
+    // if (!isUserLoggedIn) {
+    //   console.log("HERE ????????? ", isUserLoggedIn);
+
+    //   // navigate("/");
+    //   // dispatch(addToastNotificationArr("Please login"));
+    // }
+    const token = cookies.get("token");
+    if (isTokenExpired(token)) {
+      dispatch(setIsLoggedOut());
+    } else {
+      dispatch(setIsLoggedIn());
+    }
+  }, [dispatch]);
+
   return (
     <div className="main-container">
       <div className="definition-container">
-        <YearTimer></YearTimer>
-        <WordDefinition></WordDefinition>
+        <div className="homepage-timer">
+          <YearTimer></YearTimer>
+        </div>
       </div>
     </div>
   );

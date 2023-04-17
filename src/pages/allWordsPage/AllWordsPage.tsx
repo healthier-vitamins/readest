@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { wordSchema } from "../../utils/schemas/wordSchema";
 import { Spinner } from "react-bootstrap";
-import "./WordPage.scss";
+import "./AllWordsPage.scss";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import { getWordForBook } from "store/slices/word.slice";
 import { useParams } from "react-router-dom";

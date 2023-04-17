@@ -1,14 +1,14 @@
 import moment from "moment-timezone";
-import React, { JSXElementConstructor, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./YearTimer.scss";
 
 function YearTimer() {
-  const [yearRemainingPercentage, setYearRemainingPercentage] = useState<
+  const [yearRemainingProgress, setYearRemainingProgress] = useState<
     number | null
   >(null);
-  // const [yearProgressPercentage, setYearProgressPercentage] = useState<
-  //   string | null
-  // >(null);
+  const [yearProgressPercentage, setYearProgressPercentage] = useState<
+    number | null
+  >(null);
 
   useEffect(() => {
     moment.tz.setDefault("Asia/Singapore");
@@ -18,40 +18,34 @@ function YearTimer() {
 
     const daysRemaining = endOfYear.diff(today, "days");
     const totalDays = endOfYear.diff(startOfYear, "days");
-    // console.log(daysRemaining);
-    // console.log(totalDays);
     const remainingPercentage = (daysRemaining / totalDays) * 100;
-    // const progressPercentage = startOfYear.diff(today)
-    console.log(Math.round(remainingPercentage / 10));
 
-    setYearRemainingPercentage(Math.round(remainingPercentage / 10));
+    // console.log(Math.round((remainingPercentage / 100) * 15));
+    // console.log(Math.round(((100 - remainingPercentage) / 100) * 15));
+    // console.log(Math.round(100 - remainingPercentage));
+    setYearProgressPercentage(Math.round(100 - remainingPercentage));
+    setYearRemainingProgress(Math.round((remainingPercentage / 100) * 15));
   }, []);
 
   function renderRemaining(): React.ReactElement[] | React.ReactElement {
-    if (yearRemainingPercentage) {
-      // for (let i = 0; i < yearRemainingPercentage; i++) {
-      //   console.log(yearRemainingPercentage);
-      //   <span className="timer-progress-shade">&#x2591;</span>;
-      // }
-      const array = Array(yearRemainingPercentage).fill(1);
-      console.log(array);
-      return array.map((ele) => (
-        <span className="timer-progress-shade">&#x2591;</span>
+    if (yearRemainingProgress) {
+      const array = Array(yearRemainingProgress).fill(1);
+      return array.map((ele, index) => (
+        <span className="timer-progress-shade" key={index}>
+          &#x2591;
+        </span>
       ));
     }
     return <></>;
   }
   function renderProgress(): React.ReactElement[] | React.ReactElement {
-    if (yearRemainingPercentage) {
-      // for (let i = 0; i < yearRemainingPercentage; i++) {
-      //   console.log(yearRemainingPercentage);
-      //   <span className="timer-progress-shade">&#x2591;</span>;
-      // }
-      const progress = 10 - yearRemainingPercentage;
+    if (yearRemainingProgress) {
+      const progress = 15 - yearRemainingProgress;
       const array = Array(progress).fill(1);
-      console.log(array);
-      return array.map((ele) => (
-        <span className="timer-progress-shade">&#x2593;</span>
+      return array.map((ele, index) => (
+        <span className="timer-progress-shade" key={index}>
+          &#x2593;
+        </span>
       ));
     }
     return <></>;
@@ -59,8 +53,11 @@ function YearTimer() {
 
   return (
     <React.Fragment>
-      {yearRemainingPercentage && (
+      {yearRemainingProgress && (
         <div className="timer-container">
+          <div className="timer-header">
+            Year progress:&nbsp;{yearProgressPercentage}%
+          </div>
           <div className="timer-progress-bar">
             {renderProgress()}
             {renderRemaining()}

@@ -2,10 +2,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import HomePage from "./pages/homePage/HomePage";
 import Layout from "./pages/Layout";
-import WordsPage from "./pages/wordPage/WordPage";
+import WordsPage from "./pages/allWordsPage/AllWordsPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./main.scss";
 import Protected from "components/Protected";
+import WordDefinitionPage from "pages/wordDefinitionPage/WordDefinitionPage";
 
 function App() {
   return (
@@ -20,7 +21,15 @@ function App() {
                 <WordsPage />
               </Protected>
             }
-          ></Route>
+          />
+          <Route
+            path="word/:word"
+            element={
+              <Protected>
+                <WordDefinitionPage />
+              </Protected>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>

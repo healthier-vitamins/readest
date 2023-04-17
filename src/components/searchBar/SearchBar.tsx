@@ -90,10 +90,10 @@ function SearchBar() {
                       onClick={() => {
                         dispatch(addChosenWordDefinition(responseObject));
                         dispatch(changeActiveTab(0));
-                        navigate("/");
                         setQueriedWord(responseObject.meta.id.toLowerCase());
                         queriedWordRef.current.value =
                           responseObject.meta.id.toLowerCase();
+                        navigate(`/word/${queriedWordRef.current.value}`);
                         setTouched(false);
                       }}
                     >
@@ -153,10 +153,10 @@ function SearchBar() {
               onClick={() => {
                 dispatch(addChosenWordDefinition(suggestedWord[0]));
                 dispatch(changeActiveTab(0));
-                navigate("/");
                 setQueriedWord(suggestedWord[0].meta.id.toLowerCase());
                 queriedWordRef.current.value =
                   suggestedWord[0].meta.id.toLowerCase();
+                navigate(`/word/${queriedWordRef.current.value}`);
                 setTouched(false);
               }}
             >

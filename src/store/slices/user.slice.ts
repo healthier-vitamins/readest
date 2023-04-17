@@ -93,6 +93,12 @@ const userSlice = createSlice({
         path: "/",
       });
     },
+    setIsLoggedIn: (state: InitialState) => {
+      state.authentication.isUserLoggedIn = true;
+    },
+    setIsLoggedOut: (state: InitialState) => {
+      state.authentication.isUserLoggedIn = false;
+    },
   },
   // extraReducers: (builder) => {
   //   builder
@@ -117,5 +123,11 @@ const userSlice = createSlice({
   // });
   // },
 });
-export const { userLoggedIn, userLoggedOut, addUserPageId } = userSlice.actions;
+export const {
+  userLoggedIn,
+  userLoggedOut,
+  addUserPageId,
+  setIsLoggedIn,
+  setIsLoggedOut,
+} = userSlice.actions;
 export default userSlice;

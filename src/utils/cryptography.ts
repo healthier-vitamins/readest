@@ -1,3 +1,4 @@
+import { current } from "@reduxjs/toolkit";
 import jwt_decode from "jwt-decode";
 
 interface _decodedToken {
@@ -13,13 +14,13 @@ function getEmailFromToken(token: any) {
   return decodedToken.email;
 }
 
-function isTokenExpired(token: any) {
+function isTokenExpired(token: string) {
   const currentTime = Date.now() / 1000;
   const decodedToken: _decodedToken = jwt_decode(token);
-  if (decodedToken.exp < currentTime) {
-    return true;
+  if (decodedToken.exp > currentTime) {
+    return false;
   }
-  return false;
+  return true;
 }
 
 export { getEmailFromToken, isTokenExpired };
