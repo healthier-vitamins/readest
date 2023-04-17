@@ -1,4 +1,3 @@
-import { current } from "@reduxjs/toolkit";
 import jwt_decode from "jwt-decode";
 
 interface _decodedToken {

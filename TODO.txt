@@ -3,7 +3,7 @@
 2. add book regex check
 3. add stoics api
 4. delete books
-5. 
+5. navbar height for mobile issue
 
  - add year YearTimer
 
