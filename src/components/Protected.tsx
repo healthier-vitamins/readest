@@ -1,40 +1,19 @@
-import { Navigate, useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "store/hooks";
-import { useEffect } from "react";
+import { useAppDispatch } from "store/hooks";
 import Cookies from "universal-cookie";
-import { isTokenExpired } from "utils/cryptography";
-import { setIsLoggedIn, setIsLoggedOut } from "store/slices/user.slice";
+import { setRedirector } from "store/slices/state.slice";
 const cookies = new Cookies();
 
 function Protected({ children }: any) {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const {
-    authentication: { isUserLoggedIn },
-  } = useAppSelector((state: any) => state.user);
-  // const [isTokenValid, setIsTokenValid] = useState<boolean>(false);
+  const isUserLoggedIn = cookies.get("token");
+  console.log("HERE ????????? ", isUserLoggedIn);
 
-  useEffect(() => {
-    // if (!isUserLoggedIn) {
-    //   console.log("HERE ????????? ", isUserLoggedIn);
-
-    //   // navigate("/");
-    //   // dispatch(addToastNotificationArr("Please login"));
-    // }
-    // const token = cookies.get("token");
-    // if (isTokenExpired(token)) {
-    //   dispatch(setIsLoggedOut());
-    // } else {
-    //   dispatch(setIsLoggedIn());
-    // }
-
-    console.log("HERE ????????? ", isUserLoggedIn);
-  }, [dispatch, isUserLoggedIn]);
-
-  // return <Outlet />;
-  // return children;
-  return isUserLoggedIn ? children : <Navigate to={"/"}></Navigate>;
+  if (!isUserLoggedIn) {
+    dispatch(setRedirector(true));
+  } else {
+    return children;
+  }
 }
 
 export default Protected;

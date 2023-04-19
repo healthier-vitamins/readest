@@ -4,7 +4,6 @@ import {
 } from "../../store/slices/state.slice";
 import { addBookSelection, getAllBook } from "../../store/slices/book.slice";
 import React, { useEffect } from "react";
-import { bookSchema } from "../../utils/schemas/bookSchema";
 import protectedFunction from "../../utils/protectedFunc";
 import { FiPlusSquare } from "react-icons/fi";
 import { BiBookHeart } from "react-icons/bi";
@@ -43,7 +42,7 @@ function BookSelectionPopover() {
           onClick={() => {
             dispatch(addBookSelection(book));
             console.log("book |||||| ", book);
-            navigate(`/book/${book.bookName}--${book.id}`);
+            navigate(`/b/${book.bookName}--${book.id}`);
           }}
         >
           {/* {book.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text} */}

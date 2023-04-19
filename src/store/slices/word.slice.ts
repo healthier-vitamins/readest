@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+/* eslint-disable eqeqeq */
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { addToastNotificationArr } from "./state.slice";
 import { axiosTo } from "utils/promise";
@@ -26,6 +27,7 @@ interface InitialState {
   isSavingWordLoading: boolean;
 
   isGetWordLoading: boolean;
+  urlRedirectWord: string | null;
 }
 
 // action initialstate
@@ -42,6 +44,7 @@ const initialState: InitialState = {
   isLoading: true,
   isSavingWordLoading: true,
   isGetWordLoading: true,
+  urlRedirectWord: null,
 };
 
 // exported api call
@@ -113,12 +116,15 @@ const word = createSlice({
   name: "word",
   initialState,
   reducers: {
-    resetSuggestedWord: (state) => {
+    resetSuggestedWord: (state: InitialState) => {
       while (state.suggestedWord.length > 1) {
         state.suggestedWord.pop();
       }
     },
-    addChosenWordDefinition: (state, action) => {
+    addChosenWordDefinition: (
+      state: InitialState,
+      action: PayloadAction<any>
+    ) => {
       state.isWordChosen = true;
       console.log("chosen word raw def ", action.payload);
       // console.log(action.payload.def[0].sseq[0][0][1].dt);
@@ -135,41 +141,59 @@ const word = createSlice({
         );
       }
     },
+    addUrlRedirectWord: (
+      state: InitialState,
+      action: PayloadAction<string>
+    ) => {
+      if (action.payload.length > 0) {
+        if (state.chosenWordDefinition.title != action.payload) {
+          state.urlRedirectWord = action.payload;
+        }
+      }
+    },
+    resetUrlRedirectWord: (state: InitialState) => {
+      state.urlRedirectWord = null;
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getWordDefinition.fulfilled, (state, action) => {
+      .addCase(getWordDefinition.fulfilled, (state: InitialState, action) => {
         state.isLoading = false;
         state.suggestedWord = action.payload;
       })
-      .addCase(getWordDefinition.pending, (state) => {
+      .addCase(getWordDefinition.pending, (state: InitialState) => {
         state.isLoading = true;
       })
-      .addCase(getWordDefinition.rejected, (state) => {
+      .addCase(getWordDefinition.rejected, (state: InitialState) => {
         state.isLoading = true;
       })
-      .addCase(postWordToBook.fulfilled, (state, action) => {
+      .addCase(postWordToBook.fulfilled, (state: InitialState, action) => {
         state.isSavingWordLoading = false;
       })
-      .addCase(postWordToBook.pending, (state) => {
+      .addCase(postWordToBook.pending, (state: InitialState) => {
         state.isSavingWordLoading = true;
       })
-      .addCase(postWordToBook.rejected, (state) => {
+      .addCase(postWordToBook.rejected, (state: InitialState) => {
         state.isSavingWordLoading = true;
       })
-      .addCase(getWordForBook.fulfilled, (state, action) => {
+      .addCase(getWordForBook.fulfilled, (state: InitialState, action) => {
         console.log("fulfiled ??????????? ", action.payload);
         state.allBookWord = action.payload;
         state.isGetWordLoading = false;
       })
-      .addCase(getWordForBook.pending, (state) => {
+      .addCase(getWordForBook.pending, (state: InitialState) => {
         state.isGetWordLoading = true;
       })
-      .addCase(getWordForBook.rejected, (state) => {
+      .addCase(getWordForBook.rejected, (state: InitialState) => {
         state.isGetWordLoading = true;
       });
   },
 });
 
-export const { resetSuggestedWord, addChosenWordDefinition } = word.actions;
+export const {
+  resetSuggestedWord,
+  addChosenWordDefinition,
+  addUrlRedirectWord,
+  resetUrlRedirectWord,
+} = word.actions;
 export default word;

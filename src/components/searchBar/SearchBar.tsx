@@ -1,11 +1,12 @@
 import OnClickOutsideComponent from "components/OnClickOutsideComponent";
-import React, { createRef, useState } from "react";
+import React, { createRef, useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import { changeActiveTab } from "../../store/slices/book.slice";
 import {
   resetSuggestedWord,
   getWordDefinition,
   addChosenWordDefinition,
+  resetUrlRedirectWord,
 } from "../../store/slices/word.slice";
 import "./SearchBar.scss";
 import { useNavigate } from "react-router-dom";
@@ -16,10 +17,22 @@ function SearchBar() {
   const [queriedWord, setQueriedWord] = useState("");
   const queriedWordRef = createRef<any>();
   const [touched, setTouched] = useState(false);
-  const { suggestedWord, isLoading } = useAppSelector((store) => {
-    return store.word;
-  });
+  const { suggestedWord, isLoading, urlRedirectWord } = useAppSelector(
+    (store) => store.word
+  );
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (urlRedirectWord) {
+      dispatch(resetSuggestedWord());
+      setQueriedWord(urlRedirectWord);
+      queriedWordRef.current.value = urlRedirectWord;
+      setTouched(true);
+      dispatch(getWordDefinition(urlRedirectWord));
+      dispatch(resetUrlRedirectWord());
+      console.log("hit");
+    }
+  }, [dispatch, queriedWordRef, urlRedirectWord]);
 
   function onClickOutsideFunc() {
     setTouched(false);
@@ -64,9 +77,9 @@ function SearchBar() {
     //? loading
     if (isLoading && touched && queriedWord.length > 0) {
       return (
-        <>
+        <React.Fragment>
           <p className="dropdown-list">Loading...</p>
-        </>
+        </React.Fragment>
       );
 
       //? multiple words + senses
@@ -88,13 +101,14 @@ function SearchBar() {
                     <p
                       className="dropdown-list"
                       onClick={() => {
+                        console.log("click");
                         dispatch(addChosenWordDefinition(responseObject));
                         dispatch(changeActiveTab(0));
                         setQueriedWord(responseObject.meta.id.toLowerCase());
                         queriedWordRef.current.value =
                           responseObject.meta.id.toLowerCase();
-                        navigate(`/word/${queriedWordRef.current.value}`);
                         setTouched(false);
+                        navigate(`/w/${queriedWordRef.current.value}`);
                       }}
                     >
                       {responseObject.meta.id.toLowerCase()}&nbsp;
@@ -118,7 +132,7 @@ function SearchBar() {
       touched
     ) {
       return (
-        <>
+        <React.Fragment>
           {suggestedWord
             ? suggestedWord.map((word, index) => {
                 return (
@@ -135,7 +149,7 @@ function SearchBar() {
                 );
               })
             : null}
-        </>
+        </React.Fragment>
       );
 
       //? single word + senses
@@ -146,17 +160,18 @@ function SearchBar() {
       touched
     ) {
       return (
-        <>
+        <React.Fragment>
           {suggestedWord ? (
             <p
               className="dropdown-list"
               onClick={() => {
+                console.log("clicked");
                 dispatch(addChosenWordDefinition(suggestedWord[0]));
                 dispatch(changeActiveTab(0));
                 setQueriedWord(suggestedWord[0].meta.id.toLowerCase());
                 queriedWordRef.current.value =
                   suggestedWord[0].meta.id.toLowerCase();
-                navigate(`/word/${queriedWordRef.current.value}`);
+                navigate(`/w/${queriedWordRef.current.value}`);
                 setTouched(false);
               }}
             >
@@ -166,7 +181,7 @@ function SearchBar() {
               ></RenderAbbreviations>
             </p>
           ) : null}
-        </>
+        </React.Fragment>
       );
 
       //? single word only

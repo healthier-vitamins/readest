@@ -1,6 +1,11 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 const { createSlice } = require("@reduxjs/toolkit");
 
+type PopoverStatePayloadAction =
+  | "loginState"
+  | "signUpState"
+  | "emailConfirmState";
+
 type ShowPopoverState = {
   signUpState: boolean;
   loginState: boolean;
@@ -16,7 +21,7 @@ interface InitialState {
     state: ShowPopoverState;
   };
   toastNotificationArr: any[];
-  abortController: any;
+  redirector: boolean;
 }
 
 const initialState: InitialState = {
@@ -32,7 +37,7 @@ const initialState: InitialState = {
     },
   },
   toastNotificationArr: [],
-  abortController: null,
+  redirector: false,
 };
 
 // redux slice
@@ -40,29 +45,38 @@ const stateSlice = createSlice({
   name: "state",
   initialState,
   reducers: {
-    toggleCreateBookModal: (state: any) => {
+    toggleCreateBookModal: (state: InitialState) => {
       state.createBookModalState = !state.createBookModalState;
     },
-    toggleSaveWordModal: (state: any) => {
+    toggleSaveWordModal: (state: InitialState) => {
       state.saveWordModalState = !state.saveWordModalState;
     },
-    toggleBookSelectionPopoverState: (state: any) => {
+    toggleBookSelectionPopoverState: (state: InitialState) => {
       state.bookSelectionPopoverState = !state.bookSelectionPopoverState;
     },
-    setBookSelectionPopoverState: (state: any, action: PayloadAction<any>) => {
+    setBookSelectionPopoverState: (
+      state: InitialState,
+      action: PayloadAction<any>
+    ) => {
       if (action.payload) {
         state.bookSelectionPopoverState = true;
       } else {
         state.bookSelectionPopoverState = false;
       }
     },
-    addToastNotificationArr: (state: any, action: PayloadAction<any>) => {
+    addToastNotificationArr: (
+      state: InitialState,
+      action: PayloadAction<any>
+    ) => {
       state.toastNotificationArr.push(action.payload);
     },
-    removeToastNotificationArr: (state: any) => {
+    removeToastNotificationArr: (state: InitialState) => {
       state.toastNotificationArr.shift();
     },
-    setShowPopoverPage: (state: any, action: PayloadAction<any>) => {
+    setShowPopoverPage: (
+      state: any,
+      action: PayloadAction<PopoverStatePayloadAction>
+    ) => {
       const keys = Object.keys(state.showPopoverState.state);
       const hold: any = {};
       for (let key of keys) {
@@ -74,21 +88,25 @@ const stateSlice = createSlice({
       }
       state.showPopoverState.state = hold;
     },
-    toggleShowPopoverState: (state: any) => {
+    toggleShowPopoverState: (state: InitialState) => {
       state.showPopoverState.show = !state.showPopoverState.show;
     },
-    setShowPopoverState: (state: any, action: PayloadAction<any>) => {
+    setShowPopoverState: (
+      state: InitialState,
+      action: PayloadAction<boolean>
+    ) => {
       if (action.payload) {
         state.showPopoverState.show = true;
       } else {
         state.showPopoverState.show = false;
       }
     },
-    setAbortController: (state: any, action: PayloadAction<any>) => {
-      state.abortController = action.payload;
-    },
-    removeAbortController: (state: any) => {
-      state.abortController = null;
+    setRedirector: (state: InitialState, action: PayloadAction<boolean>) => {
+      if (action.payload) {
+        state.redirector = true;
+      } else {
+        state.redirector = false;
+      }
     },
   },
 });
@@ -103,5 +121,6 @@ export const {
   toggleShowPopoverState,
   setShowPopoverState,
   setBookSelectionPopoverState,
+  setRedirector,
 } = stateSlice.actions;
 export default stateSlice.reducer;

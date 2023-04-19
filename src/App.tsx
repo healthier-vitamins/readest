@@ -15,21 +15,14 @@ function App() {
         <Route path="/" element={<Layout></Layout>}>
           <Route index={true} element={<HomePage></HomePage>}></Route>
           <Route
-            path="book/:bookName"
+            path="b/:bookName"
             element={
               <Protected>
                 <WordsPage />
               </Protected>
             }
           />
-          <Route
-            path="word/:word"
-            element={
-              <Protected>
-                <WordDefinitionPage />
-              </Protected>
-            }
-          />
+          <Route path="w/:word" element={<WordDefinitionPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

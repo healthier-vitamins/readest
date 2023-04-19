@@ -5,7 +5,7 @@ import { useAppDispatch } from "store/hooks";
 import { changeActiveTab } from "store/slices/book.slice";
 import { isTokenExpired } from "utils/cryptography";
 import Cookies from "universal-cookie";
-import { setIsLoggedIn, setIsLoggedOut } from "store/slices/user.slice";
+import { setIsLoggedIn, userLoggedOut } from "store/slices/user.slice";
 const cookies = new Cookies();
 
 function HomePage() {
@@ -39,10 +39,13 @@ function HomePage() {
     //   // dispatch(addToastNotificationArr("Please login"));
     // }
     const token = cookies.get("token");
-    if (isTokenExpired(token)) {
-      dispatch(setIsLoggedOut());
-    } else {
-      dispatch(setIsLoggedIn());
+    if (token) {
+      if (isTokenExpired(token)) {
+        // dispatch(setIsLoggedOut());
+        dispatch(userLoggedOut());
+      } else {
+        dispatch(setIsLoggedIn());
+      }
     }
   }, [dispatch]);
 

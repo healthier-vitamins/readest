@@ -44,8 +44,10 @@ async function userSignUp(onSuccess: any, onError: any, payload: any) {
 }
 
 async function login(onSuccess: any, onError: any, payload: any) {
+  const url = window.location.origin;
+
   const [goTrueErr, goTrueRes] = await axiosTo(
-    axios.post("api/login", payload)
+    axios.post(`${url}/api/login`, payload)
   );
   if (goTrueErr) {
     onError(goTrueErr);
@@ -53,7 +55,7 @@ async function login(onSuccess: any, onError: any, payload: any) {
   }
 
   const [updateLoggedInErr, updateLoggedInRes] = await axiosTo(
-    axios.post("api/updateLoggedInDate", payload)
+    axios.post(`${url}/api/updateLoggedInDate`, payload)
   );
 
   if (updateLoggedInErr) {

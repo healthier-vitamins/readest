@@ -45,14 +45,18 @@ function Layout() {
     <>
       {/* height: 1287 */}
       {/* width: 1278 */}
-      <div className="mainest">
+
+      <NavBar></NavBar>
+      <Outlet></Outlet>
+      
+      {/* <div className="mainest">
         <div className="all-navbar">
           <NavBar></NavBar>
         </div>
         <div className="outlet">
           <Outlet></Outlet>
-        </div>
-      </div>
+        </div> */}
+
       <CreateBookModal></CreateBookModal>
       <SaveWordModal></SaveWordModal>
       <GeneralToast></GeneralToast>
