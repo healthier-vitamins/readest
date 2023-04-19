@@ -4,6 +4,8 @@
 3. add stoics api
 4. delete books
 5. navbar height for mobile issue
+6. add shortcut "enter" for enter
+7. adjust word page
 
  - add year YearTimer
 
