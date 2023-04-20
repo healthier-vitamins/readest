@@ -63,6 +63,21 @@
   margin-right: 1rem;
 }
 
+.bookselection-popover-horizontal-line {
+  width: 80%;
+  border-top: 0.375px lightgray solid;
+  margin-top: 0.2rem;
+  // padding-top: 0.1rem;
+}
+
+.book-selection-popover-empty-books {
+  font-weight: 600;
+  color: $web-font-color;
+  margin-left: 2rem;
+  margin-right: auto;
+  font-size: 14px;
+}
+
 .add-book-icon {
   font-size: 18px;
   color: rgb(94, 92, 89);
@@ -100,7 +115,7 @@
   font-size: 15px;
   margin-top: 0.3rem;
   margin-bottom: 0.3rem;
-  color: rgb(141, 119, 78);
+  color: $spinner-default-color;
 }
 
 .login-for-books-words {

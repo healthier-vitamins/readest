@@ -49,6 +49,7 @@ function CreateBookModal() {
         setIsInvalid(false);
         setisClicked(false);
       }}
+      size="sm"
     >
       <Modal.Body className="modal-container">
         <InputGroup className="input-group" hasValidation>
@@ -57,7 +58,7 @@ function CreateBookModal() {
             placeholder="Enter book name"
             ref={bookTitleRef}
             required
-            className="form-control"
+            className="create-book-modal-form-control"
             id="form_control"
             // id="form-control"
             isInvalid={isInvalid}
@@ -68,10 +69,10 @@ function CreateBookModal() {
           </Form.Control.Feedback>
         </InputGroup>
 
-        <div className="btn-container">
+        <div className="create-book-modal-btn-container">
           <button
-            className="cfm-btn"
-            onClick={(event) => {
+            className="create-book-modal-cfm-btn"
+            onClick={(e) => {
               setisClicked(true);
               handleCreateBook();
             }}
@@ -82,7 +83,7 @@ function CreateBookModal() {
             Confirm
           </button>
           <button
-            className="cancel-btn"
+            className="create-book-modal-cancel-btn"
             onClick={() => {
               dispatch(toggleCreateBookModal());
               setIsInvalid(false);

@@ -1,3 +1,5 @@
+import { ChosenWordDefinition } from "./../../src/store/slices/word.slice";
+import { BookRes } from "./../../src/store/slices/book.slice";
 import moment from "moment-timezone";
 import { wordSchema } from "../../src/utils/schemas/wordSchema";
 import { Client } from "@notionhq/client";
@@ -15,8 +17,15 @@ const notion = new Client({
  * @property {Object} senseArr
  * @property {Object} shortDef
  */
+
+interface parsedObj {
+  bookObj: BookRes;
+  wordDef: ChosenWordDefinition;
+}
+
 exports.handler = async function (event: any, context: any) {
-  const { bookObj, wordDef } = JSON.parse(event.body);
+  const { bookObj, wordDef } = JSON.parse(event.body) as parsedObj;
+
   let bookDatabaseId: string | null | undefined;
 
   moment.tz.setDefault("Asia/Singapore");
@@ -38,8 +47,6 @@ exports.handler = async function (event: any, context: any) {
   }
 
   try {
-    // eslint-disable-next-line
-    // const response = await saveWord(wordDef, bookDatabaseId);
     const response = await notion.pages.create({
       parent: {
         database_id: bookDatabaseId,
@@ -64,13 +71,6 @@ exports.handler = async function (event: any, context: any) {
             },
           ],
         },
-        // [wordSchema.WORD]: [
-        //   {
-        //     text: {
-        //       content: wordDef.title,
-        //     },
-        //   },
-        // ],
         [wordSchema.DEFINITION]: {
           rich_text: [
             {
@@ -80,13 +80,6 @@ exports.handler = async function (event: any, context: any) {
             },
           ],
         },
-        // [wordSchema.DEFINITION]: [
-        //   {
-        //     text: {
-        //       content: JSON.stringify(wordDef.shortDef),
-        //     },
-        //   },
-        // ],
         [wordSchema.ABBREVIATION]: {
           rich_text: [
             {
@@ -96,13 +89,6 @@ exports.handler = async function (event: any, context: any) {
             },
           ],
         },
-        // [wordSchema.ABBREVIATION]: [
-        //   {
-        //     text: {
-        //       content: wordDef.abbreviation,
-        //     },
-        //   },
-        // ],
         [wordSchema.SENTENCE]: {
           rich_text: [
             {
@@ -112,13 +98,6 @@ exports.handler = async function (event: any, context: any) {
             },
           ],
         },
-        // [wordSchema.SENTENCE]: [
-        //   {
-        //     text: {
-        //       content: "PLACEHOLDER SENTENCE",
-        //     },
-        //   },
-        // ],
         [wordSchema.CREATED_TIME]: {
           date: {
             start: currentDateIso,

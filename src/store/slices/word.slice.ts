@@ -11,7 +11,7 @@ function apiUrl(queriedWord: string) {
   // return `https://dictionaryapi.com/api/v3/references/ithesaurus/json/${queriedWord}?key=${process.env.REACT_APP_DICTIONARY_KEY}`;
 }
 
-type ChosenWordDefinition = {
+export type ChosenWordDefinition = {
   title: string;
   senseArr: any[];
   abbreviation: string;

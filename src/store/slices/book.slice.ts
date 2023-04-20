@@ -5,7 +5,7 @@ import { axiosTo } from "../../utils/promise";
 import { addToastNotificationArr, toggleCreateBookModal } from "./state.slice";
 const cookies = new Cookies();
 
-interface BookRes {
+export interface BookRes {
   bookName: string;
   id: string;
 }

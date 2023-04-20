@@ -19,9 +19,7 @@ function SaveWordModal() {
   const { bookRes, bookResArrCheckbox } = useAppSelector((state) => state.book);
   const dispatch = useAppDispatch();
 
-  const RenderShortDefLogic: Function = ():
-    | React.ReactElement[]
-    | React.ReactElement => {
+  function RenderShortDefLogic(): React.ReactElement[] | React.ReactElement {
     const { shortDef } = chosenWordDefinition;
     if (Array.isArray(shortDef)) {
       return shortDef.map((def, index) => {
@@ -60,7 +58,7 @@ function SaveWordModal() {
         </React.Fragment>
       );
     }
-  };
+  }
 
   function RenderBook(props: any) {
     const { book, index } = props;
@@ -138,7 +136,7 @@ function SaveWordModal() {
             <span>{chosenWordDefinition.abbreviation}</span>
           </h5>
         </div>
-        <RenderShortDefLogic></RenderShortDefLogic>
+        {RenderShortDefLogic()}
       </Modal.Body>
       <Modal.Footer>
         <div className="list-book-container">

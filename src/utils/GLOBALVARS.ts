@@ -11,4 +11,7 @@ export const GLOBALVARS = {
   ERROR_NOTION_TIMEOUT: "Please refresh the page.",
   ERROR_BOOK_DB_NOT_FOUND: "ERRx0001 Book database not found.",
   ERROR_ACCESSING_BOOK_DB: "ERRx0002 Trouble accessing book database.",
+
+  // css classes
+  DEFAULT_EMPTY_FONT_CLASS: "default-empty-font"
 };

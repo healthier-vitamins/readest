@@ -1,4 +1,3 @@
-
 @import "../../SCSSVARS.scss";
 
 .word-container {
@@ -12,16 +11,17 @@
   align-items: flex-start;
 }
 
-.justify-center {
-  justify-content: center;
-  align-items: center;
-}
-
-.loading-spinner {
+.all-words-page-loading-page {
   margin-top: 1.5rem;
   width: 100%;
   display: flex;
   justify-content: center;
+}
+
+#all-words-page-loading-spinner {
+  height: 24px;
+  width: 24px;
+  color: $spinner-default-color;
 }
 
 .word-page-definition-box {
@@ -40,11 +40,12 @@
   // border: 10px solid black;
 }
 
-.no-words {
+.default-empty-font {
   font-weight: 600;
   color: $web-font-color;
   width: 100%;
   text-align: center;
+  font-size: 16px;
 }
 
 @media screen and (min-width: 540px) and (max-width: 767px) {

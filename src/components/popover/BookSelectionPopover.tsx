@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import {
   toggleBookSelectionPopoverState,
   toggleCreateBookModal,
@@ -16,6 +17,7 @@ import {
   toggleShowPopoverState,
 } from "../../store/slices/state.slice";
 import { useNavigate } from "react-router-dom";
+import { GLOBALVARS } from "utils/GLOBALVARS";
 
 function BookSelectionPopover() {
   const dispatch = useAppDispatch();
@@ -85,6 +87,11 @@ function BookSelectionPopover() {
             <React.Fragment>
               {isUserLoggedIn && (
                 <div className="book-selection-buttons">
+                  {Array.isArray(bookRes) && bookRes.length == 0 && (
+                    <div className="book-selection-popover-empty-books">
+                      No books saved.
+                    </div>
+                  )}
                   <FiPlusSquare
                     className="add-book-icon"
                     onClick={() => {
@@ -94,7 +101,8 @@ function BookSelectionPopover() {
                   <MdOutlineDeleteSweep className="_add-book-icon" />
                 </div>
               )}
-              {Array.isArray(bookRes) && bookRes.length > 0 ? (
+              {/* books present */}
+              {Array.isArray(bookRes) && bookRes.length > 0 && (
                 <div className="book-tab-box">
                   {bookRes.map((book: any, index: number) => {
                     return (
@@ -104,9 +112,9 @@ function BookSelectionPopover() {
                     );
                   })}
                 </div>
-              ) : isUserLoggedIn ? (
-                <div className="no-words">No books saved.</div>
-              ) : (
+              )}
+              {/* user not logged in */}
+              {!isUserLoggedIn && (
                 <div
                   className="__popover-state-link"
                   onClick={() => {

@@ -17,9 +17,7 @@ function WordDefinition() {
     authentication: { isUserLoggedIn },
   } = useAppSelector((state: any) => state.user);
 
-  const RenderShortDefLogic: Function = ():
-    | React.ReactElement[]
-    | React.ReactElement => {
+  function RenderShortDefLogic(): React.ReactElement[] | React.ReactElement {
     const { shortDef } = chosenWordDefinition;
     if (Array.isArray(shortDef)) {
       return shortDef.map((def, index) => {
@@ -58,7 +56,7 @@ function WordDefinition() {
         </React.Fragment>
       );
     }
-  };
+  }
 
   function RenderWordDefinitionBox() {
     return (
@@ -71,7 +69,7 @@ function WordDefinition() {
               : "No abbreviation"}
           </span>
         </h5>
-        <RenderShortDefLogic />
+        {RenderShortDefLogic()}
         <div className="box-footer">
           <AiOutlineSave
             className="save-btn"

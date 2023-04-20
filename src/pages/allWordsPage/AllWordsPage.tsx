@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "store/hooks";
 import { getWordForBook } from "store/slices/word.slice";
 import { useParams } from "react-router-dom";
 import { addBookSelection } from "store/slices/book.slice";
+import { GLOBALVARS } from "utils/GLOBALVARS";
 
 function WordPage() {
   const { selectedTab } = useAppSelector((state) => state.book);
@@ -45,9 +46,9 @@ function WordPage() {
     dispatch(getWordForBook(payload));
   }
 
-  const RenderShortDefLogic: Function = ({
-    shortDef,
-  }: any): React.ReactElement[] | React.ReactElement => {
+  function RenderShortDefLogic(
+    shortDef: any
+  ): React.ReactElement[] | React.ReactElement {
     shortDef = JSON.parse(shortDef);
     if (Array.isArray(shortDef)) {
       return shortDef.map((def, index) => {
@@ -86,7 +87,7 @@ function WordPage() {
         </React.Fragment>
       );
     }
-  };
+  }
 
   function RenderWordDef(wordObj: any, index: number) {
     const title = wordObj.properties[wordSchema.WORD].rich_text[0].plain_text;
@@ -99,7 +100,7 @@ function WordPage() {
         <div className="word-page-definition-box">
           <h5 className="title">{title}</h5>
           <span className="abbreviation">{abbreviation}</span>
-          <RenderShortDefLogic shortDef={shortDef}></RenderShortDefLogic>
+          {RenderShortDefLogic(shortDef)}
         </div>
       </React.Fragment>
     );
@@ -109,15 +110,21 @@ function WordPage() {
     <div className="word-container">
       {!isGetWordLoading ? (
         allBookWord?.results.length < 1 ? (
-          <div className="no-words">No words saved</div>
+          <div className={GLOBALVARS.DEFAULT_EMPTY_FONT_CLASS}>
+            No words saved
+          </div>
         ) : (
+          allBookWord?.results.length > 0 &&
           allBookWord?.results.map((wordObj: any, index: number) =>
             RenderWordDef(wordObj, index)
           )
         )
       ) : (
-        <div className="loading-spinner">
-          <Spinner animation="border" variant="secondary"></Spinner>
+        <div className="all-words-page-loading-page">
+          <Spinner
+            animation="border"
+            id="all-words-page-loading-spinner"
+          ></Spinner>
         </div>
       )}
     </div>
