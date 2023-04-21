@@ -30,6 +30,7 @@ function WordDefinitionPage() {
 
   return (
     <div className="word-def-page">
+      {/* // TODO standardise margin top with HomePage */}
       <div className="word-def-page-definition-box">
         {isWordChosen ? (
           <WordDefinition></WordDefinition>

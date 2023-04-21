@@ -17,7 +17,6 @@ import {
   toggleShowPopoverState,
 } from "../../store/slices/state.slice";
 import { useNavigate } from "react-router-dom";
-import { GLOBALVARS } from "utils/GLOBALVARS";
 
 function BookSelectionPopover() {
   const dispatch = useAppDispatch();
