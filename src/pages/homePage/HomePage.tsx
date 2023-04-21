@@ -50,12 +50,12 @@ function HomePage() {
   }, [dispatch]);
 
   return (
-    <div className="main-container">
-      <div className="definition-container">
-        <div className="homepage-timer">
-          <YearTimer></YearTimer>
-        </div>
+    <div className="homepage-container">
+      {/* <div className="definition-container"> */}
+      <div className="homepage-timer">
+        <YearTimer></YearTimer>
       </div>
+      {/* </div> */}
     </div>
   );
 }

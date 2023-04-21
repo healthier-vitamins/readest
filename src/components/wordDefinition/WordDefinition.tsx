@@ -85,13 +85,13 @@ function WordDefinition() {
   }
 
   return (
-    <>
+    <div className="word-definition-container">
       {isWordChosen && (
         <div className="word-definition-box">
           <RenderWordDefinitionBox></RenderWordDefinitionBox>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

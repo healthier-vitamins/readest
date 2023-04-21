@@ -2,15 +2,17 @@ import WordDefinition from "components/wordDefinition/WordDefinition";
 import "./WordDefinitionPage.scss";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { useAppDispatch } from "store/hooks";
+import { useAppDispatch, useAppSelector } from "store/hooks";
 import {
   addUrlRedirectWord,
   resetSuggestedWord,
 } from "store/slices/word.slice";
+import YearTimer from "components/yearTimer/YearTimer";
 
 function WordDefinitionPage() {
   const params = useParams();
   const dispatch = useAppDispatch();
+  const { isWordChosen } = useAppSelector((state) => state.word);
 
   // useEffect(() => {
   //   dispatch(changeActiveTab(0));
@@ -29,7 +31,11 @@ function WordDefinitionPage() {
   return (
     <div className="word-def-page">
       <div className="word-def-page-definition-box">
-        <WordDefinition></WordDefinition>
+        {isWordChosen ? (
+          <WordDefinition></WordDefinition>
+        ) : (
+          <YearTimer></YearTimer>
+        )}
       </div>
     </div>
   );

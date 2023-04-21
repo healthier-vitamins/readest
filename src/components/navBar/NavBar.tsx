@@ -140,7 +140,7 @@ function NavBar() {
           {!isUserLoggedIn ? (
             <SignUpPopover></SignUpPopover>
           ) : (
-            <div className="right-link" onClick={() => logout(navigate)}>
+            <div className={GLOBALVARS.DEFAULT_LINK_CLASS} onClick={() => logout(navigate)}>
               Logout
             </div>
           )}

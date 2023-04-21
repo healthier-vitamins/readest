@@ -46,7 +46,7 @@ function WordPage() {
     dispatch(getWordForBook(payload));
   }
 
-  function RenderShortDefLogic(
+  function renderShortDefLogic(
     shortDef: any
   ): React.ReactElement[] | React.ReactElement {
     shortDef = JSON.parse(shortDef);
@@ -89,7 +89,7 @@ function WordPage() {
     }
   }
 
-  function RenderWordDef(wordObj: any, index: number) {
+  function renderWordDef(wordObj: any, index: number) {
     const title = wordObj.properties[wordSchema.WORD].rich_text[0].plain_text;
     const abbreviation =
       wordObj.properties[wordSchema.ABBREVIATION].rich_text[0].plain_text;
@@ -100,7 +100,7 @@ function WordPage() {
         <div className="word-page-definition-box">
           <h5 className="title">{title}</h5>
           <span className="abbreviation">{abbreviation}</span>
-          {RenderShortDefLogic(shortDef)}
+          {renderShortDefLogic(shortDef)}
         </div>
       </React.Fragment>
     );
@@ -116,7 +116,7 @@ function WordPage() {
         ) : (
           allBookWord?.results.length > 0 &&
           allBookWord?.results.map((wordObj: any, index: number) =>
-            RenderWordDef(wordObj, index)
+            renderWordDef(wordObj, index)
           )
         )
       ) : (

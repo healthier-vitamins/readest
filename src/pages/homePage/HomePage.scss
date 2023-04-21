@@ -1,9 +1,10 @@
 @import "https://unpkg.com/open-props/gradients.min.css";
 
-.main-container {
+.homepage-container {
   display: flex;
   width: 100%;
   height: calc(100% - 142.5px);
+  justify-content: center;
 }
 
 // .right-main-box {
@@ -26,13 +27,6 @@
 //   transition: transform 0.3s;
 //   transform: translateX(-100%);
 // }
-
-.definition-container {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-}
 
 .homepage-timer {
   margin-top: 2rem;

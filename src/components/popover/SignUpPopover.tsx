@@ -466,7 +466,7 @@ function SignUpPopover() {
       <div className="popover-wrapper">
         <div
           onClick={!state.emailConfirmState ? handlePopoverClick : undefined}
-          className="right-link"
+          className={GLOBALVARS.DEFAULT_LINK_CLASS}
           style={buttonClickedStyleMapper()}
         >
           Login

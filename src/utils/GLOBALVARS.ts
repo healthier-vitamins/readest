@@ -5,6 +5,7 @@ export const GLOBALVARS = {
   POPOVER_LOGIN: "loginState",
   POPOVER_SIGNUP: "signUpState",
   POPOVER_CONFIRM_EMAIL: "emailConfirmState",
+  YEAR_TIMER_NUMBER_OF_BLOCKS: 18,
 
   // error codes
   ERROR_BOOK_NAME_ALRDY_EXISTS: "Book already exists.",
@@ -13,5 +14,6 @@ export const GLOBALVARS = {
   ERROR_ACCESSING_BOOK_DB: "ERRx0002 Trouble accessing book database.",
 
   // css classes
-  DEFAULT_EMPTY_FONT_CLASS: "default-empty-font"
+  DEFAULT_EMPTY_FONT_CLASS: "default-empty-font",
+  DEFAULT_LINK_CLASS: "default-link"
 };

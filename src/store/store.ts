@@ -3,6 +3,7 @@ import word from "./slices/word.slice";
 import stateReducer from "./slices/state.slice";
 import book from "./slices/book.slice";
 import userReducer from "./slices/user.slice";
+import miscReducer from "./slices/misc.slice";
 // import {
 //   persistStore,
 //   persistReducer,
@@ -29,6 +30,7 @@ const store = configureStore({
     book: book.reducer,
     state: stateReducer,
     user: userReducer.reducer,
+    misc: miscReducer,
   },
 });
 // Infer the `RootState` and `AppDispatch` types from the store itself

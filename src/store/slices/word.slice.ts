@@ -5,6 +5,7 @@ import { addToastNotificationArr } from "./state.slice";
 import { axiosTo } from "utils/promise";
 import { ApiCall, ApiTracker } from "utils/apis/apiTracker";
 const apiTracker = new ApiTracker();
+
 // api url with query passed through as parameter
 function apiUrl(queriedWord: string) {
   return `https://dictionaryapi.com/api/v3/references/sd4/json/${queriedWord}?key=${process.env.REACT_APP_DICTIONARY_KEY}`;

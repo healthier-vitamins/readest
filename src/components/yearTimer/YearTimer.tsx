@@ -1,8 +1,15 @@
 import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import "./YearTimer.scss";
+import { useAppDispatch, useAppSelector } from "store/hooks";
+import { getStoicQuote } from "store/slices/misc.slice";
+import { RootState } from "store/store";
+import { GLOBALVARS } from "utils/GLOBALVARS";
 
 function YearTimer() {
+  const dispatch = useAppDispatch();
+  const { stoicQuote } = useAppSelector((state: RootState) => state.misc);
+
   const [yearRemainingProgress, setYearRemainingProgress] = useState<
     number | null
   >(null);
@@ -24,8 +31,18 @@ function YearTimer() {
     // console.log(Math.round(((100 - remainingPercentage) / 100) * 15));
     // console.log(Math.round(100 - remainingPercentage));
     setYearProgressPercentage(Math.round(100 - remainingPercentage));
-    setYearRemainingProgress(Math.round((remainingPercentage / 100) * 15));
+    setYearRemainingProgress(
+      Math.round(
+        (remainingPercentage / 100) * GLOBALVARS.YEAR_TIMER_NUMBER_OF_BLOCKS
+      )
+    );
   }, []);
+
+  useEffect(() => {
+    if (stoicQuote.quote == null) {
+      dispatch(getStoicQuote(null));
+    }
+  }, [dispatch, stoicQuote.quote]);
 
   function renderRemaining(): React.ReactElement[] | React.ReactElement {
     if (yearRemainingProgress) {
@@ -40,7 +57,8 @@ function YearTimer() {
   }
   function renderProgress(): React.ReactElement[] | React.ReactElement {
     if (yearRemainingProgress) {
-      const progress = 15 - yearRemainingProgress;
+      const progress =
+        GLOBALVARS.YEAR_TIMER_NUMBER_OF_BLOCKS - yearRemainingProgress;
       const array = Array(progress).fill(1);
       return array.map((ele, index) => (
         <span className="timer-progress-shade" key={index}>
@@ -49,6 +67,18 @@ function YearTimer() {
       ));
     }
     return <></>;
+  }
+
+  function renderQuote(): React.ReactElement | null {
+    if (!stoicQuote.isLoading && stoicQuote.author && stoicQuote.quote) {
+      return (
+        <div className="timer-quote-box">
+          <span>{stoicQuote.quote}</span>
+          <span>{stoicQuote.author}</span>
+        </div>
+      );
+    }
+    return null;
   }
 
   return (
@@ -62,6 +92,7 @@ function YearTimer() {
             {renderProgress()}
             {renderRemaining()}
           </div>
+          <div className="timer-quote">{renderQuote()}</div>
         </div>
       )}
     </React.Fragment>
