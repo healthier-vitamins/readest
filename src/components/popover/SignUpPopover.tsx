@@ -327,7 +327,7 @@ function SignUpPopover() {
             Already have an account? Login.
           </div>
           <div className="signup-popover-button-container">
-            <div className="login-btn" onClick={handleSignUp}>
+            <div className="create-book-modal-cfm-btn" onClick={handleSignUp}>
               {loadingState.signUp &&
                 signUpPasswordCompare.isDirty &&
                 signUpPasswordCompare.isSame &&
@@ -344,7 +344,7 @@ function SignUpPopover() {
               Sign Up
             </div>
             <div
-              className="cancel-btn"
+              className="create-book-modal-cancel-btn"
               onClick={() => {
                 dispatch(setShowPopoverState(false));
               }}
@@ -392,7 +392,6 @@ function SignUpPopover() {
           <div
             className="popover-state-link"
             onClick={() => {
-              // setPopoverStateHelper(GLOBALVARS.POPOVER_SIGNUP);
               dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_SIGNUP));
               setIsSubmitted(false);
             }}
@@ -400,7 +399,7 @@ function SignUpPopover() {
             Don't have an account? Sign up.
           </div>
           <div className="signup-popover-button-container">
-            <div className="login-btn" onClick={handleLogin}>
+            <div className="create-book-modal-cfm-btn" onClick={handleLogin}>
               {loadingState.login && isSubmitted && (
                 <Spinner
                   animation="border"
@@ -411,7 +410,7 @@ function SignUpPopover() {
               Login
             </div>
             <div
-              className="cancel-btn"
+              className="create-book-modal-cancel-btn"
               onClick={() => {
                 dispatch(setShowPopoverState(false));
               }}

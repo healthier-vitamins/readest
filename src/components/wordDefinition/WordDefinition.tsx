@@ -4,21 +4,23 @@ import React from "react";
 import { toggleSaveWordModal } from "../../store/slices/state.slice";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import protectedFunction from "utils/protectedFunc";
+import { ChosenWordDefinition } from "store/slices/word.slice";
 
-function WordDefinition() {
+function WordDefinition(props: ChosenWordDefinition) {
   const dispatch = useAppDispatch();
 
-  const { chosenWordDefinition, isWordChosen } = useAppSelector((state) => {
-    console.log("chosen word definition ", state.word.chosenWordDefinition);
-    return state.word;
-  });
+  // const { chosenWordDefinition } = useAppSelector((state) => {
+  //   console.log("chosen word definition ", state.word.chosenWordDefinition);
+  //   return state.word;
+  // });
 
   const {
     authentication: { isUserLoggedIn },
   } = useAppSelector((state: any) => state.user);
 
   function RenderShortDefLogic(): React.ReactElement[] | React.ReactElement {
-    const { shortDef } = chosenWordDefinition;
+    // const { shortDef } = chosenWordDefinition;
+    const { shortDef } = props;
     if (Array.isArray(shortDef)) {
       return shortDef.map((def, index) => {
         if (typeof def === "object") {
@@ -62,11 +64,10 @@ function WordDefinition() {
     return (
       <div>
         <h5 className="title">
-          {chosenWordDefinition.title}&nbsp;&nbsp;
+          {/* {chosenWordDefinition.title}&nbsp;&nbsp; */}
+          {props.title}&nbsp;&nbsp;
           <span className="abbreviation">
-            {chosenWordDefinition.abbreviation
-              ? chosenWordDefinition.abbreviation
-              : "No abbreviation"}
+            {props.abbreviation ? props.abbreviation : "No abbreviation"}
           </span>
         </h5>
         {RenderShortDefLogic()}
@@ -86,11 +87,9 @@ function WordDefinition() {
 
   return (
     <div className="word-definition-container">
-      {isWordChosen && (
-        <div className="word-definition-box">
-          <RenderWordDefinitionBox></RenderWordDefinitionBox>
-        </div>
-      )}
+      <div className="word-definition-box">
+        <RenderWordDefinitionBox></RenderWordDefinitionBox>
+      </div>
     </div>
   );
 }

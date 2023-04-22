@@ -4,14 +4,14 @@
   margin: 0.5rem 0 0.5rem 0;
 }
 
-input {
-  border: 0.375px solid lightgray;
-  padding: 0.2rem 0.5rem 0.2rem 0.6rem;
-  border-radius: 0.375rem;
-  width: 18rem;
-  color: $web-default-color;
-  // border: 3px solid transparent;
-}
+// input {
+//   border: 0.375px solid lightgray;
+//   padding: 0.2rem 0.5rem 0.2rem 0.6rem;
+//   border-radius: 0.375rem;
+//   width: 18rem;
+//   color: $web-default-color;
+//   // border: 3px solid transparent;
+// }
 
 input:not([type="checkbox"]):focus {
   outline: none;
@@ -31,8 +31,13 @@ input:not([type="checkbox"]):focus {
   -moz-box-shadow: 0 0 0 3px rgb(238, 230, 223);
 }
 
+#searchbar-form-control {
+  height: 32px;
+  font-size: 15px;
+  width: 18rem;
+}
+
 .dropdown-list {
-  /* background-color: rgb(245, 244, 243); */
   margin: 0px 0px;
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
@@ -41,7 +46,6 @@ input:not([type="checkbox"]):focus {
   border-top: 0.1rem solid lightgrey;
   border-left: 0.1rem solid lightgrey;
   border-right: 0.1rem solid lightgrey;
-  // color: $web-default-color;
 }
 
 .dropdown-list:hover {
@@ -78,16 +82,17 @@ span {
 }
 
 @media screen and (min-width: 280px) and (max-width: 768px) {
-  input,
-  .dropdown-box {
+  // input,
+  .dropdown-box,
+  #searchbar-form-control {
     width: 10rem;
   }
 }
 
 /* Target iOS devices */
-@media only screen and (min-device-width: 320px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
-  input:not([type="checkbox"]):focus {
-    border-radius: 0.375rem;
-    -webkit-border-radius: 0.375rem;
-  }
-}
+// @media only screen and (min-device-width: 320px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
+//   input:not([type="checkbox"]):focus {
+//     border-radius: 0.375rem;
+//     -webkit-border-radius: 0.375rem;
+//   }
+// }

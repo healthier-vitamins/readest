@@ -10,6 +10,7 @@ import {
 } from "../../store/slices/word.slice";
 import "./SearchBar.scss";
 import { useNavigate } from "react-router-dom";
+import { Form } from "react-bootstrap";
 
 function SearchBar() {
   // const ref = createRef();
@@ -30,7 +31,6 @@ function SearchBar() {
       setTouched(true);
       dispatch(getWordDefinition(urlRedirectWord));
       dispatch(resetUrlRedirectWord());
-      console.log("hit");
     }
   }, [dispatch, queriedWordRef, urlRedirectWord]);
 
@@ -101,7 +101,6 @@ function SearchBar() {
                     <p
                       className="dropdown-list"
                       onClick={() => {
-                        console.log("click");
                         dispatch(addChosenWordDefinition(responseObject));
                         dispatch(changeActiveTab(0));
                         setQueriedWord(responseObject.meta.id.toLowerCase());
@@ -165,7 +164,6 @@ function SearchBar() {
             <p
               className="dropdown-list"
               onClick={() => {
-                console.log("clicked");
                 dispatch(addChosenWordDefinition(suggestedWord[0]));
                 dispatch(changeActiveTab(0));
                 setQueriedWord(suggestedWord[0].meta.id.toLowerCase());
@@ -219,7 +217,8 @@ function SearchBar() {
       isShowing={touched}
     >
       <div className="searchbar-box">
-        <input
+        <Form.Control
+          id="searchbar-form-control"
           type="text"
           placeholder="Search word"
           onChange={(e) => {
@@ -230,7 +229,7 @@ function SearchBar() {
             setTouched(true);
           }}
           ref={queriedWordRef}
-        ></input>
+        ></Form.Control>
         <div className="dropdown-box">
           <RenderSuggestedWord></RenderSuggestedWord>
         </div>

@@ -90,7 +90,7 @@ function CreateBookModal() {
               setisClicked(false);
             }}
           >
-            <div className="cancel-font">Cancel</div>
+            Cancel
           </button>
         </div>
       </Modal.Body>

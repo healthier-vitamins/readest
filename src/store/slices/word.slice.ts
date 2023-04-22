@@ -12,9 +12,14 @@ function apiUrl(queriedWord: string) {
   // return `https://dictionaryapi.com/api/v3/references/ithesaurus/json/${queriedWord}?key=${process.env.REACT_APP_DICTIONARY_KEY}`;
 }
 
+interface Senses {
+  sense: string
+  example: string
+}
+
 export type ChosenWordDefinition = {
   title: string;
-  senseArr: any[];
+  senses: Senses[];
   abbreviation: string;
   shortDef: string;
 };
@@ -37,7 +42,7 @@ const initialState: InitialState = {
   isWordChosen: false,
   chosenWordDefinition: {
     title: "",
-    senseArr: [],
+    senses: [],
     abbreviation: "",
     shortDef: "",
   },
@@ -52,17 +57,21 @@ const initialState: InitialState = {
 export const getWordDefinition = createAsyncThunk(
   "getWordDefinition",
   async (queriedWord: string, thunkApi) => {
-    const resp = await axios.get(apiUrl(queriedWord));
+    const [err, res] = await axiosTo(axios.get(apiUrl(queriedWord)));
     // console.log("fetched data ", resp.data);
-    return resp.data;
+    if (err) {
+      addToastNotificationArr("Merriam Webster API is down.");
+      return;
+    }
+    return res;
   }
 );
 
 export const postWordToBook = createAsyncThunk(
   "postWordToBook",
   async (payload: any, thunkApi) => {
+    // eslint-disable-next-line
     const [err, res] = await axiosTo(axios.post("/api/postWord", payload));
-    console.log("RES ???????????????? ", res);
     const { bookName } = payload.bookObj;
     // payload.bookObj.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text;
     if (err) {
@@ -94,21 +103,7 @@ export const getWordForBook = createAsyncThunk(
     res = await apiTracker.callApi(apiCall, (data) => {
       return data.data;
     });
-    console.log("DATA PLEASE WORK? ||||||| ", res);
     return res.data;
-
-    // const [err, res] = await axiosTo(axios.post("/api/getAllWord", payload));
-    // if (err) {
-    //   thunkApi.dispatch(
-    //     addToastNotificationArr(
-    //       "Something went wrong getting words. Please try again."
-    //     )
-    //   );
-    //   console.error("ERRRRR |||||||||||| ", err.data);
-    //   return;
-    // }
-    // console.log("ressss ||||||||||| ", res);
-    // return res;
   }
 );
 
@@ -133,11 +128,11 @@ const word = createSlice({
       state.chosenWordDefinition.abbreviation = action.payload.fl;
 
       if (Object.keys(action.payload).includes("cxs")) {
-        state.chosenWordDefinition.senseArr.push(action.payload.cxs);
+        state.chosenWordDefinition.senses.push(action.payload.cxs);
         state.chosenWordDefinition.shortDef = action.payload.cxs;
       } else {
         state.chosenWordDefinition.shortDef = action.payload.shortdef;
-        state.chosenWordDefinition.senseArr.push(
+        state.chosenWordDefinition.senses.push(
           action.payload.def[0].sseq[0][0][1].dt
         );
       }
@@ -178,7 +173,7 @@ const word = createSlice({
         state.isSavingWordLoading = true;
       })
       .addCase(getWordForBook.fulfilled, (state: InitialState, action) => {
-        console.log("fulfiled ??????????? ", action.payload);
+        console.log("all words for book ??????????? ", action.payload);
         state.allBookWord = action.payload;
         state.isGetWordLoading = false;
       })

@@ -14,7 +14,7 @@ const notion = new Client({
  * @typedef {Object} wordDef
  * @property {string} title
  * @property {string} abbreviation
- * @property {Object} senseArr
+ * @property {Object} example
  * @property {Object} shortDef
  */
 

@@ -12,14 +12,15 @@ import YearTimer from "components/yearTimer/YearTimer";
 function WordDefinitionPage() {
   const params = useParams();
   const dispatch = useAppDispatch();
-  const { isWordChosen } = useAppSelector((state) => state.word);
+  const { isWordChosen, chosenWordDefinition } = useAppSelector(
+    (state) => state.word
+  );
 
   // useEffect(() => {
   //   dispatch(changeActiveTab(0));
   // }, [dispatch]);
 
   useEffect(() => {
-    console.log(params);
     const { word } = params;
 
     dispatch(resetSuggestedWord());
@@ -30,14 +31,20 @@ function WordDefinitionPage() {
 
   return (
     <div className="word-def-page">
-      {/* // TODO standardise margin top with HomePage */}
-      <div className="word-def-page-definition-box">
-        {isWordChosen ? (
-          <WordDefinition></WordDefinition>
-        ) : (
+      {isWordChosen ? (
+        <div className="word-def-page-definition-box">
+          <WordDefinition
+            abbreviation={chosenWordDefinition.abbreviation}
+            senses={chosenWordDefinition.senses}
+            title={chosenWordDefinition.title}
+            shortDef={chosenWordDefinition.shortDef}
+          ></WordDefinition>
+        </div>
+      ) : (
+        <div className="homepage-timer">
           <YearTimer></YearTimer>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
