@@ -28,6 +28,7 @@ function SearchBar() {
       dispatch(resetSuggestedWord());
       setQueriedWord(urlRedirectWord);
       queriedWordRef.current.value = urlRedirectWord;
+      console.log("set true here? redirect ????");
       setTouched(true);
       dispatch(getWordDefinition(urlRedirectWord));
       dispatch(resetUrlRedirectWord());
@@ -101,6 +102,7 @@ function SearchBar() {
                     <p
                       className="dropdown-list"
                       onClick={() => {
+                        console.log("here ????");
                         dispatch(addChosenWordDefinition(responseObject));
                         dispatch(changeActiveTab(0));
                         setQueriedWord(responseObject.meta.id.toLowerCase());
@@ -164,13 +166,14 @@ function SearchBar() {
             <p
               className="dropdown-list"
               onClick={() => {
+                console.log("or here ????");
                 dispatch(addChosenWordDefinition(suggestedWord[0]));
                 dispatch(changeActiveTab(0));
                 setQueriedWord(suggestedWord[0].meta.id.toLowerCase());
                 queriedWordRef.current.value =
                   suggestedWord[0].meta.id.toLowerCase();
-                navigate(`/w/${queriedWordRef.current.value}`);
                 setTouched(false);
+                navigate(`/w/${queriedWordRef.current.value}`);
               }}
             >
               {suggestedWord[0].meta.id.toLowerCase()}&nbsp;

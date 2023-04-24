@@ -89,7 +89,7 @@ exports.handler = async function (event: any, context: any) {
             },
           ],
         },
-        [wordSchema.SENTENCE]: {
+        [wordSchema.SENSES]: {
           rich_text: [
             {
               text: {
