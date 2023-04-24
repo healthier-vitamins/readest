@@ -6,7 +6,8 @@ import {
   resetSuggestedWord,
   getWordDefinition,
   addChosenWordDefinition,
-  resetUrlRedirectWord,
+  resetIsOriginatedFromUrlWord,
+  setIsFromSearchBar,
 } from "../../store/slices/word.slice";
 import "./SearchBar.scss";
 import { useNavigate } from "react-router-dom";
@@ -18,22 +19,21 @@ function SearchBar() {
   const [queriedWord, setQueriedWord] = useState("");
   const queriedWordRef = createRef<any>();
   const [touched, setTouched] = useState(false);
-  const { suggestedWord, isLoading, urlRedirectWord } = useAppSelector(
+  const { suggestedWord, isLoading, isOriginatedFromUrl } = useAppSelector(
     (store) => store.word
   );
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (urlRedirectWord) {
+    if (isOriginatedFromUrl.word && !isOriginatedFromUrl.isFromSearchBar) {
       dispatch(resetSuggestedWord());
-      setQueriedWord(urlRedirectWord);
-      queriedWordRef.current.value = urlRedirectWord;
-      console.log("set true here? redirect ????");
+      setQueriedWord(isOriginatedFromUrl.word);
+      queriedWordRef.current.value = isOriginatedFromUrl.word;
       setTouched(true);
-      dispatch(getWordDefinition(urlRedirectWord));
-      dispatch(resetUrlRedirectWord());
+      dispatch(getWordDefinition(isOriginatedFromUrl.word));
+      dispatch(resetIsOriginatedFromUrlWord());
     }
-  }, [dispatch, queriedWordRef, urlRedirectWord]);
+  }, [dispatch, queriedWordRef, isOriginatedFromUrl]);
 
   function onClickOutsideFunc() {
     setTouched(false);
@@ -102,7 +102,6 @@ function SearchBar() {
                     <p
                       className="dropdown-list"
                       onClick={() => {
-                        console.log("here ????");
                         dispatch(addChosenWordDefinition(responseObject));
                         dispatch(changeActiveTab(0));
                         setQueriedWord(responseObject.meta.id.toLowerCase());
@@ -110,6 +109,7 @@ function SearchBar() {
                           responseObject.meta.id.toLowerCase();
                         setTouched(false);
                         navigate(`/w/${queriedWordRef.current.value}`);
+                        dispatch(setIsFromSearchBar(true));
                       }}
                     >
                       {responseObject.meta.id.toLowerCase()}&nbsp;
@@ -166,7 +166,6 @@ function SearchBar() {
             <p
               className="dropdown-list"
               onClick={() => {
-                console.log("or here ????");
                 dispatch(addChosenWordDefinition(suggestedWord[0]));
                 dispatch(changeActiveTab(0));
                 setQueriedWord(suggestedWord[0].meta.id.toLowerCase());
@@ -174,6 +173,7 @@ function SearchBar() {
                   suggestedWord[0].meta.id.toLowerCase();
                 setTouched(false);
                 navigate(`/w/${queriedWordRef.current.value}`);
+                dispatch(setIsFromSearchBar(true));
               }}
             >
               {suggestedWord[0].meta.id.toLowerCase()}&nbsp;

@@ -13,8 +13,8 @@ function apiUrl(queriedWord: string) {
 }
 
 interface Senses {
-  sense: string
-  example: string
+  sense: string;
+  example: string;
 }
 
 export type ChosenWordDefinition = {
@@ -23,6 +23,11 @@ export type ChosenWordDefinition = {
   abbreviation: string;
   shortDef: string;
 };
+
+interface IsOriginatedFromUrl {
+  word: string | null;
+  isFromSearchBar: boolean;
+}
 
 interface InitialState {
   suggestedWord: any[];
@@ -33,7 +38,7 @@ interface InitialState {
   isSavingWordLoading: boolean;
 
   isGetWordLoading: boolean;
-  urlRedirectWord: string | null;
+  isOriginatedFromUrl: IsOriginatedFromUrl;
 }
 
 // action initialstate
@@ -50,7 +55,10 @@ const initialState: InitialState = {
   isLoading: true,
   isSavingWordLoading: true,
   isGetWordLoading: true,
-  urlRedirectWord: null,
+  isOriginatedFromUrl: {
+    word: null,
+    isFromSearchBar: false,
+  },
 };
 
 // exported api call
@@ -137,18 +145,24 @@ const word = createSlice({
         );
       }
     },
-    addUrlRedirectWord: (
+    addIsOriginatedFromUrlWord: (
       state: InitialState,
       action: PayloadAction<string>
     ) => {
       if (action.payload.length > 0) {
         if (state.chosenWordDefinition.title != action.payload) {
-          state.urlRedirectWord = action.payload;
+          state.isOriginatedFromUrl.word = action.payload;
         }
       }
     },
-    resetUrlRedirectWord: (state: InitialState) => {
-      state.urlRedirectWord = null;
+    resetIsOriginatedFromUrlWord: (state: InitialState) => {
+      state.isOriginatedFromUrl.word = null;
+    },
+    setIsFromSearchBar: (
+      state: InitialState,
+      action: PayloadAction<boolean>
+    ) => {
+      state.isOriginatedFromUrl.isFromSearchBar = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -189,7 +203,8 @@ const word = createSlice({
 export const {
   resetSuggestedWord,
   addChosenWordDefinition,
-  addUrlRedirectWord,
-  resetUrlRedirectWord,
+  addIsOriginatedFromUrlWord,
+  resetIsOriginatedFromUrlWord,
+  setIsFromSearchBar
 } = word.actions;
 export default word;
