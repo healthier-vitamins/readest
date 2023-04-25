@@ -41,9 +41,10 @@ function WordDefinitionPage() {
         <div className="word-def-page-definition-box">
           <WordDefinition
             abbreviation={chosenWordDefinition.abbreviation}
-            senses={chosenWordDefinition.senses}
+            examples={chosenWordDefinition.examples}
             title={chosenWordDefinition.title}
             shortDef={chosenWordDefinition.shortDef}
+            transitive={chosenWordDefinition.transitive}
           ></WordDefinition>
         </div>
       ) : (

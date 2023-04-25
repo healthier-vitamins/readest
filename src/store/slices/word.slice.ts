@@ -12,16 +12,17 @@ function apiUrl(queriedWord: string) {
   // return `https://dictionaryapi.com/api/v3/references/ithesaurus/json/${queriedWord}?key=${process.env.REACT_APP_DICTIONARY_KEY}`;
 }
 
-interface Senses {
-  sense: string;
-  example: string;
-}
+// interface Examples {
+//   sense: string;
+//   example: string;
+// }
 
 export type ChosenWordDefinition = {
   title: string;
-  senses: Senses[];
+  examples: string[];
   abbreviation: string;
   shortDef: string;
+  transitive: string[];
 };
 
 interface IsOriginatedFromUrl {
@@ -47,9 +48,10 @@ const initialState: InitialState = {
   isWordChosen: false,
   chosenWordDefinition: {
     title: "",
-    senses: [],
+    examples: [],
     abbreviation: "",
     shortDef: "",
+    transitive: [],
   },
   allBookWord: null,
   isLoading: true,
@@ -136,13 +138,29 @@ const word = createSlice({
       state.chosenWordDefinition.abbreviation = action.payload.fl;
 
       if (Object.keys(action.payload).includes("cxs")) {
-        state.chosenWordDefinition.senses.push(action.payload.cxs);
+        state.chosenWordDefinition.examples.push(action.payload.cxs);
         state.chosenWordDefinition.shortDef = action.payload.cxs;
       } else {
         state.chosenWordDefinition.shortDef = action.payload.shortdef;
-        state.chosenWordDefinition.senses.push(
-          action.payload.def[0].sseq[0][0][1].dt
-        );
+        // state.chosenWordDefinition.examples.push(
+        // action.payload.def[0].sseq[0][0][1].dt)
+
+        for (let _sense of action.payload.def[0].sseq) {
+          for (let sense of _sense) {
+            console.log("sense ", sense);
+            if (sense[1].dt.length > 1 && sense[1].dt[1][0] === "vis") {
+              state.chosenWordDefinition.examples.push(
+                sense[1].dt[1][1].map(
+                  (t: any) =>
+                    // t.t.replace(/\{it\}(.*?)\{\/it\}/g, "<i>$1</i>")
+                    t.t
+                )
+              );
+            } else {
+              state.chosenWordDefinition.examples = [];
+            }
+          }
+        }
       }
     },
     addIsOriginatedFromUrlWord: (
@@ -205,6 +223,6 @@ export const {
   addChosenWordDefinition,
   addIsOriginatedFromUrlWord,
   resetIsOriginatedFromUrlWord,
-  setIsFromSearchBar
+  setIsFromSearchBar,
 } = word.actions;
 export default word;
