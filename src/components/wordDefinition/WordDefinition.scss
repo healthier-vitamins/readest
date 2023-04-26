@@ -13,9 +13,12 @@
   padding: 0.4rem 0.8rem 0.4rem 0.8rem;
 }
 
-.abbreviation {
+.word-definition-abbreviation {
   font-size: 1.05rem;
   margin-bottom: 0;
+  font-weight: 600;
+  color: grey;
+  font-style: italic;
 }
 
 .title {
@@ -40,6 +43,11 @@
 .save-btn:hover {
   cursor: pointer;
   color: rgb(153, 141, 104);
+}
+
+.word-definition-examples {
+  color: rgb(151, 151, 151);
+  // font-weight: 400;
 }
 
 @media screen and (min-width: 280px) and (max-width: 768px) {

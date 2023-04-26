@@ -137,31 +137,32 @@ const word = createSlice({
       state.chosenWordDefinition.title = action.payload.meta.id;
       state.chosenWordDefinition.abbreviation = action.payload.fl;
 
-      if (Object.keys(action.payload).includes("cxs")) {
-        state.chosenWordDefinition.examples.push(action.payload.cxs);
-        state.chosenWordDefinition.shortDef = action.payload.cxs;
-      } else {
-        state.chosenWordDefinition.shortDef = action.payload.shortdef;
-        // state.chosenWordDefinition.examples.push(
-        // action.payload.def[0].sseq[0][0][1].dt)
+      // if (Object.keys(action.payload).includes("cxs")) {
+      //   state.chosenWordDefinition.examples.push(action.payload.cxs);
+      //   state.chosenWordDefinition.shortDef = action.payload.cxs;
+      // } else {
+      state.chosenWordDefinition.shortDef = action.payload.shortdef;
+      // state.chosenWordDefinition.examples.push(
+      // action.payload.def[0].sseq[0][0][1].dt)
 
-        for (let _sense of action.payload.def[0].sseq) {
-          for (let sense of _sense) {
-            console.log("sense ", sense);
-            if (sense[1].dt.length > 1 && sense[1].dt[1][0] === "vis") {
+      for (let _sense of action.payload.def[0].sseq) {
+        for (let sense of _sense) {
+          console.log("sense ", sense);
+          if (sense[1]?.dt?.length > 1 && sense[1].dt[1][0] === "vis") {
+            // t.t.replace(/\{it\}(.*?)\{\/it\}/g, "<i>$1</i>")
+
+            sense[1].dt[1][1].forEach((ele: any) => {
               state.chosenWordDefinition.examples.push(
-                sense[1].dt[1][1].map(
-                  (t: any) =>
-                    // t.t.replace(/\{it\}(.*?)\{\/it\}/g, "<i>$1</i>")
-                    t.t
-                )
+                // ele.t.replace(/\{it\}(.*?)\{\/it\}/g, "{0}")
+                ele.t
               );
-            } else {
-              state.chosenWordDefinition.examples = [];
-            }
+            });
+          } else {
+            state.chosenWordDefinition.examples = [];
           }
         }
       }
+      // }
     },
     addIsOriginatedFromUrlWord: (
       state: InitialState,

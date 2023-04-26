@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "store/hooks";
 import { getStoicQuote } from "store/slices/misc.slice";
 import { RootState } from "store/store";
 import { GLOBALVARS } from "utils/GLOBALVARS";
+import { useConditionalEffect } from "utils/hooks/hooks";
 
 function YearTimer() {
   const dispatch = useAppDispatch();
@@ -38,11 +39,9 @@ function YearTimer() {
     );
   }, []);
 
-  useEffect(() => {
-    if (stoicQuote.quote == null) {
-      dispatch(getStoicQuote(null));
-    }
-  }, [dispatch, stoicQuote.quote]);
+  useConditionalEffect(() => {
+    dispatch(getStoicQuote(null));
+  }, [stoicQuote.author === null, stoicQuote.quote === null]);
 
   function renderRemaining(): React.ReactElement[] | React.ReactElement {
     if (yearRemainingProgress) {
@@ -73,8 +72,12 @@ function YearTimer() {
     if (!stoicQuote.isLoading && stoicQuote.author && stoicQuote.quote) {
       return (
         <div className="timer-quote-box">
-          <span>{stoicQuote.quote}</span>
-          <span>{stoicQuote.author}</span>
+          <span className={GLOBALVARS.DEFAULT_SPAN_CLASS}>
+            {stoicQuote.quote}
+          </span>
+          <span className={GLOBALVARS.DEFAULT_SPAN_CLASS}>
+            {stoicQuote.author}
+          </span>
         </div>
       );
     }

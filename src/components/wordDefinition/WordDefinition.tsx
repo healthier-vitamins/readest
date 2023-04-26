@@ -15,48 +15,73 @@ function WordDefinition({
 }: ChosenWordDefinition) {
   const dispatch = useAppDispatch();
 
-  // const { chosenWordDefinition } = useAppSelector((state) => {
-  //   console.log("chosen word definition ", state.word.chosenWordDefinition);
-  //   return state.word;
-  // });
-
   const {
     authentication: { isUserLoggedIn },
   } = useAppSelector((state: any) => state.user);
 
-  function renderShortDefLogic(): React.ReactElement[] | React.ReactElement {
-    // const { shortDef } = chosenWordDefinition;
-    // const { shortDef } = props;
+  interface RenderWithItalicsProps {
+    text: string;
+    isLast: boolean;
+  }
 
+  function RenderWithItalics({ text, isLast }: RenderWithItalicsProps) {
+    const italicsRegex = /{it}(.*?){\/it}/g;
+    const parts = text.split(italicsRegex);
+    const matches = [...text.matchAll(italicsRegex)].map((match) => match[1]);
+    console.log("parts ", parts);
+    console.log("matches ", matches);
+
+    const result: React.ReactNode[] = [];
+
+    parts.forEach((part, index) => {
+      console.log("part ", part);
+      console.log("index ", index);
+      if (part !== matches[0]) {
+        result.push(part);
+      }
+      if (index < matches.length) {
+        result.push(<em key={index}>{matches[index]}</em>);
+      }
+    });
+
+    return (
+      <span className="word-definition-examples">
+        {result}
+        {!isLast && `, `}
+      </span>
+    );
+  }
+
+  function renderShortDefLogic(): React.ReactElement[] | React.ReactElement {
     if (Array.isArray(shortDef)) {
       return shortDef.map((def, index) => {
-        if (typeof def === "object") {
-          return (
-            <React.Fragment key={index}>
-              <p className="shortdef">{shortDef[0].cxl}</p>
-              {shortDef[0]?.cxtis &&
-                shortDef[0].cxtis.map((word: any, index: number) => {
-                  return (
-                    <React.Fragment key={index}>
-                      <p className="shortdef">
-                        {++index}.&nbsp;{word.cxt}
-                      </p>
-                      <br />
-                    </React.Fragment>
-                  );
-                })}
-            </React.Fragment>
-          );
-        } else {
-          return (
-            <React.Fragment key={index}>
-              <p className="shortdef">
-                {++index}.&nbsp;
-                {def}
-              </p>
-            </React.Fragment>
-          );
-        }
+        // if (typeof def === "object") {
+        //   return (
+        //     <React.Fragment key={index}>
+        //       <p className="shortdef">{shortDef[0].cxl}</p>
+        //       {shortDef[0]?.cxtis &&
+        //         shortDef[0].cxtis.map((word: any, index: number) => {
+        //           return (
+        //             <React.Fragment key={index}>
+        //               <p className="shortdef">
+        //                 {++index}.&nbsp;{word.cxt}
+        //               </p>
+        //               <br />
+        //             </React.Fragment>
+        //           );
+        //         })}
+        //     </React.Fragment>
+        //   );
+        // } else {
+        return (
+          <React.Fragment key={index}>
+            <p className="shortdef">
+              {++index}.&nbsp;
+              {def}
+            </p>
+          </React.Fragment>
+        );
+        // }
       });
     } else {
       return (
@@ -68,21 +93,22 @@ function WordDefinition({
   }
 
   function renderExamples(): React.ReactElement | React.ReactElement[] | null {
+    let isLast: boolean = false;
     if (examples.length) {
-      if(examples.some(ele => Array.isArray(ele))) {
-        
-      }
       return examples.map((ele, index) => {
+        if (index === examples.length - 1) {
+          isLast = true;
+        }
         if (Array.isArray(ele)) {
           return (
             <React.Fragment key={index}>
-              <div>{ele}</div>
+              <RenderWithItalics text={ele} isLast={isLast}></RenderWithItalics>
             </React.Fragment>
           );
         } else {
           return (
             <React.Fragment key={index}>
-              <div>{ele}</div>
+              <RenderWithItalics text={ele} isLast={isLast}></RenderWithItalics>
             </React.Fragment>
           );
         }
@@ -93,15 +119,11 @@ function WordDefinition({
   }
 
   function renderWordDefinitionBox() {
-    console.log(abbreviation, title, examples, shortDef, transitive);
     return (
       <div>
         <h5 className="title">
-          {/* {chosenWordDefinition.title}&nbsp;&nbsp; */}
-          {/* {props.title}&nbsp;&nbsp; */}
           {title}&nbsp;&nbsp;
-          <span className="abbreviation">
-            {/* {props.abbreviation ? props.abbreviation : "No abbreviation"} */}
+          <span className="word-definition-abbreviation">
             {abbreviation ? abbreviation : "No abbreviation"}
           </span>
         </h5>
@@ -113,7 +135,7 @@ function WordDefinition({
             onClick={() => {
               isUserLoggedIn
                 ? dispatch(toggleSaveWordModal())
-                : protectedFunction("");
+                : protectedFunction(null);
             }}
           />
         </div>

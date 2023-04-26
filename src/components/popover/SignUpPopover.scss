@@ -1,22 +1,5 @@
 @import "../../SCSSVARS.scss";
 
-.default-link {
-  font-weight: 700;
-  text-decoration: none;
-  // color: rgb(168, 140, 89);
-  color: rgb(138, 117, 81);
-  font-size: 15px;
-  // color: rgb(168, 140, 89);
-  /* font-family: "roboto"; */
-  /* letter-spacing: 0.6px; */
-}
-
-.default-link:hover {
-  // color: rgb(190, 185, 167);
-  color: rgb(192, 181, 161);
-  cursor: pointer;
-}
-
 .signup-form-control {
   height: 1.8rem;
   max-width: 12rem;
@@ -242,12 +225,12 @@
 // }
 
 @media screen and (min-width: 280px) and (max-width: 768px) {
-  .default-link {
-    // visibility: hidden;
-    // width: 0;
-    font-size: 14px;
-    margin-left: 0.6rem;
-  }
+  // .default-link {
+  //   // visibility: hidden;
+  //   // width: 0;
+  //   font-size: 14px;
+  //   margin-left: 0.6rem;
+  // }
 
   .popover-container {
     right: 0.9rem;

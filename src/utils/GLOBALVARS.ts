@@ -15,5 +15,6 @@ export const GLOBALVARS = {
 
   // css classes
   DEFAULT_EMPTY_FONT_CLASS: "default-empty-font",
-  DEFAULT_LINK_CLASS: "default-link"
+  DEFAULT_LINK_CLASS: "default-link",
+  DEFAULT_SPAN_CLASS: "default-span"
 };

@@ -12,6 +12,7 @@ import {
 import "./SearchBar.scss";
 import { useNavigate } from "react-router-dom";
 import { Form } from "react-bootstrap";
+import { GLOBALVARS } from "utils/GLOBALVARS";
 
 function SearchBar() {
   // const ref = createRef();
@@ -63,14 +64,22 @@ function SearchBar() {
       wordObject.length === 1 &&
       Object.keys(wordObject).includes("fl")
     ) {
-      return <span>[{wordObject[0].fl}]</span>;
+      return (
+        <span className={GLOBALVARS.DEFAULT_SPAN_CLASS}>
+          [{wordObject[0].fl}]
+        </span>
+      );
     } else if (
       typeof wordObject === "object" &&
       Object.keys(wordObject).includes("fl")
     ) {
-      return <span>[{wordObject.fl}]</span>;
+      return (
+        <span className={GLOBALVARS.DEFAULT_SPAN_CLASS}>[{wordObject.fl}]</span>
+      );
     } else {
-      return <span>[no abbreviation]</span>;
+      return (
+        <span className={GLOBALVARS.DEFAULT_SPAN_CLASS}>[no abbreviation]</span>
+      );
     }
   }
 
