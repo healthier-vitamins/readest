@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import HomePage from "./pages/homePage/HomePage";
 import Layout from "./pages/Layout";
-import WordsPage from "./pages/allWordsPage/AllWordsPage";
+import WordsPage from "./pages/allWordsPage/WordsPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./main.scss";
 import Protected from "components/Protected";

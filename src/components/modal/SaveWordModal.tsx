@@ -22,33 +22,33 @@ function SaveWordModal() {
     const { shortDef } = chosenWordDefinition;
     if (Array.isArray(shortDef)) {
       return shortDef.map((def, index) => {
-        if (typeof def === "object") {
-          return (
-            <React.Fragment key={index}>
-              <p className="shortdef">{shortDef[0].cxl}</p>
-              {shortDef[0]?.cxtis &&
-                shortDef[0].cxtis.map((word: any, index: number) => {
-                  return (
-                    <React.Fragment key={index}>
-                      <p className="shortdef">
-                        {++index}.&nbsp;{word.cxt}
-                      </p>
-                      <br />
-                    </React.Fragment>
-                  );
-                })}
-            </React.Fragment>
-          );
-        } else {
-          return (
-            <React.Fragment key={index}>
-              <p className="shortdef">
-                {++index}.&nbsp;
-                {def}
-              </p>
-            </React.Fragment>
-          );
-        }
+        // if (typeof def === "object") {
+        //   return (
+        //     <React.Fragment key={index}>
+        //       <p className="shortdef">{shortDef[0].cxl}</p>
+        //       {shortDef[0]?.cxtis &&
+        //         shortDef[0].cxtis.map((word: any, index: number) => {
+        //           return (
+        //             <React.Fragment key={index}>
+        //               <p className="shortdef">
+        //                 {++index}.&nbsp;{word.cxt}
+        //               </p>
+        //               <br />
+        //             </React.Fragment>
+        //           );
+        //         })}
+        //     </React.Fragment>
+        //   );
+        // } else {
+        return (
+          <React.Fragment key={index}>
+            <p className="shortdef">
+              {++index}.&nbsp;
+              {def}
+            </p>
+          </React.Fragment>
+        );
+        // }
       });
     } else {
       return (

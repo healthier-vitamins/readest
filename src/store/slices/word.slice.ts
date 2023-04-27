@@ -4,6 +4,7 @@ import axios from "axios";
 import { addToastNotificationArr } from "./state.slice";
 import { axiosTo } from "utils/promise";
 import { ApiCall, ApiTracker } from "utils/apis/apiTracker";
+import { BookRes } from "./book.slice";
 const apiTracker = new ApiTracker();
 
 // api url with query passed through as parameter
@@ -11,11 +12,6 @@ function apiUrl(queriedWord: string) {
   return `https://dictionaryapi.com/api/v3/references/sd4/json/${queriedWord}?key=${process.env.REACT_APP_DICTIONARY_KEY}`;
   // return `https://dictionaryapi.com/api/v3/references/ithesaurus/json/${queriedWord}?key=${process.env.REACT_APP_DICTIONARY_KEY}`;
 }
-
-// interface Examples {
-//   sense: string;
-//   example: string;
-// }
 
 export type ChosenWordDefinition = {
   title: string;
@@ -34,7 +30,7 @@ interface InitialState {
   suggestedWord: any[];
   isWordChosen: boolean;
   chosenWordDefinition: ChosenWordDefinition;
-  allBookWord: any;
+  allWordsFromBook: ChosenWordDefinition[];
   isLoading: boolean;
   isSavingWordLoading: boolean;
 
@@ -53,7 +49,7 @@ const initialState: InitialState = {
     shortDef: "",
     transitive: [],
   },
-  allBookWord: null,
+  allWordsFromBook: [],
   isLoading: true,
   isSavingWordLoading: true,
   isGetWordLoading: true,
@@ -101,10 +97,11 @@ export const postWordToBook = createAsyncThunk(
 
 export const getWordForBook = createAsyncThunk(
   "getWordForBook",
-  async (payload: any, thunkApi) => {
+  async (payload: BookRes, thunkApi) => {
     let res: any;
+    console.log("payload ???????? ", payload);
     const apiCall: ApiCall = {
-      id: payload.bookId,
+      id: payload.id,
       abortController: new AbortController(),
       method: "post",
       url: "/api/getAllWord",
@@ -207,7 +204,11 @@ const word = createSlice({
       })
       .addCase(getWordForBook.fulfilled, (state: InitialState, action) => {
         console.log("all words for book ??????????? ", action.payload);
-        state.allBookWord = action.payload;
+        for (let wordDefinition of action.payload) {
+          wordDefinition.examples = JSON.parse(wordDefinition.examples);
+          wordDefinition.shortDef = JSON.parse(wordDefinition.shortDef);
+        }
+        state.allWordsFromBook = action.payload;
         state.isGetWordLoading = false;
       })
       .addCase(getWordForBook.pending, (state: InitialState) => {

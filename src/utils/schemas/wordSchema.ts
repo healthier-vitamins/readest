@@ -6,7 +6,7 @@ const wordSchema: WordSchema = {
   ABBREVIATION: "ABBREVIATION",
   CREATED_TIME: "CREATED_TIME",
   LAST_EDITED_TIME: "LAST_EDITED_TIME",
-  SENSES: "SENSES",
+  EXAMPLES: "EXAMPLES",
 };
 
 interface WordSchema {
@@ -17,7 +17,7 @@ interface WordSchema {
   ABBREVIATION: string;
   CREATED_TIME: string;
   LAST_EDITED_TIME: string;
-  SENSES: string;
+  EXAMPLES: string;
 }
 
 export { wordSchema };

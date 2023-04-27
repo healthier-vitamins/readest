@@ -84,16 +84,18 @@ exports.handler = async function (event: any, context: any) {
           rich_text: [
             {
               text: {
-                content: wordDef.abbreviation,
+                content: wordDef.abbreviation ? wordDef.abbreviation : "",
               },
             },
           ],
         },
-        [wordSchema.SENSES]: {
+        [wordSchema.EXAMPLES]: {
           rich_text: [
             {
               text: {
-                content: "PLACEHOLDER SENTENCE",
+                content: wordDef.examples
+                  ? JSON.stringify(wordDef.examples)
+                  : "",
               },
             },
           ],

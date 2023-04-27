@@ -4,6 +4,7 @@ import Cookies from "universal-cookie";
 import { axiosTo } from "../../utils/promise";
 import { addToastNotificationArr, toggleCreateBookModal } from "./state.slice";
 const cookies = new Cookies();
+const url = window.location.origin;
 
 export interface BookRes {
   bookName: string;
@@ -56,7 +57,9 @@ const initialState: InitialState = {
 export const postBook = createAsyncThunk(
   "postBook",
   async (payload: any, thunkApi) => {
-    const [err, res] = await axiosTo(axios.post("/api/postBook", payload));
+    const [err, res] = await axiosTo(
+      axios.post(`${url}/api/postBook`, payload)
+    );
     if (err) {
       if (err.status === 500) {
         thunkApi.dispatch(addToastNotificationArr("Please refresh the page"));
@@ -77,8 +80,9 @@ export const getAllBook = createAsyncThunk(
   async (payload, thunkApi) => {
     const userId = cookies.get("user-id", { doNotParse: true });
     if (!userId) return [];
+
     const [err, res] = await axiosTo(
-      axios.get(`/api/getAllBook`, { params: { userId: userId } })
+      axios.get(`${url}/api/getAllBook`, { params: { userId: userId } })
     );
     if (err) {
       if (err.status === 500) {
@@ -86,6 +90,7 @@ export const getAllBook = createAsyncThunk(
         return;
       }
       thunkApi.dispatch(addToastNotificationArr(err.data));
+      return;
     }
     return res;
   }

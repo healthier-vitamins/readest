@@ -16,11 +16,7 @@ exports.handler = async function (event: any, context: any) {
   // });
   // const date = moment(dateNow).format("MMMM Do YYYY, h:mm:ss a");
   moment.tz.setDefault("Asia/Singapore");
-  const date = moment().format("MMMM Do YYYY, h:mm:ss a");
-  console.log(moment());
-
   const currentDateIso = moment().toISOString(true);
-  console.log("ISO STRING ||||||||||||||  ", currentDateIso);
 
   let accountId: string | null = null;
   try {

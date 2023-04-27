@@ -141,7 +141,7 @@ exports.handler = async function (event: any, context: any) {
           type: "date",
           date: {},
         },
-        [wordSchema.SENTENCE]: {
+        [wordSchema.EXAMPLES]: {
           type: "rich_text",
           rich_text: {},
         },

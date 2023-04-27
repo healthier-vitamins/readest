@@ -25,20 +25,38 @@ function WordDefinition({
   }
 
   function RenderWithItalics({ text, isLast }: RenderWithItalicsProps) {
+    const leftDoubleQuoteRegex = /{ldquo}|{rdquo}/g;
+    text = text.replace(leftDoubleQuoteRegex, `"`);
+
     const italicsRegex = /{it}(.*?){\/it}/g;
+    // only splits the {it} and {/it}, therefore return 3 elements
     const parts = text.split(italicsRegex);
+
+    // matchAll has to be put in an array otherwise, returned as RegExpStringIterator
+    // as an array, element returned as:
+    /**
+     * @type Array
+     * @property [0] captured regex, ie: "{it}sad{/it}"
+     * @property [1] matched word, ie: "sad"
+     * @property [2] groups
+     * @property [3] index: total number of index
+     * @property [4] input: raw string
+     *
+     */
     const matches = [...text.matchAll(italicsRegex)].map((match) => match[1]);
     console.log("parts ", parts);
+    console.log("matchAll ", [...text.matchAll(italicsRegex)]);
     console.log("matches ", matches);
 
     const result: React.ReactNode[] = [];
 
     parts.forEach((part, index) => {
       console.log("part ", part);
-      console.log("index ", index);
+      // matches is mapped containing the word only
       if (part !== matches[0]) {
         result.push(part);
       }
+      // this works because of how parts is being split into 3 elements based on the regex.
       if (index < matches.length) {
         result.push(<em key={index}>{matches[index]}</em>);
       }
