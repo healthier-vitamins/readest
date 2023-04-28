@@ -9,12 +9,12 @@ export const GLOBALVARS = {
 
   // error codes
   ERROR_BOOK_NAME_ALRDY_EXISTS: "Book already exists.",
-  ERROR_NOTION_TIMEOUT: "Please refresh the page.",
+  ERROR_TIMEOUT: "Please refresh the page.",
   ERROR_BOOK_DB_NOT_FOUND: "ERRx0001 Book database not found.",
   ERROR_ACCESSING_BOOK_DB: "ERRx0002 Trouble accessing book database.",
 
   // css classes
   DEFAULT_EMPTY_FONT_CLASS: "default-empty-font",
   DEFAULT_LINK_CLASS: "default-link",
-  DEFAULT_SPAN_CLASS: "default-span"
+  DEFAULT_SPAN_CLASS: "default-span",
 };

@@ -5,12 +5,15 @@ import { useAppDispatch } from "store/hooks";
 import { changeActiveTab } from "store/slices/book.slice";
 import { isTokenExpired } from "utils/cryptography";
 import Cookies from "universal-cookie";
-import { setIsLoggedIn, userLoggedOut } from "store/slices/user.slice";
+import { setIsLoggedIn } from "store/slices/user.slice";
+import { logout } from "utils/apis/userApis";
+import { useNavigate } from "react-router-dom";
 const cookies = new Cookies();
 
 function HomePage() {
   // const { selectedTab } = useAppSelector((state) => state.book);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   // function checkSelectedPageLogic() {
   //   for (let i = 0; i < bookSelection.length; i++) {
@@ -41,13 +44,12 @@ function HomePage() {
     const token = cookies.get("token");
     if (token) {
       if (isTokenExpired(token)) {
-        // dispatch(setIsLoggedOut());
-        dispatch(userLoggedOut());
+        logout(navigate);
       } else {
         dispatch(setIsLoggedIn());
       }
     }
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   return (
     <div className="homepage-container">

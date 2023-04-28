@@ -1,4 +1,4 @@
-import { ChosenWordDefinition } from "../../src/store/slices/word.slice";
+import { AllWordsInBook } from "../../src/store/slices/word.slice";
 import { BookRes } from "../../src/store/slices/book.slice";
 import { HttpStatusCode } from "axios";
 import { wordSchema } from "../../src/utils/schemas/wordSchema";
@@ -31,24 +31,35 @@ exports.handler = async function (event, context) {
       ],
     });
 
-    const allWordsFromBookResponse: ChosenWordDefinition[] = [];
+    let allWordsFromBookResponse: AllWordsInBook[] = [];
 
     for (let word of response.results) {
-      let tempObj: ChosenWordDefinition = {
-        abbreviation: "",
-        examples: [],
-        shortDef: "",
-        title: "",
+      // let wordObj: ChosenWordDefinition = {
+      //   abbreviation: "",
+      //   examples: [],
+      //   shortDef: "",
+      //   title: "",
+      //   transitive: [],
+      // };
+      // wordObj.title = word.properties[wordSchema.WORD].rich_text[0].plain_text;
+      // wordObj.abbreviation =
+      //   word.properties[wordSchema.ABBREVIATION].rich_text[0].plain_text;
+      // wordObj.shortDef =
+      //   word.properties[wordSchema.DEFINITION].rich_text[0].plain_text;
+      // wordObj.examples =
+      //   word.properties[wordSchema.EXAMPLES].rich_text[0].plain_text;
+      // allWordsFromBookResponse.push(wordObj);
+      let allWordsObj: AllWordsInBook = {
+        id: word.id,
+        abbreviation:
+          word.properties[wordSchema.ABBREVIATION].rich_text[0].plain_text,
+        examples: word.properties[wordSchema.EXAMPLES].rich_text[0].plain_text,
+        shortDef:
+          word.properties[wordSchema.DEFINITION].rich_text[0].plain_text,
+        title: word.properties[wordSchema.WORD].rich_text[0].plain_text,
         transitive: [],
       };
-      tempObj.title = word.properties[wordSchema.WORD].rich_text[0].plain_text;
-      tempObj.abbreviation =
-        word.properties[wordSchema.ABBREVIATION].rich_text[0].plain_text;
-      tempObj.shortDef =
-        word.properties[wordSchema.DEFINITION].rich_text[0].plain_text;
-      tempObj.examples =
-        word.properties[wordSchema.EXAMPLES].rich_text[0].plain_text;
-      allWordsFromBookResponse.push(tempObj);
+      allWordsFromBookResponse.push(allWordsObj);
     }
 
     return {

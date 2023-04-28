@@ -4,14 +4,17 @@ import store from "../../store/store";
 import { addUserPageId, userLoggedOut } from "../../store/slices/user.slice";
 import { resetBookSelection } from "store/slices/book.slice";
 import { NavigateFunction } from "react-router-dom";
+import { checkAndHandleTimeoutError } from "./timeoutHandler";
 
 async function userSignUp(onSuccess: any, onError: any, payload: any) {
   const [goTrueErr, goTrueRes] = await axiosTo(
     axios.post("api/signUp", payload)
   );
   if (goTrueErr) {
-    onError(goTrueErr);
-    return;
+    if (checkAndHandleTimeoutError(goTrueErr, null)) {
+      onError(goTrueErr);
+      return;
+    }
   }
 
   // search if email exists in db
@@ -20,8 +23,10 @@ async function userSignUp(onSuccess: any, onError: any, payload: any) {
   );
 
   if (queryEmailErr) {
-    onError(queryEmailErr);
-    return;
+    if (checkAndHandleTimeoutError(queryEmailErr, null)) {
+      onError(queryEmailErr);
+      return;
+    }
   }
 
   // if email exists
@@ -35,8 +40,10 @@ async function userSignUp(onSuccess: any, onError: any, payload: any) {
       axios.post("api/postUser", payload)
     );
     if (notionErr) {
-      onError(notionErr);
-      return;
+      if (checkAndHandleTimeoutError(notionErr, null)) {
+        onError(notionErr);
+        return;
+      }
     }
     onSuccess(goTrueRes);
     return;
@@ -50,8 +57,10 @@ async function login(onSuccess: any, onError: any, payload: any) {
     axios.post(`${url}/api/login`, payload)
   );
   if (goTrueErr) {
-    onError(goTrueErr);
-    return;
+    if (checkAndHandleTimeoutError(goTrueErr, null)) {
+      onError(goTrueErr);
+      return;
+    }
   }
 
   const [updateLoggedInErr, updateLoggedInRes] = await axiosTo(
@@ -59,8 +68,10 @@ async function login(onSuccess: any, onError: any, payload: any) {
   );
 
   if (updateLoggedInErr) {
-    onError(updateLoggedInErr);
-    return;
+    if (checkAndHandleTimeoutError(updateLoggedInErr, null)) {
+      onError(updateLoggedInErr);
+      return;
+    }
   }
 
   store.dispatch(addUserPageId(updateLoggedInRes.id));
@@ -74,8 +85,10 @@ async function verifyUser(onSuccess: any, onError: any, payload: any) {
   const [err, res] = await axiosTo(axios.post("api/confirmEmail", payload));
 
   if (err) {
-    onError(err);
-    return;
+    if (checkAndHandleTimeoutError(err, null)) {
+      onError(err);
+      return;
+    }
   }
   onSuccess(res);
   return;

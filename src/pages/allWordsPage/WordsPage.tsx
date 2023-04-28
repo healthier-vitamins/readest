@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Spinner } from "react-bootstrap";
 import "./WordsPage.scss";
 import { useAppDispatch, useAppSelector } from "store/hooks";
-import { ChosenWordDefinition, getWordForBook } from "store/slices/word.slice";
+import { AllWordsInBook, getWordsInBook } from "store/slices/word.slice";
 import { useParams } from "react-router-dom";
 import { BookRes, addBookSelection } from "store/slices/book.slice";
 import { GLOBALVARS } from "utils/GLOBALVARS";
@@ -43,7 +43,7 @@ function WordsPage() {
       id: id,
       bookName: bookName,
     };
-    dispatch(getWordForBook(payload));
+    dispatch(getWordsInBook(payload));
   }
 
   // function renderShortDefLogic(
@@ -115,20 +115,19 @@ function WordsPage() {
           </div>
         ) : (
           allWordsFromBook?.length > 0 &&
-          allWordsFromBook?.map(
-            (wordObj: ChosenWordDefinition, index: number) => (
-              <div className="all-words-page-word-def">
-                <WordDefinition
-                  key={index}
-                  abbreviation={wordObj.abbreviation}
-                  examples={wordObj.examples}
-                  shortDef={wordObj.shortDef}
-                  title={wordObj.title}
-                  transitive={wordObj.transitive}
-                ></WordDefinition>
-              </div>
-            )
-          )
+          allWordsFromBook?.map((wordObj: AllWordsInBook, index: number) => (
+            <div className="all-words-page-word-def">
+              <WordDefinition
+                key={index}
+                id={wordObj.id}
+                abbreviation={wordObj.abbreviation}
+                examples={wordObj.examples}
+                shortDef={wordObj.shortDef}
+                title={wordObj.title}
+                transitive={wordObj.transitive}
+              ></WordDefinition>
+            </div>
+          ))
 
           // allWordsFromBook?.results.map((wordObj: any, index: number) =>
           //   renderWordDef(wordObj, index)

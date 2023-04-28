@@ -10,41 +10,15 @@ type Authentication = {
 };
 
 interface InitialState {
-  // isSignUpLoading: true,
-  // isConfirmEmailLoading: true,
   authentication: Authentication;
 }
 
 const initialState: InitialState = {
-  // isSignUpLoading: true,
-  // isConfirmEmailLoading: true,
   authentication: {
     isUserLoggedIn: false,
     userEmail: null,
-    // userPageId: null,
   },
 };
-
-// export const signUp = createAsyncThunk("signUp", async (payload, thunkApi) => {
-//   const resp = await axios.post("api/signUp", payload);
-//   return resp.data;
-// });
-
-// export const confirmEmail = createAsyncThunk(
-//   "confirmEmail",
-//   async (payload, thunkApi) => {
-//     const resp = await axios.post("api/confirmEmail", payload);
-//     console.log("res ??????????????? ", resp);
-//     return resp.data;
-//   }
-// );
-
-// export const login = createAsyncThunk("login", async (payload, thunkApi) => {
-//   const [err, res] = await axiosTo(axios.post("api/login", payload));
-//   if (err) console.error(err.response);
-//   console.log(res);
-//   return res.data;
-// });
 
 const userSlice = createSlice({
   name: "user",

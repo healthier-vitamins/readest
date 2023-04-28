@@ -3,6 +3,8 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import { axiosTo } from "../../utils/promise";
 import { addToastNotificationArr, toggleCreateBookModal } from "./state.slice";
+import { GLOBALVARS } from "utils/GLOBALVARS";
+// import { checkAndHandleTimeoutError } from "../../utils/apis/timeoutHandler";
 const cookies = new Cookies();
 const url = window.location.origin;
 
@@ -30,7 +32,6 @@ interface InitialState {
   getAllBookIsLoading: boolean;
   // will only contain 1 book at any time
   selectedTab: BookSelection;
-  // lastSavedBook: any[];
   bookSelection: BookSelection[];
 }
 
@@ -44,7 +45,6 @@ const initialState: InitialState = {
     bookObj: { bookName: "Definition", id: "0" },
     active: true,
   },
-  // lastSavedBook: [],
   bookSelection: [
     {
       bookObj: { bookName: "Definition", id: "0" },
@@ -62,7 +62,7 @@ export const postBook = createAsyncThunk(
     );
     if (err) {
       if (err.status === 500) {
-        thunkApi.dispatch(addToastNotificationArr("Please refresh the page"));
+        thunkApi.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
         return;
       }
       thunkApi.dispatch(addToastNotificationArr(err.data));
@@ -86,7 +86,7 @@ export const getAllBook = createAsyncThunk(
     );
     if (err) {
       if (err.status === 500) {
-        thunkApi.dispatch(addToastNotificationArr("Please refresh the page"));
+        thunkApi.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
         return;
       }
       thunkApi.dispatch(addToastNotificationArr(err.data));

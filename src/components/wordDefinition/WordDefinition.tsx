@@ -4,15 +4,18 @@ import React from "react";
 import { toggleSaveWordModal } from "../../store/slices/state.slice";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import protectedFunction from "utils/protectedFunc";
-import { ChosenWordDefinition } from "store/slices/word.slice";
+import { AllWordsInBook } from "store/slices/word.slice";
+
+interface Props extends AllWordsInBook {}
 
 function WordDefinition({
+  id,
   abbreviation,
   examples,
   shortDef,
   title,
   transitive,
-}: ChosenWordDefinition) {
+}: Props) {
   const dispatch = useAppDispatch();
 
   const {
@@ -25,8 +28,8 @@ function WordDefinition({
   }
 
   function RenderWithItalics({ text, isLast }: RenderWithItalicsProps) {
-    const leftDoubleQuoteRegex = /{ldquo}|{rdquo}/g;
-    text = text.replace(leftDoubleQuoteRegex, `"`);
+    const doubleQuoteRegex = /{ldquo}|{rdquo}/g;
+    text = text.replace(doubleQuoteRegex, `"`);
 
     const italicsRegex = /{it}(.*?){\/it}/g;
     // only splits the {it} and {/it}, therefore return 3 elements
@@ -44,14 +47,14 @@ function WordDefinition({
      *
      */
     const matches = [...text.matchAll(italicsRegex)].map((match) => match[1]);
-    console.log("parts ", parts);
-    console.log("matchAll ", [...text.matchAll(italicsRegex)]);
-    console.log("matches ", matches);
+    // console.log("parts ", parts);
+    // console.log("matchAll ", [...text.matchAll(italicsRegex)]);
+    // console.log("matches ", matches);
 
     const result: React.ReactNode[] = [];
 
     parts.forEach((part, index) => {
-      console.log("part ", part);
+      // console.log("part ", part);
       // matches is mapped containing the word only
       if (part !== matches[0]) {
         result.push(part);
@@ -148,14 +151,17 @@ function WordDefinition({
         {renderShortDefLogic()}
         {renderExamples()}
         <div className="box-footer">
-          <AiOutlineSave
-            className="save-btn"
-            onClick={() => {
-              isUserLoggedIn
-                ? dispatch(toggleSaveWordModal())
-                : protectedFunction(null);
-            }}
-          />
+          {/* only show save button if word hasn't been been saved */}
+          {!id && (
+            <AiOutlineSave
+              className="save-btn"
+              onClick={() => {
+                isUserLoggedIn
+                  ? dispatch(toggleSaveWordModal())
+                  : protectedFunction(null);
+              }}
+            />
+          )}
         </div>
       </div>
     );

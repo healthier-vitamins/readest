@@ -13,13 +13,17 @@ function apiUrl(queriedWord: string) {
   // return `https://dictionaryapi.com/api/v3/references/ithesaurus/json/${queriedWord}?key=${process.env.REACT_APP_DICTIONARY_KEY}`;
 }
 
-export type ChosenWordDefinition = {
+export interface AllWordsInBook extends ChosenWordDefinition {
+  id: string | number | null;
+}
+
+export interface ChosenWordDefinition {
   title: string;
   examples: string[];
   abbreviation: string;
   shortDef: string;
   transitive: string[];
-};
+}
 
 interface IsOriginatedFromUrl {
   word: string | null;
@@ -30,7 +34,7 @@ interface InitialState {
   suggestedWord: any[];
   isWordChosen: boolean;
   chosenWordDefinition: ChosenWordDefinition;
-  allWordsFromBook: ChosenWordDefinition[];
+  allWordsFromBook: AllWordsInBook[];
   isLoading: boolean;
   isSavingWordLoading: boolean;
 
@@ -95,8 +99,8 @@ export const postWordToBook = createAsyncThunk(
   }
 );
 
-export const getWordForBook = createAsyncThunk(
-  "getWordForBook",
+export const getWordsInBook = createAsyncThunk(
+  "getWordsInBook",
   async (payload: BookRes, thunkApi) => {
     let res: any;
     console.log("payload ???????? ", payload);
@@ -202,19 +206,27 @@ const word = createSlice({
       .addCase(postWordToBook.rejected, (state: InitialState) => {
         state.isSavingWordLoading = true;
       })
-      .addCase(getWordForBook.fulfilled, (state: InitialState, action) => {
-        console.log("all words for book ??????????? ", action.payload);
-        for (let wordDefinition of action.payload) {
-          wordDefinition.examples = JSON.parse(wordDefinition.examples);
-          wordDefinition.shortDef = JSON.parse(wordDefinition.shortDef);
+      .addCase(
+        getWordsInBook.fulfilled,
+        (state: InitialState, action: PayloadAction<AllWordsInBook[]>) => {
+          console.log("all words for book ??????????? ", action.payload);
+
+          for (let wordDefinition of action.payload) {
+            wordDefinition.examples = JSON.parse(
+              String(wordDefinition.examples)
+            );
+            wordDefinition.shortDef = JSON.parse(
+              wordDefinition.shortDef
+            );
+          }
+          state.allWordsFromBook = action.payload;
+          state.isGetWordLoading = false;
         }
-        state.allWordsFromBook = action.payload;
-        state.isGetWordLoading = false;
-      })
-      .addCase(getWordForBook.pending, (state: InitialState) => {
+      )
+      .addCase(getWordsInBook.pending, (state: InitialState) => {
         state.isGetWordLoading = true;
       })
-      .addCase(getWordForBook.rejected, (state: InitialState) => {
+      .addCase(getWordsInBook.rejected, (state: InitialState) => {
         state.isGetWordLoading = true;
       });
   },

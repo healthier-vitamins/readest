@@ -2,6 +2,8 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { axiosTo } from "utils/promise";
 import { addToastNotificationArr } from "./state.slice";
+import { GLOBALVARS } from "utils/GLOBALVARS";
+// import { checkAndHandleTimeoutError } from "utils/apis/timeoutHandler";
 
 export interface StoicQuote {
   quote: string | null;
@@ -29,9 +31,14 @@ export const getStoicQuote = createAsyncThunk(
       axios.get("https://stoic-quotes.com/api/quote")
     );
     if (err) {
+      if (err.status === 500) {
+        thunkApi.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
+        return;
+      }
       thunkApi.dispatch(addToastNotificationArr("Error getting quote."));
       console.log(err.message);
       return;
+      // }
     }
     return res;
   }
