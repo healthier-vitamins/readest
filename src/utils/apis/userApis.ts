@@ -75,7 +75,6 @@ async function login(onSuccess: any, onError: any, payload: any) {
   }
 
   store.dispatch(addUserPageId(updateLoggedInRes.id));
-
   onSuccess(goTrueRes);
   return;
 }

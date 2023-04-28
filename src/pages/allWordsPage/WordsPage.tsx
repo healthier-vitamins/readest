@@ -116,9 +116,8 @@ function WordsPage() {
         ) : (
           allWordsFromBook?.length > 0 &&
           allWordsFromBook?.map((wordObj: AllWordsInBook, index: number) => (
-            <div className="all-words-page-word-def">
+            <div className="all-words-page-word-def" key={index}>
               <WordDefinition
-                key={index}
                 id={wordObj.id}
                 abbreviation={wordObj.abbreviation}
                 examples={wordObj.examples}

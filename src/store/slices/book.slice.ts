@@ -87,10 +87,10 @@ export const getAllBook = createAsyncThunk(
     if (err) {
       if (err.status === 500) {
         thunkApi.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
-        return;
+        return [];
       }
       thunkApi.dispatch(addToastNotificationArr(err.data));
-      return;
+      return [];
     }
     return res;
   }
@@ -100,7 +100,7 @@ const book = createSlice({
   name: "book",
   initialState,
   reducers: {
-    addBookSelection: (state, action) => {
+    addBookSelection: (state: InitialState, action) => {
       state.bookSelection.forEach((book) => {
         book.active = false;
       });
@@ -128,39 +128,39 @@ const book = createSlice({
         state.selectedTab = tempObj;
       }
     },
-    resetBookSelection: (state) => {
+    resetBookSelection: (state: InitialState) => {
       state.bookSelection = BookSelectionDefault;
     },
-    changeActiveTab: (state, action) => {
+    changeActiveTab: (state: InitialState, action) => {
       state.bookSelection.forEach((book) => {
         book.active = false;
       });
       state.bookSelection[action.payload].active = true;
       state.selectedTab = state.bookSelection[action.payload];
     },
-    handlebookResArrCheckboxChange: (state, action) => {
+    handlebookResArrCheckboxChange: (state: InitialState, action) => {
       state.bookResArrCheckbox.forEach((item: any, index) => {
         if (index === action.payload) {
           item.checked = !item.checked;
         }
       });
     },
-    resetbookResArrCheckbox: (state) => {
+    resetbookResArrCheckbox: (state: InitialState) => {
       state.bookResArrCheckbox.forEach((item: any) => (item.checked = false));
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(postBook.fulfilled, (state, action) => {
+      .addCase(postBook.fulfilled, (state: InitialState, action) => {
         state.postBookIsLoading = false;
       })
-      .addCase(postBook.pending, (state) => {
+      .addCase(postBook.pending, (state: InitialState) => {
         state.postBookIsLoading = true;
       })
-      .addCase(postBook.rejected, (state) => {
+      .addCase(postBook.rejected, (state: InitialState) => {
         state.postBookIsLoading = true;
       })
-      .addCase(getAllBook.fulfilled, (state, action) => {
+      .addCase(getAllBook.fulfilled, (state: InitialState, action) => {
         state.getAllBookIsLoading = false;
         state.bookRes = action.payload;
         let tempObj;
@@ -178,10 +178,10 @@ const book = createSlice({
         // console.log("temp arr, ", tempArr);
         state.bookResArrCheckbox = tempArr;
       })
-      .addCase(getAllBook.pending, (state) => {
+      .addCase(getAllBook.pending, (state: InitialState) => {
         state.getAllBookIsLoading = true;
       })
-      .addCase(getAllBook.rejected, (state) => {
+      .addCase(getAllBook.rejected, (state: InitialState) => {
         state.getAllBookIsLoading = true;
       });
   },
