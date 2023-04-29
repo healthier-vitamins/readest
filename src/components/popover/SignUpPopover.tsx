@@ -1,4 +1,4 @@
-import { createRef, useEffect, useState } from "react";
+import { createRef, useCallback, useEffect, useState } from "react";
 import { Form, Spinner } from "react-bootstrap";
 import {
   addToastNotificationArr,
@@ -99,25 +99,6 @@ function SignUpPopover() {
     }
   }, [errorState, loadingState]);
 
-  useEffect(() => {
-    if (show) {
-      function handleEnter(e: KeyboardEvent) {
-        if (e.key === "Enter") {
-          if (state.loginState) {
-            handleLogin();
-          } else if (state.signUpState) {
-            handleSignUp();
-          }
-        }
-      }
-
-      window.addEventListener("keyup", handleEnter);
-      return () => {
-        window.removeEventListener("keyup", handleEnter);
-      };
-    }
-  }, [handleLogin, handleSignUp, state.loginState, state.signUpState, show]);
-
   async function confirmEmailHelper() {
     const token = window.location.hash.substring(
       window.location.hash.indexOf("=") + 1
@@ -160,7 +141,7 @@ function SignUpPopover() {
     dispatch(toggleShowPopoverState());
   }
 
-  async function handleSignUp() {
+  const handleSignUp = useCallback(async () => {
     if (
       confirmPasswordRef!.current!.value === passwordRef!.current!.value &&
       passwordRef!.current!.value !== ""
@@ -212,9 +193,18 @@ function SignUpPopover() {
       });
       setIsSubmitted(false);
     }
-  }
+  }, [
+    confirmPasswordRef,
+    dispatch,
+    emailRef,
+    loadingState,
+    errorState,
+    nameRef,
+    passwordRef,
+    signUpPasswordCompare,
+  ]);
 
-  async function handleLogin() {
+  const handleLogin = useCallback(async () => {
     setIsSubmitted(true);
     const payload = {
       email: loginEmailRef!.current!.value,
@@ -253,7 +243,14 @@ function SignUpPopover() {
     }
 
     login(onSuccess, onError, payload);
-  }
+  }, [
+    dispatch,
+    errorState,
+    isSubmitted,
+    loadingState,
+    loginEmailRef,
+    loginPasswordRef,
+  ]);
 
   function handleSignUpPasswordCompare(e: any) {
     console.log(signUpPasswordCompare);
@@ -276,6 +273,26 @@ function SignUpPopover() {
       setSignUpPasswordCompare({ ...signUpPasswordCompare, [name]: value });
     }
   }
+
+  // event listener for "Enter" key only on login and signUp forms
+  useEffect(() => {
+    if (show) {
+      function handleEnter(e: KeyboardEvent) {
+        if (e.key === "Enter") {
+          if (state.loginState) {
+            handleLogin();
+          } else if (state.signUpState) {
+            handleSignUp();
+          }
+        }
+      }
+
+      window.addEventListener("keyup", handleEnter);
+      return () => {
+        window.removeEventListener("keyup", handleEnter);
+      };
+    }
+  }, [handleLogin, handleSignUp, state.loginState, state.signUpState, show]);
 
   function signUpForm() {
     return (
