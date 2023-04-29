@@ -75,4 +75,4 @@ const miscSlice = createSlice({
 });
 
 // export const {} = miscSlice.actions
-export default miscSlice.reducer;
+export default miscSlice;

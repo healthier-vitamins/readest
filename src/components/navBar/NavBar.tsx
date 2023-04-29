@@ -29,7 +29,7 @@ function NavBar() {
 
   const {
     authentication: { isUserLoggedIn },
-  } = useAppSelector((state: any) => state.user);
+  } = useAppSelector((state) => state.user);
   const { redirector } = useAppSelector((state: any) => state.state);
 
   useEffect(() => {
@@ -140,7 +140,10 @@ function NavBar() {
           {!isUserLoggedIn ? (
             <SignUpPopover></SignUpPopover>
           ) : (
-            <div className={GLOBALVARS.DEFAULT_LINK_CLASS} onClick={() => logout(navigate)}>
+            <div
+              className={GLOBALVARS.DEFAULT_LINK_CLASS}
+              onClick={() => logout(navigate)}
+            >
               Logout
             </div>
           )}

@@ -1,10 +1,10 @@
-import { PayloadAction } from "@reduxjs/toolkit";
-const { createSlice } = require("@reduxjs/toolkit");
+import { GLOBALVARS } from "../../utils/GLOBALVARS";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type PopoverStatePayloadAction =
-  | "loginState"
-  | "signUpState"
-  | "emailConfirmState";
+  | typeof GLOBALVARS.POPOVER_LOGIN
+  | typeof GLOBALVARS.POPOVER_SIGNUP
+  | typeof GLOBALVARS.POPOVER_CONFIRM_EMAIL;
 
 type ShowPopoverState = {
   signUpState: boolean;
@@ -109,6 +109,9 @@ const stateSlice = createSlice({
       }
     },
   },
+  // extraReducers: (builder) => {
+  //   builder.
+  // },
 });
 
 export const {
@@ -123,4 +126,4 @@ export const {
   setBookSelectionPopoverState,
   setRedirector,
 } = stateSlice.actions;
-export default stateSlice.reducer;
+export default stateSlice;

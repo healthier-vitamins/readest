@@ -1,6 +1,5 @@
-import { PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import Cookies from "universal-cookie";
-const { createSlice } = require("@reduxjs/toolkit");
 const cookies = new Cookies();
 
 type Authentication = {

@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import word from "./slices/word.slice";
-import stateReducer from "./slices/state.slice";
+import state from "./slices/state.slice";
 import book from "./slices/book.slice";
-import userReducer from "./slices/user.slice";
-import miscReducer from "./slices/misc.slice";
+import user from "./slices/user.slice";
+import misc from "./slices/misc.slice";
 // import {
 //   persistStore,
 //   persistReducer,
@@ -28,9 +28,9 @@ const store = configureStore({
   reducer: {
     word: word.reducer,
     book: book.reducer,
-    state: stateReducer,
-    user: userReducer.reducer,
-    misc: miscReducer,
+    state: state.reducer,
+    user: user.reducer,
+    misc: misc.reducer,
   },
 });
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -2,9 +2,9 @@ export const GLOBALVARS = {
   MOBILE_MIN_WIDTH: 767,
   MOBILE_FOLD_WIDTH: 280,
   NAVBAR_HEIGHT: 96,
-  POPOVER_LOGIN: "loginState",
-  POPOVER_SIGNUP: "signUpState",
-  POPOVER_CONFIRM_EMAIL: "emailConfirmState",
+  POPOVER_LOGIN: "loginState" as const,
+  POPOVER_SIGNUP: "signUpState" as const,
+  POPOVER_CONFIRM_EMAIL: "emailConfirmState" as const,
   YEAR_TIMER_NUMBER_OF_BLOCKS: 18,
 
   // error codes

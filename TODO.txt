@@ -1,6 +1,8 @@
+-  sighpie lemon pie need to fix wordDefinitionPage back button
 1. check if book exists before saved 
     1a. change url to bookName only
 2. add book regex check
+    - probably need to composite this appropriately with other inputs...
 3. put all notion clients under a class
 4. delete books
 5. navbar height for mobile issue

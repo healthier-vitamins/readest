@@ -1,4 +1,4 @@
-import { createRef, useState } from "react";
+import { createRef, useEffect, useState, useCallback, useMemo } from "react";
 import { Modal, Form, Spinner, InputGroup } from "react-bootstrap";
 import "./CreateBookModal.scss";
 // @ts-ignore
@@ -9,7 +9,10 @@ import Cookies from "universal-cookie";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 
 function CreateBookModal() {
-  const cookies = new Cookies();
+  const cookies = useMemo(() => {
+    return new Cookies();
+  }, []);
+
   const { createBookModalState } = useAppSelector((store: any) => {
     return store.state;
   });
@@ -21,7 +24,7 @@ function CreateBookModal() {
   const dispatch = useAppDispatch();
   const bookTitleRef = createRef<HTMLInputElement>();
 
-  async function handleCreateBook() {
+  const handleCreateBook = useCallback(async () => {
     if (
       bookTitleRef.current!.value === "" ||
       bookTitleRef.current!.value.startsWith(" ")
@@ -37,7 +40,23 @@ function CreateBookModal() {
 
       dispatch(postBook(payload));
     }
-  }
+  }, [bookTitleRef, cookies, dispatch]);
+
+  useEffect(() => {
+    if (createBookModalState) {
+      function handleEnter(e: KeyboardEvent) {
+        if (e.key === "Enter") {
+          setisClicked(true);
+          handleCreateBook();
+        }
+      }
+
+      window.addEventListener("keyup", handleEnter);
+      return () => {
+        window.removeEventListener("keyup", handleEnter);
+      };
+    }
+  }, [createBookModalState, handleCreateBook]);
 
   return (
     <Modal

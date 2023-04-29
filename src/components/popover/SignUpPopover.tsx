@@ -18,7 +18,7 @@ function SignUpPopover() {
   const navigate = useNavigate();
   const {
     showPopoverState: { state, show },
-  } = useAppSelector((state: any) => state.state);
+  } = useAppSelector((state) => state.state);
   const [signUpPasswordCompare, setSignUpPasswordCompare] = useState({
     password: "",
     confirmPassword: "",
@@ -98,6 +98,25 @@ function SignUpPopover() {
       }
     }
   }, [errorState, loadingState]);
+
+  useEffect(() => {
+    if (show) {
+      function handleEnter(e: KeyboardEvent) {
+        if (e.key === "Enter") {
+          if (state.loginState) {
+            handleLogin();
+          } else if (state.signUpState) {
+            handleSignUp();
+          }
+        }
+      }
+
+      window.addEventListener("keyup", handleEnter);
+      return () => {
+        window.removeEventListener("keyup", handleEnter);
+      };
+    }
+  }, [handleLogin, handleSignUp, state.loginState, state.signUpState, show]);
 
   async function confirmEmailHelper() {
     const token = window.location.hash.substring(
