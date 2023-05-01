@@ -12,6 +12,7 @@ export const GLOBALVARS = {
   ERROR_TIMEOUT: "Please refresh the page.",
   ERROR_BOOK_DB_NOT_FOUND: "ERRx0001 Book database not found.",
   ERROR_ACCESSING_BOOK_DB: "ERRx0002 Trouble accessing book database.",
+  ERROR_GETTING_WORDS_IN_BOOK: "ERRx0003 Trouble getting words in book.",
 
   // css classes
   DEFAULT_EMPTY_FONT_CLASS: "default-empty-font",

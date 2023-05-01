@@ -22,7 +22,7 @@ function App() {
               </Protected>
             }
           />
-          <Route path="w/:word" element={<WordDefinitionPage />} />
+          <Route path="w/:wordFromUrlParam" element={<WordDefinitionPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

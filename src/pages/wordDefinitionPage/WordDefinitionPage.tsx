@@ -4,53 +4,57 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import {
-  addChosenWordDefinition,
   addIsOriginatedFromUrlWord,
-  getWordDefinition,
   resetSuggestedWord,
-  setIsFromSearchBar,
 } from "store/slices/word.slice";
 
 import YearTimer from "components/yearTimer/YearTimer";
+import { changeActiveTab } from "store/slices/book.slice";
 
 function WordDefinitionPage() {
   const params = useParams();
   const dispatch = useAppDispatch();
+  // const navigate = useNavigate();
   const {
     isWordChosen,
     chosenWordDefinition,
-    isOriginatedFromUrl: { isFromSearchBar },
-    suggestedWord,
+    isOriginatedFromUrl: { isFromSearchBar, word },
   } = useAppSelector((state) => state.word);
-  const { word } = params;
-  // useEffect(() => {
-  //   dispatch(changeActiveTab(0));
-  // }, [dispatch]);
+  const { wordFromUrlParam } = params;
 
   useEffect(() => {
-    if (!isFromSearchBar) {
+    if (!isFromSearchBar && !word) {
       dispatch(resetSuggestedWord());
-      if (typeof word === "string" && word.length > 0) {
-        dispatch(addIsOriginatedFromUrlWord(word));
-        dispatch(setIsFromSearchBar(false));
+      if (typeof wordFromUrlParam === "string" && wordFromUrlParam.length > 0) {
+        dispatch(addIsOriginatedFromUrlWord(wordFromUrlParam));
       }
+      console.log("word ", word, !!word);
     }
-  }, [dispatch, params, isFromSearchBar, word]);
+  });
 
   useEffect(() => {
-    // const encodedUriWordTitle = encodeURIComponent(chosenWordDefinition.title)
-    if (
-      word &&
-      chosenWordDefinition.title &&
-      word !== chosenWordDefinition.title
-    ) {
-      console.log(word, chosenWordDefinition.title);
-      dispatch(getWordDefinition(word));
-      dispatch(addChosenWordDefinition(suggestedWord[0]));
-      dispatch(addIsOriginatedFromUrlWord(chosenWordDefinition.title));
-      // dispatch(addIsOriginatedFromUrlWord(word))
-    }
-  }, [chosenWordDefinition.title, dispatch, word, suggestedWord]);
+    dispatch(changeActiveTab(0));
+  }, [dispatch, wordFromUrlParam]);
+
+
+  //! this is not wrong. back should show dropdown list again unless suggestedWord[0] is correct (meta.id === params)
+  // useEffect(() => {
+  //   // const encodedUriWordTitle = encodeURIComponent(chosenWordDefinition.title)
+  //   if (
+  //     wordFromUrlParam &&
+  //     chosenWordDefinition.title &&
+  //     wordFromUrlParam.toUpperCase() !==
+  //       chosenWordDefinition.title.toUpperCase()
+  //   ) {
+  //     console.log(wordFromUrlParam, chosenWordDefinition.title);
+  //     // dispatch(getWordDefinition(wordFromUrlParam));
+  //     // dispatch(addChosenWordDefinition(suggestedWord[0]));
+  //     // dispatch(addIsOriginatedFromUrlWord(chosenWordDefinition.title));
+  //     dispatch(addIsOriginatedFromUrlWord(wordFromUrlParam));
+  //     dispatch(setIsFromSearchBar(false));
+  //     // navigate(`/w/${wordFromUrlParam}`);
+  //   }
+  // }, [navigate, chosenWordDefinition.title, wordFromUrlParam, dispatch]);
 
   return (
     <div className="word-def-page">

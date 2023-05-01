@@ -13,6 +13,7 @@ import "./SearchBar.scss";
 import { useNavigate } from "react-router-dom";
 import { Form } from "react-bootstrap";
 import { GLOBALVARS } from "utils/GLOBALVARS";
+import { RootState } from "store/store";
 
 function SearchBar() {
   // const ref = createRef();
@@ -20,12 +21,9 @@ function SearchBar() {
   const [queriedWord, setQueriedWord] = useState("");
   const queriedWordRef = createRef<any>();
   const [touched, setTouched] = useState(false);
-  const {
-    suggestedWord,
-    isLoading,
-    isOriginatedFromUrl,
-    chosenWordDefinition,
-  } = useAppSelector((store) => store.word);
+  const { suggestedWord, isLoading, isOriginatedFromUrl } = useAppSelector(
+    (store: RootState) => store.word
+  );
   const dispatch = useAppDispatch();
 
   // to show the dropdown list if page is entered through the url directly
@@ -36,24 +34,35 @@ function SearchBar() {
       queriedWordRef.current.value = isOriginatedFromUrl.word;
       setTouched(true);
       dispatch(getWordDefinition(isOriginatedFromUrl.word));
+      // if (typeof suggestedWord[0] !== "string") {
+      //   console.log("suggestdword[0] ", suggestedWord[0]);
+      //   dispatch(addChosenWordDefinition(suggestedWord[0]));
+      // }
       dispatch(resetIsOriginatedFromUrlWord());
+      dispatch(setIsFromSearchBar(true));
     }
-  }, [dispatch, queriedWordRef, isOriginatedFromUrl]);
+  }, [dispatch, queriedWordRef, isOriginatedFromUrl, suggestedWord]);
 
   // update input field if queried word is different from input field's
-  useEffect(() => {
-    if (isOriginatedFromUrl.word && isOriginatedFromUrl.isFromSearchBar) {
-      // if (isOriginatedFromUrl.word !== chosenWordDefinition.title) {
-      queriedWordRef.current.value = chosenWordDefinition.title;
-      setQueriedWord(chosenWordDefinition.title);
-      // }
-    }
-  }, [
-    chosenWordDefinition.title,
-    isOriginatedFromUrl.isFromSearchBar,
-    isOriginatedFromUrl.word,
-    queriedWordRef,
-  ]);
+  // useEffect(() => {
+  //   if (isOriginatedFromUrl.word && isOriginatedFromUrl.isFromSearchBar) {
+  //     if (isOriginatedFromUrl.word !== chosenWordDefinition.title) {
+  //       dispatch(resetSuggestedWord());
+  //       dispatch(getWordDefinition(isOriginatedFromUrl.word));
+
+  //       dispatch(resetIsOriginatedFromUrlWord());
+
+  //       // setQueriedWord(chosenWordDefinition.title);
+  //       // queriedWordRef.current.value = chosenWordDefinition.title;
+  //     }
+  //   }
+  // }, [
+  //   chosenWordDefinition.title,
+  //   isOriginatedFromUrl.isFromSearchBar,
+  //   isOriginatedFromUrl.word,
+  //   queriedWordRef,
+  //   dispatch,
+  // ]);
 
   function onClickOutsideFunc() {
     setTouched(false);
@@ -124,7 +133,7 @@ function SearchBar() {
       return (
         <>
           {suggestedWord
-            ? suggestedWord.map((responseObject, index) => {
+            ? suggestedWord.map((responseObject: any, index) => {
                 return (
                   <React.Fragment key={index}>
                     <p
