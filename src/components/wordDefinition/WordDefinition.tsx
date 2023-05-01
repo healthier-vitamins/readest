@@ -5,6 +5,7 @@ import { toggleSaveWordModal } from "../../store/slices/state.slice";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import protectedFunction from "utils/protectedFunc";
 import { AllWordsInBook } from "store/slices/word.slice";
+import { MdDeleteOutline } from "react-icons/md";
 
 interface Props extends AllWordsInBook {}
 
@@ -162,6 +163,7 @@ function WordDefinition({
               }}
             />
           )}
+          {id && <MdDeleteOutline className="word-definition-dlt-btn"></MdDeleteOutline>}
         </div>
       </div>
     );

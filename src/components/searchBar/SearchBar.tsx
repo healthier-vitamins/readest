@@ -20,11 +20,15 @@ function SearchBar() {
   const [queriedWord, setQueriedWord] = useState("");
   const queriedWordRef = createRef<any>();
   const [touched, setTouched] = useState(false);
-  const { suggestedWord, isLoading, isOriginatedFromUrl } = useAppSelector(
-    (store) => store.word
-  );
+  const {
+    suggestedWord,
+    isLoading,
+    isOriginatedFromUrl,
+    chosenWordDefinition,
+  } = useAppSelector((store) => store.word);
   const dispatch = useAppDispatch();
 
+  // to show the dropdown list if page is entered through the url directly
   useEffect(() => {
     if (isOriginatedFromUrl.word && !isOriginatedFromUrl.isFromSearchBar) {
       dispatch(resetSuggestedWord());
@@ -35,6 +39,21 @@ function SearchBar() {
       dispatch(resetIsOriginatedFromUrlWord());
     }
   }, [dispatch, queriedWordRef, isOriginatedFromUrl]);
+
+  // update input field if queried word is different from input field's
+  useEffect(() => {
+    if (isOriginatedFromUrl.word && isOriginatedFromUrl.isFromSearchBar) {
+      // if (isOriginatedFromUrl.word !== chosenWordDefinition.title) {
+      queriedWordRef.current.value = chosenWordDefinition.title;
+      setQueriedWord(chosenWordDefinition.title);
+      // }
+    }
+  }, [
+    chosenWordDefinition.title,
+    isOriginatedFromUrl.isFromSearchBar,
+    isOriginatedFromUrl.word,
+    queriedWordRef,
+  ]);
 
   function onClickOutsideFunc() {
     setTouched(false);

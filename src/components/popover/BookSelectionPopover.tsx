@@ -56,7 +56,7 @@ function BookSelectionPopover() {
   function buttonClickedStyleMapper() {
     if (bookSelectionPopoverState) {
       return {
-        color: "#B3A895",
+        color: "rgb(179, 168, 149)",
       };
     }
     return {};
@@ -101,17 +101,19 @@ function BookSelectionPopover() {
                 </div>
               )}
               {/* books present */}
-              {Array.isArray(bookRes) && bookRes.length > 0 && (
-                <div className="book-tab-box">
-                  {bookRes.map((book: any, index: number) => {
-                    return (
-                      <React.Fragment key={index}>
-                        <RenderBookTab book={book} index={index} />
-                      </React.Fragment>
-                    );
-                  })}
-                </div>
-              )}
+              {isUserLoggedIn &&
+                Array.isArray(bookRes) &&
+                bookRes.length > 0 && (
+                  <div className="book-tab-box">
+                    {bookRes.map((book: any, index: number) => {
+                      return (
+                        <React.Fragment key={index}>
+                          <RenderBookTab book={book} index={index} />
+                        </React.Fragment>
+                      );
+                    })}
+                  </div>
+                )}
               {/* user not logged in */}
               {!isUserLoggedIn && (
                 <div

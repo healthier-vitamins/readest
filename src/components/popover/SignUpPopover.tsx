@@ -1,4 +1,4 @@
-import { createRef, useCallback, useEffect, useState } from "react";
+import React, { createRef, useCallback, useEffect, useState } from "react";
 import { Form, Spinner } from "react-bootstrap";
 import {
   addToastNotificationArr,
@@ -16,15 +16,12 @@ import { useAppDispatch, useAppSelector } from "store/hooks";
 
 function SignUpPopover() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const {
     showPopoverState: { state, show },
   } = useAppSelector((state) => state.state);
-  const [signUpPasswordCompare, setSignUpPasswordCompare] = useState({
-    password: "",
-    confirmPassword: "",
-    isDirty: false,
-    isSame: false,
-  });
+
   const [isSubmitted, setIsSubmitted] = useState(false);
   const emailRef = createRef<HTMLInputElement>();
   const nameRef = createRef<HTMLInputElement>();
@@ -33,7 +30,16 @@ function SignUpPopover() {
   const loginEmailRef = createRef<HTMLInputElement>();
   const loginPasswordRef = createRef<HTMLInputElement>();
 
-  const dispatch = useAppDispatch();
+  const [signUpPasswordCompare, setSignUpPasswordCompare] = useState({
+    password: "",
+    confirmPassword: "",
+    isDirty: false,
+    isSame: false,
+  });
+  const [emailNameState, setEmailNameState] = useState({
+    name: "",
+    email: "",
+  });
 
   interface State {
     [key: string]: boolean;
@@ -50,6 +56,10 @@ function SignUpPopover() {
   });
 
   function resetAllExceptShowPopoverStateAndShow() {
+    setEmailNameState({
+      email: "",
+      name: "",
+    });
     setSignUpPasswordCompare({
       password: "",
       confirmPassword: "",
@@ -68,14 +78,20 @@ function SignUpPopover() {
     });
   }
 
-  function clickOutsideHelper() {
-    dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
+  function useClickOutsideFunc() {
+    // resetAllExceptShowPopoverStateAndShow();
+    // clickOutsideHelper();
     dispatch(setShowPopoverState(false));
+    console.log();
   }
 
-  function onClickOutsideFunc() {
-    resetAllExceptShowPopoverStateAndShow();
-    clickOutsideHelper();
+  function onChange(e: any) {
+    const { name, value } = e.target;
+    if (name === "password" || name === "confirmPassword") {
+      setSignUpPasswordCompare({ ...signUpPasswordCompare, [name]: value });
+    } else {
+      setEmailNameState({ ...emailNameState, [name]: value });
+    }
   }
 
   // for redirected email verification URL fragment
@@ -305,6 +321,9 @@ function SignUpPopover() {
               className="signup-form-control"
               required
               ref={nameRef}
+              name="name"
+              value={emailNameState.name}
+              onChange={onChange}
             ></Form.Control>
             <Form.Label className="signup-label">Email</Form.Label>
             <Form.Control
@@ -312,6 +331,9 @@ function SignUpPopover() {
               className="signup-form-control"
               required
               ref={emailRef}
+              name="email"
+              value={emailNameState.email}
+              onChange={onChange}
             ></Form.Control>
             <Form.Label className="signup-label">Password</Form.Label>
             <Form.Control
@@ -357,7 +379,7 @@ function SignUpPopover() {
             onClick={() => {
               // setPopoverStateHelper(GLOBALVARS.POPOVER_LOGIN);
               dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
-              setIsSubmitted(false);
+              resetAllExceptShowPopoverStateAndShow();
             }}
           >
             Already have an account? Login.
@@ -368,14 +390,14 @@ function SignUpPopover() {
                 signUpPasswordCompare.isDirty &&
                 signUpPasswordCompare.isSame &&
                 isSubmitted && (
-                  <>
+                  <React.Fragment>
                     <Spinner
                       animation="border"
                       id="signup-loading-spinner"
                       size="sm"
                     ></Spinner>
                     &nbsp;
-                  </>
+                  </React.Fragment>
                 )}
               Sign Up
             </div>
@@ -405,6 +427,9 @@ function SignUpPopover() {
               required
               ref={loginEmailRef}
               // isInvalid={true}
+              name="email"
+              value={emailNameState.email}
+              onChange={onChange}
             ></Form.Control>
             <Form.Label className="signup-label">Password</Form.Label>
             <Form.Control
@@ -414,6 +439,9 @@ function SignUpPopover() {
               autoComplete="on"
               ref={loginPasswordRef}
               // isInvalid={true}
+              name="password"
+              value={signUpPasswordCompare.password}
+              onChange={onChange}
             ></Form.Control>
             {errorState.login && (
               <div className="signup-error">
@@ -429,7 +457,7 @@ function SignUpPopover() {
             className="popover-state-link"
             onClick={() => {
               dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_SIGNUP));
-              setIsSubmitted(false);
+              resetAllExceptShowPopoverStateAndShow();
             }}
           >
             Don't have an account? Sign up.
@@ -477,9 +505,10 @@ function SignUpPopover() {
           <div className="verified-text">Email verified! </div>
           <div
             className="_popover-state-link"
-            onClick={() =>
-              dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN))
-            }
+            onClick={() => {
+              dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
+              resetAllExceptShowPopoverStateAndShow();
+            }}
           >
             Please login.
           </div>
@@ -495,7 +524,7 @@ function SignUpPopover() {
 
   return (
     <OnClickOutsideComponent
-      onClickOutsideFunc={!state.emailConfirmState ? onClickOutsideFunc : null}
+      onClickOutsideFunc={!state.emailConfirmState ? useClickOutsideFunc : null}
       isShowing={show}
     >
       <div className="popover-wrapper">

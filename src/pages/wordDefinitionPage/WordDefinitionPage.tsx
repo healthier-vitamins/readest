@@ -4,7 +4,9 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import {
+  addChosenWordDefinition,
   addIsOriginatedFromUrlWord,
+  getWordDefinition,
   resetSuggestedWord,
   setIsFromSearchBar,
 } from "store/slices/word.slice";
@@ -18,22 +20,37 @@ function WordDefinitionPage() {
     isWordChosen,
     chosenWordDefinition,
     isOriginatedFromUrl: { isFromSearchBar },
+    suggestedWord,
   } = useAppSelector((state) => state.word);
-
+  const { word } = params;
   // useEffect(() => {
   //   dispatch(changeActiveTab(0));
   // }, [dispatch]);
 
   useEffect(() => {
     if (!isFromSearchBar) {
-      const { word } = params;
       dispatch(resetSuggestedWord());
       if (typeof word === "string" && word.length > 0) {
         dispatch(addIsOriginatedFromUrlWord(word));
         dispatch(setIsFromSearchBar(false));
       }
     }
-  }, [dispatch, params, isFromSearchBar]);
+  }, [dispatch, params, isFromSearchBar, word]);
+
+  useEffect(() => {
+    // const encodedUriWordTitle = encodeURIComponent(chosenWordDefinition.title)
+    if (
+      word &&
+      chosenWordDefinition.title &&
+      word !== chosenWordDefinition.title
+    ) {
+      console.log(word, chosenWordDefinition.title);
+      dispatch(getWordDefinition(word));
+      dispatch(addChosenWordDefinition(suggestedWord[0]));
+      dispatch(addIsOriginatedFromUrlWord(chosenWordDefinition.title));
+      // dispatch(addIsOriginatedFromUrlWord(word))
+    }
+  }, [chosenWordDefinition.title, dispatch, word, suggestedWord]);
 
   return (
     <div className="word-def-page">
