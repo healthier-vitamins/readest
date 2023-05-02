@@ -8,12 +8,14 @@ import {
   addChosenWordDefinition,
   resetIsOriginatedFromUrlWord,
   setIsFromSearchBar,
+  resetChosenWordDefinition,
 } from "../../store/slices/word.slice";
 import "./SearchBar.scss";
 import { useNavigate } from "react-router-dom";
 import { Form } from "react-bootstrap";
 import { GLOBALVARS } from "utils/GLOBALVARS";
 import { RootState } from "store/store";
+import { addToastNotificationArr } from "store/slices/state.slice";
 
 function SearchBar() {
   // const ref = createRef();
@@ -28,20 +30,41 @@ function SearchBar() {
 
   // to show the dropdown list if page is entered through the url directly
   useEffect(() => {
-    if (isOriginatedFromUrl.word && !isOriginatedFromUrl.isFromSearchBar) {
-      dispatch(resetSuggestedWord());
-      setQueriedWord(isOriginatedFromUrl.word);
-      queriedWordRef.current.value = isOriginatedFromUrl.word;
-      setTouched(true);
-      dispatch(getWordDefinition(isOriginatedFromUrl.word));
-      // if (typeof suggestedWord[0] !== "string") {
-      //   console.log("suggestdword[0] ", suggestedWord[0]);
-      //   dispatch(addChosenWordDefinition(suggestedWord[0]));
-      // }
-      dispatch(resetIsOriginatedFromUrlWord());
-      dispatch(setIsFromSearchBar(true));
+    async function handlePageEntry() {
+      if (isOriginatedFromUrl.word && !isOriginatedFromUrl.isFromSearchBar) {
+        dispatch(resetSuggestedWord());
+        console.log("originatedUrl: ", isOriginatedFromUrl.word);
+        setQueriedWord(isOriginatedFromUrl.word);
+        queriedWordRef.current.value = isOriginatedFromUrl.word;
+        const res = await dispatch(getWordDefinition(isOriginatedFromUrl.word));
+        if (res.meta.requestStatus === "fulfilled") {
+          if (
+            typeof res.payload[0] === "object" &&
+            res.payload[0]?.meta?.id.toLowerCase() ===
+              isOriginatedFromUrl.word.toLowerCase()
+          ) {
+            console.log("res.payload[0] ", res.payload[0]);
+            dispatch(resetChosenWordDefinition());
+            dispatch(addChosenWordDefinition(res.payload[0]));
+            setTouched(false);
+          } else {
+            // dispatch(getWordDefinition(isOriginatedFromUrl.word));
+            setTouched(true);
+          }
+        } else {
+          addToastNotificationArr(GLOBALVARS.ERROR_GENERAL_ERROR);
+        }
+        dispatch(resetIsOriginatedFromUrlWord());
+        dispatch(setIsFromSearchBar(true));
+      }
     }
-  }, [dispatch, queriedWordRef, isOriginatedFromUrl, suggestedWord]);
+    handlePageEntry();
+  }, [
+    dispatch,
+    isOriginatedFromUrl.isFromSearchBar,
+    isOriginatedFromUrl.word,
+    queriedWordRef,
+  ]);
 
   // update input field if queried word is different from input field's
   // useEffect(() => {
@@ -139,6 +162,7 @@ function SearchBar() {
                     <p
                       className="dropdown-list"
                       onClick={() => {
+                        dispatch(resetChosenWordDefinition());
                         dispatch(addChosenWordDefinition(responseObject));
                         dispatch(changeActiveTab(0));
                         setQueriedWord(responseObject.meta.id.toLowerCase());
@@ -203,6 +227,7 @@ function SearchBar() {
             <p
               className="dropdown-list"
               onClick={() => {
+                dispatch(resetChosenWordDefinition());
                 dispatch(addChosenWordDefinition(suggestedWord[0]));
                 dispatch(changeActiveTab(0));
                 setQueriedWord(suggestedWord[0].meta.id.toLowerCase());

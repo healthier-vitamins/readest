@@ -10,6 +10,7 @@ interface _decodedToken {
 
 function getEmailFromToken(token: any) {
   const decodedToken: _decodedToken = jwt_decode(token);
+  console.log("decoded: ", decodedToken);
   return decodedToken.email;
 }
 

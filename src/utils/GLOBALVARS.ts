@@ -8,6 +8,7 @@ export const GLOBALVARS = {
   YEAR_TIMER_NUMBER_OF_BLOCKS: 18,
 
   // error codes
+  ERROR_GENERAL_ERROR: "Something went wrong.",
   ERROR_BOOK_NAME_ALRDY_EXISTS: "Book already exists.",
   ERROR_TIMEOUT: "Please refresh the page.",
   ERROR_BOOK_DB_NOT_FOUND: "ERRx0001 Book database not found.",

@@ -5,6 +5,7 @@ import { addToastNotificationArr } from "./state.slice";
 import { axiosTo } from "utils/promise";
 import { ApiCall, ApiTracker } from "utils/apis/apiTracker";
 import { BookRes } from "./book.slice";
+import { GLOBALVARS } from "utils/GLOBALVARS";
 const apiTracker = new ApiTracker();
 
 // api url with query passed through as parameter
@@ -70,6 +71,10 @@ export const getWordDefinition = createAsyncThunk(
     const [err, res] = await axiosTo(axios.get(apiUrl(queriedWord)));
     // console.log("fetched data ", resp.data);
     if (err) {
+      if (err.data.includes("time out")) {
+        addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT);
+        return;
+      }
       addToastNotificationArr("Merriam Webster API is down.");
       return;
     }
@@ -103,7 +108,6 @@ export const getWordsInBook = createAsyncThunk(
   "getWordsInBook",
   async (payload: BookRes, thunkApi) => {
     let res: any;
-    console.log("payload ???????? ", payload);
     const apiCall: ApiCall = {
       id: payload.id,
       abortController: new AbortController(),
@@ -165,6 +169,15 @@ const word = createSlice({
       }
       // }
     },
+    resetChosenWordDefinition: (state: InitialState) => {
+      state.chosenWordDefinition = {
+        title: "",
+        examples: [],
+        abbreviation: "",
+        shortDef: "",
+        transitive: [],
+      };
+    },
     addIsOriginatedFromUrlWord: (
       state: InitialState,
       action: PayloadAction<string>
@@ -215,9 +228,7 @@ const word = createSlice({
             wordDefinition.examples = JSON.parse(
               String(wordDefinition.examples)
             );
-            wordDefinition.shortDef = JSON.parse(
-              wordDefinition.shortDef
-            );
+            wordDefinition.shortDef = JSON.parse(wordDefinition.shortDef);
           }
           state.allWordsFromBook = action.payload;
           state.isGetWordLoading = false;
@@ -235,6 +246,7 @@ const word = createSlice({
 export const {
   resetSuggestedWord,
   addChosenWordDefinition,
+  resetChosenWordDefinition,
   addIsOriginatedFromUrlWord,
   resetIsOriginatedFromUrlWord,
   setIsFromSearchBar,

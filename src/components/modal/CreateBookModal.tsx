@@ -25,9 +25,12 @@ function CreateBookModal() {
   const bookTitleRef = createRef<HTMLInputElement>();
 
   const handleCreateBook = useCallback(async () => {
+    const specialSymbolsRegex = /[`!@#$%^&*()_+\-=\\[\]{};':"\\|,.<>\\/?~]/;
+
     if (
       bookTitleRef.current!.value === "" ||
-      bookTitleRef.current!.value.startsWith(" ")
+      bookTitleRef.current!.value.startsWith(" ") ||
+      specialSymbolsRegex.test(bookTitleRef.current!.value)
     ) {
       setIsInvalid(true);
     } else {
@@ -84,7 +87,9 @@ function CreateBookModal() {
             autoFocus={true}
           ></Form.Control>
           <Form.Control.Feedback type="invalid">
-            <small>Please provide a book a valid title.</small>
+            <small>
+              Book title should not be empty or contain special symbols.
+            </small>
           </Form.Control.Feedback>
         </InputGroup>
 
