@@ -1,4 +1,6 @@
 
+- swum? 
+- test no spec regex
 - change url to bookName only
 - add book regex check
     - probably need to composite this appropriately with other inputs...
