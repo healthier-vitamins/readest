@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import { addToastNotificationArr } from "store/slices/state.slice";
 import store from "store/store";
 import { GLOBALVARS } from "utils/GLOBALVARS";
@@ -15,7 +16,7 @@ export default class ApiError extends Error {
 
     if (this.errMsg !== "canceled") {
       if (
-        this.errMsg.includes("time out") ||
+        this.errMsg.includes("timed out") ||
         this.status == 500 ||
         this.status == 502 ||
         this.status === "canceled"

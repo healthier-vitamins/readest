@@ -2,8 +2,6 @@
 import axios from "axios";
 import ApiError from "classes/ApiError";
 import { AllWordsInBook } from "store/slices/word.slice";
-import { GLOBALVARS } from "utils/GLOBALVARS";
-import { axiosTo } from "utils/promise";
 
 interface ApiCall {
   id: string;
@@ -60,12 +58,10 @@ export class ApiTracker {
   public async callApi(
     apiCall: ApiCall,
     onSuccess: (data: any) => void
-  ): Promise<AllWordsInBook[] | null> {
-    if (this.previousApiCall && this.previousApiCall.id !== apiCall.id) {
-      this.previousApiCall.abortController.abort();
+  ): Promise<AllWordsInBook[]> {
+    if (this.previousApiCall?.id !== apiCall.id) {
+      this.previousApiCall?.abortController.abort();
       this.previousApiCall = apiCall;
-
-      //   throw new Error(`Aborted`);
     }
 
     try {
@@ -77,6 +73,7 @@ export class ApiTracker {
       console.error("API call cancelled:", error);
       throw new ApiError(error.response.data, error.response.status);
     }
+
     // else {
 
     //   const [err, res] = await axiosTo(this.executeApiCall(apiCall));

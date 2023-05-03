@@ -1,5 +1,6 @@
 
-- swum? 
+- swum? cxi...
+- caught bug when changing tabs quickly from definition tab
 - test no spec regex
 - change url to bookName only
 - add book regex check

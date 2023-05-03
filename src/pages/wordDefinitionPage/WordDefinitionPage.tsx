@@ -11,7 +11,6 @@ import {
 
 import YearTimer from "components/yearTimer/YearTimer";
 import { changeActiveTab } from "store/slices/book.slice";
-import { Spinner } from "react-bootstrap";
 
 function WordDefinitionPage() {
   const params = useParams();
@@ -21,7 +20,6 @@ function WordDefinitionPage() {
     isWordChosen,
     chosenWordDefinition,
     isOriginatedFromUrl: { isFromSearchBar, word },
-    isLoading,
   } = useAppSelector((state) => state.word);
   const { wordFromUrlParam } = params;
 

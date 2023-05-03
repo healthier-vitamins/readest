@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import OnClickOutsideComponent from "components/OnClickOutsideComponent";
 import React, { createRef, useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
