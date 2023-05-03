@@ -115,9 +115,7 @@ export const getWordsInBook = createAsyncThunk(
       url: "/api/getAllWord",
       payload: payload,
     };
-    res = await apiTracker.callApi(apiCall, (data) => {
-      return data.data;
-    });
+    res = await apiTracker.callApi(apiCall, (data) => data);
     return res.data;
   }
 );
@@ -147,12 +145,9 @@ const word = createSlice({
       //   state.chosenWordDefinition.shortDef = action.payload.cxs;
       // } else {
       state.chosenWordDefinition.shortDef = action.payload.shortdef;
-      // state.chosenWordDefinition.examples.push(
-      // action.payload.def[0].sseq[0][0][1].dt)
 
       for (let _sense of action.payload.def[0].sseq) {
         for (let sense of _sense) {
-          console.log("sense ", sense);
           if (sense[1]?.dt?.length > 1 && sense[1].dt[1][0] === "vis") {
             // t.t.replace(/\{it\}(.*?)\{\/it\}/g, "<i>$1</i>")
 
@@ -224,11 +219,13 @@ const word = createSlice({
         (state: InitialState, action: PayloadAction<AllWordsInBook[]>) => {
           console.log("all words for book ??????????? ", action.payload);
 
-          for (let wordDefinition of action.payload) {
-            wordDefinition.examples = JSON.parse(
-              String(wordDefinition.examples)
-            );
-            wordDefinition.shortDef = JSON.parse(wordDefinition.shortDef);
+          if (action.payload?.length) {
+            for (let wordDefinition of action.payload) {
+              wordDefinition.examples = JSON.parse(
+                String(wordDefinition.examples)
+              );
+              wordDefinition.shortDef = JSON.parse(wordDefinition.shortDef);
+            }
           }
           state.allWordsFromBook = action.payload;
           state.isGetWordLoading = false;

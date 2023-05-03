@@ -15,4 +15,9 @@ function useConditionalEffect(effect: Function, conditions: any[]) {
   });
 }
 
+// function useErrorNotification(errMsg: string) {
+//   const dispatch = useAppDispatch();
+//   dispatch(addToastNotificationArr(errMsg));
+// }
+
 export { useConditionalEffect };

@@ -1,4 +1,9 @@
+/* eslint-disable eqeqeq */
 import axios from "axios";
+import ApiError from "classes/ApiError";
+import { AllWordsInBook } from "store/slices/word.slice";
+import { GLOBALVARS } from "utils/GLOBALVARS";
+import { axiosTo } from "utils/promise";
 
 interface ApiCall {
   id: string;
@@ -55,7 +60,7 @@ export class ApiTracker {
   public async callApi(
     apiCall: ApiCall,
     onSuccess: (data: any) => void
-  ): Promise<void> {
+  ): Promise<AllWordsInBook[] | null> {
     if (this.previousApiCall && this.previousApiCall.id !== apiCall.id) {
       this.previousApiCall.abortController.abort();
       this.previousApiCall = apiCall;
@@ -68,9 +73,25 @@ export class ApiTracker {
       onSuccess(responseData);
       this.previousApiCall = null;
       return responseData;
-    } catch (error) {
+    } catch (error: any) {
       console.error("API call cancelled:", error);
+      throw new ApiError(error.response.data, error.response.status);
     }
+    // else {
+
+    //   const [err, res] = await axiosTo(this.executeApiCall(apiCall));
+    //   if (err) {
+    //     console.error("API call cancelled:", err);
+    //     // const isTimeOut =
+    //     //   err.data.includes("time out") || err.status == 500 || err.status == 502;
+    //     throw new ApiError(err.data, err.status);
+    //   }
+    //   console.log("res, ", res);
+    //   onSuccess(res);
+    //   this.previousApiCall = null;
+    //   return res;
+    // }
+    // return []
   }
 
   //   public getPreviousApiCall(): ApiCall | null {

@@ -43,9 +43,8 @@ function WordDefinitionPage() {
   useEffect(() => {
     if (
       wordFromUrlParam &&
-      chosenWordDefinition.title &&
       wordFromUrlParam.toLowerCase() !==
-        chosenWordDefinition.title.toLowerCase()
+        chosenWordDefinition?.title.toLowerCase()
     ) {
       console.log(wordFromUrlParam, chosenWordDefinition.title);
       // dispatch(getWordDefinition(wordFromUrlParam));
@@ -54,67 +53,53 @@ function WordDefinitionPage() {
       dispatch(addIsOriginatedFromUrlWord(wordFromUrlParam));
       dispatch(setIsFromSearchBar(false));
     }
-  }, [chosenWordDefinition.title, wordFromUrlParam, dispatch, navigate]);
+  }, [
+    chosenWordDefinition.title,
+    wordFromUrlParam,
+    dispatch,
+    navigate,
+    word,
+    isFromSearchBar,
+  ]);
 
-  function LoadingSpinnerHandler(): React.ReactElement {
-    // basically anythting
-    if (
-      isFromSearchBar ||
-      !word ||
-      chosenWordDefinition.title.length < 1 ||
-      // !isFromSearchBar ||
-      isWordChosen
-    ) {
-      if (chosenWordDefinition.title.length > 0) {
-        return (
-          <div className="word-def-page-definition-box">
-            <WordDefinition
-              id={null}
-              abbreviation={chosenWordDefinition.abbreviation}
-              examples={chosenWordDefinition.examples}
-              shortDef={chosenWordDefinition.shortDef}
-              title={chosenWordDefinition.title}
-              transitive={chosenWordDefinition.transitive}
-            ></WordDefinition>
-          </div>
-        );
-      } else {
-        if (!isLoading) {
-          return (
-            <div className="word-def-page-definition-box">
-              <WordDefinition
-                id={null}
-                abbreviation={chosenWordDefinition.abbreviation}
-                examples={chosenWordDefinition.examples}
-                shortDef={chosenWordDefinition.shortDef}
-                title={chosenWordDefinition.title}
-                transitive={chosenWordDefinition.transitive}
-              ></WordDefinition>
-            </div>
-          );
-        } else {
-          return (
-            <div className="all-words-page-loading-page">
-              <Spinner
-                animation="border"
-                id="all-words-page-loading-spinner"
-              ></Spinner>
-            </div>
-          );
-        }
-      }
-    } else {
-      return (
-        <div className="homepage-timer">
-          <YearTimer></YearTimer>
-        </div>
-      );
-    }
-  }
+  // function LoadingSpinnerHandler(): React.ReactElement {
+  //   // basically anythting
+  //   if (chosenWordDefinition.title.length > 0 || isWordChosen) {
+  //     // if (!isLoading) {
+  //     return (
+  //       <div className="word-def-page-definition-box">
+  //         <WordDefinition
+  //           id={null}
+  //           abbreviation={chosenWordDefinition.abbreviation}
+  //           examples={chosenWordDefinition.examples}
+  //           shortDef={chosenWordDefinition.shortDef}
+  //           title={chosenWordDefinition.title}
+  //           transitive={chosenWordDefinition.transitive}
+  //         ></WordDefinition>
+  //       </div>
+  //     );
+  //     // } else {
+  //     //   return (
+  //     //     <div className="all-words-page-loading-page">
+  //     //       <Spinner
+  //     //         animation="border"
+  //     //         id="all-words-page-loading-spinner"
+  //     //       ></Spinner>
+  //     //     </div>
+  //     //   );
+  //     // }
+  //   } else {
+  //     return (
+  //       <div className="homepage-timer">
+  //         <YearTimer></YearTimer>
+  //       </div>
+  //     );
+  //   }
+  // }
 
   return (
     <div className="word-def-page">
-      {/* {isWordChosen ? (
+      {chosenWordDefinition.title.length > 0 || isWordChosen ? (
         <div className="word-def-page-definition-box">
           <WordDefinition
             id={null}
@@ -129,8 +114,8 @@ function WordDefinitionPage() {
         <div className="homepage-timer">
           <YearTimer></YearTimer>
         </div>
-      )} */}
-      <LoadingSpinnerHandler></LoadingSpinnerHandler>
+      )}
+      {/* <LoadingSpinnerHandler></LoadingSpinnerHandler> */}
     </div>
   );
 }
