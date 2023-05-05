@@ -2,7 +2,6 @@
 import OnClickOutsideComponent from "components/OnClickOutsideComponent";
 import React, { createRef, useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
-import { changeActiveTab } from "../../store/slices/book.slice";
 import {
   resetSuggestedWord,
   getWordDefinition,
@@ -144,10 +143,10 @@ function SearchBar() {
       //? multiple words + senses
     } else if (
       suggestedWord.length > 1 &&
-      // to handle when searchbar is empty and suggestedWord still passes this conditional
-      Object.keys(suggestedWord[0]).length > 4 &&
       // when api is searching for an unknown word, it returns an array of "string" words instead of object.
       typeof suggestedWord[0] !== "string" &&
+      // to handle when searchbar is empty and suggestedWord still passes this conditional
+      Object.keys(suggestedWord[0]).length > 4 &&
       queriedWord.length > 0 &&
       touched
     ) {
@@ -162,7 +161,6 @@ function SearchBar() {
                       onClick={() => {
                         dispatch(resetChosenWordDefinition());
                         dispatch(addChosenWordDefinition(responseObject));
-                        dispatch(changeActiveTab(0));
                         setQueriedWord(responseObject.meta.id.toLowerCase());
                         queriedWordRef.current.value =
                           responseObject.meta.id.toLowerCase();
@@ -186,15 +184,18 @@ function SearchBar() {
       //? multiple words only
     } else if (
       suggestedWord.length > 1 &&
-      // when api is searching for an unknown word, it returns an array of "string" words instead of object.
-      typeof suggestedWord[0] === "string" &&
+      // // when api is searching for an unknown word, it returns an array of "string" words instead of object.
+      // typeof suggestedWord[0] === "string" &&
       queriedWord.length > 0 &&
       touched
     ) {
       return (
         <React.Fragment>
-          {suggestedWord
-            ? suggestedWord.map((word, index) => {
+          {suggestedWord &&
+            // for suggestedWord the api either returns an array of wordDefinition object (past tense)
+            // or array of word strings only (present tense),
+            suggestedWord.map((word, index) => {
+              if (typeof word === "string") {
                 return (
                   <React.Fragment key={index}>
                     <p
@@ -203,12 +204,36 @@ function SearchBar() {
                         handleWordWithoutDefObj(word);
                       }}
                     >
-                      {word.toLowerCase()}&nbsp;
+                      {word.toLowerCase()}
+                      &nbsp;
                     </p>
                   </React.Fragment>
                 );
-              })
-            : null}
+              } else {
+                console.log("clicked chosen word obj for past tense, ", word);
+                return (
+                  <React.Fragment key={index}>
+                    <p
+                      className="dropdown-list"
+                      onClick={() => {
+                        dispatch(resetChosenWordDefinition());
+                        dispatch(addChosenWordDefinition(word));
+                        setQueriedWord(word.meta.id.toLowerCase());
+                        queriedWordRef.current.value =
+                          word.meta.id.toLowerCase();
+                        setTouched(false);
+                        navigate(`/w/${queriedWordRef.current.value}`);
+                        dispatch(setIsFromSearchBar(true));
+                        // handleWordWithoutDefObj(word?.meta?.id)
+                      }}
+                    >
+                      {word?.meta?.id}
+                      &nbsp;
+                    </p>
+                  </React.Fragment>
+                );
+              }
+            })}
         </React.Fragment>
       );
 
@@ -227,7 +252,6 @@ function SearchBar() {
               onClick={() => {
                 dispatch(resetChosenWordDefinition());
                 dispatch(addChosenWordDefinition(suggestedWord[0]));
-                dispatch(changeActiveTab(0));
                 setQueriedWord(suggestedWord[0].meta.id.toLowerCase());
                 queriedWordRef.current.value =
                   suggestedWord[0].meta.id.toLowerCase();

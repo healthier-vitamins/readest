@@ -22,7 +22,7 @@ export interface ChosenWordDefinition {
   title: string;
   examples: string[];
   abbreviation: string;
-  shortDef: string;
+  shortDef: string[];
   transitive: string[];
 }
 
@@ -51,7 +51,7 @@ const initialState: InitialState = {
     title: "",
     examples: [],
     abbreviation: "",
-    shortDef: "",
+    shortDef: [],
     transitive: [],
   },
   allWordsFromBook: [],
@@ -140,25 +140,31 @@ const word = createSlice({
       state.chosenWordDefinition.title = action.payload.meta.id;
       state.chosenWordDefinition.abbreviation = action.payload.fl;
 
-      // if (Object.keys(action.payload).includes("cxs")) {
-      //   state.chosenWordDefinition.examples.push(action.payload.cxs);
-      //   state.chosenWordDefinition.shortDef = action.payload.cxs;
-      // } else {
-      state.chosenWordDefinition.shortDef = action.payload.shortdef;
+      if (Object.keys(action.payload).includes("cxs")) {
+        // state.chosenWordDefinition.examples.push(action.payload.cxs);
+        let shortDef = [];
+        for (let pastTenseWordObj of action.payload.cxs) {
+          const definition = `${pastTenseWordObj.cxl} ${pastTenseWordObj.cxtis[0].cxt}`;
+          shortDef.push(definition);
+        }
+        state.chosenWordDefinition.shortDef = shortDef;
+      } else {
+        state.chosenWordDefinition.shortDef = action.payload.shortdef;
 
-      for (let _sense of action.payload.def[0].sseq) {
-        for (let sense of _sense) {
-          if (sense[1]?.dt?.length > 1 && sense[1].dt[1][0] === "vis") {
-            // t.t.replace(/\{it\}(.*?)\{\/it\}/g, "<i>$1</i>")
+        for (let _sense of action.payload.def[0].sseq) {
+          for (let sense of _sense) {
+            if (sense[1]?.dt?.length > 1 && sense[1].dt[1][0] === "vis") {
+              // t.t.replace(/\{it\}(.*?)\{\/it\}/g, "<i>$1</i>")
 
-            sense[1].dt[1][1].forEach((ele: any) => {
-              state.chosenWordDefinition.examples.push(
-                // ele.t.replace(/\{it\}(.*?)\{\/it\}/g, "{0}")
-                ele.t
-              );
-            });
-          } else {
-            state.chosenWordDefinition.examples = [];
+              sense[1].dt[1][1].forEach((ele: any) => {
+                state.chosenWordDefinition.examples.push(
+                  // ele.t.replace(/\{it\}(.*?)\{\/it\}/g, "{0}")
+                  ele.t
+                );
+              });
+            } else {
+              state.chosenWordDefinition.examples = [];
+            }
           }
         }
       }
@@ -169,7 +175,7 @@ const word = createSlice({
         title: "",
         examples: [],
         abbreviation: "",
-        shortDef: "",
+        shortDef: [],
         transitive: [],
       };
     },
@@ -197,6 +203,7 @@ const word = createSlice({
     builder
       .addCase(getWordDefinition.fulfilled, (state: InitialState, action) => {
         state.isLoading = false;
+        console.log("suggestedWord, ", action.payload);
         state.suggestedWord = action.payload;
       })
       .addCase(getWordDefinition.pending, (state: InitialState) => {
@@ -224,7 +231,9 @@ const word = createSlice({
               wordDefinition.examples = JSON.parse(
                 String(wordDefinition.examples)
               );
-              wordDefinition.shortDef = JSON.parse(wordDefinition.shortDef);
+              wordDefinition.shortDef = JSON.parse(
+                String(wordDefinition.shortDef)
+              );
             }
           }
           state.allWordsFromBook = action.payload;
