@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { axiosTo } from "../../utils/promise";
@@ -148,6 +148,12 @@ const book = createSlice({
     resetbookResArrCheckbox: (state: InitialState) => {
       state.bookResArrCheckbox.forEach((item: any) => (item.checked = false));
     },
+    setPostBookIsLoading: (
+      state: InitialState,
+      action: PayloadAction<boolean>
+    ) => {
+      state.postBookIsLoading = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -193,5 +199,6 @@ export const {
   handlebookResArrCheckboxChange,
   resetbookResArrCheckbox,
   resetBookSelection,
+  setPostBookIsLoading
 } = book.actions;
 export default book;

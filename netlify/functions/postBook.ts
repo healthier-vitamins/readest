@@ -10,12 +10,12 @@ const notion = new Client({
 });
 
 exports.handler = async function (event: any, context: any) {
-  const { title, id } = JSON.parse(event.body);
+  const { bookName, userId } = JSON.parse(event.body);
 
   let booksDbId, createdBookId;
   try {
     const response = await notion.blocks.children.list({
-      block_id: id,
+      block_id: userId,
     });
     booksDbId = response.results[0].id;
   } catch (err: any) {
@@ -47,7 +47,7 @@ exports.handler = async function (event: any, context: any) {
           title: [
             {
               text: {
-                content: title,
+                content: bookName,
               },
             },
           ],
@@ -56,7 +56,7 @@ exports.handler = async function (event: any, context: any) {
           rich_text: [
             {
               text: {
-                content: title,
+                content: bookName,
               },
             },
           ],

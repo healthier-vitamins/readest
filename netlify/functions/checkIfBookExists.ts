@@ -55,8 +55,9 @@ exports.handler = async function (event, context) {
 
     if (
       // @ts-ignore
-      response.results[0].properties[bookSchema.BOOK_NAME].rich_text[0]
-        .plain_text
+      // response.results[0].properties[bookSchema.BOOK_NAME].rich_text[0]
+      //   .plain_text
+      response.results.length > 0
     ) {
       return {
         statusCode: HttpStatusCode.Conflict,

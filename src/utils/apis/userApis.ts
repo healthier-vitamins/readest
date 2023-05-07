@@ -51,10 +51,10 @@ async function userSignUp(onSuccess: any, onError: any, payload: any) {
 }
 
 async function login(onSuccess: any, onError: any, payload: any) {
-  const url = window.location.origin;
+  const originUrl = window.location.origin;
 
   const [goTrueErr, goTrueRes] = await axiosTo(
-    axios.post(`${url}/api/login`, payload)
+    axios.post(`${originUrl}/api/login`, payload)
   );
   if (goTrueErr) {
     if (checkAndHandleTimeoutError(goTrueErr, null)) {
@@ -64,7 +64,7 @@ async function login(onSuccess: any, onError: any, payload: any) {
   }
 
   const [updateLoggedInErr, updateLoggedInRes] = await axiosTo(
-    axios.post(`${url}/api/updateLoggedInDate`, payload)
+    axios.post(`${originUrl}/api/updateLoggedInDate`, payload)
   );
 
   if (updateLoggedInErr) {

@@ -1,12 +1,10 @@
 import { createRef, useEffect, useState, useCallback, useMemo } from "react";
 import { Modal, Form, Spinner, InputGroup } from "react-bootstrap";
 import "./CreateBookModal.scss";
-// @ts-ignore
 import { toggleCreateBookModal } from "../../store/slices/state.slice";
-// @ts-ignore
-import { postBook } from "../../store/slices/book.slice";
 import Cookies from "universal-cookie";
 import { useAppDispatch, useAppSelector } from "store/hooks";
+import { createBook } from "utils/apis/bookApis";
 
 function CreateBookModal() {
   const cookies = useMemo(() => {
@@ -37,13 +35,14 @@ function CreateBookModal() {
       setIsInvalid(false);
       const id = cookies.get("user-id");
       const payload = {
-        title: bookTitleRef.current!.value,
-        id: id,
+        bookName: bookTitleRef.current!.value.trim(),
+        userId: id,
       };
 
-      dispatch(postBook(payload));
+      // dispatch(postBook(payload));
+      createBook(payload);
     }
-  }, [bookTitleRef, cookies, dispatch]);
+  }, [bookTitleRef, cookies]);
 
   useEffect(() => {
     if (createBookModalState) {

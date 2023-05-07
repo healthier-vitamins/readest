@@ -1,7 +1,6 @@
 
-- swum? cxi...
+
 - caught bug when changing tabs quickly from definition tab
-- test no spec regex
 - change url to bookName only
 - add book regex check
     - probably need to composite this appropriately with other inputs...
@@ -11,9 +10,12 @@
 - adjust word page
 - navbar vertical scrollbar to scroll horizontally
 
+DONE
  - add year YearTimer
  - sighpie lemon pie need to fix wordDefinitionPage back button1. check if book exists before saved 
  - add shortcut "enter" for enter
+ - test no spec regex
+ - swum? cxi...
 
 {
     "object": "list",
