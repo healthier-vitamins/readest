@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./main.scss";
 import Protected from "components/Protected";
 import WordDefinitionPage from "pages/wordDefinitionPage/WordDefinitionPage";
+import NotFoundPage from "pages/notFoundPage/NotFoundPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           />
           <Route path="w/:wordFromUrlParam" element={<WordDefinitionPage />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />}></Route>
       </Routes>
     </BrowserRouter>
   );

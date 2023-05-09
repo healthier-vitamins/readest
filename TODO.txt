@@ -1,5 +1,5 @@
 
-
+- before opening tab check if book exists first
 - caught bug when changing tabs quickly from definition tab
 - change url to bookName only
 - add book regex check

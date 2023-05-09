@@ -40,7 +40,8 @@
   margin-left: auto;
 }
 
-.save-btn:hover, .word-definition-dlt-btn:hover {
+.save-btn:hover,
+.word-definition-dlt-btn:hover {
   cursor: pointer;
   color: rgb(153, 141, 104);
 }
@@ -48,6 +49,11 @@
 .word-definition-dlt-btn {
   font-size: 1.3rem;
   margin-left: auto;
+}
+
+.word-definition-dlt-popover-wrapper {
+  margin-left: auto;
+  margin-bottom: 2.2px;
 }
 
 .word-definition-examples {

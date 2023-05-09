@@ -17,11 +17,13 @@ export default class ApiError extends Error {
     if (this.errMsg !== "canceled") {
       if (
         this.errMsg.includes("timed out") ||
-        this.status == 500 ||
-        this.status == 502 ||
+        // this.status == 500 ||
+        // this.status == 502 ||
         this.status === "canceled"
       ) {
         store.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
+      } else if (this.errMsg.includes("path failed validation")) {
+        store.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_INVALID_URL));
       } else {
         store.dispatch(addToastNotificationArr(this.errMsg));
       }

@@ -1,11 +1,12 @@
 import "./WordDefinition.scss";
 import { AiOutlineSave } from "react-icons/ai";
-import React from "react";
+import React, { useState } from "react";
 import { toggleSaveWordModal } from "../../store/slices/state.slice";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import protectedFunction from "utils/protectedFunc";
 import { AllWordsInBook } from "store/slices/word.slice";
 import { MdDeleteOutline } from "react-icons/md";
+import DeleteConfirmationButton from "components/button/DeleteConfirmationButton";
 
 interface Props extends AllWordsInBook {}
 
@@ -19,6 +20,8 @@ function WordDefinition({
 }: Props) {
   const dispatch = useAppDispatch();
 
+  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
+
   const {
     authentication: { isUserLoggedIn },
   } = useAppSelector((state: any) => state.user);
@@ -27,6 +30,8 @@ function WordDefinition({
     text: string;
     isLast: boolean;
   }
+
+  function onConfirmDelete() {}
 
   function RenderWithItalics({ text, isLast }: RenderWithItalicsProps) {
     const doubleQuoteRegex = /{ldquo}|{rdquo}/g;
@@ -163,7 +168,22 @@ function WordDefinition({
               }}
             />
           )}
-          {id && <MdDeleteOutline className="word-definition-dlt-btn"></MdDeleteOutline>}
+          {id && !confirmDelete && (
+            <div
+              className="word-definition-dlt-btn"
+              onClick={() => setConfirmDelete(!confirmDelete)}
+            >
+              <MdDeleteOutline></MdDeleteOutline>
+            </div>
+          )}
+          {id && confirmDelete && (
+            <div className="word-definition-dlt-popover-wrapper">
+              <DeleteConfirmationButton
+                onConfirmDelete={onConfirmDelete}
+                setConfirmDelete={setConfirmDelete}
+              ></DeleteConfirmationButton>
+            </div>
+          )}
         </div>
       </div>
     );

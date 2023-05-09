@@ -82,7 +82,6 @@ function SignUpPopover() {
     // resetAllExceptShowPopoverStateAndShow();
     // clickOutsideHelper();
     dispatch(setShowPopoverState(false));
-    console.log();
   }
 
   function onChange(e: any) {
