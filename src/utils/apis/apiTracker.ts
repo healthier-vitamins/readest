@@ -2,6 +2,7 @@
 import axios from "axios";
 import ApiError from "classes/ApiError";
 import { AllWordsInBook } from "store/slices/word.slice";
+const apiError = new ApiError();
 
 interface ApiCall {
   id: string;
@@ -71,7 +72,10 @@ export class ApiTracker {
       return responseData;
     } catch (error: any) {
       console.error("API call cancelled:", error);
-      throw new ApiError(error.response.data, error.response.status);
+      throw apiError.dispatchErrorNotification(
+        error.response.data,
+        error.response.status
+      );
     }
 
     // else {

@@ -8,8 +8,8 @@ function Protected({ children }: any) {
   const dispatch = useAppDispatch();
 
   const isUserLoggedIn = cookies.get("token");
-  getEmailFromToken(isUserLoggedIn);
-
+  if (isUserLoggedIn) getEmailFromToken(isUserLoggedIn);
+  
   if (!isUserLoggedIn) {
     dispatch(setRedirector(true));
   } else {

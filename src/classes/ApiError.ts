@@ -3,29 +3,37 @@ import { addToastNotificationArr } from "store/slices/state.slice";
 import store from "store/store";
 import { GLOBALVARS } from "utils/GLOBALVARS";
 
-export default class ApiError extends Error {
-  private errMsg: string;
-  private status: number | string;
+export default class ApiError {
+  private errMsg: string | null;
+  private status: number | string | null;
+  private prevErrMsg: string | null;
   // private isTimeOut: boolean;
 
-  constructor(_errMsg: string, _status: string | number) {
-    super(_errMsg);
+  constructor() {
+    this.prevErrMsg = null;
+    this.errMsg = null;
+    this.status = null;
+  }
+
+  public dispatchErrorNotification(
+    _errMsg: string,
+    _status: string | number | null
+  ) {
     this.errMsg = _errMsg;
     this.status = _status;
-    // this.isTimeOut = _isTimeOut;
 
-    if (this.errMsg !== "canceled") {
-      if (
-        this.errMsg.includes("timed out") ||
-        // this.status == 500 ||
-        // this.status == 502 ||
-        this.status === "canceled"
-      ) {
-        store.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
-      } else if (this.errMsg.includes("path failed validation")) {
-        store.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_INVALID_URL));
-      } else {
-        store.dispatch(addToastNotificationArr(this.errMsg));
+    console.log("prev err: ", this.prevErrMsg);
+    console.log(" err: ", this.errMsg);
+    if (this.prevErrMsg !== this.errMsg) {
+      if (this.errMsg !== "canceled") {
+        this.prevErrMsg = this.errMsg;
+        if (this.errMsg.includes("timed out") || this.status === "canceled") {
+          store.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
+        } else if (this.errMsg.includes("path failed validation")) {
+          store.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_INVALID_URL));
+        } else {
+          store.dispatch(addToastNotificationArr(this.errMsg));
+        }
       }
     }
   }

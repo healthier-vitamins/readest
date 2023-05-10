@@ -15,6 +15,7 @@ export const GLOBALVARS = {
   ERROR_ACCESSING_BOOK_DB: "ERRx0002 Trouble accessing book database.",
   ERROR_GETTING_WORDS_IN_BOOK: "ERRx0003 Trouble getting words in book.",
   ERROR_INVALID_URL: "Invalid Url.",
+  ERROR_BOOK_DOES_NOT_EXIST: "Book does not exist.",
 
   // css classes
   DEFAULT_EMPTY_FONT_CLASS: "default-empty-font",

@@ -3,10 +3,11 @@ import { Spinner } from "react-bootstrap";
 import "./WordsPage.scss";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import { AllWordsInBook, getWordsInBook } from "store/slices/word.slice";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { BookRes, addBookSelection } from "store/slices/book.slice";
 import { GLOBALVARS } from "utils/GLOBALVARS";
 import WordDefinition from "components/wordDefinition/WordDefinition";
+import ApiError from "classes/ApiError";
 
 function WordsPage() {
   const { selectedTab } = useAppSelector((state) => state.book);
@@ -16,8 +17,12 @@ function WordsPage() {
   const {
     authentication: { isUserLoggedIn },
   } = useAppSelector((state: any) => state.user);
+
+  const { bookRes } = useAppSelector((state) => state.book);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const params = useParams();
+  const apiError = new ApiError();
 
   useEffect(() => {
     getAllWordsForBookTrigger();
@@ -27,23 +32,44 @@ function WordsPage() {
   useEffect(() => {
     if (isUserLoggedIn) {
       const [bookName, id] = params!.bookName!.split("--");
-      const payload = {
-        id: id,
-        bookName: bookName,
-      };
-      dispatch(addBookSelection(payload));
+      const bookExists = bookRes.some(
+        (book) => book.bookName.toLowerCase() === bookName.toLowerCase()
+      );
+      if (bookExists) {
+        const payload = {
+          id: id,
+          bookName: bookName,
+        };
+        dispatch(addBookSelection(payload));
+      } else {
+        apiError.dispatchErrorNotification(
+          GLOBALVARS.ERROR_BOOK_DOES_NOT_EXIST,
+          null
+        );
+        navigate("/");
+      }
     }
   }, [params, dispatch, isUserLoggedIn]);
 
   async function getAllWordsForBookTrigger() {
     const [bookName, id] = params!.bookName!.split("--");
-
-    const payload: BookRes = {
-      // bookId: selectedTab.bookObj.id,
-      id: id,
-      bookName: bookName,
-    };
-    dispatch(getWordsInBook(payload));
+    const bookExists = bookRes.some(
+      (book) => book.bookName.toLowerCase() === bookName.toLowerCase()
+    );
+    if (bookExists) {
+      const payload: BookRes = {
+        // bookId: selectedTab.bookObj.id,
+        id: id,
+        bookName: bookName,
+      };
+      dispatch(getWordsInBook(payload));
+    } else {
+      apiError.dispatchErrorNotification(
+        GLOBALVARS.ERROR_BOOK_DOES_NOT_EXIST,
+        null
+      );
+      navigate("/");
+    }
   }
 
   // function renderShortDefLogic(

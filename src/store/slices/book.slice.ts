@@ -61,7 +61,7 @@ export const postBook = createAsyncThunk(
       axios.post(`${url}/api/postBook`, payload)
     );
     if (err) {
-      if (err.status === 500) {
+      if (err.data.includes("timed out")) {
         thunkApi.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
         return;
       }
@@ -85,7 +85,7 @@ export const getAllBook = createAsyncThunk(
       axios.get(`${url}/api/getAllBook`, { params: { userId: userId } })
     );
     if (err) {
-      if (err.status === 500) {
+      if (err.data.includes("timed out")) {
         thunkApi.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
         return [];
       }
@@ -199,6 +199,6 @@ export const {
   handlebookResArrCheckboxChange,
   resetbookResArrCheckbox,
   resetBookSelection,
-  setPostBookIsLoading
+  setPostBookIsLoading,
 } = book.actions;
 export default book;

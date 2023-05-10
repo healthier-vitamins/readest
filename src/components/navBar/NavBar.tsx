@@ -32,6 +32,7 @@ function NavBar() {
   } = useAppSelector((state) => state.user);
   const { redirector } = useAppSelector((state: any) => state.state);
 
+  // redirect from Protected component.
   useEffect(() => {
     if (redirector) {
       navigate("/");
@@ -50,7 +51,7 @@ function NavBar() {
     clickOutsideHelper();
   }
 
-  // helper for selected active tabs
+  // helper for selected active tabs.
   function activeTabsClass(active: any) {
     if (active) {
       return "selected-active-tab";
@@ -58,6 +59,17 @@ function NavBar() {
   }
 
   function RenderTabs(obj: any, index: number) {
+    // const urlParams = window.location.href.substring(
+    //   window.location.origin.length
+    // );
+    // console.log("??? ", urlParams);
+    // let bookExists: boolean;
+    // if (urlParams.startsWith("/b/")) {
+    //   const [bookName] = params!.bookName!.split("--");
+    //   bookExists = bookRes.some(
+    //     (book) => book.bookName.toLowerCase() === bookName.toLowerCase()
+    //   );
+    // }
     if (obj.bookObj.bookName === "Definition") {
       return (
         <React.Fragment key={index}>

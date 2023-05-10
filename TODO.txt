@@ -1,5 +1,5 @@
-
-- before opening tab check if book exists first
+- add scrollbar.. including for navbar
+- next page
 - caught bug when changing tabs quickly from definition tab
 - change url to bookName only
 - add book regex check
@@ -16,6 +16,7 @@ DONE
  - add shortcut "enter" for enter
  - test no spec regex
  - swum? cxi...
+- before opening tab check if book exists first
 
 {
     "object": "list",
