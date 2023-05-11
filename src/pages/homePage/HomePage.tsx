@@ -49,7 +49,8 @@ function HomePage() {
         dispatch(setIsLoggedIn());
       }
     }
-  }, [dispatch, navigate]);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="homepage-container">

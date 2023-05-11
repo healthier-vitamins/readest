@@ -22,6 +22,7 @@ import { GLOBALVARS } from "utils/GLOBALVARS";
 function NavBar() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   const { bookSelection } = useAppSelector((state) => state.book);
   const { bookSelectionPopoverState } = useAppSelector(
     (state: any) => state.state

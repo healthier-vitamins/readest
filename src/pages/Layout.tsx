@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Outlet } from "react-router";
+
 import Cookies from "universal-cookie";
 import CreateBookModal from "../components/modal/CreateBookModal";
 import SaveWordModal from "../components/modal/SaveWordModal";
@@ -10,6 +10,7 @@ import { userLoggedIn } from "../store/slices/user.slice";
 import GeneralToast from "../components/toast/GeneralToast";
 import "./Layout.scss";
 import { useAppDispatch } from "store/hooks";
+import { Outlet } from "react-router-dom";
 
 const cookies = new Cookies();
 
@@ -48,7 +49,7 @@ function Layout() {
 
       <NavBar></NavBar>
       <Outlet></Outlet>
-      
+
       {/* <div className="mainest">
         <div className="all-navbar">
           <NavBar></NavBar>
