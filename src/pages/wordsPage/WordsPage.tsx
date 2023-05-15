@@ -4,11 +4,7 @@ import "./WordsPage.scss";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import { AllWordsInBook, getWordsInBook } from "store/slices/word.slice";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  BookRes,
-  addBookSelection,
-  changeActiveTab,
-} from "store/slices/book.slice";
+import { BookRes, addBookSelection } from "store/slices/book.slice";
 import { GLOBALVARS } from "utils/GLOBALVARS";
 import WordDefinition from "components/wordDefinition/WordDefinition";
 import ApiError from "classes/ApiError";

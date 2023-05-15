@@ -4,9 +4,14 @@ import React, { useState } from "react";
 import { toggleSaveWordModal } from "../../store/slices/state.slice";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import protectedFunction from "utils/protectedFunc";
-import { AllWordsInBook } from "store/slices/word.slice";
+import {
+  AllWordsInBook,
+  deleteWord,
+  getWordsInBook,
+} from "store/slices/word.slice";
 import { MdDeleteOutline } from "react-icons/md";
 import DeleteConfirmationButton from "components/button/DeleteConfirmationButton";
+import { BookRes } from "store/slices/book.slice";
 
 interface Props extends AllWordsInBook {}
 
@@ -24,14 +29,22 @@ function WordDefinition({
 
   const {
     authentication: { isUserLoggedIn },
-  } = useAppSelector((state: any) => state.user);
+  } = useAppSelector((state) => state.user);
+  const { selectedTab } = useAppSelector((state) => state.book);
 
   interface RenderWithItalicsProps {
     text: string;
     isLast: boolean;
   }
 
-  function onConfirmDelete() {}
+  async function onConfirmDelete() {
+    if (id) {
+      const res = await dispatch(deleteWord({ wordId: id }));
+      if (res) {
+        dispatch(getWordsInBook(selectedTab.bookObj));
+      }
+    }
+  }
 
   function RenderWithItalics({ text, isLast }: RenderWithItalicsProps) {
     const doubleQuoteRegex = /{ldquo}|{rdquo}/g;
@@ -168,22 +181,24 @@ function WordDefinition({
               }}
             />
           )}
-          {id && !confirmDelete && (
-            <div
-              className="word-definition-dlt-btn"
-              onClick={() => setConfirmDelete(!confirmDelete)}
-            >
-              <MdDeleteOutline></MdDeleteOutline>
-            </div>
-          )}
-          {id && confirmDelete && (
-            <div className="word-definition-dlt-popover-wrapper">
-              <DeleteConfirmationButton
-                onConfirmDelete={onConfirmDelete}
-                setConfirmDelete={setConfirmDelete}
-              ></DeleteConfirmationButton>
-            </div>
-          )}
+          <div className="word-definition-dlt-btn-wrapper">
+            {id && !confirmDelete && (
+              <div
+                className="word-definition-dlt-btn"
+                onClick={() => setConfirmDelete(!confirmDelete)}
+              >
+                <MdDeleteOutline></MdDeleteOutline>
+              </div>
+            )}
+            {id && confirmDelete && (
+              <div className="word-definition-dlt-popover-wrapper">
+                <DeleteConfirmationButton
+                  onConfirmDelete={onConfirmDelete}
+                  setConfirmDelete={setConfirmDelete}
+                ></DeleteConfirmationButton>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );

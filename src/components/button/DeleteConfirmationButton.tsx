@@ -11,7 +11,12 @@ function DeleteConfirmationButton({
 }: Props) {
   return (
     <div className="delete-confirm-container">
-      <button className="delete-confirm-cfm-btn">Confirm</button>
+      <button
+        className="delete-confirm-cfm-btn"
+        onClick={() => onConfirmDelete()}
+      >
+        Confirm
+      </button>
       <div className="delete-confirm-vertical-line" />
       <button
         className="delete-confirm-cancel-btn"

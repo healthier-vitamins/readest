@@ -38,8 +38,8 @@ interface InitialState {
   allWordsFromBook: AllWordsInBook[];
   isLoading: boolean;
   isSavingWordLoading: boolean;
-
   isGetWordLoading: boolean;
+  isDeleteWordLoading: boolean;
   isOriginatedFromUrl: IsOriginatedFromUrl;
 }
 
@@ -58,6 +58,7 @@ const initialState: InitialState = {
   isLoading: true,
   isSavingWordLoading: true,
   isGetWordLoading: true,
+  isDeleteWordLoading: true,
   isOriginatedFromUrl: {
     word: null,
     isFromSearchBar: false,
@@ -90,6 +91,11 @@ export const postWordToBook = createAsyncThunk(
     const { bookName } = payload.bookObj;
     // payload.bookObj.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text;
     if (err) {
+      if (err.data.includes("time out")) {
+        thunkApi.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
+        console.error(err.data);
+        return;
+      }
       thunkApi.dispatch(
         addToastNotificationArr(
           `Something went wrong adding word to ${bookName}. Please try again.`
@@ -117,6 +123,24 @@ export const getWordsInBook = createAsyncThunk(
     };
     res = await apiTracker.callApi(apiCall, (data) => data);
     return res.data;
+  }
+);
+
+export const deleteWord = createAsyncThunk(
+  "deleteWord",
+  async (payload: { wordId: string | number }, thunkApi) => {
+    const [err, res] = await axiosTo(axios.put("/api/deleteWord", payload));
+    if (err) {
+      if (err.data.includes("time out")) {
+        thunkApi.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
+        console.error(err.data);
+        return;
+      }
+      thunkApi.dispatch(addToastNotificationArr(`Error deleting word.`));
+      console.error(err.data);
+      return;
+    }
+    return res;
   }
 );
 
@@ -245,6 +269,15 @@ const word = createSlice({
       })
       .addCase(getWordsInBook.rejected, (state: InitialState) => {
         state.isGetWordLoading = true;
+      })
+      .addCase(deleteWord.fulfilled, (state: InitialState) => {
+        state.isDeleteWordLoading = false;
+      })
+      .addCase(deleteWord.pending, (state: InitialState) => {
+        state.isDeleteWordLoading = true;
+      })
+      .addCase(deleteWord.rejected, (state: InitialState) => {
+        state.isDeleteWordLoading = true;
       });
   },
 });
