@@ -34,11 +34,14 @@
   margin-top: 1rem;
   padding-right: 0.1rem;
   padding-bottom: 0.2rem;
+  max-height: 28.9px;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .save-btn {
   font-size: 1.4rem;
-  margin-left: auto;
+  // margin-left: auto;
 }
 
 .save-btn:hover,
@@ -50,19 +53,6 @@
 .word-definition-dlt-btn {
   font-size: 1.2rem;
   height: 28.9px;
-}
-
-.word-definition-dlt-btn-wrapper {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: flex-end;
-  max-height: 28.9px;
-  // margin-bottom: 0.2rem;
-}
-
-.word-definition-dlt-popover-wrapper {
-  // margin-bottom: 0.2px;
 }
 
 .word-definition-examples {

@@ -1,4 +1,5 @@
 - new bug found, need to change book urls to not contain ids => composite pre checks before every page render.
+- wordsPage re refresh on reload
 - add scrollbar.. including for navbar
 - next page
 - caught bug when changing tabs quickly from definition tab

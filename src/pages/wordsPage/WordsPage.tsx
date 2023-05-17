@@ -4,7 +4,7 @@ import "./WordsPage.scss";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import { AllWordsInBook, getWordsInBook } from "store/slices/word.slice";
 import { useNavigate, useParams } from "react-router-dom";
-import { BookRes, addBookSelection } from "store/slices/book.slice";
+import { addBookSelection } from "store/slices/book.slice";
 import { GLOBALVARS } from "utils/GLOBALVARS";
 import WordDefinition from "components/wordDefinition/WordDefinition";
 import ApiError from "classes/ApiError";
@@ -26,12 +26,7 @@ function WordsPage() {
   const [apiError, setApiError] = useState(new ApiError());
 
   useEffect(() => {
-    getAllWordsForBookTrigger();
-    // eslint-disable-next-line
-  }, [selectedTab.bookObj]);
-
-  useEffect(() => {
-    if (isUserLoggedIn) {
+    if (isUserLoggedIn && bookRes.length > 0) {
       const [bookName, id] = params!.bookName!.split("--");
       const bookExists = bookRes.some(
         (book) => book.bookName.toLowerCase() === bookName.toLowerCase()
@@ -42,6 +37,7 @@ function WordsPage() {
           bookName: bookName,
         };
         dispatch(addBookSelection(payload));
+        dispatch(getWordsInBook(payload));
       } else {
         apiError.dispatchErrorNotification(
           GLOBALVARS.ERROR_BOOK_DOES_NOT_EXIST,
@@ -50,29 +46,15 @@ function WordsPage() {
         navigate("/");
       }
     }
-    // eslint-disable-next-line
-  }, [params, dispatch, isUserLoggedIn]);
-
-  async function getAllWordsForBookTrigger() {
-    const [bookName, id] = params!.bookName!.split("--");
-    const bookExists = bookRes.some(
-      (book) => book.bookName.toLowerCase() === bookName.toLowerCase()
-    );
-    if (bookExists) {
-      const payload: BookRes = {
-        // bookId: selectedTab.bookObj.id,
-        id: id,
-        bookName: bookName,
-      };
-      dispatch(getWordsInBook(payload));
-    } else {
-      apiError.dispatchErrorNotification(
-        GLOBALVARS.ERROR_BOOK_DOES_NOT_EXIST,
-        null
-      );
-      navigate("/");
-    }
-  }
+  }, [
+    params,
+    dispatch,
+    isUserLoggedIn,
+    bookRes,
+    apiError,
+    navigate,
+    selectedTab.bookObj,
+  ]);
 
   // function renderShortDefLogic(
   //   shortDef: any

@@ -11,7 +11,6 @@ import {
 } from "store/slices/word.slice";
 import { MdDeleteOutline } from "react-icons/md";
 import DeleteConfirmationButton from "components/button/DeleteConfirmationButton";
-import { BookRes } from "store/slices/book.slice";
 
 interface Props extends AllWordsInBook {}
 
@@ -31,6 +30,7 @@ function WordDefinition({
     authentication: { isUserLoggedIn },
   } = useAppSelector((state) => state.user);
   const { selectedTab } = useAppSelector((state) => state.book);
+  const { isDeleteWordLoading } = useAppSelector((state) => state.word);
 
   interface RenderWithItalicsProps {
     text: string;
@@ -181,24 +181,22 @@ function WordDefinition({
               }}
             />
           )}
-          <div className="word-definition-dlt-btn-wrapper">
-            {id && !confirmDelete && (
-              <div
-                className="word-definition-dlt-btn"
-                onClick={() => setConfirmDelete(!confirmDelete)}
-              >
-                <MdDeleteOutline></MdDeleteOutline>
-              </div>
-            )}
-            {id && confirmDelete && (
-              <div className="word-definition-dlt-popover-wrapper">
-                <DeleteConfirmationButton
-                  onConfirmDelete={onConfirmDelete}
-                  setConfirmDelete={setConfirmDelete}
-                ></DeleteConfirmationButton>
-              </div>
-            )}
-          </div>
+
+          {id && !confirmDelete && (
+            <div
+              className="word-definition-dlt-btn"
+              onClick={() => setConfirmDelete(!confirmDelete)}
+            >
+              <MdDeleteOutline></MdDeleteOutline>
+            </div>
+          )}
+          {id && confirmDelete && (
+            <DeleteConfirmationButton
+              isLoading={isDeleteWordLoading}
+              onConfirmDelete={onConfirmDelete}
+              setConfirmDelete={setConfirmDelete}
+            ></DeleteConfirmationButton>
+          )}
         </div>
       </div>
     );
