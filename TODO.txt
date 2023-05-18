@@ -1,16 +1,16 @@
 - new bug found, need to change book urls to not contain ids => composite pre checks before every page render.
+    - change url to bookName only
+- next page
 - wordsPage re refresh on reload
 - add scrollbar.. including for navbar
-- next page
-- caught bug when changing tabs quickly from definition tab
-- change url to bookName only
-- add book regex check
-    - probably need to composite this appropriately with other inputs...
 - put all notion clients under a class
-- delete books
-- navbar height for mobile issue
 - adjust word page
 - navbar vertical scrollbar to scroll horizontally
+
+UNDER OBSERVATION
+- add book regex check
+    - probably need to composite this appropriately with other inputs...
+- navbar height for mobile issue
 
 DONE
  - add year YearTimer
@@ -19,6 +19,8 @@ DONE
  - test no spec regex
  - swum? cxi...
 - before opening tab check if book exists first
+- caught bug when changing tabs quickly from definition tab
+- delete books
 
 {
     "object": "list",
