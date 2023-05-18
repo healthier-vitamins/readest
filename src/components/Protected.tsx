@@ -1,16 +1,15 @@
 import { useAppDispatch } from "store/hooks";
 import Cookies from "universal-cookie";
 import { setRedirector } from "store/slices/state.slice";
-import { getEmailFromToken } from "utils/cryptography";
+import { isTokenExpired } from "utils/cryptography";
 const cookies = new Cookies();
 
 function Protected({ children }: any) {
   const dispatch = useAppDispatch();
 
-  const isUserLoggedIn = cookies.get("token");
-  if (isUserLoggedIn) getEmailFromToken(isUserLoggedIn);
-  
-  if (!isUserLoggedIn) {
+  let isUserLoggedIn = cookies.get("token");
+
+  if (isTokenExpired(isUserLoggedIn)) {
     dispatch(setRedirector(true));
   } else {
     return children;

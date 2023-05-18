@@ -36,7 +36,7 @@ function NavBar() {
   // redirect from Protected component.
   useEffect(() => {
     if (redirector) {
-      navigate("/");
+      logout(navigate);
       dispatch(addToastNotificationArr("Please login."));
       dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
       dispatch(setShowPopoverState(true));

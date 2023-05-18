@@ -9,15 +9,18 @@ interface _decodedToken {
 }
 
 function getEmailFromToken(token: any) {
+  if (isTokenExpired(token)) {
+    return null;
+  }
   const decodedToken: _decodedToken = jwt_decode(token);
-  console.log("decoded: ", decodedToken);
   return decodedToken.email;
 }
 
 function isTokenExpired(token: string) {
   const currentTime = Date.now() / 1000;
   const decodedToken: _decodedToken = jwt_decode(token);
-  if (decodedToken.exp > currentTime) {
+
+  if (decodedToken.exp >= Number(currentTime.toFixed(0))) {
     return false;
   }
   return true;

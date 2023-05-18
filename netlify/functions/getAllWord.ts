@@ -3,7 +3,7 @@ import { BookRes } from "../../src/store/slices/book.slice";
 import { HttpStatusCode } from "axios";
 import { wordSchema } from "../../src/utils/schemas/wordSchema";
 
-const { Client } = require("@notionhq/client");
+import { Client } from "@notionhq/client";
 
 const { NOTION_KEY } = process.env;
 const notion = new Client({
@@ -12,7 +12,7 @@ const notion = new Client({
 
 exports.handler = async function (event, context) {
   const { id } = JSON.parse(event.body) as BookRes;
-  const databaseId = await getBookDatabase(id);
+  const databaseId = await getBookDatabase(String(id));
 
   try {
     const response = await notion.databases.query({
@@ -32,7 +32,8 @@ exports.handler = async function (event, context) {
     });
 
     let allWordsFromBookResponse: AllWordsInBook[] = [];
-
+    console.log(response);
+    // TODO response.has_more && response.next_cursor
     for (let word of response.results) {
       // let wordObj: ChosenWordDefinition = {
       //   abbreviation: "",
@@ -49,13 +50,18 @@ exports.handler = async function (event, context) {
       // wordObj.examples =
       //   word.properties[wordSchema.EXAMPLES].rich_text[0].plain_text;
       // allWordsFromBookResponse.push(wordObj);
+
       let allWordsObj: AllWordsInBook = {
         id: word.id,
         abbreviation:
+          // @ts-expect-error
           word.properties[wordSchema.ABBREVIATION].rich_text[0].plain_text,
+        // @ts-expect-error
         examples: word.properties[wordSchema.EXAMPLES].rich_text[0].plain_text,
         shortDef:
+          // @ts-expect-error
           word.properties[wordSchema.DEFINITION].rich_text[0].plain_text,
+        // @ts-expect-error
         title: word.properties[wordSchema.WORD].rich_text[0].plain_text,
         transitive: [],
       };
@@ -75,7 +81,7 @@ exports.handler = async function (event, context) {
   }
 };
 
-async function getBookDatabase(bookId: string | number) {
+async function getBookDatabase(bookId: string) {
   try {
     const response = await notion.blocks.children.list({
       block_id: bookId,
@@ -83,9 +89,10 @@ async function getBookDatabase(bookId: string | number) {
     return response.results[0].id;
   } catch (err) {
     console.error(err);
-    return {
-      statusCode: HttpStatusCode.InternalServerError,
-      body: err.toString(),
-    };
+    // return {
+    //   statusCode: HttpStatusCode.InternalServerError,
+    //   body: err.toString(),
+    // };
+    throw new Error(err.toString());
   }
 }

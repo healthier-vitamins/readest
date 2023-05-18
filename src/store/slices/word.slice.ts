@@ -110,6 +110,10 @@ export const postWordToBook = createAsyncThunk(
   }
 );
 
+// interface GetWordsInBookPayload extends BookRes {
+//   abortController: AbortController | null;
+// }
+
 export const getWordsInBook = createAsyncThunk(
   "getWordsInBook",
   async (payload: BookRes, thunkApi) => {
@@ -122,6 +126,26 @@ export const getWordsInBook = createAsyncThunk(
       payload: payload,
     };
     res = await apiTracker.callApi(apiCall, (data) => data);
+
+    // const [err, res] = payload.abortController
+    //   ? await axiosTo(
+    //       axios.post("/api/getAllWord", payload, {
+    //         signal: payload.abortController.signal,
+    //       })
+    //     )
+    //   : await axiosTo(axios.post("/api/getAllWord", payload));
+    // if (err) {
+    //   if (err.data.includes("time out")) {
+    //     thunkApi.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
+    //     console.error(err.data);
+    //     return;
+    //   }
+    //   thunkApi.dispatch(
+    //     addToastNotificationArr(GLOBALVARS.ERROR_GETTING_WORDS_IN_BOOK)
+    //   );
+    //   console.error(err.data);
+    //   return;
+    // }
     return res.data;
   }
 );

@@ -60,7 +60,8 @@ export class ApiTracker {
     apiCall: ApiCall,
     onSuccess: (data: any) => void
   ): Promise<AllWordsInBook[]> {
-    if (this.previousApiCall?.id !== apiCall.id) {
+    console.log("previous id ", this.previousApiCall?.id);
+    if (this.previousApiCall?.id) {
       this.previousApiCall?.abortController.abort();
       this.previousApiCall = apiCall;
     }
