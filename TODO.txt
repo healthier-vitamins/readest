@@ -1,5 +1,6 @@
 - new bug found, need to change book urls to not contain ids => composite pre checks before every page render.
     - change url to bookName only
+- if enter book url directly while logged out, throws an error in prod
 - next page
 - wordsPage re refresh on reload
 - add scrollbar.. including for navbar
