@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import HomePage from "./pages/homePage/HomePage";
 import Layout from "./pages/Layout";
@@ -11,7 +11,7 @@ import NotFoundPage from "pages/notFoundPage/NotFoundPage";
 
 function App() {
   return (
-    <BrowserRouter>
+    <MemoryRouter>
       <Routes>
         <Route path="/" element={<Layout></Layout>}>
           <Route index={true} element={<HomePage></HomePage>}></Route>
@@ -27,7 +27,7 @@ function App() {
         </Route>
         <Route path="*" element={<NotFoundPage />}></Route>
       </Routes>
-    </BrowserRouter>
+    </MemoryRouter>
   );
 }
 
