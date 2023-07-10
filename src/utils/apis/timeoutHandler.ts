@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-
 import { addToastNotificationArr } from "../../store/slices/state.slice";
 import store from "../../store/store";
 import { GLOBALVARS } from "../GLOBALVARS";
