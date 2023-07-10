@@ -16,6 +16,8 @@ $body-color: $web-default-color;
 // @import "../node_modules/bootstrap/scss/root";
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 
+
+// @import "bootstrap/scss/bootstrap";
 @import "./App.scss";
 @import "./components/button/DeleteConfirmationButton.scss";
 @import "./components/modal/CreateBookModal.scss";
