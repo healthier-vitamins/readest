@@ -1,4 +1,5 @@
 import {
+  Navigate,
   Route,
   createBrowserRouter,
   createRoutesFromElements,
@@ -26,7 +27,8 @@ const router = createBrowserRouter(
         path="w/:wordFromUrlParam"
         element={<WordDefinitionPage />}
       ></Route>
-      <Route path="*" element={<NotFoundPage />} />
+      <Route path="/404" element={<NotFoundPage />} />
+      <Route path="/*" element={<Navigate to={"/404"} replace />}></Route>
     </Route>
   )
 );

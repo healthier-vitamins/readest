@@ -4,6 +4,8 @@ import HomePage from "./pages/homePage/HomePage";
 import Layout from "./pages/Layout";
 import WordsPage from "./pages/wordsPage/WordsPage";
 import "bootstrap/dist/css/bootstrap.min.css";
+//@ts-ignore
+import * as bootstrap from "bootstrap";
 import "./main.scss";
 import Protected from "components/Protected";
 import WordDefinitionPage from "pages/wordDefinitionPage/WordDefinitionPage";
