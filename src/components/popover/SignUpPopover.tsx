@@ -12,7 +12,7 @@ import "./SignUpPopover.scss";
 import { useNavigate } from "react-router-dom";
 import OnClickOutsideComponent from "../OnClickOutsideComponent";
 import { login, userSignUp, verifyUser } from "../../utils/apis/userApis";
-import { useAppDispatch, useAppSelector } from "store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
 function SignUpPopover() {
   const navigate = useNavigate();
@@ -114,7 +114,7 @@ function SignUpPopover() {
     }
   }, [errorState, loadingState]);
 
-  async function confirmEmailHelper() {
+  function confirmEmailHelper() {
     const token = window.location.hash.substring(
       window.location.hash.indexOf("=") + 1
     );
@@ -141,7 +141,7 @@ function SignUpPopover() {
       navigate(`/`, { replace: true });
     }
 
-    function onSuccess(res: any) {
+    function onSuccess(_res: any) {
       setLoadingState({
         ...loadingState,
         confirmEmail: false,
@@ -156,10 +156,10 @@ function SignUpPopover() {
     dispatch(toggleShowPopoverState());
   }
 
-  const handleSignUp = useCallback(async () => {
+  const handleSignUp = useCallback(() => {
     if (
-      confirmPasswordRef!.current!.value === passwordRef!.current!.value &&
-      passwordRef!.current!.value !== ""
+      confirmPasswordRef.current!.value === passwordRef.current!.value &&
+      passwordRef.current!.value !== ""
     ) {
       setIsSubmitted(true);
       setSignUpPasswordCompare({
@@ -168,9 +168,9 @@ function SignUpPopover() {
         isSame: true,
       });
       const payload = {
-        name: nameRef!.current!.value,
-        email: emailRef!.current!.value,
-        password: passwordRef!.current!.value,
+        name: nameRef.current!.value,
+        email: emailRef.current!.value,
+        password: passwordRef.current!.value,
       };
       console.log(payload);
 
@@ -219,11 +219,11 @@ function SignUpPopover() {
     signUpPasswordCompare,
   ]);
 
-  const handleLogin = useCallback(async () => {
+  const handleLogin = useCallback(() => {
     setIsSubmitted(true);
     const payload = {
-      email: loginEmailRef!.current!.value,
-      password: loginPasswordRef!.current!.value,
+      email: loginEmailRef.current!.value,
+      password: loginPasswordRef.current!.value,
     };
 
     function onError(err: any) {
@@ -270,18 +270,18 @@ function SignUpPopover() {
   function handleSignUpPasswordCompare(e: any) {
     console.log(signUpPasswordCompare);
     if (signUpPasswordCompare.isDirty) {
-      passwordRef!.current!.value !== confirmPasswordRef!.current!.value
+      passwordRef.current!.value !== confirmPasswordRef.current!.value
         ? setSignUpPasswordCompare({
             ...signUpPasswordCompare,
             isSame: false,
-            password: passwordRef!.current!.value,
-            confirmPassword: confirmPasswordRef!.current!.value,
+            password: passwordRef.current!.value,
+            confirmPassword: confirmPasswordRef.current!.value,
           })
         : setSignUpPasswordCompare({
             ...signUpPasswordCompare,
             isSame: true,
-            password: passwordRef!.current!.value,
-            confirmPassword: confirmPasswordRef!.current!.value,
+            password: passwordRef.current!.value,
+            confirmPassword: confirmPasswordRef.current!.value,
           });
     } else {
       const { name, value } = e.target;

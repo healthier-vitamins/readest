@@ -1,8 +1,8 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { axiosTo } from "utils/promise";
 import { addToastNotificationArr } from "./state.slice";
-import { GLOBALVARS } from "utils/GLOBALVARS";
+import { GLOBALVARS } from "../../utils/GLOBALVARS";
+import { axiosTo } from "../../utils/promise";
 // import { checkAndHandleTimeoutError } from "utils/apis/timeoutHandler";
 
 export interface StoicQuote {
@@ -26,7 +26,7 @@ const initialState: InitialState = {
 // stoic qpi
 export const getStoicQuote = createAsyncThunk(
   "getStoicQuote",
-  async (payload: any, thunkApi) => {
+  async (_payload: any, thunkApi) => {
     const [err, res] = await axiosTo(
       axios.get("https://stoic-quotes.com/api/quote")
     );
@@ -61,13 +61,13 @@ const miscSlice = createSlice({
       )
       .addCase(
         getStoicQuote.pending,
-        (state: InitialState, action: PayloadAction<any>) => {
+        (state: InitialState, _action: PayloadAction<any>) => {
           state.stoicQuote.isLoading = true;
         }
       )
       .addCase(
         getStoicQuote.rejected,
-        (state: InitialState, action: PayloadAction<any>) => {
+        (state: InitialState, _action: PayloadAction<any>) => {
           state.stoicQuote.isLoading = true;
         }
       );

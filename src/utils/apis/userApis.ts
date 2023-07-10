@@ -2,9 +2,9 @@ import axios from "axios";
 import { axiosTo } from "../promise";
 import store from "../../store/store";
 import { addUserPageId, userLoggedOut } from "../../store/slices/user.slice";
-import { resetBookSelection } from "store/slices/book.slice";
 import { NavigateFunction } from "react-router-dom";
 import { checkAndHandleTimeoutError } from "./timeoutHandler";
+import { resetBookSelection } from "../../store/slices/book.slice";
 
 async function userSignUp(onSuccess: any, onError: any, payload: any) {
   const [goTrueErr, goTrueRes] = await axiosTo(
@@ -35,8 +35,7 @@ async function userSignUp(onSuccess: any, onError: any, payload: any) {
     return;
   } else {
     // create new account in notion
-    // eslint-disable-next-line
-    const [notionErr, notionRes] = await axiosTo(
+    const [notionErr, _notionRes] = await axiosTo(
       axios.post("api/postUser", payload)
     );
     if (notionErr) {
@@ -93,7 +92,7 @@ async function verifyUser(onSuccess: any, onError: any, payload: any) {
   return;
 }
 
-async function logout(navigate: NavigateFunction) {
+function logout(navigate: NavigateFunction) {
   store.dispatch(userLoggedOut());
   store.dispatch(resetBookSelection());
   navigate("/");

@@ -15,9 +15,9 @@ import {
   setShowPopoverPage,
   setShowPopoverState,
 } from "../../store/slices/state.slice";
-import { useAppDispatch, useAppSelector } from "store/hooks";
-import { logout } from "utils/apis/userApis";
-import { GLOBALVARS } from "utils/GLOBALVARS";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { logout } from "../../utils/apis/userApis";
+import { GLOBALVARS } from "../../utils/GLOBALVARS";
 
 function NavBar() {
   const dispatch = useAppDispatch();

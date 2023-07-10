@@ -10,7 +10,7 @@ const notion = new Client({
   auth: NOTION_KEY,
 });
 
-exports.handler = async function (event, context) {
+exports.handler = async function (event: any, _context: any) {
   const { id } = JSON.parse(event.body) as BookRes;
   const databaseId = await getBookDatabase(String(id));
 
@@ -63,7 +63,6 @@ exports.handler = async function (event, context) {
           word.properties[wordSchema.DEFINITION].rich_text[0].plain_text,
         // @ts-expect-error
         title: word.properties[wordSchema.WORD].rich_text[0].plain_text,
-        transitive: [],
       };
       allWordsFromBookResponse.push(allWordsObj);
     }
@@ -72,7 +71,7 @@ exports.handler = async function (event, context) {
       statusCode: HttpStatusCode.Ok,
       body: JSON.stringify(allWordsFromBookResponse),
     };
-  } catch (err) {
+  } catch (err: any) {
     console.error(err.message);
     return {
       statusCode: HttpStatusCode.InternalServerError,
@@ -87,7 +86,7 @@ async function getBookDatabase(bookId: string) {
       block_id: bookId,
     });
     return response.results[0].id;
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
     // return {
     //   statusCode: HttpStatusCode.InternalServerError,

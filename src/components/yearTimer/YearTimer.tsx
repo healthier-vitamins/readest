@@ -1,15 +1,15 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import "./YearTimer.scss";
-import { useAppDispatch, useAppSelector } from "store/hooks";
-import { getStoicQuote } from "store/slices/misc.slice";
-import { RootState } from "store/store";
-import { GLOBALVARS } from "utils/GLOBALVARS";
-import { useConditionalEffect } from "utils/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { GLOBALVARS } from "../../utils/GLOBALVARS";
+import { useConditionalEffect } from "../../utils/hooks/hooks";
+import { getStoicQuote } from "../../store/slices/misc.slice";
 
 function YearTimer() {
   const dispatch = useAppDispatch();
-  const { stoicQuote } = useAppSelector((state: RootState) => state.misc);
+  const { stoicQuote } = useAppSelector((state) => state.misc);
 
   const [yearRemainingProgress, setYearRemainingProgress] = useState<
     number | null
@@ -46,7 +46,7 @@ function YearTimer() {
   function renderRemaining(): React.ReactElement[] | React.ReactElement {
     if (yearRemainingProgress) {
       const array = Array(yearRemainingProgress).fill(1);
-      return array.map((ele, index) => (
+      return array.map((_ele, index) => (
         <span className="timer-progress-shade" key={index}>
           &#x2591;
         </span>
@@ -59,7 +59,7 @@ function YearTimer() {
       const progress =
         GLOBALVARS.YEAR_TIMER_NUMBER_OF_BLOCKS - yearRemainingProgress;
       const array = Array(progress).fill(1);
-      return array.map((ele, index) => (
+      return array.map((_ele, index) => (
         <span className="timer-progress-shade" key={index}>
           &#x2593;
         </span>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { bookSchema } from "../../src/utils/schemas/bookSchema";
 import { Client } from "@notionhq/client";
 import { HttpStatusCode } from "axios";
@@ -7,7 +8,7 @@ const notion = new Client({
   auth: NOTION_KEY,
 });
 
-exports.handler = async function (event, context) {
+exports.handler = async function (event: any, _context: any) {
   const { userId } = event.queryStringParameters;
 
   let booksDbId: string;
@@ -16,7 +17,7 @@ exports.handler = async function (event, context) {
       block_id: userId,
     });
     booksDbId = response.results[0].id;
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
     console.log(err.message);
     return {
@@ -46,15 +47,14 @@ exports.handler = async function (event, context) {
       // ]
     });
 
-    // @ts-ignore
     // console.log("response |||||||||||| ", response.results[0].properties);
-    let simplifiedResponse;
+    let simplifiedResponse: any;
     if (response.results.length > 0) {
       simplifiedResponse = response.results.map((obj) => {
         // const tempArr = [];
         const tempObj = {
           id: obj.id,
-          // @ts-ignore
+          //@ts-ignore
           bookName: obj.properties.BOOK_NAME.rich_text[0].plain_text,
         };
         // tempArr.push(tempObj)
@@ -73,7 +73,7 @@ exports.handler = async function (event, context) {
     //   statusCode: HttpStatusCode.Ok,
     //   body: JSON.stringify(response),
     // };
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
     console.log(err.message);
     return {

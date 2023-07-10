@@ -4,7 +4,7 @@ import { to } from "../../src/utils/promise";
 
 const { NETLIFY_IDENTITY_URL } = process.env;
 
-exports.handler = async function (event, context) {
+exports.handler = async function (event: any, _context: any) {
   const { email, password } = JSON.parse(event.body);
 
   const auth = new GoTrue({

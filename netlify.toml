@@ -5,7 +5,7 @@
 [functions] 
     node_bundler = "esbuild"
 [dev]
-    framework = "create-react-app"
+    framework = "vite"
     functionsPort = 3001
 [[redirects]]
     from = "/*"

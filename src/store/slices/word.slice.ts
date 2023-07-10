@@ -2,10 +2,10 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { addToastNotificationArr } from "./state.slice";
-import { axiosTo } from "utils/promise";
-import { ApiCall, ApiTracker } from "utils/apis/apiTracker";
+import { ApiCall, ApiTracker } from "../../utils/apis/apiTracker";
+import { axiosTo } from "../../utils/promise";
+import { GLOBALVARS } from "../../utils/GLOBALVARS";
 import { BookRes } from "./book.slice";
-import { GLOBALVARS } from "utils/GLOBALVARS";
 const apiTracker = new ApiTracker();
 
 // api url with query passed through as parameter
@@ -23,7 +23,6 @@ export interface ChosenWordDefinition {
   examples: string[];
   abbreviation: string;
   shortDef: string[];
-  transitive: string[];
 }
 
 interface IsOriginatedFromUrl {
@@ -52,7 +51,6 @@ const initialState: InitialState = {
     examples: [],
     abbreviation: "",
     shortDef: [],
-    transitive: [],
   },
   allWordsFromBook: [],
   isLoading: true,
@@ -68,7 +66,7 @@ const initialState: InitialState = {
 // exported api call
 export const getWordDefinition = createAsyncThunk(
   "getWordDefinition",
-  async (queriedWord: string, thunkApi) => {
+  async (queriedWord: string, _thunkApi) => {
     const [err, res] = await axiosTo(axios.get(apiUrl(queriedWord)));
     // console.log("fetched data ", resp.data);
     if (err) {
@@ -87,7 +85,7 @@ export const postWordToBook = createAsyncThunk(
   "postWordToBook",
   async (payload: any, thunkApi) => {
     // eslint-disable-next-line
-    const [err, res] = await axiosTo(axios.post("/api/postWord", payload));
+    const [err, _res] = await axiosTo(axios.post("/api/postWord", payload));
     const { bookName } = payload.bookObj;
     // payload.bookObj.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text;
     if (err) {
@@ -116,7 +114,7 @@ export const postWordToBook = createAsyncThunk(
 
 export const getWordsInBook = createAsyncThunk(
   "getWordsInBook",
-  async (payload: BookRes, thunkApi) => {
+  async (payload: BookRes, _thunkApi) => {
     let res: any;
     const apiCall: ApiCall = {
       id: payload.id,
@@ -190,8 +188,8 @@ const word = createSlice({
 
       if (Object.keys(action.payload).includes("cxs")) {
         // state.chosenWordDefinition.examples.push(action.payload.cxs);
-        let shortDef = [];
-        for (let pastTenseWordObj of action.payload.cxs) {
+        const shortDef = [];
+        for (const pastTenseWordObj of action.payload.cxs) {
           const definition = `${pastTenseWordObj.cxl} ${pastTenseWordObj.cxtis[0].cxt}`;
           shortDef.push(definition);
         }
@@ -199,8 +197,8 @@ const word = createSlice({
       } else {
         state.chosenWordDefinition.shortDef = action.payload.shortdef;
 
-        for (let _sense of action.payload.def[0].sseq) {
-          for (let sense of _sense) {
+        for (const _sense of action.payload.def[0].sseq) {
+          for (const sense of _sense) {
             if (sense[1]?.dt?.length > 1 && sense[1].dt[1][0] === "vis") {
               // t.t.replace(/\{it\}(.*?)\{\/it\}/g, "<i>$1</i>")
 
@@ -224,7 +222,6 @@ const word = createSlice({
         examples: [],
         abbreviation: "",
         shortDef: [],
-        transitive: [],
       };
     },
     addIsOriginatedFromUrlWord: (
@@ -260,7 +257,7 @@ const word = createSlice({
       .addCase(getWordDefinition.rejected, (state: InitialState) => {
         state.isLoading = true;
       })
-      .addCase(postWordToBook.fulfilled, (state: InitialState, action) => {
+      .addCase(postWordToBook.fulfilled, (state: InitialState) => {
         state.isSavingWordLoading = false;
       })
       .addCase(postWordToBook.pending, (state: InitialState) => {
@@ -275,7 +272,7 @@ const word = createSlice({
           console.log("all words for book ??????????? ", action.payload);
 
           if (action.payload?.length) {
-            for (let wordDefinition of action.payload) {
+            for (const wordDefinition of action.payload) {
               wordDefinition.examples = JSON.parse(
                 String(wordDefinition.examples)
               );

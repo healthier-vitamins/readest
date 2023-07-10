@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import "./WordsPage.scss";
-import { useAppDispatch, useAppSelector } from "store/hooks";
-import { AllWordsInBook, getWordsInBook } from "store/slices/word.slice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useNavigate, useParams } from "react-router-dom";
-import { addBookSelection } from "store/slices/book.slice";
-import { GLOBALVARS } from "utils/GLOBALVARS";
-import WordDefinition from "components/wordDefinition/WordDefinition";
-import ApiError from "classes/ApiError";
+import ApiError from "../../classes/ApiError";
+import { addBookSelection } from "../../store/slices/book.slice";
+import { AllWordsInBook, getWordsInBook } from "../../store/slices/word.slice";
+import { GLOBALVARS } from "../../utils/GLOBALVARS";
+import WordDefinition from "../../components/wordDefinition/WordDefinition";
 
 function WordsPage() {
   const { selectedTab } = useAppSelector((state) => state.book);
@@ -16,18 +16,18 @@ function WordsPage() {
   );
   const {
     authentication: { isUserLoggedIn },
-  } = useAppSelector((state: any) => state.user);
+  } = useAppSelector((state) => state.user);
 
   const { bookRes } = useAppSelector((state) => state.book);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const params = useParams();
   // eslint-disable-next-line
-  const [apiError, setApiError] = useState(new ApiError());
+  const [apiError, _setApiError] = useState(new ApiError());
 
   useEffect(() => {
     if (isUserLoggedIn && bookRes.length > 0) {
-      const [bookName, id] = params!.bookName!.split("--");
+      const [bookName, id] = params.bookName!.split("--");
       const bookExists = bookRes.some(
         (book) => book.bookName.toLowerCase() === bookName.toLowerCase()
       );
@@ -133,7 +133,6 @@ function WordsPage() {
                 examples={wordObj.examples}
                 shortDef={wordObj.shortDef}
                 title={wordObj.title}
-                transitive={wordObj.transitive}
               ></WordDefinition>
             </div>
           ))

@@ -2,17 +2,18 @@ import "./WordDefinition.scss";
 import { AiOutlineSave } from "react-icons/ai";
 import React, { useState } from "react";
 import { toggleSaveWordModal } from "../../store/slices/state.slice";
-import { useAppDispatch, useAppSelector } from "store/hooks";
-import protectedFunction from "utils/protectedFunc";
+
+import { MdDeleteOutline } from "react-icons/md";
 import {
   AllWordsInBook,
   deleteWord,
   getWordsInBook,
-} from "store/slices/word.slice";
-import { MdDeleteOutline } from "react-icons/md";
-import DeleteConfirmationButton from "components/button/DeleteConfirmationButton";
+} from "../../store/slices/word.slice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import protectedFunction from "../../utils/protectedFunc";
+import DeleteConfirmationButton from "../button/DeleteConfirmationButton";
 
-interface Props extends AllWordsInBook {}
+interface WordDefinitionProps extends AllWordsInBook {}
 
 function WordDefinition({
   id,
@@ -20,8 +21,7 @@ function WordDefinition({
   examples,
   shortDef,
   title,
-  transitive,
-}: Props) {
+}: WordDefinitionProps) {
   const dispatch = useAppDispatch();
 
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
@@ -133,7 +133,7 @@ function WordDefinition({
   }
 
   function renderExamples(): React.ReactElement | React.ReactElement[] | null {
-    let isLast: boolean = false;
+    let isLast = false;
     if (examples.length) {
       return examples.map((ele, index) => {
         if (index === examples.length - 1) {

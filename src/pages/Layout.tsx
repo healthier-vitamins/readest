@@ -9,8 +9,8 @@ import { getEmailFromToken, isTokenExpired } from "../utils/cryptography";
 import { userLoggedIn } from "../store/slices/user.slice";
 import GeneralToast from "../components/toast/GeneralToast";
 import "./Layout.scss";
-import { useAppDispatch } from "store/hooks";
 import { Outlet } from "react-router-dom";
+import { useAppDispatch } from "../store/hooks";
 
 const cookies = new Cookies();
 

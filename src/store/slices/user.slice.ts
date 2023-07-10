@@ -58,7 +58,7 @@ const userSlice = createSlice({
         path: "/",
       });
     },
-    addUserPageId: (state: InitialState, action: PayloadAction<any>) => {
+    addUserPageId: (_state: InitialState, action: PayloadAction<any>) => {
       const id = action.payload;
       cookies.set("user-id", id, {
         maxAge: 3600,

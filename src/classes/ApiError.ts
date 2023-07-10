@@ -1,7 +1,8 @@
 /* eslint-disable eqeqeq */
-import { addToastNotificationArr } from "store/slices/state.slice";
-import store from "store/store";
-import { GLOBALVARS } from "utils/GLOBALVARS";
+
+import { addToastNotificationArr } from "../store/slices/state.slice";
+import store from "../store/store";
+import { GLOBALVARS } from "../utils/GLOBALVARS";
 
 export default class ApiError {
   private errMsg: string | null;

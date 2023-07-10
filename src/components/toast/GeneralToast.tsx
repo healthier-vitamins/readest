@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-bootstrap";
-import { useAppDispatch, useAppSelector } from "store/hooks";
 import { removeToastNotificationArr } from "../../store/slices/state.slice";
 
 import "./GeneralToast.scss";
 import Toaster from "./Toaster";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
 function SavedWordToast() {
   const dispatch = useAppDispatch();

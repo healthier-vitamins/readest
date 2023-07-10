@@ -8,7 +8,7 @@ const notion = new Client({
   auth: NOTION_KEY,
 });
 
-exports.handler = async function (event: any, context: any) {
+exports.handler = async function (event: any, _context: any) {
   const { email } = JSON.parse(event.body);
   // const dateNow = new Date().toLocaleString("en-sg", {
   //   hour12: false,

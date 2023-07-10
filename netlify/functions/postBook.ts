@@ -9,7 +9,7 @@ const notion = new Client({
   auth: NOTION_KEY,
 });
 
-exports.handler = async function (event: any, context: any) {
+exports.handler = async function (event: any, _context: any) {
   const { bookName, userId } = JSON.parse(event.body);
 
   let booksDbId, createdBookId;

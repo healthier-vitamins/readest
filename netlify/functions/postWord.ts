@@ -23,7 +23,7 @@ interface parsedObj {
   wordDef: ChosenWordDefinition;
 }
 
-exports.handler = async function (event: any, context: any) {
+exports.handler = async function (event: any, _context: any) {
   const { bookObj, wordDef } = JSON.parse(event.body) as parsedObj;
 
   let bookDatabaseId: string | null | undefined;
@@ -38,7 +38,7 @@ exports.handler = async function (event: any, context: any) {
       block_id: bookObj.id,
     });
     bookDatabaseId = response.results[0].id;
-  } catch (err) {
+  } catch (err: any) {
     console.error(err.message);
     return {
       statusCode: HttpStatusCode.InternalServerError,
@@ -121,7 +121,7 @@ exports.handler = async function (event: any, context: any) {
       statusCode: HttpStatusCode.Ok,
       body: JSON.stringify(response.id),
     };
-  } catch (err) {
+  } catch (err: any) {
     return {
       statusCode: HttpStatusCode.InternalServerError,
       body: err.toString(),

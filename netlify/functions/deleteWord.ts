@@ -11,13 +11,12 @@ const notion = new Client({
 
 exports.handler = async function (
   event: HandlerEvent,
-  context: HandlerContext
+  _context: HandlerContext
 ) {
   const { wordId } = JSON.parse(event.body!);
 
   try {
-    // eslint-disable-next-line
-    const response = await notion.pages.update({
+    await notion.pages.update({
       page_id: wordId,
       properties: {
         [wordSchema.STATUS]: {
@@ -30,7 +29,7 @@ exports.handler = async function (
       statusCode: HttpStatusCode.Ok,
       body: "Word deleted.",
     };
-  } catch (err) {
+  } catch (err: any) {
     console.error(err.message);
     return {
       statusCode: HttpStatusCode.NotFound,

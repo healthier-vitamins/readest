@@ -1,16 +1,15 @@
-import WordDefinition from "components/wordDefinition/WordDefinition";
 import "./WordDefinitionPage.scss";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   addIsOriginatedFromUrlWord,
   resetSuggestedWord,
   setIsFromSearchBar,
-} from "store/slices/word.slice";
-
-import YearTimer from "components/yearTimer/YearTimer";
-import { changeActiveTab } from "store/slices/book.slice";
+} from "../../store/slices/word.slice";
+import { changeActiveTab } from "../../store/slices/book.slice";
+import WordDefinition from "../../components/wordDefinition/WordDefinition";
+import YearTimer from "../../components/yearTimer/YearTimer";
 
 function WordDefinitionPage() {
   const params = useParams();
@@ -105,7 +104,6 @@ function WordDefinitionPage() {
             examples={chosenWordDefinition.examples}
             shortDef={chosenWordDefinition.shortDef}
             title={chosenWordDefinition.title}
-            transitive={chosenWordDefinition.transitive}
           ></WordDefinition>
         </div>
       ) : (

@@ -1,6 +1,9 @@
-import { addToastNotificationArr } from "store/slices/state.slice";
-import store from "store/store";
-import { GLOBALVARS } from "utils/GLOBALVARS";
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
+import { addToastNotificationArr } from "../../store/slices/state.slice";
+import store from "../../store/store";
+import { GLOBALVARS } from "../GLOBALVARS";
 
 /* eslint-disable eqeqeq */
 function checkAndHandleTimeoutError(err: any, thunkApi: any) {

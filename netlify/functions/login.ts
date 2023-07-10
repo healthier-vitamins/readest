@@ -10,7 +10,7 @@ const auth = new GoTrue({
   setCookie: true,
 });
 
-exports.handler = async function (event, context) {
+exports.handler = async function (event: any, _context: any) {
   const { email, password } = JSON.parse(event.body);
 
   const [err, res] = await to(auth.login(email, password, true));

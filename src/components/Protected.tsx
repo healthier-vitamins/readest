@@ -1,7 +1,7 @@
-import { useAppDispatch } from "store/hooks";
 import Cookies from "universal-cookie";
-import { setRedirector } from "store/slices/state.slice";
-import { isTokenExpired } from "utils/cryptography";
+import { useAppDispatch } from "../store/hooks";
+import { isTokenExpired } from "../utils/cryptography";
+import { setRedirector } from "../store/slices/state.slice";
 const cookies = new Cookies();
 
 function Protected({ children }: any) {

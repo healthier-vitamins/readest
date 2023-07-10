@@ -7,7 +7,7 @@ const notion = new Client({
   auth: NOTION_KEY,
 });
 
-exports.handler = async function (event: any, context: any) {
+exports.handler = async function (event: any, _context: any) {
   const { email } = JSON.parse(event.body);
   try {
     const response = await notion.databases.query({

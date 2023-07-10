@@ -11,12 +11,12 @@ import { BiBookHeart } from "react-icons/bi";
 import { MdOutlineDeleteSweep } from "react-icons/md";
 import "./BookSelectionPopover.scss";
 import { Spinner } from "react-bootstrap";
-import { useAppDispatch, useAppSelector } from "store/hooks";
 import {
   setShowPopoverPage,
   toggleShowPopoverState,
 } from "../../store/slices/state.slice";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
 function BookSelectionPopover() {
   const dispatch = useAppDispatch();
@@ -26,14 +26,14 @@ function BookSelectionPopover() {
     dispatch(toggleCreateBookModal());
   }
   const { bookSelectionPopoverState } = useAppSelector(
-    (state: any) => state.state
+    (state) => state.state
   );
   const { bookRes, getAllBookIsLoading } = useAppSelector(
     (state) => state.book
   );
   const {
     authentication: { isUserLoggedIn },
-  } = useAppSelector((state: any) => state.user);
+  } = useAppSelector((state) => state.user);
 
   function RenderBookTab({ book, index }: any) {
     return (

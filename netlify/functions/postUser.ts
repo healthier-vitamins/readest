@@ -10,7 +10,7 @@ const notion = new Client({
   auth: NOTION_KEY,
 });
 
-exports.handler = async function (event: any, context: any) {
+exports.handler = async function (event: any, _context: any) {
   moment.tz.setDefault("Asia/Singapore");
   // const date = moment().format("MMMM Do YYYY, h:mm:ss a");
 

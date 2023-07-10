@@ -1,13 +1,11 @@
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import "./App.scss";
-import HomePage from "./pages/homePage/HomePage";
 import Layout from "./pages/Layout";
+import HomePage from "./pages/homePage/HomePage";
+import Protected from "./components/Protected";
 import WordsPage from "./pages/wordsPage/WordsPage";
-import "bootstrap/dist/css/bootstrap.min.css";
+import NotFoundPage from "./pages/notFoundPage/NotFoundPage";
+import WordDefinitionPage from "./pages/wordDefinitionPage/WordDefinitionPage";
 import "./main.scss";
-import Protected from "components/Protected";
-import WordDefinitionPage from "pages/wordDefinitionPage/WordDefinitionPage";
-import NotFoundPage from "pages/notFoundPage/NotFoundPage";
 
 function App() {
   return (

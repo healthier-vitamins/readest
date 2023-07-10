@@ -3,7 +3,7 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import { axiosTo } from "../../utils/promise";
 import { addToastNotificationArr, toggleCreateBookModal } from "./state.slice";
-import { GLOBALVARS } from "utils/GLOBALVARS";
+import { GLOBALVARS } from "../../utils/GLOBALVARS";
 // import { checkAndHandleTimeoutError } from "../../utils/apis/timeoutHandler";
 const cookies = new Cookies();
 const url = window.location.origin;
@@ -77,7 +77,7 @@ export const postBook = createAsyncThunk(
 // get books
 export const getAllBook = createAsyncThunk(
   "getAllBook",
-  async (payload, thunkApi) => {
+  async (_payload, thunkApi) => {
     const userId = cookies.get("user-id", { doNotParse: true });
     if (!userId) return [];
 
@@ -157,7 +157,7 @@ const book = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(postBook.fulfilled, (state: InitialState, action) => {
+      .addCase(postBook.fulfilled, (state: InitialState, _action) => {
         state.postBookIsLoading = false;
       })
       .addCase(postBook.pending, (state: InitialState) => {

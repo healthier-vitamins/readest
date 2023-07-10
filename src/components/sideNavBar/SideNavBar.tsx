@@ -6,7 +6,7 @@ import { addBookSelection, getAllBook } from "../../store/slices/book.slice";
 import React, { useEffect } from "react";
 import { bookSchema } from "../../utils/schemas/bookSchema";
 import protectedFunction from "../../utils/protectedFunc";
-import { useAppDispatch, useAppSelector } from "store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
 function SideNavBar() {
   const dispatch = useAppDispatch();

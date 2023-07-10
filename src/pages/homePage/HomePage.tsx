@@ -1,13 +1,13 @@
-import YearTimer from "components/yearTimer/YearTimer";
 import "./HomePage.scss";
 import { useEffect } from "react";
-import { useAppDispatch } from "store/hooks";
-import { changeActiveTab } from "store/slices/book.slice";
-import { isTokenExpired } from "utils/cryptography";
 import Cookies from "universal-cookie";
-import { setIsLoggedIn } from "store/slices/user.slice";
-import { logout } from "utils/apis/userApis";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../store/hooks";
+import { changeActiveTab } from "../../store/slices/book.slice";
+import { isTokenExpired } from "../../utils/cryptography";
+import { setIsLoggedIn } from "../../store/slices/user.slice";
+import YearTimer from "../../components/yearTimer/YearTimer";
+import { logout } from "../../utils/apis/userApis";
 const cookies = new Cookies();
 
 function HomePage() {

@@ -1,4 +1,4 @@
-import { GLOBALVARS } from "./../../src/utils/GLOBALVARS";
+import { GLOBALVARS } from "../../src/utils/GLOBALVARS";
 import { bookSchema } from "../../src/utils/schemas/bookSchema";
 import { Client } from "@notionhq/client";
 import { HttpStatusCode } from "axios";
@@ -8,7 +8,7 @@ const notion = new Client({
   auth: NOTION_KEY,
 });
 
-exports.handler = async function (event, context) {
+exports.handler = async function (event: any, _context: any) {
   const { userId, bookName } = event.queryStringParameters;
 
   let booksDbId: string;
@@ -17,7 +17,7 @@ exports.handler = async function (event, context) {
       block_id: userId,
     });
     booksDbId = response.results[0].id;
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
     console.log(err.message);
     return {
@@ -54,7 +54,6 @@ exports.handler = async function (event, context) {
     });
 
     if (
-      // @ts-ignore
       // response.results[0].properties[bookSchema.BOOK_NAME].rich_text[0]
       //   .plain_text
       response.results.length > 0
@@ -69,7 +68,7 @@ exports.handler = async function (event, context) {
         body: "",
       };
     }
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
     console.log(err.message);
     return {

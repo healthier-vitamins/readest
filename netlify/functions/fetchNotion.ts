@@ -1,11 +1,11 @@
-const { Client } = require("@notionhq/client");
+import { Client } from "@notionhq/client";
 
 const { NOTION_KEY } = process.env;
 const notion = new Client({
   auth: NOTION_KEY,
 });
 
-exports.handler = async function (event, context) {
+exports.handler = async function (_event: any, _context: any) {
   try {
     const response = await notion.blocks.children.list({
       //? user account page id
@@ -45,7 +45,7 @@ exports.handler = async function (event, context) {
       statusCode: 200,
       body: JSON.stringify({ response }),
     };
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
     return {
       statusCode: 500,

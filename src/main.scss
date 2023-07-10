@@ -11,8 +11,22 @@ $body-color: $web-default-color;
 // Required
 @import "../node_modules/bootstrap/scss/functions";
 @import "../node_modules/bootstrap/scss/variables";
-@import "../node_modules/bootstrap/scss/maps";
+// @import "../node_modules/bootstrap/scss/maps";
 @import "../node_modules/bootstrap/scss/mixins";
-@import "../node_modules/bootstrap/scss/root";
-
+// @import "../node_modules/bootstrap/scss/root";
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+@import "./App.scss";
+@import "./components/button/DeleteConfirmationButton.scss";
+@import "./components/modal/CreateBookModal.scss";
+@import "./components/modal/SaveWordModal.scss";
+@import "./components/navBar/NavBar.scss";
+@import "./components/OnClickOutsideComponent.scss";
+@import "./components/popover/BookSelectionPopover.scss";
+@import "./components/popover/SignUpPopover.scss";
+@import "./components/searchBar/SearchBar.scss";
+@import "./components/sideNavBar/SideNavBar.scss";
+@import "./components/toast/GeneralToast.scss";
+@import "./components/toast/Toaster.scss";
+@import "./components/wordDefinition/WordDefinition.scss";
+@import "./components/yearTimer/YearTimer.scss";

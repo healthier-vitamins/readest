@@ -3,8 +3,8 @@ import { Modal, Form, Spinner, InputGroup } from "react-bootstrap";
 import "./CreateBookModal.scss";
 import { toggleCreateBookModal } from "../../store/slices/state.slice";
 import Cookies from "universal-cookie";
-import { useAppDispatch, useAppSelector } from "store/hooks";
-import { createBook } from "utils/apis/bookApis";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { createBook } from "../../utils/apis/bookApis";
 
 function CreateBookModal() {
   const cookies = useMemo(() => {
@@ -22,7 +22,7 @@ function CreateBookModal() {
   const dispatch = useAppDispatch();
   const bookTitleRef = createRef<HTMLInputElement>();
 
-  const handleCreateBook = useCallback(async () => {
+  const handleCreateBook = useCallback(() => {
     const specialSymbolsRegex = /[`!@#$%^&*()_+\-=\\[\]{};':"\\|,.<>\\/?~]/;
 
     if (
@@ -95,7 +95,7 @@ function CreateBookModal() {
         <div className="create-book-modal-btn-container">
           <button
             className="create-book-modal-cfm-btn"
-            onClick={(e) => {
+            onClick={(_e) => {
               setisClicked(true);
               handleCreateBook();
             }}

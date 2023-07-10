@@ -1,7 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import OnClickOutsideComponent from "components/OnClickOutsideComponent";
 import React, { createRef, useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "store/hooks";
 import {
   resetSuggestedWord,
   getWordDefinition,
@@ -13,8 +10,9 @@ import {
 import "./SearchBar.scss";
 import { useNavigate } from "react-router-dom";
 import { Form } from "react-bootstrap";
-import { GLOBALVARS } from "utils/GLOBALVARS";
-import { RootState } from "store/store";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { GLOBALVARS } from "../../utils/GLOBALVARS";
+import OnClickOutsideComponent from "../OnClickOutsideComponent";
 
 function SearchBar() {
   // const ref = createRef();
@@ -23,7 +21,7 @@ function SearchBar() {
   const queriedWordRef = createRef<any>();
   const [touched, setTouched] = useState(false);
   const { suggestedWord, isLoading, isOriginatedFromUrl } = useAppSelector(
-    (store: RootState) => store.word
+    (store) => store.word
   );
   const dispatch = useAppDispatch();
 
@@ -101,7 +99,7 @@ function SearchBar() {
       dispatch(getWordDefinition(word));
     }
     setQueriedWord(word.toLowerCase());
-    queriedWordRef!.current!.value = word.toLowerCase();
+    queriedWordRef.current.value = word.toLowerCase();
     setTouched(true);
   }
 

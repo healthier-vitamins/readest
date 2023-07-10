@@ -1,6 +1,5 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
-import { useAppDispatch, useAppSelector } from "store/hooks";
 import {
   handlebookResArrCheckboxChange,
   resetbookResArrCheckbox,
@@ -8,6 +7,7 @@ import {
 import { toggleSaveWordModal } from "../../store/slices/state.slice";
 import { postWordToBook } from "../../store/slices/word.slice";
 import "./SaveWordModal.scss";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
 function SaveWordModal() {
   // const [hasSelectedBook, setHasSelectedBook] = useState(false);

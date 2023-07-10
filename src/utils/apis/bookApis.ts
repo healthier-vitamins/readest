@@ -1,8 +1,8 @@
 import axios from "axios";
-import ApiError from "classes/ApiError";
-import { postBook, setPostBookIsLoading } from "store/slices/book.slice";
-import store from "store/store";
-import { axiosTo } from "utils/promise";
+import { postBook, setPostBookIsLoading } from "../../store/slices/book.slice";
+import { axiosTo } from "../promise";
+import store from "../../store/store";
+import ApiError from "../../classes/ApiError";
 
 const apiError = new ApiError();
 const originUrl = window.location.origin;
@@ -15,7 +15,7 @@ interface Params {
 async function createBook(payload: Params) {
   store.dispatch(setPostBookIsLoading(true));
   // eslint-disable-next-line
-  const [bookExistsErr, bookExistsRes] = await axiosTo(
+  const [bookExistsErr, _bookExistsRes] = await axiosTo(
     axios.get(`${originUrl}/api/checkIfBookExists`, { params: payload })
   );
   if (bookExistsErr) {
