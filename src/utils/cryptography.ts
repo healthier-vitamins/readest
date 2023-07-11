@@ -8,7 +8,7 @@ interface _decodedToken {
   user_metadata: any;
 }
 
-function getEmailFromToken(token: any) {
+function getEmailFromToken(token: string) {
   if (isTokenExpired(token)) {
     return null;
   }

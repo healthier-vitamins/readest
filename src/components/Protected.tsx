@@ -9,7 +9,7 @@ function Protected({ children }: any) {
 
   let isUserLoggedIn = cookies.get("token");
 
-  if (isTokenExpired(isUserLoggedIn)) {
+  if ((isUserLoggedIn && isTokenExpired(isUserLoggedIn)) || !isUserLoggedIn) {
     dispatch(setRedirector(true));
   } else {
     return children;
