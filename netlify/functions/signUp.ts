@@ -1,17 +1,11 @@
 import { HttpStatusCode } from "axios";
-import GoTrue from "gotrue-js";
 import { to } from "../../src/utils/promise";
-
-const { NETLIFY_IDENTITY_URL } = process.env;
+import GoTrueLoader from "../../src/utils/goTrue/GoTrueLoader";
 
 exports.handler = async function (event: any, _context: any) {
   const { email, password } = JSON.parse(event.body);
 
-  const auth = new GoTrue({
-    APIUrl: NETLIFY_IDENTITY_URL,
-    audience: "",
-    setCookie: true,
-  });
+  const auth = new GoTrueLoader().getInitialisedAuth();
 
   const [err, data] = await to(auth.signup(email, password));
   if (err) {

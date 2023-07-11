@@ -1,12 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { bookSchema } from "../../src/utils/schemas/bookSchema";
-import { Client } from "@notionhq/client";
 import { HttpStatusCode } from "axios";
-
-const { NOTION_KEY } = process.env;
-const notion = new Client({
-  auth: NOTION_KEY,
-});
+import notion from "../../src/utils/notion/notionLoader";
 
 exports.handler = async function (event: any, _context: any) {
   const { userId } = event.queryStringParameters;

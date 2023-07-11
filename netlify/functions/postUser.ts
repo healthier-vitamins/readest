@@ -1,14 +1,10 @@
 import { userSchema } from "../../src/utils/schemas/userSchema";
-import { Client } from "@notionhq/client";
 import { HttpStatusCode } from "axios";
 import { bookSchema } from "../../src/utils/schemas/bookSchema";
 import moment from "moment-timezone";
-// const { to } = require("../../src/utils/promiseUtil");
+import notion from "../../src/utils/notion/notionLoader";
 
-const { NOTION_KEY, NOTION_DB_USER_KEY } = process.env;
-const notion = new Client({
-  auth: NOTION_KEY,
-});
+const { VITE_NOTION_DB_USER_KEY } = process.env;
 
 exports.handler = async function (event: any, _context: any) {
   moment.tz.setDefault("Asia/Singapore");
@@ -24,7 +20,7 @@ exports.handler = async function (event: any, _context: any) {
   try {
     const response = await notion.pages.create({
       parent: {
-        database_id: NOTION_DB_USER_KEY ? NOTION_DB_USER_KEY : "",
+        database_id: VITE_NOTION_DB_USER_KEY ? VITE_NOTION_DB_USER_KEY : "",
         type: "database_id",
       },
       properties: {

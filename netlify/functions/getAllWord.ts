@@ -2,13 +2,7 @@ import { AllWordsInBook } from "../../src/store/slices/word.slice";
 import { BookRes } from "../../src/store/slices/book.slice";
 import { HttpStatusCode } from "axios";
 import { wordSchema } from "../../src/utils/schemas/wordSchema";
-
-import { Client } from "@notionhq/client";
-
-const { NOTION_KEY } = process.env;
-const notion = new Client({
-  auth: NOTION_KEY,
-});
+import notion from "../../src/utils/notion/notionLoader";
 
 exports.handler = async function (event: any, _context: any) {
   const { id } = JSON.parse(event.body) as BookRes;

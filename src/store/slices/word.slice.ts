@@ -10,7 +10,10 @@ const apiTracker = new ApiTracker();
 
 // api url with query passed through as parameter
 function apiUrl(queriedWord: string) {
-  return `https://dictionaryapi.com/api/v3/references/sd4/json/${queriedWord}?key=${process.env.REACT_APP_DICTIONARY_KEY}`;
+  queriedWord = queriedWord.replace(/[^\w\s]/g, "");
+  return `https://dictionaryapi.com/api/v3/references/sd4/json/${queriedWord}?key=${
+    import.meta.env.VITE_DICTIONARY_KEY
+  }`;
   // return `https://dictionaryapi.com/api/v3/references/ithesaurus/json/${queriedWord}?key=${process.env.REACT_APP_DICTIONARY_KEY}`;
 }
 

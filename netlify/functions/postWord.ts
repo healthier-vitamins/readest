@@ -2,13 +2,8 @@ import { ChosenWordDefinition } from "./../../src/store/slices/word.slice";
 import { BookRes } from "./../../src/store/slices/book.slice";
 import moment from "moment-timezone";
 import { wordSchema } from "../../src/utils/schemas/wordSchema";
-import { Client } from "@notionhq/client";
 import { HttpStatusCode } from "axios";
-
-const { NOTION_KEY } = process.env;
-const notion = new Client({
-  auth: NOTION_KEY,
-});
+import notion from "../../src/utils/notion/notionLoader";
 
 /**
  * @typedef {Object} wordDef

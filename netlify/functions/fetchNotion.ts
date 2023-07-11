@@ -1,9 +1,4 @@
-import { Client } from "@notionhq/client";
-
-const { NOTION_KEY } = process.env;
-const notion = new Client({
-  auth: NOTION_KEY,
-});
+import notion from "../../src/utils/notion/notionLoader";
 
 exports.handler = async function (_event: any, _context: any) {
   try {

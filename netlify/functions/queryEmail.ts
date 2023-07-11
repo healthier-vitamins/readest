@@ -1,17 +1,14 @@
 import { HttpStatusCode } from "axios";
-import { Client } from "@notionhq/client";
 import { userSchema } from "../../src/utils/schemas/userSchema";
+import notion from "../../src/utils/notion/notionLoader";
 
-const { NOTION_KEY, NOTION_DB_USER_KEY } = process.env;
-const notion = new Client({
-  auth: NOTION_KEY,
-});
+const { VITE_NOTION_DB_USER_KEY } = process.env;
 
 exports.handler = async function (event: any, _context: any) {
   const { email } = JSON.parse(event.body);
   try {
     const response = await notion.databases.query({
-      database_id: NOTION_DB_USER_KEY ? NOTION_DB_USER_KEY : "",
+      database_id: VITE_NOTION_DB_USER_KEY ? VITE_NOTION_DB_USER_KEY : "",
       filter: {
         and: [
           {
