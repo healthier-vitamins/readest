@@ -16,7 +16,7 @@ import {
   setShowPopoverState,
 } from "../../store/slices/state.slice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { logout } from "../../utils/apis/userApis";
+import { logout } from "../../store/apis/user.api";
 import { GLOBALVARS } from "../../utils/GLOBALVARS";
 
 function NavBar() {

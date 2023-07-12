@@ -23,18 +23,8 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    userLoggedIn: (state: InitialState, action: PayloadAction<any>) => {
-      const { token, refreshToken, email } = action.payload;
-      cookies.set("token", token, {
-        maxAge: 3600,
-        sameSite: "lax",
-        path: "/",
-      });
-      cookies.set("refresh_token", refreshToken, {
-        maxAge: 3600,
-        sameSite: "lax",
-        path: "/",
-      });
+    userLoggedIn: (state: InitialState, action: PayloadAction<string>) => {
+      const email = action.payload;
       state.authentication.isUserLoggedIn = true;
       state.authentication.userEmail = email;
     },

@@ -1,11 +1,13 @@
-import { addToastNotificationArr } from "../../store/slices/state.slice";
-import store from "../../store/store";
-import { GLOBALVARS } from "../GLOBALVARS";
+import { addToastNotificationArr } from "../slices/state.slice";
+import store from "../store";
+import { GLOBALVARS } from "../../utils/GLOBALVARS";
 
-/* eslint-disable eqeqeq */
 function checkAndHandleTimeoutError(err: any, thunkApi: any) {
   if (!err?.status) return true;
-  if (err.status == 500) {
+  if (
+    String(err.response.data).toLowerCase().includes("timeout") ||
+    String(err.message).toLowerCase().includes("timeout")
+  ) {
     if (thunkApi) {
       thunkApi.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
     } else {

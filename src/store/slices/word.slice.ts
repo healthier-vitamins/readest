@@ -2,7 +2,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { addToastNotificationArr } from "./state.slice";
-import { ApiCall, ApiTracker } from "../../utils/apis/apiTracker";
+import { ApiCall, ApiTracker } from "../apis/apiTracker";
 import { axiosTo } from "../../utils/promise";
 import { GLOBALVARS } from "../../utils/GLOBALVARS";
 import { BookRes } from "./book.slice";

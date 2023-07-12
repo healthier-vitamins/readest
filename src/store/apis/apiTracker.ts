@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import axios from "axios";
 import ApiError from "../../classes/ApiError";
-import { AllWordsInBook } from "../../store/slices/word.slice";
+import { AllWordsInBook } from "../slices/word.slice";
 const apiError = new ApiError();
 
 interface ApiCall {

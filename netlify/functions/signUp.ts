@@ -1,11 +1,11 @@
 import { HttpStatusCode } from "axios";
 import { to } from "../../src/utils/promise";
-import GoTrueLoader from "../../src/utils/goTrue/GoTrueLoader";
+import goTrue from "../../src/utils/goTrue/GoTrueLoader";
 
 exports.handler = async function (event: any, _context: any) {
   const { email, password } = JSON.parse(event.body);
 
-  const auth = new GoTrueLoader().getInitialisedAuth();
+  const auth = goTrue.getInitialisedAuth();
 
   const [err, data] = await to(auth.signup(email, password));
   if (err) {

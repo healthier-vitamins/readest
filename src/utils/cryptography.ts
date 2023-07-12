@@ -9,6 +9,7 @@ interface _decodedToken {
 }
 
 function getEmailFromToken(token: string) {
+  if (token === "undefined") return null;
   if (isTokenExpired(token)) {
     return null;
   }
@@ -17,6 +18,7 @@ function getEmailFromToken(token: string) {
 }
 
 function isTokenExpired(token: string) {
+  if (token === "undefined") return true;
   const currentTime = Date.now() / 1000;
   const decodedToken: _decodedToken = jwt_decode(token);
 

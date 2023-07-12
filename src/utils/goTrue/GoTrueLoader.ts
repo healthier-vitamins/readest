@@ -1,6 +1,6 @@
 import GoTrue from "gotrue-js";
 
-export default class GoTrueLoader {
+class GoTrueLoader {
   authObj: GoTrue | undefined | null;
 
   constructor() {
@@ -25,3 +25,6 @@ export default class GoTrueLoader {
     return this.authObj;
   }
 }
+
+const goTrue = new GoTrueLoader();
+export default goTrue;

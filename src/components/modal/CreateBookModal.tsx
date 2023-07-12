@@ -4,7 +4,7 @@ import "./CreateBookModal.scss";
 import { toggleCreateBookModal } from "../../store/slices/state.slice";
 import Cookies from "universal-cookie";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { createBook } from "../../utils/apis/bookApis";
+import { createBook } from "../../store/apis/bookApis";
 
 function CreateBookModal() {
   const cookies = useMemo(() => {

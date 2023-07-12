@@ -7,7 +7,7 @@ import { changeActiveTab } from "../../store/slices/book.slice";
 import { isTokenExpired } from "../../utils/cryptography";
 import { setIsLoggedIn } from "../../store/slices/user.slice";
 import YearTimer from "../../components/yearTimer/YearTimer";
-import { logout } from "../../utils/apis/userApis";
+import { logout } from "../../store/apis/user.api";
 const cookies = new Cookies();
 
 function HomePage() {

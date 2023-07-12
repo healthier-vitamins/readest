@@ -1,16 +1,15 @@
 import { useEffect } from "react";
-
 import Cookies from "universal-cookie";
 import CreateBookModal from "../components/modal/CreateBookModal";
 import SaveWordModal from "../components/modal/SaveWordModal";
 import NavBar from "../components/navBar/NavBar";
-// import useWindowDimension from "../utils/useWindowDimension";
 import { getEmailFromToken, isTokenExpired } from "../utils/cryptography";
 import { userLoggedIn } from "../store/slices/user.slice";
 import GeneralToast from "../components/toast/GeneralToast";
 import "./Layout.scss";
 import { Outlet } from "react-router-dom";
 import { useAppDispatch } from "../store/hooks";
+import { setRedirector } from "../store/slices/state.slice";
 
 const cookies = new Cookies();
 
@@ -30,14 +29,11 @@ function Layout() {
       const isExpired = isTokenExpired(token);
       if (!isExpired) {
         const email = getEmailFromToken(token);
-        if (token) {
-          const payload = {
-            email: email,
-            token: token,
-            refreshToken: "",
-          };
-          dispatch(userLoggedIn(payload));
+        if (email) {
+          dispatch(userLoggedIn(email));
         }
+      } else {
+        dispatch(setRedirector(true));
       }
     }
   }, [dispatch]);

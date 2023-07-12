@@ -11,7 +11,7 @@ import { GLOBALVARS } from "../../utils/GLOBALVARS";
 import "./SignUpPopover.scss";
 import { useNavigate } from "react-router-dom";
 import OnClickOutsideComponent from "../OnClickOutsideComponent";
-import { login, userSignUp, verifyUser } from "../../utils/apis/userApis";
+import { login, userSignUp, verifyUser } from "../../store/apis/user.api";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
 function SignUpPopover() {
@@ -21,6 +21,9 @@ function SignUpPopover() {
   const {
     showPopoverState: { state, show },
   } = useAppSelector((state) => state.state);
+  const {
+    authentication: { isUserLoggedIn },
+  } = useAppSelector((state) => state.user);
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const emailRef = createRef<HTMLInputElement>();
@@ -225,8 +228,14 @@ function SignUpPopover() {
       email: loginEmailRef.current!.value,
       password: loginPasswordRef.current!.value,
     };
-
-    function onError(err: any) {
+    dispatch(login(payload));
+    if (isUserLoggedIn) {
+      setLoadingState({
+        ...loadingState,
+        login: false,
+      });
+      resetAllExceptShowPopoverStateAndShow();
+    } else {
       setLoadingState({
         ...loadingState,
         login: false,
@@ -235,33 +244,11 @@ function SignUpPopover() {
         ...errorState,
         login: true,
       });
-      console.log("HERE |||||||||| ", loadingState);
-      console.log("HERE |||||||||| ", errorState);
-      console.log("HERE |||||||||| ", isSubmitted);
-      console.error(err);
-      dispatch(addToastNotificationArr(err.data));
     }
-
-    function onSuccess(res: any) {
-      const loginPayload = {
-        token: res.token.access_token,
-        refreshToken: res.token.refresh_token,
-        email: res.email,
-      };
-      dispatch(userLoggedIn(loginPayload));
-      setLoadingState({
-        ...loadingState,
-        login: false,
-      });
-      dispatch(setShowPopoverState(false));
-      resetAllExceptShowPopoverStateAndShow();
-    }
-
-    login(onSuccess, onError, payload);
   }, [
     dispatch,
     errorState,
-    isSubmitted,
+    isUserLoggedIn,
     loadingState,
     loginEmailRef,
     loginPasswordRef,

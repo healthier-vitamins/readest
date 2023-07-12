@@ -1,7 +1,7 @@
 import axios from "axios";
-import { postBook, setPostBookIsLoading } from "../../store/slices/book.slice";
-import { axiosTo } from "../promise";
-import store from "../../store/store";
+import { postBook, setPostBookIsLoading } from "../slices/book.slice";
+import { axiosTo } from "../../utils/promise";
+import store from "../store";
 import ApiError from "../../classes/ApiError";
 
 const apiError = new ApiError();
