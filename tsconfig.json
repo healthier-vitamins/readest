@@ -18,7 +18,11 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* Yup configuration */
+    "strictNullChecks": true,
+    "strictFunctionTypes": false
   },
   "include": ["src", "netlify/functions"],
   "references": [{ "path": "./tsconfig.node.json" }]

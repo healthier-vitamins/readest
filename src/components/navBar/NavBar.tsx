@@ -36,7 +36,7 @@ function NavBar() {
   // redirect from Protected component.
   useEffect(() => {
     if (redirector) {
-      logout(navigate);
+      logout();
       dispatch(addToastNotificationArr("Please login."));
       dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
       dispatch(setShowPopoverState(true));
@@ -155,7 +155,7 @@ function NavBar() {
           ) : (
             <div
               className={GLOBALVARS.DEFAULT_LINK_CLASS}
-              onClick={() => logout(navigate)}
+              onClick={() => logout()}
             >
               Logout
             </div>

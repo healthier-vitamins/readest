@@ -10,8 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "@hookform/resolvers": "^3.1.1",
     "@netlify/functions": "^1.6.0",
     "@notionhq/client": "^2.2.3",
     "@reduxjs/toolkit": "^1.9.1",
@@ -24,16 +23,21 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
     "notion-types": "^6.16.0",
+    "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.45.1",
     "react-icons": "^4.7.1",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.6.2",
     "sass": "^1.58.0",
-    "universal-cookie": "^4.0.4"
+    "universal-cookie": "^4.0.4",
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
+    "@types/react-redux": "^7.1.25",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.61.0",
     "@vitejs/plugin-react-swc": "^3.3.2",
@@ -41,7 +45,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.1",
     "typescript": "^5.0.2",
-    "vite": "^4.4.0",
-    "@types/react-redux": "^7.1.25"
+    "vite": "^4.4.0"
   }
 }

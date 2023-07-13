@@ -11,7 +11,7 @@ import WordsPage from "../../pages/wordsPage/WordsPage";
 import WordDefinitionPage from "../../pages/wordDefinitionPage/WordDefinitionPage";
 import NotFoundPage from "../../pages/errorPages/notFoundPage/NotFoundPage";
 
-const router = createBrowserRouter(
+export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<Layout></Layout>}>
@@ -34,5 +34,3 @@ const router = createBrowserRouter(
     </Route>
   )
 );
-
-export default router;

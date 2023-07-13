@@ -1,29 +1,30 @@
 import React, { createRef, useCallback, useEffect, useState } from "react";
 import { Form, Spinner } from "react-bootstrap";
 import {
-  addToastNotificationArr,
   setShowPopoverPage,
   setShowPopoverState,
   toggleShowPopoverState,
 } from "../../store/slices/state.slice";
-import { userLoggedIn } from "../../store/slices/user.slice";
 import { GLOBALVARS } from "../../utils/GLOBALVARS";
 import "./SignUpPopover.scss";
-import { useNavigate } from "react-router-dom";
 import OnClickOutsideComponent from "../OnClickOutsideComponent";
-import { login, userSignUp, verifyUser } from "../../store/apis/user.api";
+import {
+  apiLogin,
+  apiUserSignUp,
+  apiVerifyUser,
+} from "../../store/apis/user.api";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import LoginForm from "../forms/loginForm";
 
 function SignUpPopover() {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const {
     showPopoverState: { state, show },
   } = useAppSelector((state) => state.state);
-  const {
-    authentication: { isUserLoggedIn },
-  } = useAppSelector((state) => state.user);
+  const { loginState, signUpState, verifyState } = useAppSelector(
+    (state) => state.user
+  );
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const emailRef = createRef<HTMLInputElement>();
@@ -52,11 +53,6 @@ function SignUpPopover() {
     signUp: false,
     login: false,
   });
-  const [loadingState, setLoadingState] = useState<State>({
-    signUp: true,
-    confirmEmail: true,
-    login: true,
-  });
 
   function resetAllExceptShowPopoverStateAndShow() {
     setEmailNameState({
@@ -74,11 +70,6 @@ function SignUpPopover() {
       signUp: false,
     });
     setIsSubmitted(false);
-    setLoadingState({
-      confirmEmail: true,
-      login: true,
-      signUp: true,
-    });
   }
 
   function useClickOutsideFunc() {
@@ -103,19 +94,14 @@ function SignUpPopover() {
       dispatch(setShowPopoverState(true));
       confirmEmailHelper();
     }
-    // eslint-disable-next-line
   }, []);
 
   // the moment error pops up, loadingState and isSubmitted will reset
   useEffect(() => {
-    const keys = Object.keys(errorState);
-    for (let i = 0; i < keys.length; i++) {
-      if (errorState[keys[i]]) {
-        loadingState[keys[i]] = true;
-        setIsSubmitted(false);
-      }
+    if (loginState.loginError || signUpState.signUpError) {
+      setIsSubmitted(false);
     }
-  }, [errorState, loadingState]);
+  }, [loginState.loginError, signUpState.signUpError]);
 
   function confirmEmailHelper() {
     const token = window.location.hash.substring(
@@ -124,42 +110,14 @@ function SignUpPopover() {
     const payload = {
       token: token,
     };
-
-    function onError(err: any) {
-      setLoadingState({
-        ...loadingState,
-        confirmEmail: false,
-      });
-
-      console.error(err);
-      if (err.data === "User not found") {
-        dispatch(
-          addToastNotificationArr(`${err.data}, perhaps email is in use`)
-        );
-      } else {
-        dispatch(addToastNotificationArr(err.data));
-      }
-      dispatch(setShowPopoverState(false));
-      resetAllExceptShowPopoverStateAndShow();
-      navigate(`/`, { replace: true });
-    }
-
-    function onSuccess(_res: any) {
-      setLoadingState({
-        ...loadingState,
-        confirmEmail: false,
-      });
-      navigate(`/`, { replace: true });
-    }
-
-    verifyUser(onSuccess, onError, payload);
+    dispatch(apiVerifyUser(payload));
   }
 
   function handlePopoverClick() {
     dispatch(toggleShowPopoverState());
   }
 
-  const handleSignUp = useCallback(() => {
+  const handleSignUp = useCallback(async () => {
     if (
       confirmPasswordRef.current!.value === passwordRef.current!.value &&
       passwordRef.current!.value !== ""
@@ -175,34 +133,10 @@ function SignUpPopover() {
         email: emailRef.current!.value,
         password: passwordRef.current!.value,
       };
-      console.log(payload);
-
-      function onError(err: any) {
-        setLoadingState({
-          ...loadingState,
-          signUp: false,
-        });
-        setErrorState({
-          ...errorState,
-          signUp: true,
-        });
-        setIsSubmitted(false);
-        dispatch(addToastNotificationArr(err.data));
-      }
-
-      function onSuccess(res: any) {
-        setLoadingState({
-          ...loadingState,
-          signUp: false,
-        });
-        dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
+      const res = await dispatch(apiUserSignUp(payload));
+      if (res.type.includes("fulfilled")) {
         resetAllExceptShowPopoverStateAndShow();
-        dispatch(
-          addToastNotificationArr(`Verification email sent to ${res?.email}`)
-        );
       }
-
-      userSignUp(onSuccess, onError, payload);
     } else {
       setSignUpPasswordCompare({
         ...signUpPasswordCompare,
@@ -215,47 +149,24 @@ function SignUpPopover() {
     confirmPasswordRef,
     dispatch,
     emailRef,
-    loadingState,
-    errorState,
     nameRef,
     passwordRef,
     signUpPasswordCompare,
   ]);
 
-  const handleLogin = useCallback(() => {
+  const handleLogin = useCallback(async () => {
     setIsSubmitted(true);
     const payload = {
       email: loginEmailRef.current!.value,
       password: loginPasswordRef.current!.value,
     };
-    dispatch(login(payload));
-    if (isUserLoggedIn) {
-      setLoadingState({
-        ...loadingState,
-        login: false,
-      });
+    const res = await dispatch(apiLogin(payload));
+    if (res.type.includes("fulfilled")) {
       resetAllExceptShowPopoverStateAndShow();
-    } else {
-      setLoadingState({
-        ...loadingState,
-        login: false,
-      });
-      setErrorState({
-        ...errorState,
-        login: true,
-      });
     }
-  }, [
-    dispatch,
-    errorState,
-    isUserLoggedIn,
-    loadingState,
-    loginEmailRef,
-    loginPasswordRef,
-  ]);
+  }, [dispatch, loginEmailRef, loginPasswordRef]);
 
   function handleSignUpPasswordCompare(e: any) {
-    console.log(signUpPasswordCompare);
     if (signUpPasswordCompare.isDirty) {
       passwordRef.current!.value !== confirmPasswordRef.current!.value
         ? setSignUpPasswordCompare({
@@ -363,7 +274,6 @@ function SignUpPopover() {
           <div
             className="popover-state-link"
             onClick={() => {
-              // setPopoverStateHelper(GLOBALVARS.POPOVER_LOGIN);
               dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
               resetAllExceptShowPopoverStateAndShow();
             }}
@@ -372,7 +282,7 @@ function SignUpPopover() {
           </div>
           <div className="signup-popover-button-container">
             <div className="create-book-modal-cfm-btn" onClick={handleSignUp}>
-              {loadingState.signUp &&
+              {signUpState.isSignUpLoading &&
                 signUpPasswordCompare.isDirty &&
                 signUpPasswordCompare.isSame &&
                 isSubmitted && (
@@ -412,7 +322,6 @@ function SignUpPopover() {
               className="signup-form-control"
               required
               ref={loginEmailRef}
-              // isInvalid={true}
               name="email"
               value={emailNameState.email}
               onChange={onChange}
@@ -424,7 +333,6 @@ function SignUpPopover() {
               required
               autoComplete="on"
               ref={loginPasswordRef}
-              // isInvalid={true}
               name="password"
               value={signUpPasswordCompare.password}
               onChange={onChange}
@@ -450,7 +358,7 @@ function SignUpPopover() {
           </div>
           <div className="signup-popover-button-container">
             <div className="create-book-modal-cfm-btn" onClick={handleLogin}>
-              {loadingState.login && isSubmitted && (
+              {loginState.isLoginLoading && isSubmitted && (
                 <Spinner
                   animation="border"
                   id="signup-loading-spinner"
@@ -474,7 +382,7 @@ function SignUpPopover() {
   }
 
   function emailVerified() {
-    if (loadingState.confirmEmail) {
+    if (verifyState.isVerifyLoading) {
       return (
         <div className="popover-box">
           <Spinner
@@ -523,13 +431,20 @@ function SignUpPopover() {
         </div>
         {show && (
           <div className="popover-container">
-            {state.signUpState
-              ? signUpForm()
-              : state.loginState
-              ? loginForm()
-              : state.emailConfirmState
-              ? emailVerified()
-              : null}
+            {state.signUpState ? (
+              signUpForm()
+            ) : state.loginState ? (
+              <LoginForm
+                handleLogin={handleLogin}
+                isSubmitted={isSubmitted}
+                onChange={onChange}
+                resetAllExceptShowPopoverStateAndShow={
+                  resetAllExceptShowPopoverStateAndShow
+                }
+              ></LoginForm>
+            ) : state.emailConfirmState ? (
+              emailVerified()
+            ) : null}
           </div>
         )}
       </div>
