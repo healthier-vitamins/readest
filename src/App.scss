@@ -1,9 +1,21 @@
 @import "./SCSSVARS.scss";
 
-* {
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html,
+body,
+#root {
   margin: 0px;
   padding: 0px;
-  box-sizing: border-box;
+  height: 100%;
   // -apple-system,
   // font-family: "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans",
   //   "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",

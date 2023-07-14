@@ -5,6 +5,7 @@ import { toggleCreateBookModal } from "../../store/slices/state.slice";
 import Cookies from "universal-cookie";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { createBook } from "../../store/apis/bookApis";
+import { specialSymbolsRegex } from "../../utils/regex";
 
 function CreateBookModal() {
   const cookies = useMemo(() => {
@@ -23,8 +24,6 @@ function CreateBookModal() {
   const bookTitleRef = createRef<HTMLInputElement>();
 
   const handleCreateBook = useCallback(() => {
-    const specialSymbolsRegex = /[`!@#$%^&*()_+\-=\\[\]{};':"\\|,.<>\\/?~]/;
-
     if (
       bookTitleRef.current!.value === "" ||
       bookTitleRef.current!.value.startsWith(" ") ||

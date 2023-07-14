@@ -34,6 +34,7 @@ module.exports = {
     "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/ban-types": "off",
     "no-inner-declarations": "off",
     "react-hooks/exhaustive-deps": "off",
     "prefer-const": "off",

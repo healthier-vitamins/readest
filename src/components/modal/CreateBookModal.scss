@@ -3,7 +3,8 @@
   margin-top: 0.6rem;
 }
 
-.create-book-modal-cfm-btn {
+.create-book-modal-cfm-btn,
+.create-book-modal-cfm-btn-disabled {
   border: 0;
   background-color: rgb(206, 192, 148);
   padding: 0.4rem 0.6rem 0.3rem 0.6rem;
@@ -14,6 +15,10 @@
   align-items: center;
   height: 32px;
   font-size: 15px;
+}
+
+.create-book-modal-cfm-btn-disabled {
+  background-color: rgb(223, 216, 193);
 }
 
 .create-book-modal-cancel-btn {

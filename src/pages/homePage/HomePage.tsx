@@ -1,7 +1,6 @@
 import "./HomePage.scss";
 import { useEffect } from "react";
 import Cookies from "universal-cookie";
-import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/hooks";
 import { changeActiveTab } from "../../store/slices/book.slice";
 import { isTokenExpired } from "../../utils/cryptography";
@@ -11,9 +10,7 @@ import { logout } from "../../store/apis/user.api";
 const cookies = new Cookies();
 
 function HomePage() {
-  // const { selectedTab } = useAppSelector((state) => state.book);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   // function checkSelectedPageLogic() {
   //   for (let i = 0; i < bookSelection.length; i++) {
@@ -35,21 +32,14 @@ function HomePage() {
   }, [dispatch]);
 
   useEffect(() => {
-    // if (!isUserLoggedIn) {
-    //   console.log("HERE ????????? ", isUserLoggedIn);
-
-    //   // navigate("/");
-    //   // dispatch(addToastNotificationArr("Please login"));
-    // }
     const token = cookies.get("token");
     if (token) {
       if (isTokenExpired(token)) {
-        logout(navigate);
+        logout();
       } else {
         dispatch(setIsLoggedIn());
       }
     }
-    // eslint-disable-next-line
   }, []);
 
   return (
