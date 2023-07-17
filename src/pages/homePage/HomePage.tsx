@@ -1,17 +1,18 @@
 import "./HomePage.scss";
 import { useEffect } from "react";
 import Cookies from "universal-cookie";
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { changeActiveTab } from "../../store/slices/book.slice";
 import { isTokenExpired } from "../../utils/cryptography";
 import { setIsLoggedIn } from "../../store/slices/user.slice";
 import YearTimer from "../../components/yearTimer/YearTimer";
 import { logout } from "../../store/apis/user.api";
+import { setPageReloadedToFalse } from "../../store/slices/state.slice";
 const cookies = new Cookies();
 
 function HomePage() {
   const dispatch = useAppDispatch();
-
+  const { isPageReloaded } = useAppSelector((state) => state.state);
   // function checkSelectedPageLogic() {
   //   for (let i = 0; i < bookSelection.length; i++) {
   //     if (
@@ -23,6 +24,14 @@ function HomePage() {
   //   }
   //   return false;
   // }
+
+  // clear form data on page refresh
+  useEffect(() => {
+    if (isPageReloaded) {
+      window.localStorage.removeItem("formData");
+      dispatch(setPageReloadedToFalse());
+    }
+  }, []);
 
   useEffect(() => {
     if (window.location.pathname === "/") {

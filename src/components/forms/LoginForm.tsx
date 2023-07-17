@@ -18,11 +18,13 @@ export default function LoginForm({
   handleLogin,
   triggerLogin,
   setTriggerLogin,
+  closePopover,
 }: {
   // resetAllExceptShowPopoverStateAndShow: Function;
   handleLogin: HandleLoginFn;
   triggerLogin: boolean;
   setTriggerLogin: Dispatch<SetStateAction<boolean>>;
+  closePopover: boolean;
 }) {
   const { loginState } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
@@ -35,6 +37,7 @@ export default function LoginForm({
     // watch,
     getValues,
     reset,
+    setValue,
   } = useForm<loginFormData>({
     resolver: yupResolver(loginSchema),
     // mode: "onChange",
@@ -49,6 +52,24 @@ export default function LoginForm({
       handleLogin({ email: getValues().email, password: getValues().password });
     }
   }, [triggerLogin]);
+
+  useEffect(() => {
+    if (closePopover) {
+      const formData = getValues();
+      window.localStorage.setItem("formData", JSON.stringify(formData));
+    } else if (!closePopover) {
+      let formData = window.localStorage.getItem("formData");
+      if (formData && formData !== null) {
+        const parsed = JSON.parse(formData);
+        console.log(
+          "🚀 ~ file: SignUpForm.tsx:119 ~ useEffect ~ formData:",
+          parsed
+        );
+        setValue("email", parsed["email"]);
+        setValue("password", parsed["password"]);
+      }
+    }
+  }, [closePopover]);
 
   function onSubmit(data: loginFormData) {
     handleLogin(data);

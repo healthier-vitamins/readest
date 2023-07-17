@@ -22,6 +22,7 @@ interface InitialState {
   };
   toastNotificationArr: any[];
   redirector: boolean;
+  isPageReloaded: boolean;
 }
 
 const initialState: InitialState = {
@@ -38,6 +39,7 @@ const initialState: InitialState = {
   },
   toastNotificationArr: [],
   redirector: false,
+  isPageReloaded: true,
 };
 
 // redux slice
@@ -45,18 +47,18 @@ const stateSlice = createSlice({
   name: "state",
   initialState,
   reducers: {
-    toggleCreateBookModal: (state: InitialState) => {
+    toggleCreateBookModal: (state) => {
       state.createBookModalState = !state.createBookModalState;
     },
-    toggleSaveWordModal: (state: InitialState) => {
+    toggleSaveWordModal: (state) => {
       state.saveWordModalState = !state.saveWordModalState;
     },
-    toggleBookSelectionPopoverState: (state: InitialState) => {
+    toggleBookSelectionPopoverState: (state) => {
       state.bookSelectionPopoverState = !state.bookSelectionPopoverState;
     },
     setBookSelectionPopoverState: (
       state: InitialState,
-      action: PayloadAction<any>
+      action: PayloadAction<boolean>
     ) => {
       if (action.payload) {
         state.bookSelectionPopoverState = true;
@@ -64,17 +66,14 @@ const stateSlice = createSlice({
         state.bookSelectionPopoverState = false;
       }
     },
-    addToastNotificationArr: (
-      state: InitialState,
-      action: PayloadAction<any>
-    ) => {
+    addToastNotificationArr: (state, action: PayloadAction<string>) => {
       state.toastNotificationArr.push(action.payload);
     },
-    removeToastNotificationArr: (state: InitialState) => {
+    removeToastNotificationArr: (state) => {
       state.toastNotificationArr.shift();
     },
     setShowPopoverPage: (
-      state: any,
+      state,
       action: PayloadAction<PopoverStatePayloadAction>
     ) => {
       const keys = Object.keys(state.showPopoverState.state);
@@ -88,7 +87,7 @@ const stateSlice = createSlice({
       }
       state.showPopoverState.state = hold;
     },
-    toggleShowPopoverState: (state: InitialState) => {
+    toggleShowPopoverState: (state) => {
       state.showPopoverState.show = !state.showPopoverState.show;
     },
     setShowPopoverState: (
@@ -101,12 +100,18 @@ const stateSlice = createSlice({
         state.showPopoverState.show = false;
       }
     },
-    setRedirector: (state: InitialState, action: PayloadAction<boolean>) => {
+    setRedirector: (state, action: PayloadAction<boolean>) => {
       if (action.payload) {
         state.redirector = true;
       } else {
         state.redirector = false;
       }
+    },
+    // setFormState: (state, action: PayloadAction<FormState>) => {
+    //   state.formState = action.payload;
+    // },
+    setPageReloadedToFalse: (state) => {
+      state.isPageReloaded = false;
     },
   },
   // extraReducers: (builder) => {
@@ -125,5 +130,6 @@ export const {
   setShowPopoverState,
   setBookSelectionPopoverState,
   setRedirector,
+  setPageReloadedToFalse,
 } = stateSlice.actions;
 export default stateSlice;

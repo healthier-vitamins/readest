@@ -1,5 +1,5 @@
 import { Form, Spinner } from "react-bootstrap";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
@@ -14,21 +14,23 @@ import signUpSchema, {
 } from "../../utils/yupSchemas.ts/signUpSchema";
 
 export default function SignUpForm({
-  //   resetAllExceptShowPopoverStateAndShow,
   handleSignUp,
   triggerSignUp,
   setTriggerSignUp,
+  closePopover,
 }: {
-  //   resetAllExceptShowPopoverStateAndShow: Function;
   handleSignUp: SignUpFn;
   triggerSignUp: boolean;
   setTriggerSignUp: Dispatch<SetStateAction<boolean>>;
+  closePopover: boolean;
 }) {
   const dispatch = useAppDispatch();
   const {
     signUpState: { isSignUpLoading },
   } = useAppSelector((state) => state.user);
-
+  const {
+    showPopoverState: { show },
+  } = useAppSelector((state) => state.state);
   const {
     control,
     register,
@@ -46,6 +48,7 @@ export default function SignUpForm({
       password: "",
       confirmPassword: "",
     },
+    shouldUnregister: false,
   });
 
   useEffect(() => {
@@ -59,6 +62,66 @@ export default function SignUpForm({
       setTriggerSignUp(false);
     }
   }, [triggerSignUp]);
+
+  // type states = "email" | "password" | "email" | "confirmPassword";
+
+  // useEffect(() => {
+  //   // if (!show) {
+  //   // [
+  //   //   {
+  //   //     name: "name",
+  //   //     value: watchedValues.name,
+  //   //   },
+  //   //   {
+  //   //     name: "email",
+  //   //     value: watchedValues.email,
+  //   //   },
+  //   //   {
+  //   //     name: "password",
+  //   //     value: watchedValues.password,
+  //   //   },
+  //   //   {
+  //   //     name: "confirmPassword",
+  //   //     value: watchedValues.confirmPassword,
+  //   //   },
+  //   // ].forEach(({ name, value }: { name: states; value: string }) =>
+  //   //   setValue(name, value)
+  //   // );
+
+  //   if (
+  //     watchedValues.name &&
+  //     watchedValues.name !== "" &&
+  //     / /g.test(watchedValues.name) === false
+  //   ) {
+  //     setValue("name", watchedValues.name);
+  //     console.log(
+  //       "🚀 ~ file: SignUpForm.tsx:71 ~ useEffect ~ getValues().name:",
+  //       watchedValues
+  //     );
+  //   }
+  //   // }
+  // }, [
+  //   watchedValues.confirmPassword ||
+  //     watchedValues.email ||
+  //     watchedValues.name ||
+  //     watchedValues.confirmPassword,
+  // ]);
+
+  useEffect(() => {
+    if (closePopover) {
+      const formData = getValues();
+      window.localStorage.setItem("formData", JSON.stringify(formData));
+    } else if (!closePopover) {
+      let formData = window.localStorage.getItem("formData");
+      if (formData && formData !== null) {
+        const parsed = JSON.parse(formData);
+        setValue("email", parsed["email"]);
+        setValue("name", parsed["name"]);
+        setValue("password", parsed["password"]);
+        setValue("confirmPassword", parsed["confirmPassword"]);
+      }
+    }
+  }, [closePopover]);
 
   function onSubmit(formData: signUpFormData) {
     handleSignUp(formData);
