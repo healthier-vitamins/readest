@@ -5,37 +5,13 @@ import {
   setShowPopoverState,
 } from "../../store/slices/state.slice";
 import { GLOBALVARS } from "../../utils/GLOBALVARS";
-import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { HandleLoginFn } from "../popover/SignUpPopover";
-
-yup.setLocale({
-  mixed: { required: "Field cannot be empty." },
-  string: {
-    email: "Invalid email.",
-  },
-});
-
-const loginSchema = yup
-  .object({
-    email: yup.string().email().required(),
-    password: yup
-      .string()
-      .required()
-      .test(
-        "trailing-whitespace",
-        "Space not allowed at start/end of field.",
-        (value, context) => {
-          const start = / /.test(value[0]);
-          const end = / /.test(value.substring(value.length - 1));
-          if (!start && !end) return true;
-        }
-      ),
-  })
-  .required();
-type FormData = yup.InferType<typeof loginSchema>;
+import loginSchema, {
+  loginFormData,
+} from "../../utils/yupSchemas.ts/loginSchema";
 
 export default function LoginForm({
   // resetAllExceptShowPopoverStateAndShow,
@@ -59,7 +35,7 @@ export default function LoginForm({
     // watch,
     getValues,
     reset,
-  } = useForm<FormData>({
+  } = useForm<loginFormData>({
     resolver: yupResolver(loginSchema),
     // mode: "onChange",
     defaultValues: {
@@ -74,7 +50,7 @@ export default function LoginForm({
     }
   }, [triggerLogin]);
 
-  function onSubmit(data: FormData) {
+  function onSubmit(data: loginFormData) {
     handleLogin(data);
     setTriggerLogin(false);
     // reset();

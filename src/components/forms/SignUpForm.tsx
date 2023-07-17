@@ -1,7 +1,5 @@
 import { Form, Spinner } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
-import * as yup from "yup";
-import { specialSymbolsRegex } from "../../utils/regex";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
@@ -11,58 +9,9 @@ import {
 import { GLOBALVARS } from "../../utils/GLOBALVARS";
 import { SignUpFn } from "../popover/SignUpPopover";
 import React, { Dispatch, SetStateAction, useEffect } from "react";
-
-// yup.setLocale({
-//   mixed: {
-//     required: "Field cannot be empty.",
-//   },
-//   string: {
-//     email: "Invalid email.",
-//   },
-// });
-
-const signUpSchema = yup
-  .object({
-    name: yup
-      .string()
-      .required()
-      .test(
-        "testing-special-symbols",
-        "Special characters not allowed.",
-        (value, context) => {
-          const test = specialSymbolsRegex.test(value);
-          if (!test) return true;
-        }
-      ),
-    email: yup.string().email().required(),
-    password: yup
-      .string()
-      .required()
-      .test(
-        "trailing-whitespace",
-        "Space not allowed at start/end of field.",
-        (value, context) => {
-          const start = / /.test(value[0]);
-          const end = / /.test(value.substring(value.length - 1));
-          if (!start && !end) return true;
-        }
-      ),
-    confirmPassword: yup
-      .string()
-      .required()
-      .oneOf([yup.ref("password")], "Password do not match."),
-    //   .test(
-    //     "test-same-password",
-    //     "Passwords are not similar.",
-    //     (value, context) => {
-    //       console.log(yup.ref("password"));
-    //       return String(yup.ref("password")) === value;
-    //     }
-    //   ),
-  })
-  .required();
-
-type FormData = yup.InferType<typeof signUpSchema>;
+import signUpSchema, {
+  signUpFormData,
+} from "../../utils/yupSchemas.ts/signUpSchema";
 
 export default function SignUpForm({
   //   resetAllExceptShowPopoverStateAndShow,
@@ -88,7 +37,8 @@ export default function SignUpForm({
     reset,
     getFieldState,
     getValues,
-  } = useForm<FormData>({
+    setValue,
+  } = useForm<signUpFormData>({
     resolver: yupResolver(signUpSchema),
     defaultValues: {
       email: "",
@@ -97,8 +47,6 @@ export default function SignUpForm({
       confirmPassword: "",
     },
   });
-
-  console.log("🚀 ~ file: SignUpForm.tsx:74 ~ errors:", errors);
 
   useEffect(() => {
     if (triggerSignUp) {
@@ -112,13 +60,8 @@ export default function SignUpForm({
     }
   }, [triggerSignUp]);
 
-  function onSubmit(formData: FormData) {
-    console.log(
-      "🚀 ~ file: SignUpForm.tsx:116 ~ onSubmit ~ formData:",
-      formData
-    );
+  function onSubmit(formData: signUpFormData) {
     handleSignUp(formData);
-    // resetAllExceptShowPopoverStateAndShow();
     setTriggerSignUp(false);
   }
 
@@ -136,11 +79,7 @@ export default function SignUpForm({
                 {...register("name")}
                 className="signup-form-control"
                 isInvalid={errors.name ? true : false}
-                // required
-                // ref={nameRef}
-                // name="name"
-                // value={emailNameState.name}
-                // onChange={onChange}
+                autoComplete="on"
               />
             )}
           />
@@ -153,20 +92,17 @@ export default function SignUpForm({
             control={control}
             render={({ field }) => (
               <Form.Control
-                // type="email"
                 {...field}
                 {...register("email")}
                 className="signup-form-control"
                 autoComplete="on"
                 isInvalid={errors.email ? true : false}
-                // required
-                // ref={emailRef}
-                // name="email"
-                // value={emailNameState.email}
-                // onChange={onChange}
               />
             )}
           ></Controller>
+          {errors.email && (
+            <div className="signup-error-msg">{errors.email.message}</div>
+          )}
           <Form.Label className="signup-label">Password</Form.Label>
           <Controller
             name="password"
@@ -175,21 +111,18 @@ export default function SignUpForm({
               <Form.Control
                 {...field}
                 {...register("password")}
-                isInvalid={errors.password ? true : false}
+                isInvalid={
+                  errors.password ? true : errors.confirmPassword ? true : false
+                }
                 type="password"
                 className="signup-form-control"
-                // required
-                // ref={passwordRef}
-                // name="password"
-                // value={signUpPasswordCompare.password}
-                // onChange={handleSignUpPasswordCompare}
-                // isInvalid={
-                //   !signUpPasswordCompare.isSame && signUpPasswordCompare.isDirty
-                // }
-                // autoComplete="on"
+                autoComplete="on"
               />
             )}
           ></Controller>
+          {errors.password && (
+            <div className="signup-error-msg">{errors.password.message}</div>
+          )}
           <Form.Label className="signup-label">Confirm Password</Form.Label>
           <Controller
             name="confirmPassword"
@@ -201,18 +134,15 @@ export default function SignUpForm({
                 isInvalid={errors.confirmPassword ? true : false}
                 type="password"
                 className="signup-form-control"
-                // required
-                // ref={confirmPasswordRef}
-                // name="confirmPassword"
-                // value={signUpPasswordCompare.confirmPassword}
-                // onChange={handleSignUpPasswordCompare}
-                // isInvalid={
-                //   !signUpPasswordCompare.isSame && signUpPasswordCompare.isDirty
-                // }
-                // autoComplete="on"
+                autoComplete="on"
               />
             )}
           ></Controller>
+          {errors.confirmPassword && (
+            <div className="signup-error-msg">
+              {errors.confirmPassword.message}
+            </div>
+          )}
         </Form.Group>
         <div className="links-container">
           {/* {signUp && signUpPasswordCompare.isDirty && (
@@ -221,16 +151,15 @@ export default function SignUpForm({
           </div>
         )} */}
 
-          {errors.confirmPassword && (
+          {/* {errors.confirmPassword && (
             <div className="signup-error-msg">
               {errors.confirmPassword.message}
             </div>
-          )}
+          )} */}
           <div
             className="popover-state-link"
             onClick={() => {
               dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
-              // resetAllExceptShowPopoverStateAndShow();
             }}
           >
             Already have an account? Login.
