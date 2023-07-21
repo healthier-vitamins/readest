@@ -6,7 +6,7 @@
 // @import "../node_modules/bootstrap/scss/variables";
 
 // Default variable overrides
-$body-color: $web-default-color;
+// $body-color: $web-default-color;
 
 // Required
 @import "../node_modules/bootstrap/scss/functions";
@@ -15,7 +15,6 @@ $body-color: $web-default-color;
 @import "../node_modules/bootstrap/scss/mixins";
 // @import "../node_modules/bootstrap/scss/root";
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
-
 
 // @import "bootstrap/scss/bootstrap";
 @import "./App.scss";

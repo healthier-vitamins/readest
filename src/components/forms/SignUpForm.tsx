@@ -208,17 +208,6 @@ export default function SignUpForm({
           )}
         </Form.Group>
         <div className="links-container">
-          {/* {signUp && signUpPasswordCompare.isDirty && (
-          <div className="signup-error-msg">
-            Something went wrong, please try again later.
-          </div>
-        )} */}
-
-          {/* {errors.confirmPassword && (
-            <div className="signup-error-msg">
-              {errors.confirmPassword.message}
-            </div>
-          )} */}
           <div
             className="popover-state-link"
             onClick={() => {

@@ -138,6 +138,7 @@ export const apiLogin = createAsyncThunk(
   "apiLogin",
   async (payload: ApiLoginPayload, thunkApi) => {
     const [err, res] = await axiosTo(httpClient.Post("login", payload));
+
     if (err) {
       if (checkAndHandleTimeoutError(err, null)) {
         thunkApi.dispatch(addToastNotificationArr(err.data));

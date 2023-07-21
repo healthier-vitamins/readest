@@ -5,8 +5,9 @@ import { GLOBALVARS } from "../../utils/GLOBALVARS";
 function checkAndHandleTimeoutError(err: any, thunkApi: any) {
   if (!err?.status) return true;
   if (
-    String(err.response.data).toLowerCase().includes("timeout") ||
-    String(err.message).toLowerCase().includes("timeout")
+    String(err?.response?.data).toLowerCase().includes("timeout") ||
+    String(err?.data).toLowerCase().includes("timeout") ||
+    String(err?.message).toLowerCase().includes("timeout")
   ) {
     if (thunkApi) {
       thunkApi.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
