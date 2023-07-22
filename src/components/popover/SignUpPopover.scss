@@ -39,12 +39,19 @@
   font-size: 13px;
 }
 
-.signup-error-msg {
+.signup-error-msg,
+.create-book-error-msg {
   color: red;
   font-size: 11px;
   line-height: 16px;
   margin: 0;
   padding: 0;
+}
+
+.create-book-error-msg {
+  margin-top: 0.3rem;
+  min-width: 15rem;
+  max-width: 15rem;
 }
 
 .login-btn {

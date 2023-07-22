@@ -148,7 +148,7 @@ export const apiLogin = createAsyncThunk(
     const email = res.email;
     thunkApi.dispatch(userLoggedIn(email));
     thunkApi.dispatch(setShowPopoverState(false));
-    return res.data;
+    return res;
   }
 );
 

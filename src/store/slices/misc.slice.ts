@@ -68,7 +68,7 @@ const miscSlice = createSlice({
       .addCase(
         getStoicQuote.rejected,
         (state: InitialState, _action: PayloadAction<any>) => {
-          state.stoicQuote.isLoading = true;
+          state.stoicQuote.isLoading = false;
         }
       );
   },

@@ -1,5 +1,6 @@
 .create-book-modal-btn-container {
   display: flex;
+  justify-content: center;
   margin-top: 0.6rem;
 }
 
@@ -51,7 +52,8 @@
 
 .create-book-modal-form-control {
   margin-top: 0.4rem;
-  max-width: 24rem;
+  min-width: 15rem;
+  max-width: 15rem;
   height: 32px;
   font-size: 15px !important;
 }

@@ -48,7 +48,7 @@ export default function SignUpForm({
       password: "",
       confirmPassword: "",
     },
-    shouldUnregister: false,
+    // shouldUnregister: false,
   });
 
   useEffect(() => {

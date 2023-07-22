@@ -7,7 +7,8 @@ function checkAndHandleTimeoutError(err: any, thunkApi: any) {
   if (
     String(err?.response?.data).toLowerCase().includes("timeout") ||
     String(err?.data).toLowerCase().includes("timeout") ||
-    String(err?.message).toLowerCase().includes("timeout")
+    String(err?.message).toLowerCase().includes("timeout") ||
+    String(err?.message).toLowerCase().includes("timed out")
   ) {
     if (thunkApi) {
       thunkApi.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));

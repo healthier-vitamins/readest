@@ -28,7 +28,11 @@ export default class ApiError {
     if (this.prevErrMsg !== this.errMsg) {
       if (this.errMsg !== "canceled") {
         this.prevErrMsg = this.errMsg;
-        if (this.errMsg.includes("timed out") || this.status === "canceled") {
+        if (
+          this.errMsg.includes("timed out") ||
+          this.status === "canceled" ||
+          this.errMsg.includes("timedout")
+        ) {
           store.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
         } else if (this.errMsg.includes("path failed validation")) {
           store.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_INVALID_URL));

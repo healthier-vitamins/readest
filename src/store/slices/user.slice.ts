@@ -77,14 +77,14 @@ const userSlice = createSlice({
         path: "/",
       });
     },
-    addUserPageId: (_state: InitialState, action: PayloadAction<any>) => {
-      const id = action.payload;
-      cookies.set("user-id", id, {
-        maxAge: 3600,
-        sameSite: "lax",
-        path: "/",
-      });
-    },
+    // addUserPageId: (_state: InitialState, action: PayloadAction<any>) => {
+    //   const id = action.payload;
+    //   cookies.set("user-id", id, {
+    //     maxAge: 3600,
+    //     sameSite: "lax",
+    //     path: "/",
+    //   });
+    // },
     setIsLoggedIn: (state: InitialState) => {
       state.authentication.isUserLoggedIn = true;
     },
@@ -96,7 +96,13 @@ const userSlice = createSlice({
     builder.addCase(apiLogin.fulfilled, (state, action) => {
       state.loginState.isLoginLoading = false;
       state.loginState.loginError = false;
-      console.log("HERE,", action.type);
+      const id = action.payload.id;
+      cookies.set("user-id", id, {
+        maxAge: 3600,
+        sameSite: "lax",
+        path: "/",
+      });
+      console.log("HERE,", action.payload);
     });
     builder.addCase(apiLogin.pending, (state, action) => {
       state.loginState.isLoginLoading = true;
@@ -130,11 +136,6 @@ const userSlice = createSlice({
   },
 });
 
-export const {
-  userLoggedIn,
-  userLoggedOut,
-  addUserPageId,
-  setIsLoggedIn,
-  setIsLoggedOut,
-} = userSlice.actions;
+export const { userLoggedIn, userLoggedOut, setIsLoggedIn, setIsLoggedOut } =
+  userSlice.actions;
 export default userSlice;

@@ -258,7 +258,7 @@ const word = createSlice({
         state.isLoading = true;
       })
       .addCase(getWordDefinition.rejected, (state: InitialState) => {
-        state.isLoading = true;
+        state.isLoading = false;
       })
       .addCase(postWordToBook.fulfilled, (state: InitialState) => {
         state.isSavingWordLoading = false;
@@ -267,7 +267,7 @@ const word = createSlice({
         state.isSavingWordLoading = true;
       })
       .addCase(postWordToBook.rejected, (state: InitialState) => {
-        state.isSavingWordLoading = true;
+        state.isSavingWordLoading = false;
       })
       .addCase(
         getWordsInBook.fulfilled,
@@ -292,7 +292,7 @@ const word = createSlice({
         state.isGetWordLoading = true;
       })
       .addCase(getWordsInBook.rejected, (state: InitialState) => {
-        state.isGetWordLoading = true;
+        state.isGetWordLoading = false;
       })
       .addCase(deleteWord.fulfilled, (state: InitialState) => {
         state.isDeleteWordLoading = false;
@@ -301,7 +301,7 @@ const word = createSlice({
         state.isDeleteWordLoading = true;
       })
       .addCase(deleteWord.rejected, (state: InitialState) => {
-        state.isDeleteWordLoading = true;
+        state.isDeleteWordLoading = false;
       });
   },
 });

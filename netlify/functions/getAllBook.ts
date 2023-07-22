@@ -17,7 +17,7 @@ exports.handler = async function (event: any, _context: any) {
     console.log(err.message);
     return {
       statusCode: HttpStatusCode.NotFound,
-      body: "Books database not found. Please contact Audrian.",
+      body: "Books database not found.",
     };
   }
 

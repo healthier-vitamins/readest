@@ -1,12 +1,11 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import Cookies from "universal-cookie";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { axiosTo } from "../../utils/promise";
-import { addToastNotificationArr, toggleCreateBookModal } from "./state.slice";
-import { GLOBALVARS } from "../../utils/GLOBALVARS";
-// import { checkAndHandleTimeoutError } from "../../utils/apis/timeoutHandler";
+import { addToastNotificationArr } from "./state.slice";
+import { createBook } from "../apis/book.api";
+import httpClient from "../../utils/httpclient/HTTPClient";
+import { checkAndHandleTimeoutError } from "../apis/timeoutHandler";
+import Cookies from "universal-cookie";
 const cookies = new Cookies();
-const url = window.location.origin;
 
 export interface BookRes {
   bookName: string;
@@ -38,8 +37,8 @@ interface InitialState {
 const initialState: InitialState = {
   bookRes: [],
   bookResArrCheckbox: [],
-  postBookIsLoading: true,
-  getAllBookIsLoading: true,
+  postBookIsLoading: false,
+  getAllBookIsLoading: false,
   // will only contain 1 book at any time
   selectedTab: {
     bookObj: { bookName: "Definition", id: "0" },
@@ -53,44 +52,21 @@ const initialState: InitialState = {
   ],
 };
 
-// create book
-export const postBook = createAsyncThunk(
-  "postBook",
-  async (payload: any, thunkApi) => {
-    const [err, res] = await axiosTo(
-      axios.post(`${url}/api/postBook`, payload)
-    );
-    if (err) {
-      if (err.data.includes("timed out")) {
-        thunkApi.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
-        return;
-      }
-      thunkApi.dispatch(addToastNotificationArr(err.data));
-      return;
-    }
-    thunkApi.dispatch(toggleCreateBookModal());
-    thunkApi.dispatch(getAllBook());
-    return res;
-  }
-);
-
 // get books
 export const getAllBook = createAsyncThunk(
   "getAllBook",
   async (_payload, thunkApi) => {
-    const userId = cookies.get("user-id", { doNotParse: true });
+    const userId = cookies.get("user-id");
     if (!userId) return [];
 
     const [err, res] = await axiosTo(
-      axios.get(`${url}/api/getAllBook`, { params: { userId: userId } })
+      httpClient.Get(`getAllBook`, { params: { userId: userId } })
     );
     if (err) {
-      if (err.data.includes("timed out")) {
-        thunkApi.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
-        return [];
+      if (checkAndHandleTimeoutError(err, null)) {
+        thunkApi.dispatch(addToastNotificationArr(err.data));
+        return;
       }
-      thunkApi.dispatch(addToastNotificationArr(err.data));
-      return [];
     }
     return res;
   }
@@ -148,23 +124,23 @@ const book = createSlice({
     resetbookResArrCheckbox: (state: InitialState) => {
       state.bookResArrCheckbox.forEach((item: any) => (item.checked = false));
     },
-    setPostBookIsLoading: (
-      state: InitialState,
-      action: PayloadAction<boolean>
-    ) => {
-      state.postBookIsLoading = action.payload;
-    },
+    // setPostBookIsLoading: (
+    //   state: InitialState,
+    //   action: PayloadAction<boolean>
+    // ) => {
+    //   state.postBookIsLoading = action.payload;
+    // },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(postBook.fulfilled, (state: InitialState, _action) => {
+      .addCase(createBook.fulfilled, (state: InitialState) => {
         state.postBookIsLoading = false;
       })
-      .addCase(postBook.pending, (state: InitialState) => {
+      .addCase(createBook.pending, (state: InitialState) => {
         state.postBookIsLoading = true;
       })
-      .addCase(postBook.rejected, (state: InitialState) => {
-        state.postBookIsLoading = true;
+      .addCase(createBook.rejected, (state: InitialState) => {
+        state.postBookIsLoading = false;
       })
       .addCase(getAllBook.fulfilled, (state: InitialState, action) => {
         state.getAllBookIsLoading = false;
@@ -188,7 +164,7 @@ const book = createSlice({
         state.getAllBookIsLoading = true;
       })
       .addCase(getAllBook.rejected, (state: InitialState) => {
-        state.getAllBookIsLoading = true;
+        state.getAllBookIsLoading = false;
       });
   },
 });
@@ -199,6 +175,5 @@ export const {
   handlebookResArrCheckboxChange,
   resetbookResArrCheckbox,
   resetBookSelection,
-  setPostBookIsLoading,
 } = book.actions;
 export default book;
