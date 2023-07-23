@@ -19,7 +19,6 @@ function SideNavBar() {
 
   useEffect(() => {
     dispatch(getAllBook());
-    // eslint-disable-next-line
   }, []);
 
   function RenderBookTab(book: any, index: number) {

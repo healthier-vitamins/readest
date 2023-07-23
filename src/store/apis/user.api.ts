@@ -146,9 +146,20 @@ export const apiLogin = createAsyncThunk(
       return;
     }
     const email = res.email;
+
+    const [updateErr, updateRes] = await axiosTo(
+      httpClient.Post("updateLoggedInDate", { email: email })
+    );
+    if (updateErr) {
+      if (checkAndHandleTimeoutError(updateErr, null)) {
+        thunkApi.dispatch(addToastNotificationArr(updateErr.data));
+      }
+      return;
+    }
+
     thunkApi.dispatch(userLoggedIn(email));
     thunkApi.dispatch(setShowPopoverState(false));
-    return res;
+    return updateRes;
   }
 );
 

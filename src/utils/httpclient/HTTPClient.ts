@@ -69,12 +69,12 @@ class HTTPClient {
     this.baseUrl = url;
   }
 
-  Get(url: string, payload: any = undefined) {
+  Get(url: string, params: any = undefined) {
     return this.instance?.get(`${this.baseUrl}/api/${url}`, {
-      data: payload,
       headers: {
         "Content-Type": "application/json",
       },
+      params: params,
     });
   }
 

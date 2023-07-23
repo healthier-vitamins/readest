@@ -33,7 +33,7 @@ const createBook = createAsyncThunk(
   "createBook",
   async (payload: CreateBookPayload, thunkApi) => {
     const [bookExistsErr, _bookExistsRes] = await axiosTo(
-      httpClient.Get(`checkIfBookExists`, { params: payload })
+      httpClient.Get(`checkIfBookExists`, payload)
     );
     if (bookExistsErr) {
       if (checkAndHandleTimeoutError(bookExistsErr, null)) {
@@ -44,7 +44,7 @@ const createBook = createAsyncThunk(
 
     const [err, res] = await axiosTo(httpClient.Post(`postBook`, payload));
     if (err) {
-      if (checkAndHandleTimeoutError(bookExistsErr, null)) {
+      if (checkAndHandleTimeoutError(err, null)) {
         thunkApi.dispatch(addToastNotificationArr(err.data));
         return;
       }

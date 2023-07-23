@@ -60,13 +60,14 @@ export const getAllBook = createAsyncThunk(
     if (!userId) return [];
 
     const [err, res] = await axiosTo(
-      httpClient.Get(`getAllBook`, { params: { userId: userId } })
+      httpClient.Get(`getAllBook`, { userId: userId })
     );
     if (err) {
       if (checkAndHandleTimeoutError(err, null)) {
         thunkApi.dispatch(addToastNotificationArr(err.data));
         return;
       }
+      console.log("🚀 ~ file: book.slice.ts:63 ~ res:", res);
     }
     return res;
   }

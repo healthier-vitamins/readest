@@ -62,7 +62,7 @@ exports.handler = async function (event: any, _context: any) {
     }
     return {
       statusCode: HttpStatusCode.InternalServerError,
-      body: "Something went wrong. Please contact Audrian on this issue.",
+      body: "Something went wrong.",
     };
   }
 };

@@ -5,6 +5,7 @@ import notion from "../../src/utils/notion/notionLoader";
 
 exports.handler = async function (event: any, _context: any) {
   const { userId } = event.queryStringParameters;
+  console.log("🚀 ~ file: getAllBook.ts:8 ~ userId:", userId);
 
   let booksDbId: string;
   try {
