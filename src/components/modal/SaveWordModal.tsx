@@ -5,9 +5,9 @@ import {
   resetbookResArrCheckbox,
 } from "../../store/slices/book.slice";
 import { toggleSaveWordModal } from "../../store/slices/state.slice";
-import { postWordToBook } from "../../store/slices/word.slice";
 import "./SaveWordModal.scss";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { postWordToBook } from "../../store/apis/word.api";
 
 function SaveWordModal() {
   // const [hasSelectedBook, setHasSelectedBook] = useState(false);

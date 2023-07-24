@@ -2,20 +2,13 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { addToastNotificationArr } from "./state.slice";
-import { ApiCall, ApiTracker } from "../apis/apiTracker";
 import { axiosTo } from "../../utils/promise";
 import { GLOBALVARS } from "../../utils/GLOBALVARS";
-import { BookRes } from "./book.slice";
-const apiTracker = new ApiTracker();
-
-// api url with query passed through as parameter
-function apiUrl(queriedWord: string) {
-  queriedWord = queriedWord.replace(/[^\w\s]/g, "");
-  return `https://dictionaryapi.com/api/v3/references/sd4/json/${queriedWord}?key=${
-    import.meta.env.VITE_DICTIONARY_KEY
-  }`;
-  // return `https://dictionaryapi.com/api/v3/references/ithesaurus/json/${queriedWord}?key=${process.env.REACT_APP_DICTIONARY_KEY}`;
-}
+import {
+  getWordDefinition,
+  getWordsInBook,
+  postWordToBook,
+} from "../apis/word.api";
 
 export interface AllWordsInBook extends ChosenWordDefinition {
   id: string | number | null;
@@ -38,7 +31,7 @@ interface InitialState {
   isWordChosen: boolean;
   chosenWordDefinition: ChosenWordDefinition;
   allWordsFromBook: AllWordsInBook[];
-  isLoading: boolean;
+  isGetWordDefinitionLoading: boolean;
   isSavingWordLoading: boolean;
   isGetWordLoading: boolean;
   isDeleteWordLoading: boolean;
@@ -56,100 +49,15 @@ const initialState: InitialState = {
     shortDef: [],
   },
   allWordsFromBook: [],
-  isLoading: true,
-  isSavingWordLoading: true,
-  isGetWordLoading: true,
-  isDeleteWordLoading: true,
+  isGetWordDefinitionLoading: false,
+  isSavingWordLoading: false,
+  isGetWordLoading: false,
+  isDeleteWordLoading: false,
   isOriginatedFromUrl: {
     word: null,
     isFromSearchBar: false,
   },
 };
-
-// exported api call
-export const getWordDefinition = createAsyncThunk(
-  "getWordDefinition",
-  async (queriedWord: string, _thunkApi) => {
-    const [err, res] = await axiosTo(axios.get(apiUrl(queriedWord)));
-    // console.log("fetched data ", resp.data);
-    if (err) {
-      if (err.data.includes("time out")) {
-        addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT);
-        return;
-      }
-      addToastNotificationArr("Merriam Webster API is down.");
-      return;
-    }
-    return res;
-  }
-);
-
-export const postWordToBook = createAsyncThunk(
-  "postWordToBook",
-  async (payload: any, thunkApi) => {
-    // eslint-disable-next-line
-    const [err, _res] = await axiosTo(axios.post("/api/postWord", payload));
-    const { bookName } = payload.bookObj;
-    // payload.bookObj.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text;
-    if (err) {
-      if (err.data.includes("time out")) {
-        thunkApi.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
-        console.error(err.data);
-        return;
-      }
-      thunkApi.dispatch(
-        addToastNotificationArr(
-          `Something went wrong adding word to ${bookName}. Please try again.`
-        )
-      );
-      console.error(err.data);
-      return;
-    }
-
-    thunkApi.dispatch(addToastNotificationArr(`Word added to ${bookName}`));
-    return bookName;
-  }
-);
-
-// interface GetWordsInBookPayload extends BookRes {
-//   abortController: AbortController | null;
-// }
-
-export const getWordsInBook = createAsyncThunk(
-  "getWordsInBook",
-  async (payload: BookRes, _thunkApi) => {
-    let res: any;
-    const apiCall: ApiCall = {
-      id: payload.id,
-      abortController: new AbortController(),
-      method: "post",
-      url: "/api/getAllWord",
-      payload: payload,
-    };
-    res = await apiTracker.callApi(apiCall, (data) => data);
-
-    // const [err, res] = payload.abortController
-    //   ? await axiosTo(
-    //       axios.post("/api/getAllWord", payload, {
-    //         signal: payload.abortController.signal,
-    //       })
-    //     )
-    //   : await axiosTo(axios.post("/api/getAllWord", payload));
-    // if (err) {
-    //   if (err.data.includes("time out")) {
-    //     thunkApi.dispatch(addToastNotificationArr(GLOBALVARS.ERROR_TIMEOUT));
-    //     console.error(err.data);
-    //     return;
-    //   }
-    //   thunkApi.dispatch(
-    //     addToastNotificationArr(GLOBALVARS.ERROR_GETTING_WORDS_IN_BOOK)
-    //   );
-    //   console.error(err.data);
-    //   return;
-    // }
-    return res.data;
-  }
-);
 
 export const deleteWord = createAsyncThunk(
   "deleteWord",
@@ -246,19 +154,22 @@ const word = createSlice({
     ) => {
       state.isOriginatedFromUrl.isFromSearchBar = action.payload;
     },
+    setGetWordIsLoading: (state) => {
+      state.isGetWordLoading = true;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getWordDefinition.fulfilled, (state: InitialState, action) => {
-        state.isLoading = false;
+        state.isGetWordDefinitionLoading = false;
         console.log("suggestedWord, ", action.payload);
         state.suggestedWord = action.payload;
       })
       .addCase(getWordDefinition.pending, (state: InitialState) => {
-        state.isLoading = true;
+        state.isGetWordDefinitionLoading = true;
       })
       .addCase(getWordDefinition.rejected, (state: InitialState) => {
-        state.isLoading = false;
+        state.isGetWordDefinitionLoading = false;
       })
       .addCase(postWordToBook.fulfilled, (state: InitialState) => {
         state.isSavingWordLoading = false;
@@ -284,8 +195,14 @@ const word = createSlice({
               );
             }
           }
-          state.allWordsFromBook = action.payload;
-          state.isGetWordLoading = false;
+
+          // if empty list === empty book. undefined due to abortController.
+          if (action.payload !== undefined && action.payload.length !== 0) {
+            state.allWordsFromBook = action.payload;
+            state.isGetWordLoading = false;
+          } else {
+            state.isGetWordLoading = true;
+          }
         }
       )
       .addCase(getWordsInBook.pending, (state: InitialState) => {
@@ -313,5 +230,6 @@ export const {
   addIsOriginatedFromUrlWord,
   resetIsOriginatedFromUrlWord,
   setIsFromSearchBar,
+  setGetWordIsLoading,
 } = word.actions;
 export default word;

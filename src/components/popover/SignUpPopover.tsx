@@ -17,6 +17,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import LoginForm from "../forms/LoginForm";
 import SignUpForm from "../forms/SignUpForm";
+import { getAllBook } from "../../store/apis/book.api";
 
 // interface ErrorState {
 //   [key: string]: boolean;
@@ -51,7 +52,6 @@ function SignUpPopover() {
   // save form data if popover is closed accidentally
   useEffect(() => {
     if (closePopover) {
-      console.log(window.localStorage.getItem("formData"));
       clickOutsideFunc();
       setClosePopover(false);
     }
@@ -100,6 +100,7 @@ function SignUpPopover() {
   const handleLogin: HandleLoginFn = useCallback(
     async (formData: { email: string; password: string }) => {
       const res = await dispatch(apiLogin(formData));
+      if (res.type.includes("fulfilled")) dispatch(getAllBook(res.payload.id));
     },
     [dispatch]
   );

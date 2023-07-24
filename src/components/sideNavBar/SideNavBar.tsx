@@ -2,12 +2,15 @@ import "./SideNavBar.scss";
 import { FiPlusSquare } from "react-icons/fi";
 
 import { toggleCreateBookModal } from "../../store/slices/state.slice";
-import { addBookSelection, getAllBook } from "../../store/slices/book.slice";
+import { addBookSelection } from "../../store/slices/book.slice";
 import React, { useEffect } from "react";
 import { bookSchema } from "../../utils/schemas/bookSchema";
 import protectedFunction from "../../utils/protectedFunc";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
+/**
+ * @deprecated
+ */
 function SideNavBar() {
   const dispatch = useAppDispatch();
   function handleCreateBook() {
@@ -17,9 +20,9 @@ function SideNavBar() {
     return state.book;
   });
 
-  useEffect(() => {
-    dispatch(getAllBook());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getAllBook());
+  // }, []);
 
   function RenderBookTab(book: any, index: number) {
     return (

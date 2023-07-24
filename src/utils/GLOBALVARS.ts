@@ -8,12 +8,13 @@ export const GLOBALVARS = {
   YEAR_TIMER_NUMBER_OF_BLOCKS: 18,
 
   // error codes
+  ERROR_MERRIAM_WEBSTER_DOWN: "Merriam Webster API is down.",
   ERROR_GENERAL_ERROR: "Something went wrong.",
   ERROR_BOOK_NAME_ALRDY_EXISTS: "Book already exists.",
   ERROR_TIMEOUT: "Please refresh the page.",
-  ERROR_BOOK_DB_NOT_FOUND: "ERRx0001 Book database not found.",
-  ERROR_ACCESSING_BOOK_DB: "ERRx0002 Trouble accessing book database.",
-  ERROR_GETTING_WORDS_IN_BOOK: "ERRx0003 Trouble getting words in book.",
+  ERROR_BOOK_DB_NOT_FOUND: "Book database not found. Please contact audrian.",
+  ERROR_ACCESSING_BOOK_DB: "Trouble accessing book database.",
+  ERROR_GETTING_WORDS_IN_BOOK: "Trouble getting words in book.",
   ERROR_INVALID_URL: "Invalid Url.",
   ERROR_BOOK_DOES_NOT_EXIST: "Book does not exist.",
 

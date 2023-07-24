@@ -3,7 +3,7 @@ import {
   toggleBookSelectionPopoverState,
   toggleCreateBookModal,
 } from "../../store/slices/state.slice";
-import { addBookSelection, getAllBook } from "../../store/slices/book.slice";
+import { addBookSelection } from "../../store/slices/book.slice";
 import React, { useEffect } from "react";
 import protectedFunction from "../../utils/protectedFunc";
 import { FiPlusSquare } from "react-icons/fi";
@@ -17,6 +17,7 @@ import {
 } from "../../store/slices/state.slice";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { getAllBook } from "../../store/apis/book.api";
 
 function BookSelectionPopover() {
   const dispatch = useAppDispatch();
@@ -25,9 +26,7 @@ function BookSelectionPopover() {
   function handleCreateBook() {
     dispatch(toggleCreateBookModal());
   }
-  const { bookSelectionPopoverState } = useAppSelector(
-    (state) => state.state
-  );
+  const { bookSelectionPopoverState } = useAppSelector((state) => state.state);
   const { bookRes, getAllBookIsLoading } = useAppSelector(
     (state) => state.book
   );
@@ -63,7 +62,7 @@ function BookSelectionPopover() {
   }
 
   useEffect(() => {
-    dispatch(getAllBook());
+    if (isUserLoggedIn) dispatch(getAllBook());
   }, [dispatch, isUserLoggedIn]);
 
   return (

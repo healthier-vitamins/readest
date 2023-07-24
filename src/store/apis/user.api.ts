@@ -12,6 +12,7 @@ import {
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { router } from "../../components/router/Router";
 import { GLOBALVARS } from "../../utils/GLOBALVARS";
+import { getAllBook } from "./book.api";
 
 export const apiUserSignUp = createAsyncThunk(
   "apiUserSignUp",
@@ -68,66 +69,6 @@ export const apiUserSignUp = createAsyncThunk(
     return goTrueRes;
   }
 );
-
-// async function userSignUp(onSuccess: any, onError: any, payload: any) {
-//   const [goTrueErr, goTrueRes] = await axiosTo(
-//     axios.post("api/signUp", payload)
-//   );
-//   if (goTrueErr) {
-//     if (checkAndHandleTimeoutError(goTrueErr, null)) {
-//       onError(goTrueErr);
-//       return;
-//     }
-//   }
-
-//   // search if email exists in db
-//   const [queryEmailErr, queryEmailRes] = await axiosTo(
-//     axios.post("api/queryEmail", payload)
-//   );
-
-//   if (queryEmailErr) {
-//     if (checkAndHandleTimeoutError(queryEmailErr, null)) {
-//       onError(queryEmailErr);
-//       return;
-//     }
-//   }
-
-//   // if email exists
-//   if (queryEmailRes.results.length > 0) {
-//     onSuccess(goTrueRes);
-//     return;
-//   } else {
-//     // create new account in notion
-//     const [notionErr, _notionRes] = await axiosTo(
-//       axios.post("api/postUser", payload)
-//     );
-//     if (notionErr) {
-//       if (checkAndHandleTimeoutError(notionErr, null)) {
-//         onError(notionErr);
-//         return;
-//       }
-//     }
-//     onSuccess(goTrueRes);
-//     return;
-//   }
-// }
-
-// function login(payload: any): AppThunk {
-//   return function (dispatch, getState) {
-//     httpClient.Post("login", payload)?.then(
-//       (res) => {
-//         const email = res.data.email;
-//         dispatch(userLoggedIn(email));
-//         dispatch(setShowPopoverState(false));
-//       },
-//       (err) => {
-//         if (checkAndHandleTimeoutError(err, null)) {
-//           dispatch(addToastNotificationArr(err.data));
-//         }
-//       }
-//     );
-//   };
-// }
 
 interface ApiLoginPayload {
   email: string;
@@ -189,19 +130,6 @@ export const apiVerifyUser = createAsyncThunk(
     return res;
   }
 );
-
-// async function verifyUser(onSuccess: any, onError: any, payload: any) {
-//   const [err, res] = await axiosTo(axios.post("api/confirmEmail", payload));
-
-//   if (err) {
-//     if (checkAndHandleTimeoutError(err, null)) {
-//       onError(err);
-//       return;
-//     }
-//   }
-//   onSuccess(res);
-//   return;
-// }
 
 function logout() {
   store.dispatch(userLoggedOut());

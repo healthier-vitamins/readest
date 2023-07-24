@@ -1,10 +1,11 @@
 /* eslint-disable eqeqeq */
 import axios from "axios";
 import ApiError from "../../classes/ApiError";
-import { AllWordsInBook } from "../slices/word.slice";
+import { AllWordsInBook, setGetWordIsLoading } from "../slices/word.slice";
+import store from "../store";
 const apiError = new ApiError();
 
-interface ApiCall {
+export interface ApiCall {
   id: string;
   url: string;
   method: "get" | "post" | "put" | "delete";
@@ -12,20 +13,44 @@ interface ApiCall {
   abortController: AbortController;
 }
 
-export class ApiTracker {
-  //   private apiCalls: Map<string, ApiCall>;
-  private previousApiCall: ApiCall | null;
+class ApiTracker {
+  private apiCalls: Map<string, ApiCall>;
+  // private previousApiCall: ApiCall | null;
 
   constructor() {
-    // this.apiCalls = new Map();
-    this.previousApiCall = null;
+    this.apiCalls = new Map();
+    // this.previousApiCall = null;
   }
 
+  setApiCallMap(apiCall: ApiCall) {
+    const { url } = apiCall;
+    if (this.apiCalls.has(url)) {
+      this.apiCalls.get(url)?.abortController.abort();
+      // store.dispatch(setGetWordIsLoading());
+      console.log("aborted");
+    }
+    this.apiCalls.set(url, apiCall);
+  }
+
+  getApiCallMap(url: string) {
+    if (!this.apiCalls.has(url)) return null;
+    return this.apiCalls.get(url);
+  }
+
+  /**
+   * @deprecated
+   * @param apiCall
+   * @returns
+   */
   private async executeApiCall(apiCall: ApiCall): Promise<any> {
     const { url, method, payload, abortController } = apiCall;
 
-    let response;
+    if (this.apiCalls.has(url)) {
+      this.apiCalls.get(url)?.abortController.abort();
+    }
+    this.apiCalls.set(url, apiCall);
 
+    let response;
     switch (method) {
       case "get":
         response = axios.get(url, { signal: abortController.signal });
@@ -47,8 +72,7 @@ export class ApiTracker {
         throw new Error("Invalid API method specified.");
     }
 
-    this.previousApiCall = apiCall;
-
+    // this.previousApiCall = apiCall;
     return response;
   }
 
@@ -56,20 +80,26 @@ export class ApiTracker {
   //     this.apiCalls.set(apiCall.id, apiCall);
   //   }
 
+  /**
+   * @deprecated
+   * @param apiCall
+   * @param onSuccess
+   * @returns
+   */
   public async callApi(
     apiCall: ApiCall,
     onSuccess: (data: any) => void
   ): Promise<AllWordsInBook[]> {
-    console.log("previous id ", this.previousApiCall?.id);
-    if (this.previousApiCall?.id) {
-      this.previousApiCall?.abortController.abort();
-      this.previousApiCall = apiCall;
-    }
+    // console.log("previous id ", this.previousApiCall?.id);
+    // if (this.previousApiCall?.id) {
+    //   this.previousApiCall?.abortController.abort();
+    //   this.previousApiCall = apiCall;
+    // }
 
     try {
       const responseData = await this.executeApiCall(apiCall);
       onSuccess(responseData);
-      this.previousApiCall = null;
+      // this.previousApiCall = null;
       return responseData;
     } catch (error: any) {
       console.error("API call cancelled:", error);
@@ -78,27 +108,8 @@ export class ApiTracker {
         error.response.status
       );
     }
-
-    // else {
-
-    //   const [err, res] = await axiosTo(this.executeApiCall(apiCall));
-    //   if (err) {
-    //     console.error("API call cancelled:", err);
-    //     // const isTimeOut =
-    //     //   err.data.includes("time out") || err.status == 500 || err.status == 502;
-    //     throw new ApiError(err.data, err.status);
-    //   }
-    //   console.log("res, ", res);
-    //   onSuccess(res);
-    //   this.previousApiCall = null;
-    //   return res;
-    // }
-    // return []
   }
-
-  //   public getPreviousApiCall(): ApiCall | null {
-  //     return this.previousApiCall;
-  //   }
 }
 
-export type { ApiCall };
+const apiTracker = new ApiTracker();
+export default apiTracker;

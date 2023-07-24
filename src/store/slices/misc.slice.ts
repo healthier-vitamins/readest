@@ -19,7 +19,7 @@ const initialState: InitialState = {
   stoicQuote: {
     quote: null,
     author: null,
-    isLoading: true,
+    isLoading: false,
   },
 };
 

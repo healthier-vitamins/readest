@@ -1,7 +1,6 @@
 import React, { createRef, useState, useEffect } from "react";
 import {
   resetSuggestedWord,
-  getWordDefinition,
   addChosenWordDefinition,
   resetIsOriginatedFromUrlWord,
   setIsFromSearchBar,
@@ -13,6 +12,7 @@ import { Form } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { GLOBALVARS } from "../../utils/GLOBALVARS";
 import OnClickOutsideComponent from "../OnClickOutsideComponent";
+import { getWordDefinition } from "../../store/apis/word.api";
 
 function SearchBar() {
   // const ref = createRef();
@@ -20,9 +20,8 @@ function SearchBar() {
   const [queriedWord, setQueriedWord] = useState("");
   const queriedWordRef = createRef<any>();
   const [touched, setTouched] = useState(false);
-  const { suggestedWord, isLoading, isOriginatedFromUrl } = useAppSelector(
-    (store) => store.word
-  );
+  const { suggestedWord, isGetWordDefinitionLoading, isOriginatedFromUrl } =
+    useAppSelector((store) => store.word);
   const dispatch = useAppDispatch();
 
   // to show the dropdown list if page is entered through the url directly
@@ -131,7 +130,7 @@ function SearchBar() {
 
   function RenderSuggestedWord() {
     //? loading
-    if (isLoading && touched && queriedWord.length > 0) {
+    if (isGetWordDefinitionLoading && touched && queriedWord.length > 0) {
       return (
         <React.Fragment>
           <p className="dropdown-list">Loading...</p>

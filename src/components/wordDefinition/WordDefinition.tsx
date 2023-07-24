@@ -4,14 +4,11 @@ import React, { useState } from "react";
 import { toggleSaveWordModal } from "../../store/slices/state.slice";
 
 import { MdDeleteOutline } from "react-icons/md";
-import {
-  AllWordsInBook,
-  deleteWord,
-  getWordsInBook,
-} from "../../store/slices/word.slice";
+import { AllWordsInBook, deleteWord } from "../../store/slices/word.slice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import protectedFunction from "../../utils/protectedFunc";
 import DeleteConfirmationButton from "../button/DeleteConfirmationButton";
+import { getWordsInBook } from "../../store/apis/word.api";
 
 interface WordDefinitionProps extends AllWordsInBook {}
 

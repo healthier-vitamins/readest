@@ -5,9 +5,10 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useNavigate, useParams } from "react-router-dom";
 import ApiError from "../../classes/ApiError";
 import { addBookSelection } from "../../store/slices/book.slice";
-import { AllWordsInBook, getWordsInBook } from "../../store/slices/word.slice";
+import { AllWordsInBook } from "../../store/slices/word.slice";
 import { GLOBALVARS } from "../../utils/GLOBALVARS";
 import WordDefinition from "../../components/wordDefinition/WordDefinition";
+import { getWordsInBook } from "../../store/apis/word.api";
 
 function WordsPage() {
   const { selectedTab } = useAppSelector((state) => state.book);
@@ -115,7 +116,7 @@ function WordsPage() {
   //     </React.Fragment>
   //   );
   // }
-
+  console.log(isGetWordLoading);
   return (
     <div className="all-words-page-container">
       {!isGetWordLoading ? (
@@ -136,10 +137,6 @@ function WordsPage() {
               ></WordDefinition>
             </div>
           ))
-
-          // allWordsFromBook?.results.map((wordObj: any, index: number) =>
-          //   renderWordDef(wordObj, index)
-          // )
         )
       ) : (
         <div className="all-words-page-loading-page">

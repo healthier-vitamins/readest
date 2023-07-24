@@ -1,11 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { axiosTo } from "../../utils/promise";
-import { addToastNotificationArr } from "./state.slice";
-import { createBook } from "../apis/book.api";
-import httpClient from "../../utils/httpclient/HTTPClient";
-import { checkAndHandleTimeoutError } from "../apis/timeoutHandler";
-import Cookies from "universal-cookie";
-const cookies = new Cookies();
+import { createSlice } from "@reduxjs/toolkit";
+import { createBook, getAllBook } from "../apis/book.api";
 
 export interface BookRes {
   bookName: string;
@@ -51,27 +45,6 @@ const initialState: InitialState = {
     },
   ],
 };
-
-// get books
-export const getAllBook = createAsyncThunk(
-  "getAllBook",
-  async (_payload, thunkApi) => {
-    const userId = cookies.get("user-id");
-    if (!userId) return [];
-
-    const [err, res] = await axiosTo(
-      httpClient.Get(`getAllBook`, { userId: userId })
-    );
-    if (err) {
-      if (checkAndHandleTimeoutError(err, null)) {
-        thunkApi.dispatch(addToastNotificationArr(err.data));
-        return;
-      }
-      console.log("🚀 ~ file: book.slice.ts:63 ~ res:", res);
-    }
-    return res;
-  }
-);
 
 const book = createSlice({
   name: "book",

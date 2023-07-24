@@ -102,7 +102,6 @@ const userSlice = createSlice({
         sameSite: "lax",
         path: "/",
       });
-      console.log("HERE,", action.payload);
     });
     builder.addCase(apiLogin.pending, (state, action) => {
       state.loginState.isLoginLoading = true;

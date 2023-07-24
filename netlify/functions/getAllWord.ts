@@ -5,7 +5,7 @@ import { wordSchema } from "../../src/utils/schemas/wordSchema";
 import notion from "../../src/utils/notion/notionLoader";
 
 exports.handler = async function (event: any, _context: any) {
-  const { id } = JSON.parse(event.body) as BookRes;
+  const { id } = event.queryStringParameters as BookRes;
   const databaseId = await getBookDatabase(String(id));
 
   try {

@@ -50,6 +50,9 @@ const stateSlice = createSlice({
     toggleCreateBookModal: (state) => {
       state.createBookModalState = !state.createBookModalState;
     },
+    closeCreateBookModal: (state) => {
+      state.createBookModalState = false;
+    },
     toggleSaveWordModal: (state) => {
       state.saveWordModalState = !state.saveWordModalState;
     },
@@ -107,20 +110,15 @@ const stateSlice = createSlice({
         state.redirector = false;
       }
     },
-    // setFormState: (state, action: PayloadAction<FormState>) => {
-    //   state.formState = action.payload;
-    // },
     setPageReloadedToFalse: (state) => {
       state.isPageReloaded = false;
     },
   },
-  // extraReducers: (builder) => {
-  //   builder.
-  // },
 });
 
 export const {
   toggleCreateBookModal,
+  closeCreateBookModal,
   toggleSaveWordModal,
   toggleBookSelectionPopoverState,
   addToastNotificationArr,

@@ -1,4 +1,3 @@
-import { getAllBook } from "../slices/book.slice";
 import { axiosTo } from "../../utils/promise";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import httpClient from "../../utils/httpclient/HTTPClient";
@@ -7,29 +6,16 @@ import {
   toggleCreateBookModal,
 } from "../slices/state.slice";
 import { checkAndHandleTimeoutError } from "./timeoutHandler";
+import Cookies from "universal-cookie";
+import { GLOBALVARS } from "../../utils/GLOBALVARS";
+const cookies = new Cookies();
 
 interface CreateBookPayload {
   userId: string | number;
   bookName: string;
 }
 
-// async function createBook(payload: Params) {
-//   store.dispatch(setPostBookIsLoading(true));
-//   // eslint-disable-next-line
-//   const [bookExistsErr, _bookExistsRes] = await axiosTo(
-//     axios.get(`${originUrl}/api/checkIfBookExists`, { params: payload })
-//   );
-//   if (bookExistsErr) {
-//     store.dispatch(setPostBookIsLoading(false));
-//     apiError.dispatchErrorNotification(
-//       bookExistsErr.data,
-//       bookExistsErr.status
-//     );
-//   }
-//   store.dispatch(postBook(payload));
-// }
-
-const createBook = createAsyncThunk(
+export const createBook = createAsyncThunk(
   "createBook",
   async (payload: CreateBookPayload, thunkApi) => {
     const [bookExistsErr, _bookExistsRes] = await axiosTo(
@@ -55,4 +41,29 @@ const createBook = createAsyncThunk(
   }
 );
 
-export { createBook };
+// get books
+export const getAllBook = createAsyncThunk(
+  "getAllBook",
+  async (payload: string | undefined, thunkApi) => {
+    let userId;
+    if (!payload) {
+      userId = cookies.get("user-id");
+      if (!userId) {
+        return;
+      }
+    } else {
+      userId = payload;
+    }
+
+    const [err, res] = await axiosTo(
+      httpClient.Get(`getAllBook`, { userId: userId })
+    );
+    if (err) {
+      if (checkAndHandleTimeoutError(err, null)) {
+        thunkApi.dispatch(addToastNotificationArr(err.data));
+        return;
+      }
+    }
+    return res;
+  }
+);

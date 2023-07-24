@@ -1,6 +1,6 @@
 import { Modal } from "react-bootstrap";
 import "./CreateBookModal.scss";
-import { toggleCreateBookModal } from "../../store/slices/state.slice";
+import { closeCreateBookModal } from "../../store/slices/state.slice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import CreateBookForm from "../forms/CreateBookForm";
 
@@ -8,6 +8,7 @@ function CreateBookModal() {
   const { createBookModalState } = useAppSelector((store) => {
     return store.state;
   });
+  const { postBookIsLoading } = useAppSelector((state) => state.book);
   const dispatch = useAppDispatch();
 
   return (
@@ -16,7 +17,7 @@ function CreateBookModal() {
       animation={true}
       show={createBookModalState}
       onHide={() => {
-        dispatch(toggleCreateBookModal());
+        if (!postBookIsLoading) dispatch(closeCreateBookModal());
       }}
       size="sm"
     >

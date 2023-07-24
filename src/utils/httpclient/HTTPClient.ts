@@ -69,39 +69,91 @@ class HTTPClient {
     this.baseUrl = url;
   }
 
-  Get(url: string, params: any = undefined) {
-    return this.instance?.get(`${this.baseUrl}/api/${url}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      params: params,
-    });
+  Get(url: string, params: any = undefined, abortController?: AbortController) {
+    if (abortController) {
+      return this.instance?.get(`${this.baseUrl}/api/${url}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        params: params,
+        signal: abortController.signal,
+      });
+    } else {
+      return this.instance?.get(`${this.baseUrl}/api/${url}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        params: params,
+      });
+    }
   }
 
-  Post(url: string, payload: any = undefined, urlParams: any = undefined) {
-    return this.instance?.post(`${this.baseUrl}/api/${url}`, payload, {
-      params: urlParams ?? {},
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  Post(
+    url: string,
+    payload: any = undefined,
+    urlParams: any = undefined,
+    abortController?: AbortController
+  ) {
+    if (abortController) {
+      return this.instance?.post(`${this.baseUrl}/api/${url}`, payload, {
+        params: urlParams ?? {},
+        headers: {
+          "Content-Type": "application/json",
+        },
+        signal: abortController.signal,
+      });
+    } else {
+      return this.instance?.post(`${this.baseUrl}/api/${url}`, payload, {
+        params: urlParams ?? {},
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
   }
 
-  Put(url: string, payload: any = undefined) {
-    return this.instance?.put(`${this.baseUrl}/api/${url}`, payload, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  Put(
+    url: string,
+    payload: any = undefined,
+    abortController?: AbortController
+  ) {
+    if (abortController) {
+      return this.instance?.put(`${this.baseUrl}/api/${url}`, payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        signal: abortController.signal,
+      });
+    } else {
+      return this.instance?.put(`${this.baseUrl}/api/${url}`, payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
   }
 
-  Delete(url: string, payload: any = undefined) {
-    return this.instance?.delete(`${this.baseUrl}/api/${url}`, {
-      data: payload,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  Delete(
+    url: string,
+    payload: any = undefined,
+    abortController?: AbortController
+  ) {
+    if (abortController) {
+      return this.instance?.delete(`${this.baseUrl}/api/${url}`, {
+        data: payload,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        signal: abortController.signal,
+      });
+    } else {
+      return this.instance?.delete(`${this.baseUrl}/api/${url}`, {
+        data: payload,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
   }
 }
 
