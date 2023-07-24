@@ -7,10 +7,9 @@ import {
 } from "../slices/state.slice";
 import { checkAndHandleTimeoutError } from "./timeoutHandler";
 import Cookies from "universal-cookie";
-import { GLOBALVARS } from "../../utils/GLOBALVARS";
 const cookies = new Cookies();
 
-interface CreateBookPayload {
+export interface CreateBookPayload {
   userId: string | number;
   bookName: string;
 }

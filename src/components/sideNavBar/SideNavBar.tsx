@@ -3,7 +3,7 @@ import { FiPlusSquare } from "react-icons/fi";
 
 import { toggleCreateBookModal } from "../../store/slices/state.slice";
 import { addBookSelection } from "../../store/slices/book.slice";
-import React, { useEffect } from "react";
+import React from "react";
 import { bookSchema } from "../../utils/schemas/bookSchema";
 import protectedFunction from "../../utils/protectedFunc";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";

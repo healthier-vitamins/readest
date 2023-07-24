@@ -1,8 +1,9 @@
 - new bug found, need to change book urls to not contain ids => composite pre checks before every page render.
     - change url to bookName only
 - if enter book url directly while logged out, throws an error in prod
-- next page
-- wordsPage re refresh on reload
+- when signUpPopover loading, disallow clicking away
+- wrong credentials loading on login
+
 - add scrollbar.. including for navbar
 - adjust word page
 - navbar vertical scrollbar to scroll horizontally
@@ -11,6 +12,8 @@ UNDER OBSERVATION
 - add book regex check
     - probably need to composite this appropriately with other inputs...
 - navbar height for mobile issue
+- next page
+- wordsPage re refresh on reload
 
 DONE
 - put all notion clients under a class

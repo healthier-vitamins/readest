@@ -1,8 +1,7 @@
 /* eslint-disable eqeqeq */
 import axios from "axios";
 import ApiError from "../../classes/ApiError";
-import { AllWordsInBook, setGetWordIsLoading } from "../slices/word.slice";
-import store from "../store";
+import { AllWordsInBook } from "../slices/word.slice";
 const apiError = new ApiError();
 
 export interface ApiCall {

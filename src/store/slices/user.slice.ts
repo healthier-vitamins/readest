@@ -94,6 +94,11 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(apiLogin.fulfilled, (state, action) => {
+      console.log(
+        "🚀 ~ file: user.slice.ts:97 ~ builder.addCase ~ action:",
+        action
+      );
+
       state.loginState.isLoginLoading = false;
       state.loginState.loginError = false;
       const id = action.payload.id;
@@ -103,33 +108,33 @@ const userSlice = createSlice({
         path: "/",
       });
     });
-    builder.addCase(apiLogin.pending, (state, action) => {
+    builder.addCase(apiLogin.pending, (state) => {
       state.loginState.isLoginLoading = true;
     });
-    builder.addCase(apiLogin.rejected, (state, action) => {
+    builder.addCase(apiLogin.rejected, (state) => {
       state.loginState.isLoginLoading = false;
       state.loginState.loginError = true;
     });
-    builder.addCase(apiUserSignUp.fulfilled, (state, action) => {
+    builder.addCase(apiUserSignUp.fulfilled, (state) => {
       state.signUpState.isSignUpLoading = false;
       state.signUpState.signUpError = false;
     });
-    builder.addCase(apiUserSignUp.rejected, (state, action) => {
+    builder.addCase(apiUserSignUp.rejected, (state) => {
       state.signUpState.isSignUpLoading = false;
       state.signUpState.signUpError = true;
     });
-    builder.addCase(apiUserSignUp.pending, (state, action) => {
+    builder.addCase(apiUserSignUp.pending, (state) => {
       state.signUpState.isSignUpLoading = true;
     });
-    builder.addCase(apiVerifyUser.fulfilled, (state, action) => {
+    builder.addCase(apiVerifyUser.fulfilled, (state) => {
       state.verifyState.isVerifyLoading = false;
       state.verifyState.verifyError = false;
     });
-    builder.addCase(apiVerifyUser.rejected, (state, action) => {
+    builder.addCase(apiVerifyUser.rejected, (state) => {
       state.verifyState.isVerifyLoading = false;
       state.verifyState.verifyError = true;
     });
-    builder.addCase(apiVerifyUser.pending, (state, action) => {
+    builder.addCase(apiVerifyUser.pending, (state) => {
       state.verifyState.isVerifyLoading = true;
     });
   },

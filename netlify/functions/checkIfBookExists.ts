@@ -1,15 +1,16 @@
+import { CreateBookPayload } from "../../src/store/apis/book.api";
 import { GLOBALVARS } from "../../src/utils/GLOBALVARS";
 import notion from "../../src/utils/notion/notionLoader";
 import { bookSchema } from "../../src/utils/schemas/bookSchema";
 import { HttpStatusCode } from "axios";
 
 exports.handler = async function (event: any, _context: any) {
-  const { id, bookName } = event.queryStringParameters;
+  const { userId, bookName } = event.queryStringParameters as CreateBookPayload;
 
   let booksDbId: string;
   try {
     const response = await notion.blocks.children.list({
-      block_id: id,
+      block_id: String(userId),
     });
     booksDbId = response.results[0].id;
   } catch (err: any) {

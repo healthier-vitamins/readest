@@ -16,7 +16,7 @@ const createBookModalSchema = yup
       .test(
         "testing-special-symbols",
         "Special characters not allowed.",
-        (value, context) => {
+        (value, _context) => {
           const test = specialSymbolsRegex.test(value);
           if (!test) return true;
         }
@@ -24,7 +24,7 @@ const createBookModalSchema = yup
       .test(
         "testing-space",
         "Special characters not allowed.",
-        (value, context) => {
+        (value, _context) => {
           const test = / /g.test(value);
           if (!test) return true;
         }

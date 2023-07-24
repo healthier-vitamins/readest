@@ -1,5 +1,5 @@
 import { Form, Spinner } from "react-bootstrap";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
@@ -28,16 +28,14 @@ export default function SignUpForm({
   const {
     signUpState: { isSignUpLoading },
   } = useAppSelector((state) => state.user);
-  const {
-    showPopoverState: { show },
-  } = useAppSelector((state) => state.state);
+
   const {
     control,
     register,
     handleSubmit,
-    formState: { errors, isDirty, isValid, isSubmitted },
-    reset,
-    getFieldState,
+    formState: { errors, isDirty, isSubmitted },
+    // reset,
+    // getFieldState,
     getValues,
     setValue,
   } = useForm<signUpFormData>({

@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import {
-  setPageReloadedToFalse,
   setShowPopoverPage,
   setShowPopoverState,
   toggleShowPopoverState,
@@ -100,6 +99,7 @@ function SignUpPopover() {
   const handleLogin: HandleLoginFn = useCallback(
     async (formData: { email: string; password: string }) => {
       const res = await dispatch(apiLogin(formData));
+      console.log("🚀 ~ file: SignUpPopover.tsx:102 ~ res:", res);
       if (res.type.includes("fulfilled")) dispatch(getAllBook(res.payload.id));
     },
     [dispatch]

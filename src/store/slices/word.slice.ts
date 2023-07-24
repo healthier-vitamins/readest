@@ -197,11 +197,9 @@ const word = createSlice({
           }
 
           // if empty list === empty book. undefined due to abortController.
-          if (action.payload !== undefined && action.payload.length !== 0) {
+          if (action.payload !== undefined) {
             state.allWordsFromBook = action.payload;
             state.isGetWordLoading = false;
-          } else {
-            state.isGetWordLoading = true;
           }
         }
       )

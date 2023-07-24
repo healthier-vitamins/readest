@@ -1,9 +1,3 @@
-/* eslint-disable eqeqeq */
-
-import { addToastNotificationArr } from "../store/slices/state.slice";
-import store from "../store/store";
-import { GLOBALVARS } from "../utils/GLOBALVARS";
-
 export default class ApiError {
   private errMsg: string | null;
   private status: number | string | null;
@@ -24,7 +18,8 @@ export default class ApiError {
     this.status = _status;
 
     console.log("prev err: ", this.prevErrMsg);
-    console.log(" err: ", this.errMsg);
+    console.log("err: ", this.errMsg);
+    console.log("status: ", this.status);
     // if (this.prevErrMsg !== this.errMsg) {
     //   if (this.errMsg !== "canceled") {
     //     this.prevErrMsg = this.errMsg;

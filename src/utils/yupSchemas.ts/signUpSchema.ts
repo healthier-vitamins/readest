@@ -1,4 +1,4 @@
-import * as yup from "yup"
+import * as yup from "yup";
 import { specialSymbolsRegex } from "../regex";
 
 const signUpSchema = yup
@@ -9,7 +9,7 @@ const signUpSchema = yup
       .test(
         "testing-special-symbols",
         "Special characters not allowed.",
-        (value, context) => {
+        (value, _context) => {
           const test = specialSymbolsRegex.test(value);
           if (!test) return true;
         }
@@ -21,7 +21,7 @@ const signUpSchema = yup
       .test(
         "trailing-whitespace",
         "Space not allowed at start/end of field.",
-        (value, context) => {
+        (value, _context) => {
           const start = / /.test(value[0]);
           const end = / /.test(value.substring(value.length - 1));
           if (!start && !end) return true;
@@ -44,4 +44,4 @@ const signUpSchema = yup
 
 export type signUpFormData = yup.InferType<typeof signUpSchema>;
 
-export default signUpSchema
+export default signUpSchema;

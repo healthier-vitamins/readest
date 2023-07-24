@@ -32,11 +32,11 @@ export default function LoginForm({
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitted, isDirty, isValid },
+    formState: { errors, isSubmitted, isDirty },
     control,
     // watch,
     getValues,
-    reset,
+    // reset,
     setValue,
   } = useForm<loginFormData>({
     resolver: yupResolver(loginSchema),

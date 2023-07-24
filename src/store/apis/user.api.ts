@@ -12,7 +12,6 @@ import {
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { router } from "../../components/router/Router";
 import { GLOBALVARS } from "../../utils/GLOBALVARS";
-import { getAllBook } from "./book.api";
 
 export const apiUserSignUp = createAsyncThunk(
   "apiUserSignUp",
@@ -118,6 +117,7 @@ export const apiVerifyUser = createAsyncThunk(
           thunkApi.dispatch(
             addToastNotificationArr(`${err.data}, perhaps email is in use`)
           );
+          return;
         } else {
           thunkApi.dispatch(addToastNotificationArr(err.data));
         }
