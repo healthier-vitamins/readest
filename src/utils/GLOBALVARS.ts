@@ -13,8 +13,8 @@ export const GLOBALVARS = {
   ERROR_BOOK_NAME_ALRDY_EXISTS: "Book already exists.",
   ERROR_TIMEOUT: "Please refresh the page.",
   ERROR_BOOK_DB_NOT_FOUND: "Book database not found. Please contact audrian.",
-  ERROR_ACCESSING_BOOK_DB: "Trouble accessing book database.",
-  ERROR_GETTING_WORDS_IN_BOOK: "Trouble getting words in book.",
+  ERROR_ACCESSING_BOOK_DB: "Error accessing book database.",
+  ERROR_GETTING_WORDS_IN_BOOK: "Error accessing words in book.",
   ERROR_INVALID_URL: "Invalid Url.",
   ERROR_BOOK_DOES_NOT_EXIST: "Book does not exist.",
 

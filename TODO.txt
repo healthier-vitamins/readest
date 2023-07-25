@@ -1,9 +1,6 @@
 - new bug found, need to change book urls to not contain ids => composite pre checks before every page render.
     - change url to bookName only
 - if enter book url directly while logged out, throws an error in prod
-- when signUpPopover loading, disallow clicking away
-- wrong credentials loading on login
-
 - add scrollbar.. including for navbar
 - adjust word page
 - navbar vertical scrollbar to scroll horizontally
@@ -16,6 +13,8 @@ UNDER OBSERVATION
 - wordsPage re refresh on reload
 
 DONE
+- wrong credentials loading on login
+- when signUpPopover loading, disallow clicking away
 - put all notion clients under a class
 - add year YearTimer
 - sighpie lemon pie need to fix wordDefinitionPage back button1. check if book exists before saved 

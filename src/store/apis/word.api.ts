@@ -7,6 +7,12 @@ import { checkAndHandleTimeoutError } from "./timeoutHandler";
 import axios from "axios";
 import apiTracker, { ApiCall } from "./apiTracker";
 import { BookRes } from "../slices/book.slice";
+import { ChosenWordDefinition } from "../slices/word.slice";
+
+export interface PostWordPayload {
+  bookObj: BookRes;
+  wordDef: ChosenWordDefinition;
+}
 
 // api url with query passed through as parameter
 function apiUrl(queriedWord: string) {
@@ -27,7 +33,7 @@ export const getWordDefinition = createAsyncThunk(
         thunkApi.dispatch(
           addToastNotificationArr(GLOBALVARS.ERROR_MERRIAM_WEBSTER_DOWN)
         );
-        return;
+        return thunkApi.rejectWithValue(err.data);
       }
     }
     return res;
@@ -36,11 +42,9 @@ export const getWordDefinition = createAsyncThunk(
 
 export const postWordToBook = createAsyncThunk(
   "postWordToBook",
-  async (payload: any, thunkApi) => {
-    // eslint-disable-next-line
+  async (payload: PostWordPayload, thunkApi) => {
     const [err, _res] = await axiosTo(httpClient.Post("postWord", payload));
     const { bookName } = payload.bookObj;
-    // payload.bookObj.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text;
     if (err) {
       if (checkAndHandleTimeoutError(err, null)) {
         thunkApi.dispatch(
@@ -48,7 +52,7 @@ export const postWordToBook = createAsyncThunk(
             `Something went wrong adding word to ${bookName}. Please try again.`
           )
         );
-        return;
+        return thunkApi.rejectWithValue(err.data);
       }
     }
 
@@ -86,7 +90,7 @@ export const getWordsInBook = createAsyncThunk(
           thunkApi.dispatch(
             addToastNotificationArr(GLOBALVARS.ERROR_GETTING_WORDS_IN_BOOK)
           );
-          return;
+          return thunkApi.rejectWithValue(err.data);
         }
       }
 
@@ -113,7 +117,7 @@ export const getWordsInBook = createAsyncThunk(
       // }
       return res;
     } else {
-      return [];
+      return thunkApi.rejectWithValue(GLOBALVARS.ERROR_GETTING_WORDS_IN_BOOK);
     }
   }
 );

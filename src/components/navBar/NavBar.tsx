@@ -25,13 +25,13 @@ function NavBar() {
 
   const { bookSelection } = useAppSelector((state) => state.book);
   const { bookSelectionPopoverState } = useAppSelector(
-    (state: any) => state.state
+    (state) => state.state
   );
 
   const {
     authentication: { isUserLoggedIn },
   } = useAppSelector((state) => state.user);
-  const { redirector } = useAppSelector((state: any) => state.state);
+  const { redirector } = useAppSelector((state) => state.state);
 
   // redirect from Protected component.
   useEffect(() => {

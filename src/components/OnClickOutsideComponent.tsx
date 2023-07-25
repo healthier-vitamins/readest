@@ -9,7 +9,7 @@ function OnClickOutsideComponent({
 }: any) {
   const ref: any = useRef(null);
   const { createBookModalState, saveWordModalState } = useAppSelector(
-    (state: any) => state.state
+    (state) => state.state
   );
 
   const onClickOutside = useCallback(() => {

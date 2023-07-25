@@ -42,7 +42,9 @@ function SignUpPopover() {
   const {
     showPopoverState: { state, show },
   } = useAppSelector((state) => state.state);
-  const { verifyState } = useAppSelector((state) => state.user);
+  const { isVerifyLoading, isSignUpLoading, isLoginLoading } = useAppSelector(
+    (state) => state.user
+  );
 
   const [triggerLogin, setTriggerLogin] = useState(false);
   const [triggerSignUp, setTriggerSignUp] = useState(false);
@@ -99,8 +101,10 @@ function SignUpPopover() {
   const handleLogin: HandleLoginFn = useCallback(
     async (formData: { email: string; password: string }) => {
       const res = await dispatch(apiLogin(formData));
-      console.log("🚀 ~ file: SignUpPopover.tsx:102 ~ res:", res);
-      if (res.type.includes("fulfilled")) dispatch(getAllBook(res.payload.id));
+      if (res.payload?.id) {
+        if (res.type.includes("fulfilled"))
+          dispatch(getAllBook(res.payload.id));
+      }
     },
     [dispatch]
   );
@@ -126,7 +130,7 @@ function SignUpPopover() {
   }, [handleLogin, handleSignUp, state.loginState, state.signUpState, show]);
 
   function emailVerified() {
-    if (verifyState.isVerifyLoading) {
+    if (isVerifyLoading) {
       return (
         <div className="popover-box">
           <Spinner
@@ -162,7 +166,12 @@ function SignUpPopover() {
   return (
     <OnClickOutsideComponent
       onClickOutsideFunc={() => {
-        !state.emailConfirmState ? setClosePopover(true) : null;
+        !state.emailConfirmState &&
+        !isVerifyLoading &&
+        !isLoginLoading &&
+        !isSignUpLoading
+          ? setClosePopover(true)
+          : null;
       }}
       isShowing={show}
     >

@@ -7,6 +7,7 @@ import {
 } from "../slices/state.slice";
 import { checkAndHandleTimeoutError } from "./timeoutHandler";
 import Cookies from "universal-cookie";
+import { GLOBALVARS } from "../../utils/GLOBALVARS";
 const cookies = new Cookies();
 
 export interface CreateBookPayload {
@@ -23,7 +24,7 @@ export const createBook = createAsyncThunk(
     if (bookExistsErr) {
       if (checkAndHandleTimeoutError(bookExistsErr, null)) {
         thunkApi.dispatch(addToastNotificationArr(bookExistsErr.data));
-        return;
+        return thunkApi.rejectWithValue(bookExistsErr.data);
       }
     }
 
@@ -31,7 +32,7 @@ export const createBook = createAsyncThunk(
     if (err) {
       if (checkAndHandleTimeoutError(err, null)) {
         thunkApi.dispatch(addToastNotificationArr(err.data));
-        return;
+        return thunkApi.rejectWithValue(err.data);
       }
     }
     thunkApi.dispatch(toggleCreateBookModal());
@@ -48,7 +49,7 @@ export const getAllBook = createAsyncThunk(
     if (!payload) {
       userId = cookies.get("user-id");
       if (!userId) {
-        return;
+        return thunkApi.rejectWithValue(GLOBALVARS.ERROR_ACCESSING_BOOK_DB);
       }
     } else {
       userId = payload;
@@ -60,7 +61,7 @@ export const getAllBook = createAsyncThunk(
     if (err) {
       if (checkAndHandleTimeoutError(err, null)) {
         thunkApi.dispatch(addToastNotificationArr(err.data));
-        return;
+        return thunkApi.rejectWithValue(err.data);
       }
     }
     return res;

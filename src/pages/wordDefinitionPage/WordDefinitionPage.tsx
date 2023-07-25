@@ -108,7 +108,7 @@ function WordDefinitionPage() {
         </div>
       ) : (
         <div className="homepage-timer">
-          <YearTimer></YearTimer>
+          <YearTimer />
         </div>
       )}
       {/* <LoadingSpinnerHandler></LoadingSpinnerHandler> */}

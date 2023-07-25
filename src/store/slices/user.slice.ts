@@ -6,27 +6,13 @@ const cookies = new Cookies();
 type Authentication = {
   isUserLoggedIn: boolean;
   userEmail: string | null;
-  // userPageId: any;
 };
-
-interface LoginState {
-  isLoginLoading: boolean;
-  loginError: boolean;
-}
-interface SignUpState {
-  isSignUpLoading: boolean;
-  signUpError: boolean;
-}
-interface VerifyState {
-  isVerifyLoading: boolean;
-  verifyError: boolean;
-}
 
 interface InitialState {
   authentication: Authentication;
-  loginState: LoginState;
-  signUpState: SignUpState;
-  verifyState: VerifyState;
+  isLoginLoading: boolean;
+  isSignUpLoading: boolean;
+  isVerifyLoading: boolean;
 }
 
 const initialState: InitialState = {
@@ -34,18 +20,9 @@ const initialState: InitialState = {
     isUserLoggedIn: false,
     userEmail: null,
   },
-  loginState: {
-    isLoginLoading: false,
-    loginError: false,
-  },
-  signUpState: {
-    isSignUpLoading: false,
-    signUpError: false,
-  },
-  verifyState: {
-    isVerifyLoading: false,
-    verifyError: false,
-  },
+  isLoginLoading: false,
+  isSignUpLoading: false,
+  isVerifyLoading: false,
 };
 
 const userSlice = createSlice({
@@ -94,48 +71,37 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(apiLogin.fulfilled, (state, action) => {
-      console.log(
-        "🚀 ~ file: user.slice.ts:97 ~ builder.addCase ~ action:",
-        action
-      );
-
-      state.loginState.isLoginLoading = false;
-      state.loginState.loginError = false;
-      const id = action.payload.id;
+      const id = action.payload?.id;
       cookies.set("user-id", id, {
         maxAge: 3600,
         sameSite: "lax",
         path: "/",
       });
+      state.isLoginLoading = false;
     });
     builder.addCase(apiLogin.pending, (state) => {
-      state.loginState.isLoginLoading = true;
+      state.isLoginLoading = true;
     });
     builder.addCase(apiLogin.rejected, (state) => {
-      state.loginState.isLoginLoading = false;
-      state.loginState.loginError = true;
+      state.isLoginLoading = false;
     });
     builder.addCase(apiUserSignUp.fulfilled, (state) => {
-      state.signUpState.isSignUpLoading = false;
-      state.signUpState.signUpError = false;
+      state.isSignUpLoading = false;
     });
     builder.addCase(apiUserSignUp.rejected, (state) => {
-      state.signUpState.isSignUpLoading = false;
-      state.signUpState.signUpError = true;
+      state.isSignUpLoading = false;
     });
     builder.addCase(apiUserSignUp.pending, (state) => {
-      state.signUpState.isSignUpLoading = true;
+      state.isSignUpLoading = true;
     });
     builder.addCase(apiVerifyUser.fulfilled, (state) => {
-      state.verifyState.isVerifyLoading = false;
-      state.verifyState.verifyError = false;
+      state.isVerifyLoading = false;
     });
     builder.addCase(apiVerifyUser.rejected, (state) => {
-      state.verifyState.isVerifyLoading = false;
-      state.verifyState.verifyError = true;
+      state.isVerifyLoading = false;
     });
     builder.addCase(apiVerifyUser.pending, (state) => {
-      state.verifyState.isVerifyLoading = true;
+      state.isVerifyLoading = true;
     });
   },
 });

@@ -25,9 +25,7 @@ export default function SignUpForm({
   closePopover: boolean;
 }) {
   const dispatch = useAppDispatch();
-  const {
-    signUpState: { isSignUpLoading },
-  } = useAppSelector((state) => state.user);
+  const { isSignUpLoading } = useAppSelector((state) => state.user);
 
   const {
     control,
@@ -122,9 +120,25 @@ export default function SignUpForm({
   }, [closePopover]);
 
   function onSubmit(formData: signUpFormData) {
+    console.log("hit ");
     handleSignUp(formData);
     setTriggerSignUp(false);
   }
+
+  // useEffect(() => {
+  //   console.log(
+  //     "🚀 ~ file: SignUpForm.tsx:130 ~ useEffect ~ isSignUpLoading:",
+  //     isSignUpLoading
+  //   );
+  //   console.log(
+  //     "🚀 ~ file: SignUpForm.tsx:130 ~ useEffect ~ isSubmitting:",
+  //     isSubmitting
+  //   );
+  //   if (!isSubmitting && !isSignUpLoading) {
+  //     console.log("hit ");
+  //     onSubmit(getValues());
+  //   }
+  // }, [isSubmitting, isSignUpLoading]);
 
   return (
     <div className="popover-box">
@@ -209,7 +223,9 @@ export default function SignUpForm({
           <div
             className="popover-state-link"
             onClick={() => {
-              dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
+              if (!isSignUpLoading) {
+                dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
+              }
             }}
           >
             Already have an account? Login.

@@ -55,7 +55,7 @@ function HomePage() {
     <div className="homepage-container">
       {/* <div className="definition-container"> */}
       <div className="homepage-timer">
-        <YearTimer></YearTimer>
+        <YearTimer/>
       </div>
       {/* </div> */}
     </div>

@@ -1,9 +1,8 @@
-import { ChosenWordDefinition } from "./../../src/store/slices/word.slice";
-import { BookRes } from "./../../src/store/slices/book.slice";
 import moment from "moment-timezone";
 import { wordSchema } from "../../src/utils/schemas/wordSchema";
 import { HttpStatusCode } from "axios";
 import notion from "../../src/utils/notion/notionLoader";
+import { PostWordPayload } from "../../src/store/apis/word.api";
 
 /**
  * @typedef {Object} wordDef
@@ -13,13 +12,8 @@ import notion from "../../src/utils/notion/notionLoader";
  * @property {Object} shortDef
  */
 
-interface parsedObj {
-  bookObj: BookRes;
-  wordDef: ChosenWordDefinition;
-}
-
 exports.handler = async function (event: any, _context: any) {
-  const { bookObj, wordDef } = JSON.parse(event.body) as parsedObj;
+  const { bookObj, wordDef } = JSON.parse(event.body) as PostWordPayload;
 
   let bookDatabaseId: string | null | undefined;
 

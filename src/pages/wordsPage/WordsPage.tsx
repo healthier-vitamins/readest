@@ -116,7 +116,6 @@ function WordsPage() {
   //     </React.Fragment>
   //   );
   // }
-  console.log(isGetWordLoading);
   return (
     <div className="all-words-page-container">
       {!isGetWordLoading ? (
@@ -140,10 +139,7 @@ function WordsPage() {
         )
       ) : (
         <div className="all-words-page-loading-page">
-          <Spinner
-            animation="border"
-            id="all-words-page-loading-spinner"
-          ></Spinner>
+          <Spinner animation="border" id="all-words-page-loading-spinner" />
         </div>
       )}
     </div>

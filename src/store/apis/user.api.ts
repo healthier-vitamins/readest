@@ -13,16 +13,21 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { router } from "../../components/router/Router";
 import { GLOBALVARS } from "../../utils/GLOBALVARS";
 
+type SignUpPayload = {
+  email: string;
+  password: string;
+};
+
 export const apiUserSignUp = createAsyncThunk(
   "apiUserSignUp",
-  async (payload: any, thunkApi) => {
+  async (payload: SignUpPayload, thunkApi) => {
     const [goTrueErr, goTrueRes] = await axiosTo(
       httpClient.Post("signUp", payload)
     );
     if (goTrueErr) {
       if (checkAndHandleTimeoutError(goTrueErr, null)) {
         thunkApi.dispatch(addToastNotificationArr(goTrueErr.data));
-        return;
+        return thunkApi.rejectWithValue(goTrueErr.data);
       }
     }
 
@@ -34,7 +39,7 @@ export const apiUserSignUp = createAsyncThunk(
     if (queryEmailErr) {
       if (checkAndHandleTimeoutError(queryEmailErr, null)) {
         thunkApi.dispatch(addToastNotificationArr(queryEmailErr.data));
-        return;
+        return thunkApi.rejectWithValue(queryEmailErr.data);
       }
     }
 
@@ -48,13 +53,13 @@ export const apiUserSignUp = createAsyncThunk(
       );
     } else {
       // create new account in notion
-      const [notionErr, _notionRes] = await axiosTo(
+      const [notionErr, notionRes] = await axiosTo(
         httpClient.Post("postUser", payload)
       );
       if (notionErr) {
         if (checkAndHandleTimeoutError(notionErr, null)) {
           thunkApi.dispatch(addToastNotificationArr(notionErr.data));
-          return;
+          return thunkApi.rejectWithValue(notionErr.data);
         }
       }
       thunkApi.dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
@@ -63,7 +68,7 @@ export const apiUserSignUp = createAsyncThunk(
           `Verification email sent to ${goTrueRes?.email}`
         )
       );
-      return;
+      return notionRes;
     }
     return goTrueRes;
   }
@@ -83,7 +88,7 @@ export const apiLogin = createAsyncThunk(
       if (checkAndHandleTimeoutError(err, null)) {
         thunkApi.dispatch(addToastNotificationArr(err.data));
       }
-      return;
+      return thunkApi.rejectWithValue(err.data);
     }
     const email = res.email;
 
@@ -94,7 +99,7 @@ export const apiLogin = createAsyncThunk(
       if (checkAndHandleTimeoutError(updateErr, null)) {
         thunkApi.dispatch(addToastNotificationArr(updateErr.data));
       }
-      return;
+      return thunkApi.rejectWithValue(updateErr.data);
     }
 
     thunkApi.dispatch(userLoggedIn(email));
@@ -117,13 +122,13 @@ export const apiVerifyUser = createAsyncThunk(
           thunkApi.dispatch(
             addToastNotificationArr(`${err.data}, perhaps email is in use`)
           );
-          return;
+          return thunkApi.rejectWithValue(err.data);
         } else {
           thunkApi.dispatch(addToastNotificationArr(err.data));
         }
         thunkApi.dispatch(setShowPopoverState(false));
         router.navigate(`/`, { replace: true });
-        return;
+        return thunkApi.rejectWithValue(err.data);
       }
     }
     router.navigate(`/`, { replace: true });

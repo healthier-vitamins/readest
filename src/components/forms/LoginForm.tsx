@@ -14,19 +14,17 @@ import loginSchema, {
 } from "../../utils/yupSchemas.ts/loginSchema";
 
 export default function LoginForm({
-  // resetAllExceptShowPopoverStateAndShow,
   handleLogin,
   triggerLogin,
   setTriggerLogin,
   closePopover,
 }: {
-  // resetAllExceptShowPopoverStateAndShow: Function;
   handleLogin: HandleLoginFn;
   triggerLogin: boolean;
   setTriggerLogin: Dispatch<SetStateAction<boolean>>;
   closePopover: boolean;
 }) {
-  const { loginState } = useAppSelector((state) => state.user);
+  const { isLoginLoading } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
   const {
@@ -124,8 +122,9 @@ export default function LoginForm({
           <div
             className="popover-state-link"
             onClick={() => {
-              dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_SIGNUP));
-              // resetAllExceptShowPopoverStateAndShow();
+              if (!isLoginLoading) {
+                dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_SIGNUP));
+              }
             }}
           >
             Don't have an account? Sign up.
@@ -139,7 +138,7 @@ export default function LoginForm({
               }
               disabled={!isDirty}
             >
-              {loginState.isLoginLoading && isSubmitted && (
+              {isLoginLoading && isSubmitted && (
                 <Spinner
                   animation="border"
                   id="signup-loading-spinner"

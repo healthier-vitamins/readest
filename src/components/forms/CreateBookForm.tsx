@@ -4,10 +4,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import createBookModalSchema from "../../utils/yupSchemas.ts/createBookModalSchema";
 import { Form, Spinner } from "react-bootstrap";
 import Cookies from "universal-cookie";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect } from "react";
 import { createBook } from "../../store/apis/book.api";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { toggleCreateBookModal } from "../../store/slices/state.slice";
+const cookies = new Cookies();
 
 export default function CreateBookForm() {
   const dispatch = useAppDispatch();
@@ -19,13 +20,9 @@ export default function CreateBookForm() {
     return store.state;
   });
 
-  const cookies = useMemo(() => {
-    return new Cookies();
-  }, []);
-
   const {
     control,
-    formState: { errors, isDirty, isSubmitted, isValid },
+    formState: { errors, isDirty, isSubmitted, isValid, isSubmitting },
     handleSubmit,
     register,
     getValues,
@@ -36,15 +33,19 @@ export default function CreateBookForm() {
     },
   });
 
-  const handleCreateBook = useCallback((formData: createBookModalData) => {
-    const id = cookies.get("user-id");
-    const payload = {
-      bookName: formData.bookName,
-      userId: id,
-    };
-
-    dispatch(createBook(payload));
-  }, []);
+  const handleCreateBook = useCallback(
+    (formData: createBookModalData) => {
+      if (!postBookIsLoading && !isSubmitting) {
+        const id = cookies.get("user-id");
+        const payload = {
+          bookName: formData.bookName,
+          userId: id,
+        };
+        dispatch(createBook(payload));
+      }
+    },
+    [postBookIsLoading, isSubmitting]
+  );
 
   useEffect(() => {
     if (createBookModalState) {
