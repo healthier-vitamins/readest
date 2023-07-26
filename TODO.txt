@@ -1,4 +1,5 @@
 - book does not exist redirector
+- protected redirects twice now
 - if enter book url directly while logged out, throws an error in prod
 - add scrollbar.. including for navbar
 - adjust word page
