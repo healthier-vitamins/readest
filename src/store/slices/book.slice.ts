@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createBook, getAllBook } from "../apis/book.api";
+import { checkIfBookExists, createBook, getAllBook } from "../apis/book.api";
 
 export interface BookRes {
   bookName: string;
@@ -23,6 +23,7 @@ interface InitialState {
   bookResArrCheckbox: any[];
   postBookIsLoading: boolean;
   getAllBookIsLoading: boolean;
+  checkIfBookExistsLoading: boolean;
   // will only contain 1 book at any time
   selectedTab: BookSelection;
   bookSelection: BookSelection[];
@@ -33,6 +34,7 @@ const initialState: InitialState = {
   bookResArrCheckbox: [],
   postBookIsLoading: false,
   getAllBookIsLoading: false,
+  checkIfBookExistsLoading: false,
   // will only contain 1 book at any time
   selectedTab: {
     bookObj: { bookName: "Definition", id: "0" },
@@ -115,6 +117,15 @@ const book = createSlice({
       })
       .addCase(createBook.rejected, (state: InitialState) => {
         state.postBookIsLoading = false;
+      })
+      .addCase(checkIfBookExists.fulfilled, (state: InitialState) => {
+        state.checkIfBookExistsLoading = false;
+      })
+      .addCase(checkIfBookExists.pending, (state: InitialState) => {
+        state.checkIfBookExistsLoading = true;
+      })
+      .addCase(checkIfBookExists.rejected, (state: InitialState) => {
+        state.checkIfBookExistsLoading = false;
       })
       .addCase(getAllBook.fulfilled, (state: InitialState, action) => {
         state.getAllBookIsLoading = false;

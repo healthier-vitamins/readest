@@ -1,19 +1,35 @@
 import Cookies from "universal-cookie";
 import { useAppDispatch } from "../store/hooks";
-import { isTokenExpired } from "../utils/cryptography";
-import { setRedirector } from "../store/slices/state.slice";
+import { getEmailFromToken, isTokenExpired } from "../utils/cryptography";
+import { setUnauthorisedRedirector } from "../store/slices/state.slice";
+import { ReactNode, useEffect, useState } from "react";
+import { userLoggedIn } from "../store/slices/user.slice";
 const cookies = new Cookies();
 
-function Protected({ children }: any) {
+function Protected({ children }: { children: ReactNode }) {
   const dispatch = useAppDispatch();
+  const [token, _setToken] = useState(cookies.get("token"));
 
-  let isUserLoggedIn = cookies.get("token");
+  useEffect(() => {
+    if (token) {
+      const isExpired = isTokenExpired(token);
+      if (!isExpired) {
+        const email = getEmailFromToken(token);
+        if (email) {
+          dispatch(userLoggedIn(email));
+        }
+      } else {
+        dispatch(setUnauthorisedRedirector(true));
+      }
+    }
+  }, [token]);
 
-  if ((isUserLoggedIn && isTokenExpired(isUserLoggedIn)) || !isUserLoggedIn) {
-    dispatch(setRedirector(true));
+  if ((token && isTokenExpired(token)) || !token) {
+    dispatch(setUnauthorisedRedirector(true));
   } else {
     return children;
   }
+  // return token ? <>{children}</> : null;
 }
 
 export default Protected;

@@ -11,7 +11,7 @@ import OnClickOutsideComponent from "../OnClickOutsideComponent";
 import {
   addToastNotificationArr,
   setBookSelectionPopoverState,
-  setRedirector,
+  setUnauthorisedRedirector,
   setShowPopoverPage,
   setShowPopoverState,
 } from "../../store/slices/state.slice";
@@ -24,25 +24,23 @@ function NavBar() {
   const navigate = useNavigate();
 
   const { bookSelection } = useAppSelector((state) => state.book);
-  const { bookSelectionPopoverState } = useAppSelector(
-    (state) => state.state
-  );
+  const { bookSelectionPopoverState } = useAppSelector((state) => state.state);
 
   const {
     authentication: { isUserLoggedIn },
   } = useAppSelector((state) => state.user);
-  const { redirector } = useAppSelector((state) => state.state);
+  const { unauthorisedRedirect } = useAppSelector((state) => state.state);
 
   // redirect from Protected component.
   useEffect(() => {
-    if (redirector) {
+    if (unauthorisedRedirect) {
       logout();
       dispatch(addToastNotificationArr("Please login."));
       dispatch(setShowPopoverPage(GLOBALVARS.POPOVER_LOGIN));
       dispatch(setShowPopoverState(true));
-      dispatch(setRedirector(false));
+      dispatch(setUnauthorisedRedirector(false));
     }
-  }, [redirector, dispatch, navigate]);
+  }, [unauthorisedRedirect, dispatch, navigate]);
 
   function clickOutsideHelper() {
     dispatch(setBookSelectionPopoverState(false));
@@ -53,7 +51,7 @@ function NavBar() {
   }
 
   // helper for selected active tabs.
-  function activeTabsClass(active: any) {
+  function activeTabsClass(active: boolean) {
     if (active) {
       return "selected-active-tab";
     }
@@ -81,7 +79,8 @@ function NavBar() {
               if (obj.bookObj.id == 0) {
                 navigate("/");
               } else {
-                navigate(`/b/${obj.bookObj.bookName}--${obj.bookObj.id}`);
+                // navigate(`/b/${obj.bookObj.bookName}--${obj.bookObj.id}`);
+                navigate(`/b/${obj.bookObj.bookName}`);
               }
             }}
           >
@@ -102,7 +101,8 @@ function NavBar() {
             if (obj.bookObj.id == 0) {
               navigate("/");
             } else {
-              navigate(`/b/${obj.bookObj.bookName}--${obj.bookObj.id}`);
+              // navigate(`/b/${obj.bookObj.bookName}--${obj.bookObj.id}`);
+              navigate(`/b/${obj.bookObj.bookName}`);
             }
           }}
         >

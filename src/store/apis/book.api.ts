@@ -11,7 +11,7 @@ import { GLOBALVARS } from "../../utils/GLOBALVARS";
 const cookies = new Cookies();
 
 export interface CreateBookPayload {
-  userId: string | number;
+  bookId: string | number;
   bookName: string;
 }
 
@@ -38,6 +38,22 @@ export const createBook = createAsyncThunk(
     thunkApi.dispatch(toggleCreateBookModal());
     thunkApi.dispatch(getAllBook());
     return res;
+  }
+);
+
+export const checkIfBookExists = createAsyncThunk(
+  "checkIfBookExists",
+  async (payload: CreateBookPayload, thunkApi) => {
+    const [bookExistsErr, bookExistsRes] = await axiosTo(
+      httpClient.Get(`checkIfBookExists`, payload)
+    );
+    if (bookExistsErr) {
+      if (checkAndHandleTimeoutError(bookExistsErr, null)) {
+        thunkApi.dispatch(addToastNotificationArr(bookExistsErr.data));
+        return thunkApi.rejectWithValue(bookExistsErr.data);
+      }
+    }
+    return bookExistsRes;
   }
 );
 

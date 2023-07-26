@@ -3,7 +3,7 @@ import {
   toggleBookSelectionPopoverState,
   toggleCreateBookModal,
 } from "../../store/slices/state.slice";
-import { addBookSelection } from "../../store/slices/book.slice";
+import { BookRes, addBookSelection } from "../../store/slices/book.slice";
 import React, { useEffect } from "react";
 import protectedFunction from "../../utils/protectedFunc";
 import { FiPlusSquare } from "react-icons/fi";
@@ -34,7 +34,7 @@ function BookSelectionPopover() {
     authentication: { isUserLoggedIn },
   } = useAppSelector((state) => state.user);
 
-  function RenderBookTab({ book, index }: any) {
+  function RenderBookTab({ book, index }: { book: BookRes; index: number }) {
     return (
       <React.Fragment key={index}>
         <div
@@ -42,7 +42,8 @@ function BookSelectionPopover() {
           onClick={() => {
             dispatch(addBookSelection(book));
             console.log("book |||||| ", book);
-            navigate(`/b/${book.bookName}--${book.id}`);
+            // navigate(`/b/${book.bookName}--${book.id}`);
+            navigate(`/b/${book.bookName}`);
           }}
         >
           {/* {book.properties[bookSchema.BOOK_NAME].rich_text[0].plain_text} */}
@@ -104,7 +105,7 @@ function BookSelectionPopover() {
                 Array.isArray(bookRes) &&
                 bookRes.length > 0 && (
                   <div className="book-tab-box">
-                    {bookRes.map((book: any, index: number) => {
+                    {bookRes.map((book: BookRes, index: number) => {
                       return (
                         <React.Fragment key={index}>
                           <RenderBookTab book={book} index={index} />

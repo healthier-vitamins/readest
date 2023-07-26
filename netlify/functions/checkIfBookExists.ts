@@ -5,12 +5,13 @@ import { bookSchema } from "../../src/utils/schemas/bookSchema";
 import { HttpStatusCode } from "axios";
 
 exports.handler = async function (event: any, _context: any) {
-  const { userId, bookName } = event.queryStringParameters as CreateBookPayload;
+  // const { userId, bookName } = event.queryStringParameters as CreateBookPayload;
+  const { bookId, bookName } = event.queryStringParameters as CreateBookPayload;
 
   let booksDbId: string;
   try {
     const response = await notion.blocks.children.list({
-      block_id: String(userId),
+      block_id: String(bookId),
     });
     booksDbId = response.results[0].id;
   } catch (err: any) {

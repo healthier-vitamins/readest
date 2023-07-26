@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Spinner } from "react-bootstrap";
 import "./WordsPage.scss";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useNavigate, useParams } from "react-router-dom";
-import ApiError from "../../classes/ApiError";
-import { addBookSelection } from "../../store/slices/book.slice";
+import { BookRes, addBookSelection } from "../../store/slices/book.slice";
 import { AllWordsInBook } from "../../store/slices/word.slice";
 import { GLOBALVARS } from "../../utils/GLOBALVARS";
 import WordDefinition from "../../components/wordDefinition/WordDefinition";
 import { getWordsInBook } from "../../store/apis/word.api";
+import { setBookDoesNotExistRedirector } from "../../store/slices/state.slice";
 
 function WordsPage() {
   const { selectedTab } = useAppSelector((state) => state.book);
@@ -23,39 +23,29 @@ function WordsPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const params = useParams();
-  // eslint-disable-next-line
-  const [apiError, _setApiError] = useState(new ApiError());
 
   useEffect(() => {
     if (isUserLoggedIn && bookRes.length > 0) {
-      const [bookName, id] = params.bookName!.split("--");
-      const bookExists = bookRes.some(
-        (book) => book.bookName.toLowerCase() === bookName.toLowerCase()
-      );
-      if (bookExists) {
+      // const [bookName, id] = params.bookName!.split("--");
+      const bookName = params.bookName;
+      const bookExists = bookRes.filter((book: BookRes) => {
+        return book.bookName === bookName;
+      });
+
+      if (bookExists.length > 0) {
         const payload = {
-          id: id,
-          bookName: bookName,
+          id: bookExists[0].id,
+          bookName: bookExists[0].bookName,
         };
         dispatch(addBookSelection(payload));
         dispatch(getWordsInBook(payload));
       } else {
-        apiError.dispatchErrorNotification(
-          GLOBALVARS.ERROR_BOOK_DOES_NOT_EXIST,
-          null
-        );
+        console.error("Book does not exist.");
+        dispatch(setBookDoesNotExistRedirector(true));
         navigate("/");
       }
     }
-  }, [
-    params,
-    dispatch,
-    isUserLoggedIn,
-    bookRes,
-    apiError,
-    navigate,
-    selectedTab.bookObj,
-  ]);
+  }, [params, isUserLoggedIn, bookRes, selectedTab.bookObj]);
 
   // function renderShortDefLogic(
   //   shortDef: any

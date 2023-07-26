@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 export default class ApiError {
   private errMsg: string | null;
   private status: number | string | null;

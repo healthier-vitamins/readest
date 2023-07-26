@@ -21,7 +21,8 @@ interface InitialState {
     state: ShowPopoverState;
   };
   toastNotificationArr: any[];
-  redirector: boolean;
+  unauthorisedRedirect: boolean;
+  bookDoesNotExistRedirect: boolean;
   isPageReloaded: boolean;
 }
 
@@ -38,7 +39,8 @@ const initialState: InitialState = {
     },
   },
   toastNotificationArr: [],
-  redirector: false,
+  unauthorisedRedirect: false,
+  bookDoesNotExistRedirect: false,
   isPageReloaded: true,
 };
 
@@ -103,11 +105,18 @@ const stateSlice = createSlice({
         state.showPopoverState.show = false;
       }
     },
-    setRedirector: (state, action: PayloadAction<boolean>) => {
+    setUnauthorisedRedirector: (state, action: PayloadAction<boolean>) => {
       if (action.payload) {
-        state.redirector = true;
+        state.unauthorisedRedirect = true;
       } else {
-        state.redirector = false;
+        state.unauthorisedRedirect = false;
+      }
+    },
+    setBookDoesNotExistRedirector: (state, action: PayloadAction<boolean>) => {
+      if (action.payload) {
+        state.bookDoesNotExistRedirect = true;
+      } else {
+        state.bookDoesNotExistRedirect = false;
       }
     },
     setPageReloadedToFalse: (state) => {
@@ -127,7 +136,8 @@ export const {
   toggleShowPopoverState,
   setShowPopoverState,
   setBookSelectionPopoverState,
-  setRedirector,
+  setUnauthorisedRedirector,
   setPageReloadedToFalse,
+  setBookDoesNotExistRedirector,
 } = stateSlice.actions;
 export default stateSlice;

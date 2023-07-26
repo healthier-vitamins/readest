@@ -5,7 +5,7 @@ import createBookModalSchema from "../../utils/yupSchemas.ts/createBookModalSche
 import { Form, Spinner } from "react-bootstrap";
 import Cookies from "universal-cookie";
 import { useCallback, useEffect } from "react";
-import { createBook } from "../../store/apis/book.api";
+import { CreateBookPayload, createBook } from "../../store/apis/book.api";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { toggleCreateBookModal } from "../../store/slices/state.slice";
 const cookies = new Cookies();
@@ -37,9 +37,9 @@ export default function CreateBookForm() {
     (formData: createBookModalData) => {
       if (!postBookIsLoading && !isSubmitting) {
         const id = cookies.get("user-id");
-        const payload = {
+        const payload: CreateBookPayload = {
           bookName: formData.bookName,
-          userId: id,
+          bookId: id,
         };
         dispatch(createBook(payload));
       }
