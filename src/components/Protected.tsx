@@ -29,6 +29,11 @@ function Protected({ children }: { children: ReactNode }) {
   } else {
     return children;
   }
+  // if ((token && !isTokenExpired(token)) || token) {
+  //   return children;
+  // } else {
+  //   return null;
+  // }
   // return token ? <>{children}</> : null;
 }
 

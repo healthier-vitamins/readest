@@ -1,6 +1,6 @@
 - book does not exist redirector
-- protected redirects twice now
-- if enter book url directly while logged out, throws an error in prod
+
+- length wordPage cant be read?...
 - add scrollbar.. including for navbar
 - adjust word page
 - navbar vertical scrollbar to scroll horizontally
@@ -13,6 +13,8 @@ UNDER OBSERVATION
 - wordsPage re refresh on reload
 
 DONE
+- protected redirects twice now
+- if enter book url directly while logged out, throws an error in prod
 - new bug found, need to change book urls to not contain ids => composite pre checks before every page render.
     - change url to bookName only
 - wrong credentials loading on login

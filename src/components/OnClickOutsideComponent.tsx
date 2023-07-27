@@ -1,6 +1,5 @@
 import { useAppSelector } from "../store/hooks";
 import { useCallback, useEffect, useRef } from "react";
-import "./OnClickOutsideComponent.scss";
 
 function OnClickOutsideComponent({
   onClickOutsideFunc,
