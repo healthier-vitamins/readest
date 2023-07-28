@@ -28,7 +28,6 @@ function WordDefinitionPage() {
       if (typeof wordFromUrlParam === "string" && wordFromUrlParam.length > 0) {
         dispatch(addIsOriginatedFromUrlWord(wordFromUrlParam));
       }
-      console.log("word ", word, !!word);
     }
   });
 
@@ -43,7 +42,6 @@ function WordDefinitionPage() {
       wordFromUrlParam.toLowerCase() !==
         chosenWordDefinition?.title.toLowerCase()
     ) {
-      console.log(wordFromUrlParam, chosenWordDefinition.title);
       // dispatch(getWordDefinition(wordFromUrlParam));
       // dispatch(addChosenWordDefinition(suggestedWord[0]));
       // dispatch(addIsOriginatedFromUrlWord(chosenWordDefinition.title));

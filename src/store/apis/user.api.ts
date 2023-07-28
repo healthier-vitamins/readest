@@ -12,6 +12,7 @@ import {
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { router } from "../../components/router/Router";
 import { GLOBALVARS } from "../../utils/GLOBALVARS";
+import { getAllBook } from "./book.api";
 
 type SignUpPayload = {
   email: string;
@@ -83,7 +84,6 @@ export const apiLogin = createAsyncThunk(
   "apiLogin",
   async (payload: ApiLoginPayload, thunkApi) => {
     const [err, res] = await axiosTo(httpClient.Post("login", payload));
-
     if (err) {
       if (checkAndHandleTimeoutError(err, null)) {
         thunkApi.dispatch(addToastNotificationArr(err.data));
@@ -104,6 +104,7 @@ export const apiLogin = createAsyncThunk(
 
     thunkApi.dispatch(userLoggedIn(email));
     thunkApi.dispatch(setShowPopoverState(false));
+    thunkApi.dispatch(getAllBook(updateRes.id));
     return updateRes;
   }
 );

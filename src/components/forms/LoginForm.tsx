@@ -7,30 +7,35 @@ import {
 import { GLOBALVARS } from "../../utils/GLOBALVARS";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Dispatch, SetStateAction, useEffect } from "react";
-import { HandleLoginFn } from "../popover/SignUpPopover";
+import { useEffect } from "react";
 import loginSchema, {
   loginFormData,
 } from "../../utils/yupSchemas.ts/loginSchema";
+import { apiLogin } from "../../store/apis/user.api";
+
+interface HandleLoginParams {
+  email: string;
+  password: string;
+}
+
+export type HandleLoginFn = (params: HandleLoginParams) => Promise<void>;
 
 export default function LoginForm({
-  handleLogin,
-  triggerLogin,
-  setTriggerLogin,
   closePopover,
 }: {
-  handleLogin: HandleLoginFn;
-  triggerLogin: boolean;
-  setTriggerLogin: Dispatch<SetStateAction<boolean>>;
+  // setTriggerLogin: Dispatch<SetStateAction<boolean>>;
   closePopover: boolean;
 }) {
   const { isLoginLoading } = useAppSelector((state) => state.user);
+  const {
+    showPopoverState: { show },
+  } = useAppSelector((state) => state.state);
   const dispatch = useAppDispatch();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitted, isDirty },
+    formState: { errors, isSubmitted, isDirty, isSubmitting },
     control,
     // watch,
     getValues,
@@ -46,12 +51,6 @@ export default function LoginForm({
   });
 
   useEffect(() => {
-    if (triggerLogin) {
-      handleLogin({ email: getValues().email, password: getValues().password });
-    }
-  }, [triggerLogin]);
-
-  useEffect(() => {
     if (closePopover) {
       const formData = getValues();
       window.localStorage.setItem("formData", JSON.stringify(formData));
@@ -59,20 +58,36 @@ export default function LoginForm({
       let formData = window.localStorage.getItem("formData");
       if (formData && formData !== null) {
         const parsed = JSON.parse(formData);
-        console.log(
-          "🚀 ~ file: SignUpForm.tsx:119 ~ useEffect ~ formData:",
-          parsed
-        );
         setValue("email", parsed["email"]);
         setValue("password", parsed["password"]);
       }
     }
   }, [closePopover]);
 
+  // event listener for "Enter" key only on login and signUp forms
+  useEffect(() => {
+    if (show) {
+      function handleEnter(e: KeyboardEvent) {
+        if (e.key === "Enter" && !isLoginLoading && !isSubmitting) {
+          handleLogin(getValues());
+        }
+      }
+
+      window.addEventListener("keyup", handleEnter);
+      return () => {
+        window.removeEventListener("keyup", handleEnter);
+      };
+    }
+  }, [show, isSubmitting, isLoginLoading]);
+
+  function handleLogin(formData: { email: string; password: string }) {
+    if (!isSubmitting && !isLoginLoading) {
+      dispatch(apiLogin(formData));
+    }
+  }
+
   function onSubmit(data: loginFormData) {
     handleLogin(data);
-    setTriggerLogin(false);
-    // reset();
   }
   return (
     <div className="popover-box">

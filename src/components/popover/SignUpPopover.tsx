@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import {
   setShowPopoverPage,
@@ -8,33 +8,14 @@ import {
 import { GLOBALVARS } from "../../utils/GLOBALVARS";
 import "./SignUpPopover.scss";
 import OnClickOutsideComponent from "../OnClickOutsideComponent";
-import {
-  apiLogin,
-  apiUserSignUp,
-  apiVerifyUser,
-} from "../../store/apis/user.api";
+import { apiVerifyUser } from "../../store/apis/user.api";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import LoginForm from "../forms/LoginForm";
 import SignUpForm from "../forms/SignUpForm";
-import { getAllBook } from "../../store/apis/book.api";
 
 // interface ErrorState {
 //   [key: string]: boolean;
 // }
-
-interface HandleLoginParams {
-  email: string;
-  password: string;
-}
-export type HandleLoginFn = (params: HandleLoginParams) => Promise<void>;
-
-interface SignUpParams {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
-export type SignUpFn = (params: SignUpParams) => Promise<void>;
 
 function SignUpPopover() {
   const dispatch = useAppDispatch();
@@ -46,8 +27,6 @@ function SignUpPopover() {
     (state) => state.user
   );
 
-  const [triggerLogin, setTriggerLogin] = useState(false);
-  const [triggerSignUp, setTriggerSignUp] = useState(false);
   const [closePopover, setClosePopover] = useState(false);
 
   // save form data if popover is closed accidentally
@@ -62,6 +41,7 @@ function SignUpPopover() {
     dispatch(setShowPopoverState(false));
   }
 
+  // check if window is entered through url
   // const entries = performance.getEntriesByType("navigation");
   // entries.forEach((entry: PerformanceEntry) => {
   //   console.log(entry);
@@ -93,41 +73,6 @@ function SignUpPopover() {
   function handlePopoverClick() {
     dispatch(toggleShowPopoverState());
   }
-
-  const handleSignUp: SignUpFn = useCallback(async (formData) => {
-    await dispatch(apiUserSignUp(formData));
-  }, []);
-
-  const handleLogin: HandleLoginFn = useCallback(
-    async (formData: { email: string; password: string }) => {
-      const res = await dispatch(apiLogin(formData));
-      if (res.payload?.id) {
-        if (res.type.includes("fulfilled"))
-          dispatch(getAllBook(res.payload.id));
-      }
-    },
-    [dispatch]
-  );
-
-  // event listener for "Enter" key only on login and signUp forms
-  useEffect(() => {
-    if (show) {
-      function handleEnter(e: KeyboardEvent) {
-        if (e.key === "Enter") {
-          if (state.loginState) {
-            setTriggerLogin(true);
-          } else if (state.signUpState) {
-            setTriggerSignUp(true);
-          }
-        }
-      }
-
-      window.addEventListener("keyup", handleEnter);
-      return () => {
-        window.removeEventListener("keyup", handleEnter);
-      };
-    }
-  }, [handleLogin, handleSignUp, state.loginState, state.signUpState, show]);
 
   function emailVerified() {
     if (isVerifyLoading) {
@@ -186,19 +131,9 @@ function SignUpPopover() {
         {show && (
           <div className="popover-container">
             {state.signUpState ? (
-              <SignUpForm
-                handleSignUp={handleSignUp}
-                setTriggerSignUp={setTriggerSignUp}
-                triggerSignUp={triggerSignUp}
-                closePopover={closePopover}
-              />
+              <SignUpForm closePopover={closePopover} />
             ) : state.loginState ? (
-              <LoginForm
-                handleLogin={handleLogin}
-                triggerLogin={triggerLogin}
-                setTriggerLogin={setTriggerLogin}
-                closePopover={closePopover}
-              />
+              <LoginForm closePopover={closePopover} />
             ) : state.emailConfirmState ? (
               emailVerified()
             ) : null}

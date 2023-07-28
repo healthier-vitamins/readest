@@ -39,7 +39,7 @@ export default function CreateBookForm() {
         const id = cookies.get("user-id");
         const payload: CreateBookPayload = {
           bookName: formData.bookName,
-          bookId: id,
+          userId: id,
         };
         dispatch(createBook(payload));
       }

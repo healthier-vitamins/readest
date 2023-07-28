@@ -11,7 +11,7 @@ import { GLOBALVARS } from "../../utils/GLOBALVARS";
 const cookies = new Cookies();
 
 export interface CreateBookPayload {
-  bookId: string | number;
+  userId: string | number;
   bookName: string;
 }
 

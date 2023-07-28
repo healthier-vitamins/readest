@@ -28,9 +28,6 @@ function YearTimer() {
     const totalDays = endOfYear.diff(startOfYear, "days");
     const remainingPercentage = (daysRemaining / totalDays) * 100;
 
-    // console.log(Math.round((remainingPercentage / 100) * 15));
-    // console.log(Math.round(((100 - remainingPercentage) / 100) * 15));
-    // console.log(Math.round(100 - remainingPercentage));
     setYearProgressPercentage(Math.round(100 - remainingPercentage));
     setYearRemainingProgress(
       Math.round(

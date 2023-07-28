@@ -64,7 +64,6 @@ export const postWordToBook = createAsyncThunk(
 export const getWordsInBook = createAsyncThunk(
   "getWordsInBook",
   async (payload: BookRes, thunkApi) => {
-    console.log("🚀 ~ file: word.api.ts:62 ~ payload:", payload);
     const apiCall: ApiCall = {
       id: payload.id,
       abortController: new AbortController(),

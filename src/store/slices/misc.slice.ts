@@ -36,7 +36,6 @@ export const getStoicQuote = createAsyncThunk(
         return;
       }
       thunkApi.dispatch(addToastNotificationArr("Error getting quote."));
-      console.log(err.message);
       return;
       // }
     }

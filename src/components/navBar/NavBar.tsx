@@ -61,7 +61,6 @@ function NavBar() {
     // const urlParams = window.location.href.substring(
     //   window.location.origin.length
     // );
-    // console.log("??? ", urlParams);
     // let bookExists: boolean;
     // if (urlParams.startsWith("/b/")) {
     //   const [bookName] = params!.bookName!.split("--");

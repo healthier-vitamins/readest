@@ -7,31 +7,37 @@ import {
   setShowPopoverState,
 } from "../../store/slices/state.slice";
 import { GLOBALVARS } from "../../utils/GLOBALVARS";
-import { SignUpFn } from "../popover/SignUpPopover";
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import signUpSchema, {
   signUpFormData,
 } from "../../utils/yupSchemas.ts/signUpSchema";
+import { apiUserSignUp } from "../../store/apis/user.api";
+
+interface SignUpParams {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+export type SignUpFn = (params: SignUpParams) => void;
 
 export default function SignUpForm({
-  handleSignUp,
-  triggerSignUp,
-  setTriggerSignUp,
   closePopover,
 }: {
-  handleSignUp: SignUpFn;
-  triggerSignUp: boolean;
-  setTriggerSignUp: Dispatch<SetStateAction<boolean>>;
+  // setTriggerSignUp: Dispatch<SetStateAction<boolean>>;
   closePopover: boolean;
 }) {
   const dispatch = useAppDispatch();
   const { isSignUpLoading } = useAppSelector((state) => state.user);
+  const {
+    showPopoverState: { show },
+  } = useAppSelector((state) => state.state);
 
   const {
     control,
     register,
     handleSubmit,
-    formState: { errors, isDirty, isSubmitted },
+    formState: { errors, isDirty, isSubmitted, isSubmitting },
     // reset,
     // getFieldState,
     getValues,
@@ -47,17 +53,34 @@ export default function SignUpForm({
     // shouldUnregister: false,
   });
 
+  // event listener for "Enter" key only on login and signUp forms
   useEffect(() => {
-    if (triggerSignUp) {
-      handleSignUp({
-        name: getValues().name,
-        confirmPassword: getValues().confirmPassword,
-        email: getValues().email,
-        password: getValues().password,
-      });
-      setTriggerSignUp(false);
+    if (show) {
+      function handleEnter(e: KeyboardEvent) {
+        if (e.key === "Enter" && !isSignUpLoading && !isSubmitting) {
+          handleSignUp(getValues());
+        }
+      }
+
+      window.addEventListener("keyup", handleEnter);
+      return () => {
+        window.removeEventListener("keyup", handleEnter);
+      };
     }
-  }, [triggerSignUp]);
+  }, [show, isSubmitting, isSignUpLoading]);
+
+  const handleSignUp: SignUpFn = useCallback(
+    (formData) => {
+      if (!isSubmitting && !isSignUpLoading) {
+        dispatch(apiUserSignUp(formData));
+      }
+    },
+    [isSubmitting, isSignUpLoading]
+  );
+
+  // const handleSignUp: SignUpFn = useCallback(async (formData) => {
+  //   await dispatch(apiUserSignUp(formData));
+  // }, []);
 
   // type states = "email" | "password" | "email" | "confirmPassword";
 
@@ -90,10 +113,6 @@ export default function SignUpForm({
   //     / /g.test(watchedValues.name) === false
   //   ) {
   //     setValue("name", watchedValues.name);
-  //     console.log(
-  //       "🚀 ~ file: SignUpForm.tsx:71 ~ useEffect ~ getValues().name:",
-  //       watchedValues
-  //     );
   //   }
   //   // }
   // }, [
@@ -120,25 +139,8 @@ export default function SignUpForm({
   }, [closePopover]);
 
   function onSubmit(formData: signUpFormData) {
-    console.log("hit ");
     handleSignUp(formData);
-    setTriggerSignUp(false);
   }
-
-  // useEffect(() => {
-  //   console.log(
-  //     "🚀 ~ file: SignUpForm.tsx:130 ~ useEffect ~ isSignUpLoading:",
-  //     isSignUpLoading
-  //   );
-  //   console.log(
-  //     "🚀 ~ file: SignUpForm.tsx:130 ~ useEffect ~ isSubmitting:",
-  //     isSubmitting
-  //   );
-  //   if (!isSubmitting && !isSignUpLoading) {
-  //     console.log("hit ");
-  //     onSubmit(getValues());
-  //   }
-  // }, [isSubmitting, isSignUpLoading]);
 
   return (
     <div className="popover-box">

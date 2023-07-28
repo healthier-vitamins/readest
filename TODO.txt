@@ -1,6 +1,7 @@
 - book does not exist redirector
+- saving word disable when loading
+- jest + react-testing-lib
 
-- length wordPage cant be read?...
 - add scrollbar.. including for navbar
 - adjust word page
 - navbar vertical scrollbar to scroll horizontally
@@ -11,6 +12,7 @@ UNDER OBSERVATION
 - navbar height for mobile issue
 - next page
 - wordsPage re refresh on reload
+- length wordPage cant be read?...
 
 DONE
 - protected redirects twice now
