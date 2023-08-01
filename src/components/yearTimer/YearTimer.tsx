@@ -92,7 +92,9 @@ function YearTimer() {
             {renderProgress()}
             {renderRemaining()}
           </div>
-          <div className="timer-quote">{renderQuote()}</div>
+          <div className="timer-quote" data-testid="homepage-quote">
+            {renderQuote()}
+          </div>
         </div>
       )}
     </React.Fragment>

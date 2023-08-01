@@ -38,7 +38,7 @@ function HomePage() {
       dispatch(changeActiveTab(0));
       // dispatch(resetBookSelection());
     }
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     const token = cookies.get("token");
@@ -55,7 +55,7 @@ function HomePage() {
     <div className="homepage-container">
       {/* <div className="definition-container"> */}
       <div className="homepage-timer">
-        <YearTimer/>
+        <YearTimer />
       </div>
       {/* </div> */}
     </div>
