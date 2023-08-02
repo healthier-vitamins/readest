@@ -17,6 +17,13 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   plugins: ["react-refresh"],
+  ignorePatterns: [
+    ".eslintrc.cjs",
+    "jest.config.ts",
+    "fileTransform.js",
+    "cssTransform.js",
+    "setupTests.js",
+  ],
   rules: {
     "react-refresh/only-export-components": [
       "warn",

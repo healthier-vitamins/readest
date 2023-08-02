@@ -24,12 +24,7 @@
     "strictNullChecks": true,
     "strictFunctionTypes": false
   },
-  "include": [
-    "src",
-    "netlify/functions",
-    "vite.config.js",
-    "babel.config.js",
-    "jest.config.js"
-  ],
+  "include": ["src", "netlify/functions"],
+
   "references": [{ "path": "./tsconfig.node.json" }]
 }
