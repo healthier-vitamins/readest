@@ -47,7 +47,7 @@ const miscSlice = createSlice({
   name: "misc",
   initialState,
   reducers: {
-    resetMisc: (state) => {
+    resetMisc: (_state) => {
       return initialState;
     },
   },

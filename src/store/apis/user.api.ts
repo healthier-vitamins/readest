@@ -2,7 +2,7 @@ import { axiosTo } from "../../utils/promise";
 import store from "../store";
 import { userLoggedIn, userLoggedOut } from "../slices/user.slice";
 import { checkAndHandleTimeoutError } from "./timeoutHandler";
-import { resetBook, resetBookSelection } from "../slices/book.slice";
+import { resetBook } from "../slices/book.slice";
 import httpClient from "../../utils/httpclient/HTTPClient";
 import {
   addToastNotificationArr,

@@ -49,7 +49,7 @@ const stateSlice = createSlice({
   name: "state",
   initialState,
   reducers: {
-    resetState: (state) => {
+    resetState: (_state) => {
       return initialState;
     },
     toggleCreateBookModal: (state) => {

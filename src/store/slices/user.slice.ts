@@ -29,12 +29,12 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    userLoggedIn: (state: InitialState, action: PayloadAction<string>) => {
+    userLoggedIn: (state, action: PayloadAction<string>) => {
       const email = action.payload;
       state.authentication.isUserLoggedIn = true;
       state.authentication.userEmail = email;
     },
-    userLoggedOut: (state: InitialState) => {
+    userLoggedOut: (_state) => {
       // state.authentication.isUserLoggedIn = false;
       // state.authentication.userEmail = null;
       cookies.remove("token", {

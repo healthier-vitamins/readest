@@ -100,7 +100,7 @@ const bookSlice = createSlice({
     resetbookResArrCheckbox: (state: InitialState) => {
       state.bookResArrCheckbox.forEach((item: any) => (item.checked = false));
     },
-    resetBook: (state) => {
+    resetBook: (_state) => {
       return initialState;
     },
     // setPostBookIsLoading: (

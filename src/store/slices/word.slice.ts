@@ -82,7 +82,7 @@ const wordSlice = createSlice({
   name: "word",
   initialState,
   reducers: {
-    resetWord: (state) => {
+    resetWord: (_state) => {
       return initialState;
     },
     resetSuggestedWord: (state: InitialState) => {
