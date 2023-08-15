@@ -78,10 +78,13 @@ export const deleteWord = createAsyncThunk(
 );
 
 // redux slice
-const word = createSlice({
+const wordSlice = createSlice({
   name: "word",
   initialState,
   reducers: {
+    resetWord: (state) => {
+      return initialState;
+    },
     resetSuggestedWord: (state: InitialState) => {
       while (state.suggestedWord.length > 1) {
         state.suggestedWord.pop();
@@ -93,7 +96,6 @@ const word = createSlice({
     ) => {
       state.isWordChosen = true;
       console.log("chosen word raw def ", action.payload);
-      // console.log(action.payload.def[0].sseq[0][0][1].dt);
       state.chosenWordDefinition.title = action.payload.meta.id;
       state.chosenWordDefinition.abbreviation = action.payload.fl;
 
@@ -229,5 +231,6 @@ export const {
   resetIsOriginatedFromUrlWord,
   setIsFromSearchBar,
   setGetWordIsLoading,
-} = word.actions;
-export default word;
+  resetWord,
+} = wordSlice.actions;
+export default wordSlice;

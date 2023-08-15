@@ -46,7 +46,11 @@ export const getStoicQuote = createAsyncThunk(
 const miscSlice = createSlice({
   name: "misc",
   initialState,
-  reducers: {},
+  reducers: {
+    resetMisc: (state) => {
+      return initialState;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(
@@ -73,5 +77,9 @@ const miscSlice = createSlice({
   },
 });
 
-// export const {} = miscSlice.actions
+// export const actionsMisc = miscSlice.actions
+// export default actionsMisc;
+
+export const { resetMisc } = miscSlice.actions;
+
 export default miscSlice;

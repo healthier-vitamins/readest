@@ -31,38 +31,12 @@ function SearchBar() {
       const originatedFromUrlWord = isOriginatedFromUrl.word;
       dispatch(resetIsOriginatedFromUrlWord());
       dispatch(setIsFromSearchBar(true));
-      // dispatch(resetChosenWordDefinition());
-      console.log("originatedUrl: ", originatedFromUrlWord);
       setQueriedWord(originatedFromUrlWord);
-      // handleOnChangeQuery(originatedFromUrlWord);
-      dispatch(getWordDefinition(originatedFromUrlWord));
       setTouched(true);
       queriedWordRef.current.value = originatedFromUrlWord;
-      // handlePageEntry(originatedFromUrlWord);
+      dispatch(getWordDefinition(originatedFromUrlWord));
     }
-    // async function handlePageEntry(originatedFromUrlWord: string) {
-    //   if (isOriginatedFromUrl.word) {
-    //     const res = await dispatch(getWordDefinition(originatedFromUrlWord));
-    //     if (res.meta.requestStatus === "fulfilled") {
-    //       if (
-    //         typeof res.payload[0] === "object" &&
-    //         res.payload[0]?.meta?.id.toLowerCase() ===
-    //           originatedFromUrlWord.toLowerCase()
-    //       ) {
-    //         console.log("res.payload[0] ", res.payload[0]);
-
-    //         dispatch(addChosenWordDefinition(res.payload[0]));
-    //         setTouched(false);
-    //       } else {
-    //         // dispatch(getWordDefinition(isOriginatedFromUrl.word));
-    //         setTouched(true);
-    //       }
-    //     } else {
-    //       addToastNotificationArr(GLOBALVARS.ERROR_GENERAL_ERROR);
-    //     }
-    //   }
-    // }
-  }, [dispatch, isOriginatedFromUrl.word]);
+  }, [isOriginatedFromUrl.word]);
 
   // update input field if queried word is different from input field's
   // useEffect(() => {
@@ -85,15 +59,15 @@ function SearchBar() {
   //   dispatch,
   // ]);
 
-  function handleOnChangeQuery(value: any) {
+  function handleOnChangeQuery(value: string) {
     setQueriedWord(value);
-    dispatch(resetSuggestedWord());
     if (typeof value === "string" && value.length > 0) {
       dispatch(getWordDefinition(value));
     }
+    dispatch(resetSuggestedWord());
   }
 
-  function handleWordWithoutDefObj(word: any) {
+  function handleWordWithoutDefObj(word: string) {
     if (typeof word === "string" && word.length > 0) {
       dispatch(getWordDefinition(word));
     }
@@ -207,7 +181,6 @@ function SearchBar() {
                   </React.Fragment>
                 );
               } else {
-                console.log("clicked chosen word obj for past tense, ", word);
                 return (
                   <React.Fragment key={index}>
                     <p
@@ -313,7 +286,7 @@ function SearchBar() {
             setTouched(true);
           }}
           ref={queriedWordRef}
-        ></Form.Control>
+        />
         <div className="dropdown-box">
           <RenderSuggestedWord></RenderSuggestedWord>
         </div>

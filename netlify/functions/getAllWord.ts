@@ -26,7 +26,6 @@ exports.handler = async function (event: any, _context: any) {
     });
 
     let allWordsFromBookResponse: AllWordsInBook[] = [];
-    console.log(response);
     // TODO response.has_more && response.next_cursor
     for (let word of response.results) {
       // let wordObj: ChosenWordDefinition = {

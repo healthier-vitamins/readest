@@ -70,7 +70,6 @@ function WordDefinition({
     const result: React.ReactNode[] = [];
 
     parts.forEach((part, index) => {
-      // console.log("part ", part);
       // matches is mapped containing the word only
       if (part !== matches[0]) {
         result.push(part);

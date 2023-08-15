@@ -75,7 +75,7 @@ exports.handler = async function (event: any, _context: any) {
     });
     createdBookId = response.id;
   } catch (err: any) {
-    console.log(err.message);
+    console.log(err);
     return {
       statusCode: HttpStatusCode.InternalServerError,
       body: JSON.stringify("Something went wrong creating book entry."),
@@ -149,7 +149,6 @@ exports.handler = async function (event: any, _context: any) {
   } catch (err: any) {
     console.error(err);
     console.log(err);
-    console.log(err.message);
     return {
       statusCode: 500,
       body: err.message,

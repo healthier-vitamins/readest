@@ -15,7 +15,6 @@ exports.handler = async function (event: any, _context: any) {
     booksDbId = response.results[0].id;
   } catch (err: any) {
     console.log(err);
-    console.log(err.message);
     return {
       statusCode: HttpStatusCode.NotFound,
       body: GLOBALVARS.ERROR_BOOK_DB_NOT_FOUND,
@@ -66,7 +65,6 @@ exports.handler = async function (event: any, _context: any) {
     }
   } catch (err: any) {
     console.log(err);
-    console.log(err.message);
     return {
       statusCode: HttpStatusCode.InternalServerError,
       body: GLOBALVARS.ERROR_ACCESSING_BOOK_DB,

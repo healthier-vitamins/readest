@@ -48,7 +48,7 @@ const initialState: InitialState = {
   ],
 };
 
-const book = createSlice({
+const bookSlice = createSlice({
   name: "book",
   initialState,
   reducers: {
@@ -99,6 +99,9 @@ const book = createSlice({
     },
     resetbookResArrCheckbox: (state: InitialState) => {
       state.bookResArrCheckbox.forEach((item: any) => (item.checked = false));
+    },
+    resetBook: (state) => {
+      return initialState;
     },
     // setPostBookIsLoading: (
     //   state: InitialState,
@@ -159,5 +162,6 @@ export const {
   handlebookResArrCheckboxChange,
   resetbookResArrCheckbox,
   resetBookSelection,
-} = book.actions;
-export default book;
+  resetBook,
+} = bookSlice.actions;
+export default bookSlice;

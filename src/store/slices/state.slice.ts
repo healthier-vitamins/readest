@@ -49,6 +49,9 @@ const stateSlice = createSlice({
   name: "state",
   initialState,
   reducers: {
+    resetState: (state) => {
+      return initialState;
+    },
     toggleCreateBookModal: (state) => {
       state.createBookModalState = !state.createBookModalState;
     },
@@ -139,5 +142,6 @@ export const {
   setUnauthorisedRedirector,
   setPageReloadedToFalse,
   setBookDoesNotExistRedirector,
+  resetState,
 } = stateSlice.actions;
 export default stateSlice;

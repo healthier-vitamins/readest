@@ -2,10 +2,11 @@ import { axiosTo } from "../../utils/promise";
 import store from "../store";
 import { userLoggedIn, userLoggedOut } from "../slices/user.slice";
 import { checkAndHandleTimeoutError } from "./timeoutHandler";
-import { resetBookSelection } from "../slices/book.slice";
+import { resetBook, resetBookSelection } from "../slices/book.slice";
 import httpClient from "../../utils/httpclient/HTTPClient";
 import {
   addToastNotificationArr,
+  resetState,
   setShowPopoverPage,
   setShowPopoverState,
 } from "../slices/state.slice";
@@ -13,6 +14,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { router } from "../../components/router/Router";
 import { GLOBALVARS } from "../../utils/GLOBALVARS";
 import { getAllBook } from "./book.api";
+import { resetMisc } from "../slices/misc.slice";
+import { resetWord } from "../slices/word.slice";
 
 type SignUpPayload = {
   email: string;
@@ -139,7 +142,10 @@ export const apiVerifyUser = createAsyncThunk(
 
 function logout() {
   store.dispatch(userLoggedOut());
-  store.dispatch(resetBookSelection());
+  store.dispatch(resetBook);
+  store.dispatch(resetMisc);
+  store.dispatch(resetState);
+  store.dispatch(resetWord);
   router.navigate("/");
 }
 

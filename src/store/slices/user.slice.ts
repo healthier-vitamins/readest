@@ -35,8 +35,8 @@ const userSlice = createSlice({
       state.authentication.userEmail = email;
     },
     userLoggedOut: (state: InitialState) => {
-      state.authentication.isUserLoggedIn = false;
-      state.authentication.userEmail = null;
+      // state.authentication.isUserLoggedIn = false;
+      // state.authentication.userEmail = null;
       cookies.remove("token", {
         sameSite: "lax",
         path: "/",
@@ -53,6 +53,7 @@ const userSlice = createSlice({
         sameSite: "lax",
         path: "/",
       });
+      return initialState;
     },
     // addUserPageId: (_state: InitialState, action: PayloadAction<any>) => {
     //   const id = action.payload;

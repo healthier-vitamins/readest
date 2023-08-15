@@ -126,7 +126,7 @@ export default function LoginForm({
                 isInvalid={errors?.password ? true : false}
               />
             )}
-          ></Controller>
+          />
           {errors.password?.message && (
             <div className="signup-error">
               <div className="signup-error-msg">{errors.password.message}</div>

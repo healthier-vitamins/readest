@@ -40,7 +40,6 @@ function BookSelectionPopover() {
           className="tab"
           onClick={() => {
             dispatch(addBookSelection(book));
-            console.log("book |||||| ", book);
             // navigate(`/b/${book.bookName}--${book.id}`);
             navigate(`/b/${book.bookName}`);
           }}
