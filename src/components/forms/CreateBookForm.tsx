@@ -32,10 +32,10 @@ export default function CreateBookForm() {
       bookName: "",
     },
   });
-
+ 
   const handleCreateBook = useCallback(
     (formData: createBookModalData) => {
-      if (!postBookIsLoading && !isSubmitting) {
+      if (!postBookIsLoading && !isSubmitting && !errors.bookName) {
         const id = cookies.get("user-id");
         const payload: CreateBookPayload = {
           bookName: formData.bookName,
