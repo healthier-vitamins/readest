@@ -59,7 +59,7 @@
     "jest-watch-typeahead": "^2.2.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
-    "vite": "^4.5.1",
+    "vite": "^5.0.5",
     "yarn-upgrade-all": "^0.7.2"
   }
 }
