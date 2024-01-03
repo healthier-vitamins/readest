@@ -142,10 +142,10 @@ export const apiVerifyUser = createAsyncThunk(
 
 function logout() {
   store.dispatch(userLoggedOut());
-  store.dispatch(resetBook);
-  store.dispatch(resetMisc);
-  store.dispatch(resetState);
-  store.dispatch(resetWord);
+  store.dispatch(resetBook());
+  store.dispatch(resetMisc());
+  store.dispatch(resetState());
+  store.dispatch(resetWord());
   router.navigate("/");
 }
 

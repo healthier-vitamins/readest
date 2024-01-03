@@ -1,4 +1,4 @@
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 interface _decodedToken {
   app_metadata: { provider: string };
@@ -13,14 +13,14 @@ function getEmailFromToken(token: string) {
   if (isTokenExpired(token)) {
     return null;
   }
-  const decodedToken: _decodedToken = jwt_decode(token);
+  const decodedToken: _decodedToken = jwtDecode(token);
   return decodedToken.email;
 }
 
 function isTokenExpired(token: string) {
   if (token === "undefined") return true;
   const currentTime = Date.now() / 1000;
-  const decodedToken: _decodedToken = jwt_decode(token);
+  const decodedToken: _decodedToken = jwtDecode(token);
 
   if (decodedToken.exp >= Number(currentTime.toFixed(0))) {
     return false;

@@ -4,6 +4,7 @@ import { getEmailFromToken, isTokenExpired } from "../utils/cryptography";
 import { setUnauthorisedRedirector } from "../store/slices/state.slice";
 import { ReactNode, useEffect, useState } from "react";
 import { userLoggedIn } from "../store/slices/user.slice";
+
 const cookies = new Cookies();
 
 function Protected({ children }: { children: ReactNode }) {
