@@ -29,13 +29,13 @@ export default function GeneralErrorPage() {
           </span>
           &nbsp;to go back to the homepage.
         </span>
-        {isRouteErrorResponse(error) && error.error?.stack && (
+        {isRouteErrorResponse(error) && error.statusText && (
           <textarea
             rows={10}
             cols={60}
             disabled={true}
             style={{ color: "red", marginTop: "1rem" }}
-            value={error.error.stack}
+            value={error.data}
           />
         )}
       </div>
