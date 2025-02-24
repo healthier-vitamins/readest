@@ -8,6 +8,4 @@ Do note that this site is currently still in development, I will not be responsi
 
 If you find any bugs, please do not hesitate to create an issue, thank you!
 
-"Please refresh page" error occurs because I'm using notion's and netlify's free tiers to deploy this app.
-
 Have fun! 
